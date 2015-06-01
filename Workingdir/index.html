@@ -3,9 +3,8 @@
   <head>
     <meta charset=utf-8 />
     <title></title>
-    <link rel="stylesheet" type="css" media="screen" href="master.css" />
-    <script src="index.js"></script>
     <script src="gl-matrix.js"></script>
+    <script src="render-helper.js"></script>
     <script id="shader-fs" type="x-shader/x-fragment">
         varying highp vec2 vTextureCoord;
 
@@ -21,10 +20,10 @@
     attribute vec3 aVertexPosition;
     attribute vec2 aTextureCoord;
 
-    uniform mat4 uMVPMatrix;
+    uniform mat4 uTransformationMatrix;
 
     void main(void) {
-      gl_Position = uMVPMatrix * vec4(aVertexPosition, 1.0);
+      gl_Position = uTransformationMatrix * vec4(aVertexPosition, 1.0);
       vTextureCoord = aTextureCoord;
     }
     </script>
