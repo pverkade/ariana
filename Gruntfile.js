@@ -1,13 +1,11 @@
 module.exports = function (grunt) {
+
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-sass');
 
-    grunt.initConfig({
+    var appConfig = require('./build.config.js');
+    var taskConfig = {
         pkg: grunt.file.readJSON('package.json'),
-        build_dir: 'build',
-        js: ['src/js/*.js'],
-        html: ['src/index.html'],
-        sass: ['src/sass/*.scss']
 
         sass: {
             dist: {
@@ -66,7 +64,9 @@ module.exports = function (grunt) {
             }
 
         }
-    })
+    };
+
+    grunt.initConfig(grunt.util._.extend(taskConfig, appConfig));
 
     grunt.registerTask('build', 
         [
