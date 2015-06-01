@@ -16,7 +16,7 @@ Project ariana - is a web-based image editing solution. We focus on a clean inte
 ## Project structure
 `Structure cumming soon`
 
-## Installation
+## Getting started
 ariana runs on a [Node.js](https://nodejs.org/) server. Installing ariana takes about 3 minutes.
 
 #### Requirements
