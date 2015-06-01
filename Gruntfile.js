@@ -15,19 +15,20 @@ module.exports = function (grunt) {
          * ipv als style.css in build
          */
         sass: {
-            options: {
-                sourceMap: true
-            },
-            dist: {
-                files: {
-                    '<%= css %>': '<%= scss %>'
-                }
+            files: {
+                '<%= css %>': '<%= scss %>'
             }
         },
 
-        clean: [
-            '<%= build_dir %>/'
-        ],
+        clean: {
+            build: [
+                '<%= build_dir %>/'
+            ],
+
+            css: [
+                '0'
+            ]
+        },
 
         copy: {
             build_js: {
@@ -54,10 +55,8 @@ module.exports = function (grunt) {
             build_css: {
                 files: [
                     {
-                        src: ['<%= css %>'],
-                        dest: '<%= build_dir %>/',
-                        cwd: '.',
-                        expand: true
+                        src: '0',
+                        dest: '<%= build_dir %>/<%= css %>',
                     }
                 ]
             }
@@ -84,11 +83,12 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', 
         [
-            'clean',
+            'clean:build',
             'sass', 
             'copy:build_js', 
             'copy:build_html', 
-            'copy:build_css'
+            'copy:build_css',
+            'clean:css'
         ]
     );
     grunt.renameTask('watch', 'delta');
