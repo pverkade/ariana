@@ -1,8 +1,8 @@
-# ariana
-Project ariana - smoke weed erryday
+# Project Ariana
+Project ariana is a web-based image editing solution. We focus on a clean interface usable for both mouse and touchscreens. Our official website is fazeclan.xxx. 
 
 ## Project structure
-`Structure comming soon`
+`Structure cumming soon`
 
 ## Installation
 ariana runs on a [Node.js](https://nodejs.org/) server. Installing ariana takes about 3 minutes.
