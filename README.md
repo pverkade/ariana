@@ -1,6 +1,18 @@
 # ariana
 Project ariana - is a web-based image editing solution. We focus on a clean interface usable for both mouse and touchscreens. Our official website is fazeclan.xxx.
 
+## Index
+- [Project structure](https://github.com/ArnoldSwaggernegger/ariana#project-structure)
+- [Installation](https://github.com/ArnoldSwaggernegger/ariana#installation)
+  - [Requirements](https://github.com/ArnoldSwaggernegger/ariana#requirements)
+  - [Node.js](https://github.com/ArnoldSwaggernegger/ariana#nodejs)
+  - [Usage](https://github.com/ArnoldSwaggernegger/ariana#usage)
+- [Development](https://github.com/ArnoldSwaggernegger/ariana#development)
+  - [git workflow](https://github.com/ArnoldSwaggernegger/ariana#git-workflow)
+  - [HTML styleguide](https://github.com/ArnoldSwaggernegger/ariana#html-styleguide)
+  - [CSS/SASS styleguide](https://github.com/ArnoldSwaggernegger/ariana#csssass-styleguide)
+  - [JS styleguide](https://github.com/ArnoldSwaggernegger/ariana#js-styleguide)
+
 ## Project structure
 `Structure cumming soon`
 
@@ -43,8 +55,6 @@ $ node server.js build localhost:3000
 ## Development
 ariana is based on [Angular.js](https://angularjs.org/) and [WebGL](https://www.chromeexperiments.com/webgl).
 Please follow the following styleguides to ensure development of ariana goes smoothly.
-
-#### Project workflow
 
 #### git workflow
 ariana uses git as version control system. When developing ariana refer to the [issue tracker](https://github.com/ArnoldSwaggernegger/ariana/issues) to find userstories.
