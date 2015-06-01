@@ -11,10 +11,13 @@
   "dependencies": {
     "grunt-cli": "~0.1.13",
     "bower": "~1.4.1",
-    "karma": "~0.12.35"
+    "karma": "~0.12.35",
+    "sass": "~0.5.0"
   },
   "devDependencies": {
     "grunt-contrib-watch": "~0.6.1",
-    "grunt-contrib-sass": "~0.9.2"
+    "grunt-contrib-copy": "~0.8.0",
+    "grunt-sass": "~1.0.0",
+    "grunt-contrib-clean": "~0.6.0"
   }
 }

@@ -1,26 +1,40 @@
 module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-sass');
 
     var appConfig = require('./build.config.js');
     var taskConfig = {
         pkg: grunt.file.readJSON('package.json'),
 
+
+        /* Werkt niet... :'(
+         * De scss word met de naam '0' in de root gezet, 
+         * ipv als style.css in build
+         */
         sass: {
+            options: {
+                sourceMap: true
+            },
             dist: {
                 files: {
-                    'style.css': 'main.scss'
+                    '<%= css %>': '<%= scss %>'
                 }
             }
         },
+
+        clean: [
+            '<%= build_dir %>/'
+        ],
 
         copy: {
             build_js: {
                 files: [
                     {
                         src: ['<%= js %>'],
-                        dest: '<%= build_dir %>/',
+                        dest: '<%= build_dir %>/src/js',
                         cwd: '.',
                         expand: true,
                         flatten: true
@@ -40,7 +54,7 @@ module.exports = function (grunt) {
             build_css: {
                 files: [
                     {
-                        src: ['<%= %>'],
+                        src: ['<%= css %>'],
                         dest: '<%= build_dir %>/',
                         cwd: '.',
                         expand: true
@@ -51,15 +65,15 @@ module.exports = function (grunt) {
 
         delta: {
             js: {
-                files: ['src/js/*.js'],
+                files: ['<%= js %>'],
                 tasks: ['copy:build_js']
             },
             html: {
-                files: ['src/index.html'],
+                files: '<%= html %>',
                 tasks: ['copy:build_html']
             },
             sass: {
-                files: ['src/sass/*.scss'],
+                files: ['<%= sass %>'],
                 tasks: ['sass', 'copy:build_css']
             }
 
@@ -70,6 +84,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', 
         [
+            'clean',
             'sass', 
             'copy:build_js', 
             'copy:build_html', 
@@ -79,5 +94,4 @@ module.exports = function (grunt) {
     grunt.renameTask('watch', 'delta');
     grunt.registerTask('watch', ['build', 'delta']);
     grunt.registerTask('default', 'build');
-    grunt.registerTask('test', ['sass', 'copy:build_css']);
 }
