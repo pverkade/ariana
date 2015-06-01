@@ -12,6 +12,7 @@ Project ariana - is a web-based image editing solution. We focus on a clean inte
   - [HTML styleguide](https://github.com/ArnoldSwaggernegger/ariana#html-styleguide)
   - [CSS/SASS styleguide](https://github.com/ArnoldSwaggernegger/ariana#csssass-styleguide)
   - [JS styleguide](https://github.com/ArnoldSwaggernegger/ariana#js-styleguide)
+  - [Angular.js styleguide](https://github.com/ArnoldSwaggernegger/ariana#angularjs-styleguide)
 
 ## Project structure
 `Structure cumming soon`
@@ -22,11 +23,12 @@ ariana runs on a [Node.js](https://nodejs.org/) server. Installing ariana takes 
 #### Requirements
 - Node.js
 - git
+- ruby
 
 #### Node.js
-First of all, install [Node.js](https://nodejs.org/).
+First of all, install [Node.js](https://nodejs.org/) and [ruby](https://www.ruby-lang.org/).
 
-After installing Node.js enter the following in your terminal of choice:
+After installing Node.js and ruby enter the following in your terminal of choice:
 
 ```sh
 $ git clone git@github.com:ArnoldSwaggernegger/ariana.git
@@ -139,3 +141,6 @@ if (condition) {
     statements;
 }
 ```
+
+#### Angular.js styleguide
+- Todo
