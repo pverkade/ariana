@@ -31,12 +31,11 @@ ariana runs on a [Node.js](https://nodejs.org/) server. Installing ariana takes 
 #### Requirements
 - Node.js
 - git
-- ruby
 
 #### Node.js
-First of all, install [Node.js](https://nodejs.org/) and [ruby](https://www.ruby-lang.org/).
+First of all, install [Node.js](https://nodejs.org/).
 
-After installing Node.js and ruby enter the following in your terminal of choice:
+After installing Node.js enter the following in your terminal of choice:
 
 ```sh
 $ git clone git@github.com:ArnoldSwaggernegger/ariana.git
@@ -52,7 +51,7 @@ $ grunt watch
 ```
 
 - `npm install` installs all node modules defined in `package.json`
-- `bower install' installs all dependencies defined in `bower.json` to a path specified in `.bowerrc`
+- `bower install` installs all dependencies defined in `bower.json` to a path specified in `.bowerrc`
 - `grunt watch` tells grunt (build system) to build ariana. The `watch` parameter lets grunt watch for changes to your files. Grunt will automatically rebuild and recompile when these changes are detected.
   - Grunt serves as a [LiveReload](http://livereload.com/) server. You can install the `LiveReload` browser plugin to automatically refresh your browser when grunt rebuilds ariana (this is not necessary, only a comodity).
   - Grunt also minifies and combines javascript, css, etc.
