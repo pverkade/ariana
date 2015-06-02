@@ -30,7 +30,7 @@ class UploadImage {
     onFilesChanged = (e) => {
         e.preventDefault();
 
-        var files = <FileList>(e.target.files || e.dataTransfer.files);
+        var files: FileList = e.target.files || e.dataTransfer.files;
 
         for (var i = 0; i < files.length; i++) {
             if (this.isFileSupported(files[i])) {
@@ -46,7 +46,7 @@ class UploadImage {
      * Function to check if a file is supported by searching for the filetype in
      * our whitelist of filetypes.
      */
-    isFileSupported = (file: File) => {
+    isFileSupported = (file: File):boolean => {
         var types = ['image/jpeg', 'image/gif', 'image/png', 'image/bmp',
                      'image/svg+xml', 'image/tiff', 'image/vnd.dvju', 'image/pjpeg'];
         return file.type != undefined && types.indexOf(file.type) > -1;
