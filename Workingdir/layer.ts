@@ -2,7 +2,7 @@
 
 class Layer {
 	static MaxID = 0;
-	
+	layerType : number;
 	ID : number;
 	angle : number;
 	scaleX : number;
