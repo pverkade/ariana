@@ -1,8 +1,9 @@
-module.exports = function (grunt) {
+module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-bower-concat');
     grunt.loadNpmTasks('grunt-sass');
 
     var appConfig = require('./build.config.js');
@@ -10,8 +11,10 @@ module.exports = function (grunt) {
         pkg: grunt.file.readJSON('package.json'),
 
         sass: {
-            files: {
-                '<%= scr_files.css %>': '<%= src_files.scss %>'
+            dist: {
+                files: {
+                    '<%= src_files.css %>': '<%= src_files.scss %>'
+                }
             }
         },
 
@@ -45,17 +48,36 @@ module.exports = function (grunt) {
             },
             build_css: {
                 files: [{
-                    src: '0',
+                    src: '<%= src_files.css %>',
                     dest: '<%= build_dir %>/<%= src_files.css %>',
                 }]
             },
             build_bower: {
                 files: [{
                     src: ['<%= bower_files.js %>', '<%= bower_files.html %>', '<%= bower_files.css %>'],
-                    dest: '<%= build_dir %>/bower_components',
+                    dest: '<%= build_dir %>/js',
                     cwd: '.',
                     expand: true
                 }]
+            }
+        },
+
+        bower_concat: {
+            all: {
+                dest: 'build/_bower.js',
+                cssDest: 'build/_bower.css',
+                exclude: [
+                    'jquery',
+                    'modernizr'
+                ],
+                dependencies: {
+                    'underscore': 'jquery',
+                    'backbone': 'underscore',
+                    'jquery-mousewheel': 'jquery'
+                },
+                bowerOptions: {
+                    relative: false
+                }
             }
         },
 
@@ -73,29 +95,21 @@ module.exports = function (grunt) {
                 tasks: ['sass', 'copy:build_css']
             }
         },
-
-        index: {
-            build: {
-                dir: '<%= build_dir %>',
-                src: ['<%= src_files.js', '<%= bower_files.js %>']
-            }
-        }
     };
 
     grunt.initConfig(grunt.util._.extend(taskConfig, appConfig));
 
-    grunt.registerTask('build', 
-        [
-            'clean:build',
-            'sass', 
-            'copy:build_js', 
-            'copy:build_html', 
-            'copy:build_css',
-            'clean:css',
-            'copy:build_bower',
-            'index:build'
-        ]
-    );
+    grunt.registerTask('build', [
+        'clean:build',
+        'sass',
+        'copy:build_js',
+        'copy:build_html',
+        'copy:build_css',
+        // 'clean:css',
+        // 'copy:build_bower'
+        'bower_concat:all'
+    ]);
+
     grunt.registerTask('watch', ['build', 'delta']);
     grunt.registerTask('default', 'build');
 

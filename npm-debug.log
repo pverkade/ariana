@@ -1,0 +1,106 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'install' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.33
+4 verbose node symlink /usr/bin/node
+5 warn package.json ariana@0.0.0 No repository field.
+6 verbose readDependencies using package.json deps
+7 verbose install where, deps [ '/home/scoud/Documents/misc-projects/ariana',
+7 verbose install   [ 'grunt-cli',
+7 verbose install     'bower',
+7 verbose install     'karma',
+7 verbose install     'sass',
+7 verbose install     'serve-static',
+7 verbose install     'connect',
+7 verbose install     'grunt-bower-concat',
+7 verbose install     'grunt-contrib-clean',
+7 verbose install     'grunt-contrib-copy',
+7 verbose install     'grunt-contrib-watch',
+7 verbose install     'grunt-sass' ] ]
+8 info preinstall ariana@0.0.0
+9 warn package.json sass@0.5.0 No repository field.
+10 verbose readDependencies using package.json deps
+11 verbose already installed skipping connect@~3.3.5 /home/scoud/Documents/misc-projects/ariana
+12 verbose already installed skipping grunt-bower-concat@^0.5.0 /home/scoud/Documents/misc-projects/ariana
+13 verbose already installed skipping grunt-contrib-clean@~0.6.0 /home/scoud/Documents/misc-projects/ariana
+14 verbose already installed skipping grunt-contrib-copy@~0.8.0 /home/scoud/Documents/misc-projects/ariana
+15 verbose already installed skipping grunt-contrib-watch@~0.6.1 /home/scoud/Documents/misc-projects/ariana
+16 verbose already installed skipping grunt-sass@~1.0.0 /home/scoud/Documents/misc-projects/ariana
+17 verbose already installed skipping grunt-cli@~0.1.13 /home/scoud/Documents/misc-projects/ariana
+18 verbose already installed skipping bower@~1.4.1 /home/scoud/Documents/misc-projects/ariana
+19 verbose already installed skipping karma@~0.12.35 /home/scoud/Documents/misc-projects/ariana
+20 verbose cache add [ 'sass@~1.0.0', null ]
+21 verbose cache add name=undefined spec="sass@~1.0.0" args=["sass@~1.0.0",null]
+22 verbose parsed url { protocol: null,
+22 verbose parsed url   slashes: null,
+22 verbose parsed url   auth: null,
+22 verbose parsed url   host: null,
+22 verbose parsed url   port: null,
+22 verbose parsed url   hostname: null,
+22 verbose parsed url   hash: null,
+22 verbose parsed url   search: null,
+22 verbose parsed url   query: null,
+22 verbose parsed url   pathname: 'sass@~1.0.0',
+22 verbose parsed url   path: 'sass@~1.0.0',
+22 verbose parsed url   href: 'sass@~1.0.0' }
+23 verbose already installed skipping serve-static@~1.9.3 /home/scoud/Documents/misc-projects/ariana
+24 verbose cache add name="sass" spec="~1.0.0" args=["sass","~1.0.0"]
+25 verbose parsed url { protocol: null,
+25 verbose parsed url   slashes: null,
+25 verbose parsed url   auth: null,
+25 verbose parsed url   host: null,
+25 verbose parsed url   port: null,
+25 verbose parsed url   hostname: null,
+25 verbose parsed url   hash: null,
+25 verbose parsed url   search: null,
+25 verbose parsed url   query: null,
+25 verbose parsed url   pathname: '~1.0.0',
+25 verbose parsed url   path: '~1.0.0',
+25 verbose parsed url   href: '~1.0.0' }
+26 verbose addNamed [ 'sass', '~1.0.0' ]
+27 verbose addNamed [ null, '>=1.0.0-0 <1.1.0-0' ]
+28 silly lockFile 2e210530-sass-1-0-0 sass@~1.0.0
+29 verbose lock sass@~1.0.0 /home/scoud/.npm/2e210530-sass-1-0-0.lock
+30 silly addNameRange { name: 'sass', range: '>=1.0.0-0 <1.1.0-0', hasData: false }
+31 verbose request where is /sass
+32 verbose request registry https://registry.npmjs.org/
+33 verbose request id a92c3f8e7027c543
+34 verbose url raw /sass
+35 verbose url resolving [ 'https://registry.npmjs.org/', './sass' ]
+36 verbose url resolved https://registry.npmjs.org/sass
+37 verbose request where is https://registry.npmjs.org/sass
+38 info trying registry request attempt 1 at 12:18:13
+39 verbose etag "3N8DFV8RQ52OLAEUJ1HZ2J1OR"
+40 http GET https://registry.npmjs.org/sass
+41 http 304 https://registry.npmjs.org/sass
+42 silly registry.get cb [ 304,
+42 silly registry.get   { date: 'Tue, 02 Jun 2015 10:18:13 GMT',
+42 silly registry.get     via: '1.1 varnish',
+42 silly registry.get     'cache-control': 'max-age=60',
+42 silly registry.get     etag: '"3N8DFV8RQ52OLAEUJ1HZ2J1OR"',
+42 silly registry.get     age: '0',
+42 silly registry.get     connection: 'keep-alive',
+42 silly registry.get     'x-served-by': 'cache-ams4120-AMS',
+42 silly registry.get     'x-cache': 'HIT',
+42 silly registry.get     'x-cache-hits': '1',
+42 silly registry.get     'x-timer': 'S1433240293.402600,VS0,VE100',
+42 silly registry.get     vary: 'Accept' } ]
+43 verbose etag https://registry.npmjs.org/sass from cache
+44 silly addNameRange number 2 { name: 'sass', range: '>=1.0.0-0 <1.1.0-0', hasData: true }
+45 silly addNameRange versions [ 'sass', [ '0.4.0', '0.4.1', '0.4.2', '0.4.3', '0.5.0' ] ]
+46 silly lockFile 2e210530-sass-1-0-0 sass@~1.0.0
+47 silly lockFile 2e210530-sass-1-0-0 sass@~1.0.0
+48 error notarget No compatible version found: sass@'>=1.0.0-0 <1.1.0-0'
+48 error notarget Valid install targets:
+48 error notarget ["0.4.0","0.4.1","0.4.2","0.4.3","0.5.0"]
+48 error notarget
+48 error notarget This is most likely not a problem with npm itself.
+48 error notarget In most cases you or one of your dependencies are requesting
+48 error notarget a package version that doesn't exist.
+49 error System Linux 3.19.0-18-generic
+50 error command "/usr/bin/node" "/usr/bin/npm" "install"
+51 error cwd /home/scoud/Documents/misc-projects/ariana
+52 error node -v v0.10.33
+53 error npm -v 1.4.28
+54 error code ETARGET
+55 verbose exit [ 1, true ]
