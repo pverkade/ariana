@@ -95,9 +95,11 @@ text
 </p>
 ```
 - refrain from using a `<div>` when a `<span>` is also possible
+- Please use opening and closing tags for all elements, `<img></img>` not `<img />`
 
 #### CSS/SASS styleguide
 - indentation is 4 spaces
+- for connecting classnames use a dash -, not camelCase
 - give meaningful names to classes
 - please follow the following class and element layout
 ```
@@ -121,7 +123,8 @@ element {
 
 #### JS styleguide
 - indentation is 4 spaces
-- please write `//comment` for single row comments
+- please use camelCase
+- please write `/* comment */` for single row comments
 - please write
 ```
 /*
@@ -142,12 +145,26 @@ element {
  * Description: small description of file
  */
 ```
-- use
+- statements
 ```
 if (condition) {
     statements;
 }
 ```
+- functions and modules
+```
+var moduleName = angular.module('moduleName', [
+    'resource',
+    'resource'
+]);
 
+angular.module('moduleName').run(['resource',
+    function($resource) {
+        statement
+    }
+]);
+
+
+```
 #### Angular.js styleguide
 - Todo
