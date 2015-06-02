@@ -8,19 +8,50 @@
     <script src="layer.js"></script>
     <script src="image-layer.js"></script>
     <script src="image-shader-program.js"></script>
+    <script src="render-engine.js"></script>
+    <script src="drawbuffer.js"></script>
+
     <script>
         function start() {
             createGLContext("glcanvas");
             var image = new Image();
-            image.src = "image.jpg";
-            image.onload = function() {
-                var imageLayer = new ImageLayer(image);
-                imageLayer.setScale(.5,.5);
-                imageLayer.setRotation(1.);
-                imageLayer.setPos(0,0.5);
-                imageLayer.setupRender();
-                imageLayer.render();
+            var image2 = new Image();
+            var renderEngine = new RenderEngine();
+
+            var counter = 1;
+            function done() {
+                if (counter === 1) {
+                    counter --;
+                }
+                else {
+                    var imageLayer = new ImageLayer(image);
+                    imageLayer.setScale(.5,.5);
+                    imageLayer.setRotation(1.);
+                    imageLayer.setPos(0,0.5);
+                    imageLayer.setupRender();
+                    imageLayer.render();
+
+                    var imageLayer2 = new ImageLayer(image2);
+                    imageLayer2.setScale(.3,.3);
+                    imageLayer2.setRotation(-1.);
+                    imageLayer2.setPos(0.5,0);
+                    imageLayer2.setupRender();
+                    imageLayer2.render();
+
+                    renderEngine.addLayer(imageLayer);
+                    renderEngine.addLayer(imageLayer2);
+                    renderEngine.render();
+
+                    var div = document.getElementById("images");
+                    div.appendChild(renderEngine.framebufferToImage());
+                }
             }
+
+            image2.src = "wall.png";
+            image2.onload = done;
+
+            image.src = "image.jpg";
+            image.onload = done;
         }
     </script>
     <script id="image-shader-fs" type="x-shader/x-fragment">
@@ -55,5 +86,6 @@
 </div>
 <div id="filters"></div>
 <div id="layers"></div>
+<div id="images"></div>
 </body>
 </html>
