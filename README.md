@@ -35,6 +35,7 @@ ariana/
   | |- sass/
   | | |- <style files>
   | | |- main.scss
+  | | |- variables.scss
   | | |- other_sass.scss etc.
   |- bower.json
   |- build.config.js
@@ -45,12 +46,13 @@ ariana/
 
 A brief description of each entry
 - `src/` - ariana sources
--- `app/` - is used for application specific code, e.g. templates and controllers
--- `assets/` - images etc.
--- `common/` - put all code that is likely to be used by different modules here
--- `sass/` - all style files
---- `main.scss` main style file from which all others are included
---- `other_sass.scss etc.` all other sass files, one file should contain the styling for one "feature"
+  - `app/` - is used for application specific code, e.g. templates and controllers
+  - `assets/` - images etc.
+  - `common/` - all code that is likely to be used by different modules
+- `sass/` - all style files
+  - `main.scss` main style file from which all others are included
+  - `variables.scss` put ALL SASS variables here
+  - `other_sass.scss etc.` all other sass files, one file should contain the styling for one "feature"
 - `bower.json` - the list of bower dependencies
 - `build.config.js` - settings for the grunt build system
 - `Gruntfile.js` - grunt build script
