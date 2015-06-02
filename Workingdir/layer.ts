@@ -79,6 +79,6 @@ class Layer {
 		return this.ID;
 	}
 	
-	setupRender() { };
-	render() { };
+	setupRender() { }
+	render() { }
 }

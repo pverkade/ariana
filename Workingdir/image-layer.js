@@ -17,6 +17,7 @@ var ImageLayer = (function (_super) {
         var positionLocation = gl.getAttribLocation(this.program, "a_position");
         var texCoordLocation = gl.getAttribLocation(this.program, "a_texCoord");
         this.matrixLocation = gl.getUniformLocation(this.program, "u_matrix");
+        this.samplerLocation = gl.getUniformLocation(this.program, "u_sampler");
         this.texture = gl.createTexture();
         gl.bindTexture(gl.TEXTURE_2D, this.texture);
         // Set up texture so we can render any size image and so we are
@@ -33,18 +34,20 @@ var ImageLayer = (function (_super) {
     }
     ImageLayer.prototype.setupRender = function () {
         gl.useProgram(this.program);
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
+        gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexBuffer);
+        gl.activeTexture(gl.TEXTURE0);
+        gl.uniform1i(this.samplerLocation, 0);
     };
-    ;
     ImageLayer.prototype.render = function () {
         var matrix = mat3.create();
         mat3.identity(matrix);
         mat3.multiply(matrix, matrix, this.translationMatrix);
         mat3.multiply(matrix, matrix, this.rotationMatrix);
         mat3.multiply(matrix, matrix, this.scaleMatrix);
+        gl.bindTexture(gl.TEXTURE_2D, this.texture);
         gl.uniformMatrix3fv(this.matrixLocation, false, matrix);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     };
-    ;
     return ImageLayer;
 })(Layer);
+//# sourceMappingURL=image-layer.js.map

@@ -47,10 +47,11 @@ var Layer = (function () {
     Layer.prototype.getID = function () {
         return this.ID;
     };
-    Layer.prototype.setupRender = function () { };
-    ;
-    Layer.prototype.render = function () { };
-    ;
+    Layer.prototype.setupRender = function () {
+    };
+    Layer.prototype.render = function () {
+    };
     Layer.MaxID = 0;
     return Layer;
 })();
+//# sourceMappingURL=layer.js.map

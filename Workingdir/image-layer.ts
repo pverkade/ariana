@@ -4,11 +4,12 @@
 
 class ImageLayer extends Layer {
 	matrixLocation : WebGLUniformLocation;
+    samplerLocation : WebGLUniformLocation;
 	
 	vertexBuffer : WebGLBuffer;
 	texture : WebGLTexture;
 	
-	constructor(image) {
+	constructor(image : HTMLImageElement) {
 		super();
 		
 		var vertexShader = compileShaderFromScript("image-shader-vs");
@@ -19,6 +20,7 @@ class ImageLayer extends Layer {
 		var positionLocation = gl.getAttribLocation(this.program, "a_position");
 		var texCoordLocation = gl.getAttribLocation(this.program, "a_texCoord");
 		this.matrixLocation = gl.getUniformLocation(this.program, "u_matrix");
+        this.samplerLocation = gl.getUniformLocation(this.program, "u_sampler");
 	
 		this.texture = gl.createTexture();
 		gl.bindTexture(gl.TEXTURE_2D, this.texture);
@@ -29,7 +31,7 @@ class ImageLayer extends Layer {
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-	
+
 		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
 	
 		gl.enableVertexAttribArray(positionLocation);
@@ -40,8 +42,11 @@ class ImageLayer extends Layer {
 	
 	setupRender() {
 		gl.useProgram(this.program);
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-	};
+		gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexBuffer);
+
+        gl.activeTexture(gl.TEXTURE0);
+        gl.uniform1i(this.samplerLocation, 0);
+	}
 	
 	render() {
 		var matrix : Float32Array = mat3.create();
@@ -49,8 +54,10 @@ class ImageLayer extends Layer {
 		mat3.multiply(matrix, matrix, this.translationMatrix);
 		mat3.multiply(matrix, matrix, this.rotationMatrix);
 		mat3.multiply(matrix, matrix, this.scaleMatrix);
-		
+
+		gl.bindTexture(gl.TEXTURE_2D, this.texture);
 		gl.uniformMatrix3fv(this.matrixLocation, false, matrix);
+
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-	};
+	}
 }

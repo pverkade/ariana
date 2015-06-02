@@ -9,14 +9,23 @@ function createGLContext(id) {
         squareVertexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-            -1.0, -1.0,
-            0.0, 1.0,
-            1.0, -1.0,
-            1.0, 1.0,
-            -1.0, 1.0,
-            0.0, 0.0,
-            1.0, 1.0,
-            1.0, 0.0]), gl.STATIC_DRAW);
+            -1.0,
+            -1.0,
+            0.0,
+            1.0,
+            1.0,
+            -1.0,
+            1.0,
+            1.0,
+            -1.0,
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0
+        ]), gl.STATIC_DRAW);
     }
     catch (e) {
         console.log(e.stack);
@@ -72,3 +81,4 @@ function compileShader(shaderSource, shaderType) {
     }
     return shader;
 }
+//# sourceMappingURL=render-helper.js.map
