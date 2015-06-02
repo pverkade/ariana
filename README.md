@@ -15,15 +15,48 @@ Project ariana - is a web-based image editing solution. We focus on a clean inte
   - [Angular.js styleguide](https://github.com/ArnoldSwaggernegger/ariana#angularjs-styleguide)
 
 ## Project structure
-`Structure cumming soon`
+
+At a high level, the structure loolks roughly like this: 
+
+```
+ariana/
+  |- src/
+  | |- app/
+  | | |- <app logic>
+  | | |- content/
+  | | |- header/
+  | | |- layers/
+  | | |- toolbox/
+  | | |- app.js
+  | |- assets/
+  | | |- <static files>
+  | |- common/
+  | | |- <reusable code>
+  | |- sass/
+  | | |- <style files>
+  | | |- main.scss
+  | | |- other_sass.scss etc.
+  |- bower.json
+  |- build.config.js
+  |- Gruntfile.js
+  |- package.json
+  |- server.js
+```
 
 A brief description of each entry
 - `src/` - ariana sources
+-- `app/` - is used for application specific code, e.g. templates and controllers
+-- `assets/` - images etc.
+-- `common/` - put all code that is likely to be used by different modules here
+-- `sass/` - all style files
+--- `main.scss` main style file from which all others are included
+--- `other_sass.scss etc.` all other sass files, one file should contain the styling for one "feature"
 - `bower.json` - the list of bower dependencies
 - `build.config.js` - settings for the grunt build system
 - `Gruntfile.js` - grunt build script
 - `package.json` - metadata about ariana, used by NPM
-- `index.js` - the ariana server
+- `server.js - a simple node.js server
+
 
 ## Getting started
 ariana runs on a [Node.js](https://nodejs.org/) server. Installing ariana takes about 3 minutes.
