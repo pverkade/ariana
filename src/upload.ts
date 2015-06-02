@@ -23,14 +23,14 @@ class UploadImage {
     /*
      * Function to click the upload button
      */
-    uploadButtonClick = (e : Event) => {
+    uploadButtonClick = (e : Event) : void => {
         this.imageupload.click();
     }
 
     /*
      * Handler function for changed files (dragged or uploaded)
      */
-    onFilesChanged = (e) => {
+    onFilesChanged = (e) : void => {
         e.preventDefault();
 
         var files: FileList = e.target.files || e.dataTransfer.files;
@@ -49,7 +49,7 @@ class UploadImage {
      * Function to check if a file is supported by searching for the filetype in
      * our whitelist of filetypes.
      */
-    isFileSupported = (file : File):boolean => {
+    isFileSupported = (file : File) : boolean => {
         var types = ["image/jpeg", "image/gif", "image/png", "image/bmp",
                      "image/svg+xml", "image/tiff", "image/vnd.dvju", "image/pjpeg"];
         return file.type != undefined && types.indexOf(file.type) > -1;
@@ -58,7 +58,7 @@ class UploadImage {
     /*
      * Function that reads the image file
      */
-    readFile = (file : File) => {
+    readFile = (file : File) : void => {
         var reader: FileReader;
         reader = new FileReader();
         reader.addEventListener("loadend", this.loadImage);
@@ -69,7 +69,7 @@ class UploadImage {
      * Function that loads an image
      * This function is called if a file is read
      */
-    loadImage = (e : ProgressEvent) => {
+    loadImage = (e : ProgressEvent) : void => {
         var img = new Image();
         img.addEventListener("load", this.imageLoaded);
         img.src = (<FileReader>e.target).result;
@@ -79,7 +79,7 @@ class UploadImage {
      * Function that adds the image to the canvas
      * This function is called if a image is being load
      */
-    imageLoaded = (e) => {
+    imageLoaded = (e) : void => {
         /* Find the image (for some reason chrome uses path[0]) */
         var img = e.target || e.path[0];
 
@@ -116,7 +116,7 @@ class UploadImage {
      *
      * TODO: add feedback to the user so he/se knows filedrop is supported
      */
-    initDragnDrop = () => {
+    initDragnDrop = () : void => {
         if ('draggable' in document.body) {
             document.body.addEventListener("dragover", this.onDragOver, false);
             document.body.addEventListener("drop", this.onFilesChanged, false);
@@ -126,7 +126,7 @@ class UploadImage {
     /*
      * on dragover
      */
-    onDragOver = (e : MouseEvent) => {
+    onDragOver = (e : MouseEvent) : void => {
         e.stopPropagation();
         e.preventDefault();
     }
