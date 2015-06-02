@@ -1,4 +1,4 @@
-var gl;
+var gl, squareVertexBuffer;
 
 function createGLContext(id : string) : void {
 	var canvas : HTMLCanvasElement = <HTMLCanvasElement>document.getElementById(id);
@@ -8,6 +8,21 @@ function createGLContext(id : string) : void {
 		gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
 		gl.enable(gl.DEPTH_TEST);
 		gl.depthFunc(gl.LEQUAL);
+		
+		squareVertexBuffer = gl.createBuffer();
+		gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexBuffer);
+		gl.bufferData(
+			gl.ARRAY_BUFFER, 
+			new Float32Array([
+				-1.0, -1.0,
+				 0.0,  1.0,
+				 1.0, -1.0,
+				 1.0,  1.0,
+				-1.0,  1.0,
+				 0.0,  0.0,
+				 1.0,  1.0,
+				 1.0,  0.0]),
+			gl.STATIC_DRAW);
 	}
 	catch(e) {
 		console.log(e.stack);

@@ -15,6 +15,8 @@ class Layer {
 	rotationMatrix : Float32Array;
 	translationMatrix : Float32Array;
 	
+	program : WebGLProgram;
+	
 	constructor() {
 		this.ID = Layer.MaxID++;
 		
@@ -76,4 +78,7 @@ class Layer {
 	getID() : number {
 		return this.ID;
 	}
+	
+	setupRender() { };
+	render() { };
 }
