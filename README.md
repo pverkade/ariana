@@ -60,7 +60,7 @@ A brief description of each entry
 - `build.config.js` - settings for the grunt build system
 - `Gruntfile.js` - grunt build script
 - `package.json` - metadata about ariana, used by NPM
-- `server.js - a simple node.js server
+- `server.js` - a simple node.js server
 
 
 ## Getting started
