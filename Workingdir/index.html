@@ -16,7 +16,8 @@
             createGLContext("glcanvas");
             var image = new Image();
             var image2 = new Image();
-            var renderEngine = new RenderEngine();
+            var canvas = document.getElementById("glcanvas");
+            var renderEngine = new RenderEngine(canvas.width, canvas.height);
 
             var counter = 1;
             function done() {
@@ -40,7 +41,7 @@
                     renderEngine.render();
 
                     var imageEl = document.getElementById("images");
-                    //imageEl.src = renderEngine.renderToImg();
+                    imageEl.src = renderEngine.renderToImg();
                 }
             }
 

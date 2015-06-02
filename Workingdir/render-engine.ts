@@ -10,13 +10,16 @@ class RenderEngine {
     clientOrder : Array<Layer>;
     drawbuffer : DrawBuffer;
 
-    width = 640;
-    height = 640;
+    width : number;
+    height : number;
 
-    constructor () {
+    constructor (width : number, height : number) {
         this.drawOrder = new Array();
         this.clientOrder = new Array();
-        this.drawbuffer = new DrawBuffer(this.width, this.height);
+        this.drawbuffer = new DrawBuffer(width, height);
+
+        this.width = width;
+        this.height = height;
     }
 
     addLayer(layer : Layer) {
@@ -79,7 +82,7 @@ class RenderEngine {
     }
 
     renderToImg() {
-        var buffer : DrawBuffer = new DrawBuffer(640, 640);
+        var buffer : DrawBuffer = new DrawBuffer(this.width, this.height);
         buffer.bind();
         this.render();
         var val = buffer.getImage();
