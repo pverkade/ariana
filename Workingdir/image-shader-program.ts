@@ -8,6 +8,7 @@ class ImageShaderProgram implements ShaderProgram
 
     matrixLocation : WebGLUniformLocation;
     samplerLocation : WebGLUniformLocation;
+    depthLocation : WebGLUniformLocation;
     vertexBuffer : WebGLBuffer;
 
     constructor() {
@@ -20,6 +21,7 @@ class ImageShaderProgram implements ShaderProgram
         var texCoordLocation = gl.getAttribLocation(this.program, "a_texCoord");
         this.matrixLocation = gl.getUniformLocation(this.program, "u_matrix");
         this.samplerLocation = gl.getUniformLocation(this.program, "u_sampler");
+        this.depthLocation = gl.getUniformLocation(this.program, "u_depth");
 
         this.vertexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
@@ -40,6 +42,8 @@ class ImageShaderProgram implements ShaderProgram
         gl.enableVertexAttribArray(texCoordLocation);
         gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 16, 0);
         gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 16, 8);
+        gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
     }
 
     activate() : void {
@@ -50,8 +54,9 @@ class ImageShaderProgram implements ShaderProgram
         gl.uniform1i(this.samplerLocation, 0);
     }
 
-    setStuff(texture : WebGLTexture, matrix : Float32Array) : void {
+    setStuff(texture : WebGLTexture, matrix : Float32Array, depth : number) : void {
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.uniformMatrix3fv(this.matrixLocation, false, matrix);
+        gl.uniform1f(this.depthLocation, depth);
     }
 }

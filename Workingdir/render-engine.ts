@@ -5,33 +5,6 @@
 /// <reference path="layer"/>
 /// <reference path="drawbuffer"/>
 
-function createImageFromTexture(gl, drawbuffer, width, height) : HTMLImageElement {
-    // Create a framebuffer backed by the texture
-    gl.bindFramebuffer(gl.FRAMEBUFFER, drawbuffer.framebuffer);
-    //gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, drawbuffer.texture, 0);
-    //gl.bindRenderbuffer(gl.RENDERBUFFER, drawbuffer.renderbuffer);
-
-    // Read the contents of the framebuffer
-    var data = new Uint8Array(width * height * 4);
-    gl.readPixels(0, 0, width, height, gl.RGBA, gl.UNSIGNED_BYTE, data);
-
-    // Create a 2D canvas to store the result
-    var canvas = document.createElement('canvas');
-    canvas.width = width;
-    canvas.height = height;
-    var context = canvas.getContext('2d');
-
-    // Copy the pixels to a 2D canvas
-    var imageData : ImageData = context.createImageData(width, height);
-    var temp : any = <any>imageData.data;
-    (<any>(imageData.data)).set(data);
-    context.putImageData(imageData, 0, 0);
-
-    var img = new Image();
-    img.src = canvas.toDataURL();
-    return img;
-}
-
 class RenderEngine {
     drawOrder : Array<Layer>;
     clientOrder : Array<Layer>;
@@ -50,13 +23,17 @@ class RenderEngine {
         this.clientOrder.push(layer);
         layer.setDepth(this.clientOrder.length);
 
+        console.log("Trying to add layer with depth " + layer.getDepth());
+
         if (this.drawOrder.length === 0) {
+            //console.log("Adding first layer to draworder");
             this.drawOrder.push(layer);
         }
 
         for (var i = 0; i < this.drawOrder.length; i++) {
             if (this.drawOrder[i].layerType <= layer.layerType) {
                 this.drawOrder.splice(i, 0, layer);
+                //console.log("Added layer at position " + i + " to draworder");
                 return;
             }
         }
@@ -87,16 +64,10 @@ class RenderEngine {
         this.clientOrder[j] = temp;
     }
 
-    render(drawbuffer? : DrawBuffer) {
-        if (drawbuffer) {
-            gl.bindFramebuffer(gl.FRAMEBUFFER, drawbuffer.framebuffer);
-            gl.bindRenderbuffer(gl.RENDERBUFFER, drawbuffer.renderbuffer);
-            //drawbuffer.bindTexture();
-        }
+    render() {
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
         var oldType = -1;
-        gl.activeTexture(gl.TEXTURE0);
-
         for (var i = 0; i < this.drawOrder.length; i++) {
             var layer = this.drawOrder[i];
             if (layer.layerType != oldType) {
@@ -106,19 +77,14 @@ class RenderEngine {
 
             layer.render();
         }
-
-        gl.bindRenderbuffer(gl.RENDERBUFFER, null);
-        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     }
 
-    framebufferToImage() : HTMLImageElement {
-        //var pixels = new Uint8Array(this.width * this.height * 4);
-        //gl.readPixels(0, 0, this.width, this.height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
-
-        this.drawbuffer.bindTexture();
-        this.render(this.drawbuffer.framebuffer);
-
-        return createImageFromTexture(gl, this.drawbuffer, this.width, this.height);
-
+    renderToImg() {
+        var buffer : DrawBuffer = new DrawBuffer(640, 640);
+        buffer.bind();
+        this.render();
+        var val = buffer.getImage();
+        buffer.unbind();
+        return val;
     }
 }

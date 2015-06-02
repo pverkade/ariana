@@ -5,6 +5,7 @@
 
 class ImageLayer extends Layer {
     static program = null;
+    layerType : number = 0;
 
 	matrixLocation : WebGLUniformLocation;
     samplerLocation : WebGLUniformLocation;
@@ -43,7 +44,7 @@ class ImageLayer extends Layer {
 		mat3.multiply(matrix, matrix, this.rotationMatrix);
 		mat3.multiply(matrix, matrix, this.scaleMatrix);
 
-		ImageLayer.program.setStuff(this.texture, matrix);
+		ImageLayer.program.setStuff(this.texture, matrix, this.depth);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 	}
 }
