@@ -5,33 +5,39 @@
     <title></title>
     <script src="gl-matrix.js"></script>
     <script src="render-helper.js"></script>
-    <script id="shader-fs" type="x-shader/x-fragment">
-        varying highp vec2 vTextureCoord;
-
-        uniform sampler2D uSampler;
-
+      <script src="layer.js"></script>
+      <script src="image-layer.js"></script>
+      <script>
+        function start() {
+          createGLContext("glcanvas");
+          var imageLayer = new ImageLayer();
+          imageLayer.setScale(.5,.5);
+          imageLayer.setRotation(1.);
+          imageLayer.setPos(0,0.5);
+          imageLayer.setupRender();
+          imageLayer.render();
+        }
+      </script>
+    <script id="image-shader-fs" type="x-shader/x-fragment">
         void main(void) {
-            gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+            gl_FragColor = vec4(1, 0, 0, 1);
         }
     </script>
-    <script id="shader-vs" type="x-shader/x-vertex">
-    varying highp vec2 vTextureCoord;
+    <script id="image-shader-vs" type="x-shader/x-vertex">
+    attribute vec2 a_position;
+    attribute vec2 a_texCoord;
 
-    attribute vec3 aVertexPosition;
-    attribute vec2 aTextureCoord;
-
-    uniform mat4 uTransformationMatrix;
+    uniform mat3 u_matrix;
 
     void main(void) {
-      gl_Position = uTransformationMatrix * vec4(aVertexPosition, 1.0);
-      vTextureCoord = aTextureCoord;
+      gl_Position = vec4((u_matrix * vec3(a_position, 1)).xy, 0, 1);
     }
     </script>
   </head>
 
   <body onload="start()">
     <div id="canvas">
-      <canvas id="glcanvas" width="640" height="480">
+      <canvas id="glcanvas" width="640" height="640">
         Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
       </canvas>
     </div>  
