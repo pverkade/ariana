@@ -12,6 +12,8 @@ class ImageLayer extends Layer {
 	
 	vertexBuffer : WebGLBuffer;
 	texture : WebGLTexture;
+
+    internalScaleMatrix : Float32Array;
 	
 	constructor(image : HTMLImageElement) {
 		super();
@@ -31,6 +33,23 @@ class ImageLayer extends Layer {
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 
 		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+
+        this.internalScaleMatrix = mat3.create();
+        mat3.identity(this.internalScaleMatrix);
+
+        var scaleX : number, scaleY : number;
+
+        if (image.width > image.height) {
+            scaleX = 1;
+            scaleY = image.height / image.width;
+        }
+        else {
+            scaleX = image.width / image.height;
+            scaleY = 1;
+        }
+
+        var internalScaleFactors = new Float32Array([scaleX, scaleY]);
+        mat3.scale(this.internalScaleMatrix, this.internalScaleMatrix, internalScaleFactors);
 	}
 	
 	setupRender() {
@@ -43,6 +62,7 @@ class ImageLayer extends Layer {
 		mat3.multiply(matrix, matrix, this.translationMatrix);
 		mat3.multiply(matrix, matrix, this.rotationMatrix);
 		mat3.multiply(matrix, matrix, this.scaleMatrix);
+        mat3.multiply(matrix, matrix, this.internalScaleMatrix);
 
 		ImageLayer.program.setStuff(this.texture, matrix, this.depth / depthFrac);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
