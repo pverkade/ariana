@@ -2,7 +2,8 @@ module.exports = {
     build_dir: 'build',
 
     src_files: {
-        html: 'src/**/*.html',
+        html: 'src/index.html',
+        tpl: 'src/**/*.tpl.html',
         js: ['src/**/*.js'],
         ts: ['src/**/*.ts'],
         css: 'style.css',

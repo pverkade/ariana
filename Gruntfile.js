@@ -7,7 +7,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-bower-concat');
     grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-typescript');
-    
+    grunt.loadNpmTasks('grunt-html2js');
+
     var appConfig = require('./build.config.js');
     var taskConfig = {
         pkg: grunt.file.readJSON('package.json'),
@@ -32,10 +33,20 @@ module.exports = function(grunt) {
                 src: ['<%= src_files.ts %>'],
                 dest: '<%= build_dir %>/ts.js',
                 options: {
-                    module: 'commonjs', //or commonjs
-                    target: 'es5', //or es3
+                    module: 'commonjs',
+                    target: 'es5',
                     keepDirectoryHierarchy: false
                 }
+            }
+        },
+
+        html2js: {
+            options: {
+                module: 'templates-ariana'
+            },
+            main: {
+                src: ['<%= src_files.tpl %>'],
+                dest: '<%= build_dir %>/tpl.js'
             }
         },
 
@@ -51,7 +62,13 @@ module.exports = function(grunt) {
                 '<%= build_dir %>/*.js', '!<%= build_dir %>/ariana.js'
             ],
             css: [
-                '<%= build_dir %>/*.css', '!<%= build_dir %>/ariana.css',
+                '<%= build_dir %>/*.css', '!<%= build_dir %>/ariana.css'
+            ],
+            js_hard: [
+                '<%= build_dir %>/*.js'
+            ],
+            css_hard: [
+                '<%= build_dir %>/*.css'
             ]
         },
 
@@ -123,6 +140,7 @@ module.exports = function(grunt) {
             }
         },
 
+
         /*
          * The delta tasks watches for changes and rebuilds the project in build.
          */
@@ -132,20 +150,24 @@ module.exports = function(grunt) {
             },
 
             html: {
-                files: '<%= src_files.html %>',
-                tasks: ['copy:build_html']
+                files: ['<%= src_files.html %>'],
+                tasks: ['chain_html']
+            },
+            tpl: {
+                files: ['<%= src_files.tpl %>'],
+                tasks: ['clean:js_hard', 'chain_html', 'chain_js']
             },
             js: {
                 files: ['<%= src_files.js %>'],
-                tasks: ['clean:js', 'copy:build_js', 'bower_concat:js', 'concat:js', 'clean:js']
+                tasks: ['clean:js_hard', 'chain_html', 'chain_js']
             },
             ts: {
                 files: ['<%= src_files.ts %>'],
-                tasks: ['clean:js', 'typescript', 'copy:build_js', 'bower_concat:js', 'concat:js', 'clean:js']
+                tasks: ['clean:js_hard', 'chain_html', 'chain_js']
             },
             sass: {
                 files: ['<%= src_files.sass %>'],
-                tasks: ['clean:css', 'sass', 'copy:build_css', 'bower_concat:css', 'concat:css', 'clean:css']
+                tasks: ['clean:css_hard', 'chain_css']
             }
         }
     };
@@ -159,6 +181,7 @@ module.exports = function(grunt) {
         'sass',
         'bower_concat:all',
         'typescript',
+        'html2js',
         'copy:build_js',
         'copy:build_html',
         'copy:build_css',
@@ -167,7 +190,15 @@ module.exports = function(grunt) {
         'clean:css'
     ]);
 
+    /* grunt */
+    grunt.registerTask('default', 'build');
+
+    /* grunt watch task */
     grunt.renameTask('watch', 'delta');
     grunt.registerTask('watch', ['build', 'delta']);
-    grunt.registerTask('default', 'build');
+    
+    /* custom build chains */
+    grunt.registerTask('chain_html', ['copy:build_html', 'html2js']);
+    grunt.registerTask('chain_js', ['typescript', 'copy:build_js', 'bower_concat:js', 'concat:js', 'clean:js']);
+    grunt.registerTask('chain_css', ['sass', 'copy:build_css', 'bower_concat:css', 'concat:css', 'clean:css']);
 }
