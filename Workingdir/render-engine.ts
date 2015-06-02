@@ -23,8 +23,6 @@ class RenderEngine {
         this.clientOrder.push(layer);
         layer.setDepth(this.clientOrder.length);
 
-        console.log("Trying to add layer with depth " + layer.getDepth());
-
         if (this.drawOrder.length === 0) {
             //console.log("Adding first layer to draworder");
             this.drawOrder.push(layer);
@@ -68,14 +66,15 @@ class RenderEngine {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
         var oldType = -1;
-        for (var i = 0; i < this.drawOrder.length; i++) {
+        var numItems = this.drawOrder.length;
+        for (var i = 0; i < numItems; i++) {
             var layer = this.drawOrder[i];
             if (layer.layerType != oldType) {
                 layer.setupRender();
                 oldType = layer.layerType;
             }
 
-            layer.render();
+            layer.render(numItems);
         }
     }
 

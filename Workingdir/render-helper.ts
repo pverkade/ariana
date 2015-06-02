@@ -8,6 +8,7 @@ function createGLContext(id : string) : void {
 		gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
 		gl.enable(gl.DEPTH_TEST);
 		gl.depthFunc(gl.LEQUAL);
+		gl.depthRange(0., 100.);
 	}
 	catch(e) {
 		console.log(e.stack);

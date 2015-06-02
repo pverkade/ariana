@@ -78,5 +78,5 @@ class Layer {
 	}
 	
 	setupRender() { }
-	render() { }
+	render(depthFrac : number) { }
 }

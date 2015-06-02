@@ -49,7 +49,7 @@ var Layer = (function () {
     };
     Layer.prototype.setupRender = function () {
     };
-    Layer.prototype.render = function () {
+    Layer.prototype.render = function (depthFrac) {
     };
     Layer.MaxID = 0;
     return Layer;
