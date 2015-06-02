@@ -1,13 +1,14 @@
 /// <reference path="render-helper"/>
 /// <reference path="gl-matrix"/>
-/// <reference path="shader"/>
+/// <reference path="shader-program"/>
 
-class ImageShader implements Shader
+class ImageShaderProgram implements ShaderProgram
 {
     program : WebGLProgram;
 
     matrixLocation : WebGLUniformLocation;
     samplerLocation : WebGLUniformLocation;
+    vertexBuffer : WebGLBuffer;
 
     constructor() {
         var vertexShader = compileShaderFromScript("image-shader-vs");
@@ -20,16 +21,30 @@ class ImageShader implements Shader
         this.matrixLocation = gl.getUniformLocation(this.program, "u_matrix");
         this.samplerLocation = gl.getUniformLocation(this.program, "u_sampler");
 
+        this.vertexBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
+        gl.bufferData(
+            gl.ARRAY_BUFFER,
+            new Float32Array([
+                -1.0, -1.0,
+                0.0,  1.0,
+                1.0, -1.0,
+                1.0,  1.0,
+                -1.0,  1.0,
+                0.0,  0.0,
+                1.0,  1.0,
+                1.0,  0.0]),
+            gl.STATIC_DRAW);
+
         gl.enableVertexAttribArray(positionLocation);
         gl.enableVertexAttribArray(texCoordLocation);
         gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 16, 0);
         gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 16, 8);
-
-
     }
 
     activate() : void {
-        gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexBuffer);
+        gl.useProgram(this.program);
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
 
         gl.activeTexture(gl.TEXTURE0);
         gl.uniform1i(this.samplerLocation, 0);

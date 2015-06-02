@@ -1,4 +1,4 @@
-interface Shader
+interface ShaderProgram
 {
     program : WebGLProgram;
 
