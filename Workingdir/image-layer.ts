@@ -1,8 +1,11 @@
 /// <reference path="render-helper"/>
 /// <reference path="gl-matrix"/>
 /// <reference path="layer"/>
+/// <reference path="image-shader-program"/>
 
 class ImageLayer extends Layer {
+    static program = null;
+
 	matrixLocation : WebGLUniformLocation;
     samplerLocation : WebGLUniformLocation;
 	
@@ -11,16 +14,10 @@ class ImageLayer extends Layer {
 	
 	constructor(image : HTMLImageElement) {
 		super();
-		
-		var vertexShader = compileShaderFromScript("image-shader-vs");
-		var fragmentShader = compileShaderFromScript("image-shader-fs");
-	
-		this.program = compileProgram(vertexShader, fragmentShader);
-	
-		var positionLocation = gl.getAttribLocation(this.program, "a_position");
-		var texCoordLocation = gl.getAttribLocation(this.program, "a_texCoord");
-		this.matrixLocation = gl.getUniformLocation(this.program, "u_matrix");
-        this.samplerLocation = gl.getUniformLocation(this.program, "u_sampler");
+
+        if (ImageLayer.program == null) {
+            ImageLayer.program = new ImageShaderProgram();
+        }
 	
 		this.texture = gl.createTexture();
 		gl.bindTexture(gl.TEXTURE_2D, this.texture);
@@ -33,19 +30,10 @@ class ImageLayer extends Layer {
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 
 		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-	
-		gl.enableVertexAttribArray(positionLocation);
-		gl.enableVertexAttribArray(texCoordLocation);
-		gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 16, 0);
-		gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 16, 8);
 	}
 	
 	setupRender() {
-		gl.useProgram(this.program);
-		gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexBuffer);
-
-        gl.activeTexture(gl.TEXTURE0);
-        gl.uniform1i(this.samplerLocation, 0);
+		ImageLayer.program.activate();
 	}
 	
 	render() {
@@ -55,9 +43,7 @@ class ImageLayer extends Layer {
 		mat3.multiply(matrix, matrix, this.rotationMatrix);
 		mat3.multiply(matrix, matrix, this.scaleMatrix);
 
-		gl.bindTexture(gl.TEXTURE_2D, this.texture);
-		gl.uniformMatrix3fv(this.matrixLocation, false, matrix);
-
-		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+		ImageLayer.program.setStuff(this.texture, matrix);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 	}
 }
