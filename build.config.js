@@ -4,7 +4,7 @@ module.exports = {
     src_files: {
         js: ['src/js/*.js'],
         html: 'src/index.html',
-        css: 'src/sass/style.css',
+        css: 'style.css',
         scss: 'src/sass/main.scss',
         sass: ['src/sass/*.scss']
     },

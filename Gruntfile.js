@@ -3,6 +3,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-bower-concat');
     grunt.loadNpmTasks('grunt-sass');
 
@@ -22,9 +23,9 @@ module.exports = function(grunt) {
             build: [
                 '<%= build_dir %>/'
             ],
-
-            css: [
-                '0'
+            concat: [
+                '<%= build_dir %>/*.js',
+                '<%= build_dir %>/*.css',
             ]
         },
 
@@ -32,7 +33,7 @@ module.exports = function(grunt) {
             build_js: {
                 files: [{
                     src: ['<%= src_files.js %>'],
-                    dest: '<%= build_dir %>/src/js',
+                    dest: '<%= build_dir %>',
                     cwd: '.',
                     expand: true,
                     flatten: true
@@ -50,14 +51,6 @@ module.exports = function(grunt) {
                 files: [{
                     src: '<%= src_files.css %>',
                     dest: '<%= build_dir %>/<%= src_files.css %>',
-                }]
-            },
-            build_bower: {
-                files: [{
-                    src: ['<%= bower_files.js %>', '<%= bower_files.html %>', '<%= bower_files.css %>'],
-                    dest: '<%= build_dir %>/js',
-                    cwd: '.',
-                    expand: true
                 }]
             }
         },
@@ -78,6 +71,17 @@ module.exports = function(grunt) {
                 bowerOptions: {
                     relative: false
                 }
+            }
+        },
+
+        concat: {
+            js: {
+                src: ['<%=build_dir%>/*.js'],
+                dest: '<%=build_dir%>/src/js/ariana.js'
+            },
+            css: {
+                src: ['<%=build_dir%>/*.css'],
+                dest: '<%=build_dir%>/src/css/ariana.css'
             }
         },
 
@@ -102,12 +106,12 @@ module.exports = function(grunt) {
     grunt.registerTask('build', [
         'clean:build',
         'sass',
+        'bower_concat:all',
         'copy:build_js',
         'copy:build_html',
         'copy:build_css',
-        // 'clean:css',
-        // 'copy:build_bower'
-        'bower_concat:all'
+        'concat',
+        'clean:concat'
     ]);
 
     grunt.registerTask('watch', ['build', 'delta']);
