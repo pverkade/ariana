@@ -32,7 +32,7 @@ module.exports = function(grunt) {
                 src: ['<%= src_files.ts %>'],
                 dest: '<%= build_dir %>/ts.js',
                 options: {
-                    module: 'amd', //or commonjs
+                    module: 'commonjs', //or commonjs
                     target: 'es5', //or es3
                     keepDirectoryHierarchy: false
                 }
