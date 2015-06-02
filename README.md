@@ -19,7 +19,7 @@ Project ariana - is a web-based image editing solution. We focus on a clean inte
 
 ## Project structure
 
-At a high level, the structure loolks roughly like this: 
+At a high level, the structure looks roughly like this: 
 
 ```
 ariana/
