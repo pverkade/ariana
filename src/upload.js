@@ -73,10 +73,15 @@ var UploadImage = (function () {
             var context = canvas.getContext("2d");
             context.drawImage(img, 0, 0);
             /*
-             * Array of size width*height*4 which contains rgba values for each pixel
-             *  at index x*width+y+i (where i is 0=r, 1=g, 2=b, 3=alpha)
+             * ImageData imageData contains the width, length and data.
+             * data is an Uint8ClampedArray of size width*height*4 which contains
+             *  rgba values for each pixel at index x*width+y+i
+             *  (value of i is 0=red, 1=green, 2=blue or 3=alpha)
+             * Values of data array are in 0-255
              */
-            console.log(context.getImageData(0, 0, img.width, img.height));
+            var imageData;
+            imageData = context.getImageData(0, 0, img.width, img.height);
+            console.log(imageData);
             /* Just for the lulz, set the image to the center of the background canvas */
             var x = _this.canvas.width / 2 - img.width / 2;
             var y = _this.canvas.height / 2 - img.height / 2;
@@ -112,5 +117,7 @@ window.onload = function () {
     var uploadbutton = document.getElementById('uploadbutton');
     var imageupload = document.getElementById('imageupload');
     var canvas = document.getElementById('imageframe');
+    canvas.width = document.body.clientWidth;
+    canvas.height = document.body.clientHeight;
     var classstart = new UploadImage(uploadbutton, imageupload, canvas);
 };
