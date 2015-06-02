@@ -24,8 +24,8 @@ module.exports = function(grunt) {
                 '<%= build_dir %>/'
             ],
             concat: [
-                '<%= build_dir %>/*.js',
-                '<%= build_dir %>/*.css',
+                '<%= build_dir %>/*.js', '!<%= build_dir %>/ariana.js',
+                '<%= build_dir %>/*.css', '!<%= build_dir %>/ariana.css'
             ]
         },
 
@@ -41,10 +41,10 @@ module.exports = function(grunt) {
             },
             build_html: {
                 files: [{
-                    src: ['<%= src_files.html %>'],
-                    dest: '<%= build_dir %>/',
+                    src: '<%= src_files.html %>',
+                    dest: '<%= build_dir %>/index.html',
                     cwd: '.',
-                    expand: true
+                    expand: false
                 }]
             },
             build_css: {
@@ -59,15 +59,6 @@ module.exports = function(grunt) {
             all: {
                 dest: 'build/_bower.js',
                 cssDest: 'build/_bower.css',
-                exclude: [
-                    'jquery',
-                    'modernizr'
-                ],
-                dependencies: {
-                    'underscore': 'jquery',
-                    'backbone': 'underscore',
-                    'jquery-mousewheel': 'jquery'
-                },
                 bowerOptions: {
                     relative: false
                 }
@@ -77,11 +68,11 @@ module.exports = function(grunt) {
         concat: {
             js: {
                 src: ['<%=build_dir%>/*.js'],
-                dest: '<%=build_dir%>/src/js/ariana.js'
+                dest: '<%=build_dir%>/ariana.js'
             },
             css: {
                 src: ['<%=build_dir%>/*.css'],
-                dest: '<%=build_dir%>/src/css/ariana.css'
+                dest: '<%=build_dir%>/ariana.css'
             }
         },
 
