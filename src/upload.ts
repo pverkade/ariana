@@ -6,6 +6,9 @@
  * Description: this file allows users to upload their image
  */
 
+ /// <reference path="render-helper"/>
+ /// <reference path="image-layer"/>
+
 class UploadImage {
     constructor(public uploadbutton: HTMLDivElement,
                 public imageupload: HTMLInputElement,
@@ -20,7 +23,7 @@ class UploadImage {
     /*
      * Function to click the upload button
      */
-    uploadButtonClick = (e: Event) => {
+    uploadButtonClick = (e : Event) => {
         this.imageupload.click();
     }
 
@@ -37,7 +40,7 @@ class UploadImage {
                 this.readFile(files[i]);
             }
             else {
-                window.alert('Unsupported file ' + files[i].name);
+                window.alert("Unsupported file " + files[i].name);
             }
         }
     }
@@ -46,16 +49,16 @@ class UploadImage {
      * Function to check if a file is supported by searching for the filetype in
      * our whitelist of filetypes.
      */
-    isFileSupported = (file: File):boolean => {
-        var types = ['image/jpeg', 'image/gif', 'image/png', 'image/bmp',
-                     'image/svg+xml', 'image/tiff', 'image/vnd.dvju', 'image/pjpeg'];
+    isFileSupported = (file : File):boolean => {
+        var types = ["image/jpeg", "image/gif", "image/png", "image/bmp",
+                     "image/svg+xml", "image/tiff", "image/vnd.dvju", "image/pjpeg"];
         return file.type != undefined && types.indexOf(file.type) > -1;
     }
 
     /*
      * Function that reads the image file
      */
-    readFile = (file: File) => {
+    readFile = (file : File) => {
         var reader: FileReader;
         reader = new FileReader();
         reader.addEventListener("loadend", this.loadImage);
@@ -66,7 +69,7 @@ class UploadImage {
      * Function that loads an image
      * This function is called if a file is read
      */
-    loadImage = (e: ProgressEvent) => {
+    loadImage = (e : ProgressEvent) => {
         var img = new Image();
         img.addEventListener("load", this.imageLoaded);
         img.src = (<FileReader>e.target).result;
@@ -79,6 +82,14 @@ class UploadImage {
     imageLoaded = (e) => {
         /* Find the image (for some reason chrome uses path[0]) */
         var img = e.target || e.path[0];
+
+        /* Create the image layer */
+        var imageLayer = new ImageLayer(img);
+        imageLayer.setScale(1, 1);
+        imageLayer.setRotation(0);
+        imageLayer.setPos(0, 0);
+        imageLayer.setupRender();
+        imageLayer.render();
 
         /* Get pixel data by adding the image to a new canvas */
         var canvas = <HTMLCanvasElement>document.createElement("canvas");
@@ -97,11 +108,6 @@ class UploadImage {
         var imageData: ImageData;
         imageData = context.getImageData(0, 0, img.width, img.height);
         console.log(imageData);
-
-        /* Just for the lulz, set the image to the center of the background canvas */
-        var x = this.canvas.width / 2 - img.width / 2;
-        var y = this.canvas.height / 2 - img.height / 2;
-        (<CanvasRenderingContext2D>this.canvas.getContext("2d")).drawImage(img, x, y);
     }
 
     /*
@@ -120,7 +126,7 @@ class UploadImage {
     /*
      * on dragover
      */
-    onDragOver = (e: MouseEvent) => {
+    onDragOver = (e : MouseEvent) => {
         e.stopPropagation();
         e.preventDefault();
     }
@@ -128,12 +134,14 @@ class UploadImage {
 
 /* on load, start the Upload functionality */
 window.onload = function() {
-    var uploadbutton = <HTMLDivElement>document.getElementById('uploadbutton');
-    var imageupload = <HTMLInputElement>document.getElementById('imageupload');
-    var canvas = <HTMLCanvasElement>document.getElementById('imageframe');
+    var uploadbutton : HTMLDivElement = <HTMLDivElement>document.getElementById("uploadbutton");
+    var imageupload : HTMLInputElement = <HTMLInputElement>document.getElementById("imageupload");
+    var canvas : HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("imageframe");
 
     canvas.width = document.body.clientWidth;
     canvas.height = document.body.clientHeight;
 
     var classstart = new UploadImage(uploadbutton, imageupload, canvas);
+
+    createGLContext("imageframe");
 }
