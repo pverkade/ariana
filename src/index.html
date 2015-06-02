@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html data-ng-app="app" ng-controller="AppCtrl">
+<head>
+    <base href="/">
+    <meta charset="utf-8"/>
+    <title>ariana</title>
+
+    <% scripts.forEach( function ( file ) { %>
+    <script type="text/javascript" src="<%= file %>"></script>
+    <% }); %>
+</head>
+
+<body>
+    Hello World!
+</body>
