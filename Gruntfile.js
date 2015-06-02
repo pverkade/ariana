@@ -23,8 +23,10 @@ module.exports = function(grunt) {
             build: [
                 '<%= build_dir %>/'
             ],
-            concat: [
-                '<%= build_dir %>/*.js', '!<%= build_dir %>/ariana.js',
+            js: [
+                '<%= build_dir %>/*.js', '!<%= build_dir %>/ariana.js'
+            ],
+            css: [
                 '<%= build_dir %>/*.css', '!<%= build_dir %>/ariana.css'
             ]
         },
@@ -62,6 +64,18 @@ module.exports = function(grunt) {
                 bowerOptions: {
                     relative: false
                 }
+            },
+            js: {
+                dest: 'build/_bower.js',
+                bowerOptions: {
+                    relative: false
+                }
+            },
+            css: {
+                cssDest: 'build/_bower.css',
+                bowerOptions: {
+                    relative: false
+                }
             }
         },
 
@@ -77,9 +91,13 @@ module.exports = function(grunt) {
         },
 
         delta: {
+            options: {
+                livereload: true
+            },
+
             js: {
                 files: ['<%= src_files.js %>'],
-                tasks: ['copy:build_js']
+                tasks: ['clean:js', 'copy:build_js', 'bower_concat:js', 'concat:js', 'clean:js']
             },
             html: {
                 files: '<%= src_files.html %>',
@@ -87,9 +105,9 @@ module.exports = function(grunt) {
             },
             sass: {
                 files: ['<%= src_files.sass %>'],
-                tasks: ['sass', 'copy:build_css']
+                tasks: ['clean:css', 'sass', 'copy:build_css', 'bower_concat:css', 'concat:css', 'clean:css']
             }
-        },
+        }
     };
 
     grunt.initConfig(grunt.util._.extend(taskConfig, appConfig));
@@ -102,11 +120,11 @@ module.exports = function(grunt) {
         'copy:build_html',
         'copy:build_css',
         'concat',
-        'clean:concat'
+        'clean:js',
+        'clean:css'
     ]);
 
+    grunt.renameTask('watch', 'delta');
     grunt.registerTask('watch', ['build', 'delta']);
     grunt.registerTask('default', 'build');
-
-    grunt.renameTask('watch', 'delta');
 }
