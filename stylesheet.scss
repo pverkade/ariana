@@ -1,0 +1,205 @@
+$fonts : Roboto, Noto, Arial, sans-serif;
+$dark : #222;
+$light : #333;
+$white : #f5f5f5;
+$black : #000;
+
+$block : 72px;
+
+.icon {
+    svg {
+        margin : 20%;
+        height : 60%;
+        width : 60%;
+    }
+    
+    svg path {
+        fill : darken($white, 20%);
+    }
+}
+
+.box-shadow {
+    box-shadow : 0px 0px 5px $black; 
+}
+
+* {
+    margin : 0;
+    padding : 0;
+}
+
+body {
+    background-color : $dark;
+    color : $white;
+    font-family : $fonts;
+}
+
+#main_canvas {
+    display : none;
+}
+
+#top_menu, #toolset, #layers {
+    @extend .box-shadow;
+    position : absolute;
+    background-color : $light;
+    z-index : 2;
+}
+
+#top_menu {    
+    top : 0;
+    width : 100%;
+    height : $block;
+    
+    .option {
+        display : block;
+        float : left;
+        height : $block;
+        font-size : 30pt;
+        width : $block;
+        backround-color : $light;
+        
+        &:hover {
+            background-color : lighten($light, 10%);
+        }
+        
+        @extend .icon;
+    }
+}
+
+#toolset, #layers {
+    top : 1.5 * $block; 
+    height : auto
+}
+
+#toolset {
+    width : $block;
+    left : 0;
+    
+    .tool {
+        display : block;
+        height : $block;
+        width : $block;        
+        
+        &:hover {
+            background-color : lighten($light, 10%);
+        }
+        
+        @extend .icon;
+    }
+}
+
+#sub-toolsets {
+    top : 1.5 * $block; 
+    height : auto;
+    width : 2 * $block;
+    position : absolute;
+    z-index : 1;
+    transform : translate(-2 * $block, 0px);
+
+    .sub-toolset {
+        @extend .box-shadow;
+        position : absolute;
+        height : auto;
+        width : inherit;
+        top : 0;
+        
+        background-color : lighten($light, 10%);
+        transition : transform 500ms ease;
+
+        .sub-tool {
+            height : $block;
+            width : $block;
+            transform : translate($block, 0px);
+            
+            &:hover {
+                background-color : lighten($light, 20%);
+            }
+            
+            @extend .icon;
+        }
+    }
+}
+
+#layers {
+    right : 0;
+    width : 3 * $block;
+    height : calc(100% - 2 * $block);
+    overflow : hidden;
+    
+    .layer {
+        margin-left : 0.25 * $block;
+        margin-top : 0.25 * $block;
+        width : calc(100% - 0.5 * $block);
+        height : 2 * $block;
+        background-color : lighten($light, 10%);
+        @extend .box-shadow;
+        z-index : 2;
+    }
+    
+    padding-bottom : 0.25 * $block;
+}
+
+.pop-up {
+    position: absolute;
+    top : calc(3 * 36px);
+    left : calc(3 * 36px);
+    
+    height : calc(100% - 2 * 72px);
+    width : calc(100% - 5 * 72px);
+    background-color : $light;
+    z-index : 2;
+    overflow : hidden;
+    
+    @extend .box-shadow;
+
+    .name {
+        display : block;
+        padding : 6px 12px;
+        font-size : 30pt;
+        background-color : darken($light, 10%);
+    }
+    
+    .option {
+        float : left;
+        margin-left : 12px;
+        margin-top : 12px;
+        width : calc( (100% - (4 + 1) * 12px) * 0.25 ); 
+        height : 144px;
+        background-color : lighten($light, 10%);
+        
+        .name {
+            display : block;
+            padding : 6px 12px;
+            font-size : 15pt;
+            background-color : darken($light, 10%);
+        }
+    }
+}
+
+#color-preview {
+    z-index : 1;
+    @extend .box-shadow;
+    position : absolute;
+    bottom : 0;
+    height : auto;
+    width : auto;
+    background-color : $light;
+    
+    #color-left, #color-right {
+        float : left;
+        height : 0.5 * $block;
+        width : 0.5 * $block;
+        margin : 0.125 * $block;
+    }
+    
+    #color-left {
+        background-color : red;
+        margin-right : 0;
+    }
+    
+    #color-right {
+        background-color : green;
+    }
+}
+
+
+
