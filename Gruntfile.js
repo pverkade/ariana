@@ -6,19 +6,54 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-bower-concat');
     grunt.loadNpmTasks('grunt-sass');
+    grunt.loadNpmTasks('grunt-typescript');
+    grunt.loadNpmTasks('grunt-html2js');
 
     var appConfig = require('./build.config.js');
     var taskConfig = {
         pkg: grunt.file.readJSON('package.json'),
 
+        /*
+         * Expand sass. Compile from the main.scss file.
+         * The main.scss file @imports all other SASS files.
+         */
         sass: {
             dist: {
                 files: {
-                    '<%= src_files.css %>': '<%= src_files.scss %>'
+                    '<%= build_dir %>/<%= src_files.css %>': '<%= src_files.scss %>'
                 }
             }
         },
 
+        /*
+         * Compile and concat TypeScript (WIP)
+         */
+        typescript: {
+            base: {
+                src: ['<%= src_files.ts %>'],
+                dest: '<%= build_dir %>/ts.js',
+                options: {
+                    module: 'commonjs',
+                    target: 'es5',
+                    keepDirectoryHierarchy: false
+                }
+            }
+        },
+
+        html2js: {
+            options: {
+                module: 'templates-ariana'
+            },
+            main: {
+                src: ['<%= src_files.tpl %>'],
+                dest: '<%= build_dir %>/tpl.js'
+            }
+        },
+
+        /*
+         * Various cleaning operations.
+         * Mostly used to clean build and clean temp items.
+         */
         clean: {
             build: [
                 '<%= build_dir %>/'
@@ -28,9 +63,18 @@ module.exports = function(grunt) {
             ],
             css: [
                 '<%= build_dir %>/*.css', '!<%= build_dir %>/ariana.css'
+            ],
+            js_hard: [
+                '<%= build_dir %>/*.js'
+            ],
+            css_hard: [
+                '<%= build_dir %>/*.css'
             ]
         },
 
+        /*
+         * Copy files from src dir to the build dir
+         */
         copy: {
             build_js: {
                 files: [{
@@ -57,6 +101,9 @@ module.exports = function(grunt) {
             }
         },
 
+        /*
+         * Copy and concatenate files from bower_components folder
+         */
         bower_concat: {
             all: {
                 dest: 'build/_bower.js',
@@ -79,6 +126,9 @@ module.exports = function(grunt) {
             }
         },
 
+        /*
+         * Concatenates js and/or css in the build folder
+         */
         concat: {
             js: {
                 src: ['<%=build_dir%>/*.js'],
@@ -90,32 +140,48 @@ module.exports = function(grunt) {
             }
         },
 
+
+        /*
+         * The delta tasks watches for changes and rebuilds the project in build.
+         */
         delta: {
             options: {
                 livereload: true
             },
 
+            html: {
+                files: ['<%= src_files.html %>'],
+                tasks: ['chain_html']
+            },
+            tpl: {
+                files: ['<%= src_files.tpl %>'],
+                tasks: ['clean:js_hard', 'chain_html', 'chain_js']
+            },
             js: {
                 files: ['<%= src_files.js %>'],
-                tasks: ['clean:js', 'copy:build_js', 'bower_concat:js', 'concat:js', 'clean:js']
+                tasks: ['clean:js_hard', 'chain_html', 'chain_js']
             },
-            html: {
-                files: '<%= src_files.html %>',
-                tasks: ['copy:build_html']
+            ts: {
+                files: ['<%= src_files.ts %>'],
+                tasks: ['clean:js_hard', 'chain_html', 'chain_js']
             },
             sass: {
                 files: ['<%= src_files.sass %>'],
-                tasks: ['clean:css', 'sass', 'copy:build_css', 'bower_concat:css', 'concat:css', 'clean:css']
+                tasks: ['clean:css_hard', 'chain_css']
             }
         }
     };
 
+    /* Extend config with our custom config */
     grunt.initConfig(grunt.util._.extend(taskConfig, appConfig));
 
+    /* The build task completely builds, concats and (SOON) minifies the src */
     grunt.registerTask('build', [
         'clean:build',
         'sass',
         'bower_concat:all',
+        'typescript',
+        'html2js',
         'copy:build_js',
         'copy:build_html',
         'copy:build_css',
@@ -124,7 +190,15 @@ module.exports = function(grunt) {
         'clean:css'
     ]);
 
+    /* grunt */
+    grunt.registerTask('default', 'build');
+
+    /* grunt watch task */
     grunt.renameTask('watch', 'delta');
     grunt.registerTask('watch', ['build', 'delta']);
-    grunt.registerTask('default', 'build');
+    
+    /* custom build chains */
+    grunt.registerTask('chain_html', ['copy:build_html', 'html2js']);
+    grunt.registerTask('chain_js', ['typescript', 'copy:build_js', 'bower_concat:js', 'concat:js', 'clean:js']);
+    grunt.registerTask('chain_css', ['sass', 'copy:build_css', 'bower_concat:css', 'concat:css', 'clean:css']);
 }

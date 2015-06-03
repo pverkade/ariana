@@ -1,7 +1,7 @@
 "use strict";
 
-var app = angular.module('ariana', []);
+var app = angular.module('ariana', ['ui.router', 'templates-ariana']);
 
-app.controller('AppCtrl', function($scope) {
-    console.log('Hello World!');
-})
+angular.module('ariana').controller('AppCtrl', function($scope) {
+
+});
