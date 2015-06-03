@@ -21,7 +21,7 @@ class UploadImage {
         this.imageupload = document.createElement('input');
         this.imageupload.type = "file";
 
-        uploadbutton.addEventListener("click", this.uploadButtonClick);
+        uploadbutton.addEventListener("click", this.onFileSelectButtonClicked);
         this.imageupload.addEventListener("change", this.onFilesChanged);
 
         this.initDragnDrop();
@@ -30,7 +30,14 @@ class UploadImage {
     /*
      * Function to click the upload button
      */
-    uploadButtonClick = (e : Event) : void => {
+    onFileSelectButtonClicked = (e : Event) : void => {
+        this.openFileSelector();
+    }
+
+    /*
+     * Open the file selector
+     */
+    openFileSelector () : void {
         this.imageupload.click();
     }
 
@@ -97,26 +104,7 @@ class UploadImage {
         imageLayer.setPos(0, 0);
 
         this.renderEngine.addLayer(imageLayer);
-        this.renderEngine.reorder(1, 0);
         this.renderEngine.render();
-
-        /* Get pixel data by adding the image to a new canvas */
-        var canvas = <HTMLCanvasElement>document.createElement("canvas");
-        canvas.width = img.width;
-        canvas.height = img.height;
-        var context = <CanvasRenderingContext2D>canvas.getContext("2d");
-        context.drawImage(img,0,0);
-
-        /*
-         * ImageData imageData contains the width, length and data.
-         * data is an Uint8ClampedArray of size width*height*4 which contains
-         *  rgba values for each pixel at index x*width+y+i
-         *  (value of i is 0=red, 1=green, 2=blue or 3=alpha)
-         * Values of data array are in 0-255
-         */
-        var imageData: ImageData;
-        imageData = context.getImageData(0, 0, img.width, img.height);
-        console.log(imageData);
     }
 
     /*
@@ -144,7 +132,6 @@ class UploadImage {
 /* on load, start the Upload functionality */
 window.onload = function() {
     var uploadbutton : HTMLDivElement = <HTMLDivElement>document.getElementById("uploadbutton");
-    //var imageupload : HTMLInputElement = <HTMLInputElement>document.getElementById("imageupload");
     var canvas : HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("imageframe");
 
     canvas.width = document.body.clientWidth;
@@ -152,5 +139,5 @@ window.onload = function() {
 
     createGLContext("imageframe");
     var renderEngine = new RenderEngine(canvas.width, canvas.height);
-    var classstart = new UploadImage(canvas, renderEngine, uploadbutton);
+    var uploadImage = new UploadImage(canvas, renderEngine, uploadbutton);
 }
