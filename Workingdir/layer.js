@@ -1,4 +1,9 @@
 /// <reference path="gl-matrix"/>
+var LayerType;
+(function (LayerType) {
+    LayerType[LayerType["ImageLayer"] = 0] = "ImageLayer";
+})(LayerType || (LayerType = {}));
+;
 var Layer = (function () {
     function Layer() {
         this.ID = Layer.MaxID++;

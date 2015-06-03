@@ -20,8 +20,6 @@ class RenderEngine {
     width : number;
     height : number;
 
-    filterPrograms;// = {(FilterType.Brightness) : null};
-
     constructor (width : number, height : number) {
         this.drawOrder = new Array();
         this.clientOrder = new Array();
@@ -114,9 +112,7 @@ class RenderEngine {
             this.drawbuffer2.bind();
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-            var filterProgram = this.filterPrograms[filter.filterType];
-
-            filterProgram.render(this.drawbuffer1.getWebGlTexture(), 0);
+            filter.render(this.drawbuffer1.getWebGlTexture());
 
             var newTexture = this.drawbuffer2.texture;
             var oldTexture = imageLayer.switchTexture(newTexture);

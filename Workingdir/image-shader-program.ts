@@ -31,7 +31,6 @@ class ImageShaderProgram extends BaseProgram implements ShaderProgram {
     }
 
     setUniforms(texture : WebGLTexture, matrix : Float32Array, depth : number) : void {
-        //super.setStuff(texture, matrix, depth)
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.uniform1f(this.depthLocation, depth);
         gl.uniformMatrix3fv(this.matrixLocation, matrix);

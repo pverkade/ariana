@@ -9,8 +9,8 @@ class BaseProgram implements ShaderProgram {
 
     vertexBuffer : WebGLBuffer;
 
-    vertexSource : string = "image-shader-vs";
-    fragmentSource: string = "image-shader-fs";
+    vertexSource : string;
+    fragmentSource: string;
 
     constructor() {
         var vertexShader = compileShaderFromScript(this.vertexSource);
