@@ -8,6 +8,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-typescript');
     grunt.loadNpmTasks('grunt-html2js');
+    grunt.loadNpmTasks('grunt-include-source');
+    grunt.loadNpmTasks('grunt-wiredep');
 
     var appConfig = require('./build.config.js');
     var taskConfig = {
@@ -107,7 +109,7 @@ module.exports = function(grunt) {
             },
             build_assets: {
                 files: [{
-                    src: [ '**' ],
+                    src: ['**'],
                     dest: '<%= build_dir %>/assets',
                     cwd: 'src/assets/',
                     expand: true
@@ -137,6 +139,24 @@ module.exports = function(grunt) {
                 bowerOptions: {
                     relative: false
                 }
+            }
+        },
+
+        /*
+         * include all our project and bower sources as independent links in index
+         */
+        includeSource: {
+            target: {
+                files: {'build/index.html': 'src/index.html'},
+            }
+        },
+
+        /*
+         * Place bower js sources as independent links in index (no concat)
+         */
+        wiredep: {
+            target: {
+                src: 'build/index.html',
             }
         },
 
@@ -193,8 +213,24 @@ module.exports = function(grunt) {
     /* Extend config with our custom config */
     grunt.initConfig(grunt.util._.extend(taskConfig, appConfig));
 
-    /* The build task completely builds, concats and (SOON) minifies the src */
-    grunt.registerTask('build', [
+    /* The dev task does not minify and concat */
+    grunt.registerTask('dev', [
+        'clean:build',
+        'sass',
+        'typescript',
+        'html2js',
+        'copy:build_js',
+        'copy:build_css',
+        'copy:build_assets',
+        'concat',
+        'includeSource',
+        'wiredep',
+        'clean:js',
+        'clean:css'
+    ]);
+
+    /* The prod task completely builds, concats and (SOON) minifies the src */
+    grunt.registerTask('prod', [
         'clean:build',
         'sass',
         'bower_concat:all',
@@ -210,12 +246,12 @@ module.exports = function(grunt) {
     ]);
 
     /* grunt */
-    grunt.registerTask('default', 'build');
+    grunt.registerTask('default', 'dev');
 
     /* grunt watch task */
     grunt.renameTask('watch', 'delta');
-    grunt.registerTask('watch', ['build', 'delta']);
-    
+    grunt.registerTask('watch', ['dev', 'delta']);
+
     /* custom build chains */
     grunt.registerTask('chain_html', ['copy:build_html', 'html2js']);
     grunt.registerTask('chain_js', ['typescript', 'copy:build_js', 'bower_concat:js', 'concat:js', 'clean:js']);
