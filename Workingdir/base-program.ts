@@ -9,8 +9,8 @@ class BaseProgram implements ShaderProgram {
 
     vertexBuffer : WebGLBuffer;
 
-    vertexSource : string;
-    fragmentSource: string;
+    public vertexSource : string;
+    public fragmentSource: string;
 
     constructor() {
         var vertexShader = compileShaderFromScript(this.vertexSource);
@@ -37,6 +37,11 @@ class BaseProgram implements ShaderProgram {
 
         gl.enableVertexAttribArray(positionLocation);
         gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 16, 0);
+    }
+
+    setShaderSource(vertexSource, fragmentSource) {
+        this.vertexSource = vertexSource;
+        this.fragmentSource = fragmentSource;
     }
 
     activate() : void {

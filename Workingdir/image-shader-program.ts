@@ -3,18 +3,17 @@
 /// <reference path="shader-program"/>
 /// <reference path="base-program"/>
 
-class ImageShaderProgram extends BaseProgram implements ShaderProgram {
+class ImageShaderProgram extends BaseProgram {
     program : WebGLProgram;
 
     samplerLocation : WebGLUniformLocation;
     depthLocation : WebGLUniformLocation;
     matrixLocation : WebGLUniformLocation;
 
-    vertexSource : string = "image-shader-vs";
-    fragmentSource: string = "image-shader-fs";
-
     constructor() {
+        super.setShaderSource("image-shader-vs", "image-shader-fs");
         super();
+
         var texCoordLocation = gl.getAttribLocation(this.program, "a_texCoord");
         this.samplerLocation = gl.getUniformLocation(this.program, "u_sampler");
         this.depthLocation = gl.getUniformLocation(this.program, "u_depth");
@@ -33,6 +32,6 @@ class ImageShaderProgram extends BaseProgram implements ShaderProgram {
     setUniforms(texture : WebGLTexture, matrix : Float32Array, depth : number) : void {
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.uniform1f(this.depthLocation, depth);
-        gl.uniformMatrix3fv(this.matrixLocation, matrix);
+        gl.uniformMatrix3fv(this.matrixLocation, false, matrix);
     }
 }

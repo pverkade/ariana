@@ -11,6 +11,8 @@
     <script src="image-shader-program.js"></script>
     <script src="render-engine.js"></script>
     <script src="drawbuffer.js"></script>
+    <script src="filter.js"></script>
+    <script src="brightness-filter.js"></script>
 
     <script>
         function start() {
@@ -38,11 +40,16 @@
 
                     renderEngine.addLayer(imageLayer);
                     renderEngine.addLayer(imageLayer2);
-                    renderEngine.reorder(1, 0);
-                    renderEngine.render();
+                    //renderEngine.reorder(1, 0);
 
-                    var imageEl = document.getElementById("images");
-                    imageEl.src = renderEngine.renderToImg();
+                    var brightnessFilter = new BrightnessFilter();
+                    brightnessFilter.setAttribute("brightness", 1.);
+                    renderEngine.filterLayers([0], brightnessFilter);
+
+                    //renderEngine.render();
+
+                    //var imageEl = document.getElementById("images");
+                    //imageEl.src = renderEngine.renderToImg();
                 }
             }
 
@@ -63,15 +70,16 @@
         }
     </script>
     <script id="brightness-fs" type="x-shader/x-fragment">
-        precision mediump float;
+        precision highp float;
 
-        uniform float brightness = 0;
+        varying vec2 v_texCoord;
+
+        uniform float u_brightness;
         uniform sampler2D u_sampler;
-        varying vec2 v_texCoordinate;
 
         void main() {
-	        vec4 texColor = texture2D(u_sampler, v_texCoordinate);
-	        gl_FragColor = texColor * brightness + vec4(0, 0, 0, 1.0);
+	        vec4 texColor = texture2D(u_sampler, v_texCoord);
+	        gl_FragColor = vec4((texColor * u_brightness).xyz, 1.);
         }
     </script>
     <script id="image-shader-vs" type="x-shader/x-vertex">

@@ -107,16 +107,17 @@ class RenderEngine {
             var imageLayer = <ImageLayer> layer;
             this.drawbuffer1.bind();
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+            imageLayer.setupRender();
             imageLayer.render(this.drawOrder.length);
+            this.drawbuffer1.unbind();
 
-            this.drawbuffer2.bind();
+            //gl.copyTexImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 0, 0, this.width, this,height, 0);
+            //this.drawbuffer2.bind();
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
             filter.render(this.drawbuffer1.getWebGlTexture());
 
-            var newTexture = this.drawbuffer2.texture;
-            var oldTexture = imageLayer.switchTexture(newTexture);
-            this.drawbuffer2.setWebGlTexture(oldTexture);
+            //imageLayer.copyFramebuffer(this.width, this.height);
 
             // Replace layer with ImageLayer (if it was not an ImageLayer) or set the texture of ImageLayer to buffer2.getWebGLTexture();
 

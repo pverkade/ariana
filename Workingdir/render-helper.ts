@@ -39,7 +39,7 @@ function compileShaderFromScript(id : string) : WebGLShader {
 	shaderScript = document.getElementById(id);
 	
 	if (!shaderScript) {
-		alert("Shader not found in DOM!");
+		alert(id + ": shader not found in DOM!");
 		return null;
 	}
 	

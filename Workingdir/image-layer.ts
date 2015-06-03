@@ -7,10 +7,6 @@ class ImageLayer extends Layer {
     static program = null;
     layerType : LayerType = LayerType.ImageLayer;
 
-	matrixLocation : WebGLUniformLocation;
-    samplerLocation : WebGLUniformLocation;
-	
-	vertexBuffer : WebGLBuffer;
 	texture : WebGLTexture;
 
     internalScaleMatrix : Float32Array;
@@ -64,14 +60,14 @@ class ImageLayer extends Layer {
 		mat3.multiply(matrix, matrix, this.scaleMatrix);
         mat3.multiply(matrix, matrix, this.internalScaleMatrix);
 
-		ImageLayer.program.setStuff(this.texture, matrix, this.depth / depthFrac);
+		ImageLayer.program.setUniforms(this.texture, matrix, this.depth / depthFrac);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 	}
 	
-	switchTexture(texture : WebGLTexture) : WebGLTexture {
-		var oldTexture = this.texture;
-		this.texture = texture;
+	copyFramebuffer(width : number, height : number) {
+		//TODO: Zet rotatie en andere shit op default SHIT VLADIM HOUDT VAN SHIT
 
-		return oldTexture;
+        gl.bindTexture(gl.TEXTURE_2D, this.texture);
+        gl.copyTexImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 0, 0, width, height, 0);
 	}
 }
