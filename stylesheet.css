@@ -123,14 +123,13 @@ body {
   width: auto;
   background-color: #333; }
   #color-preview #color-left, #color-preview #color-right {
-    float: left;
     height: 36px;
-    width: 36px;
-    margin: 9px; }
+    width: 36px; }
   #color-preview #color-left {
-    background-color: red;
-    margin-right: 0; }
+    left: 9px;
+    bottom: 9px; }
   #color-preview #color-right {
-    background-color: green; }
+    left: 36px;
+    bottom: 36px; }
 
 /*# sourceMappingURL=stylesheet.css.map */
