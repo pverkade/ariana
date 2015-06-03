@@ -4,7 +4,7 @@ function createGLContext(id : string) : void {
 	var canvas : HTMLCanvasElement = <HTMLCanvasElement>document.getElementById(id);
 
 	try {
-		// Try to grab the standard context. If it fails, fallback to experimental.
+		/* Try to grab the standard context. If it fails, fallback to experimental. */
 		gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
 		gl.enable(gl.DEPTH_TEST);
 		gl.depthFunc(gl.LEQUAL);
@@ -17,7 +17,7 @@ function createGLContext(id : string) : void {
 }
 
 function compileProgram(vertexShader : WebGLShader, fragmentShader : WebGLShader) : WebGLProgram{
-	// Create the shader program
+	/* Create the shader program */
 	var shaderProgram : WebGLProgram = gl.createProgram();
 
 	gl.attachShader(shaderProgram, vertexShader);
@@ -25,7 +25,7 @@ function compileProgram(vertexShader : WebGLShader, fragmentShader : WebGLShader
 
 	gl.linkProgram(shaderProgram);
 	
-	// If creating the shader program failed, alert
+	/* If creating the shader program failed, alert */
 	if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
 		alert("Unable to initialize the shader program.");
 	}
@@ -67,10 +67,10 @@ function compileShader(shaderSource : string, shaderType : number) : WebGLShader
 	var shader = gl.createShader(shaderType);
 	gl.shaderSource(shader, shaderSource);
 		
-	// Compile the shader program
+	/* Compile the shader program */
 	gl.compileShader(shader);  
 		
-	// See if it compiled successfully
+	/* See if it compiled successfully */
 	if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {  
 			alert("An error occurred compiling the shaders: " + gl.getShaderInfoLog(shader));  
 			return null;
