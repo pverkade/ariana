@@ -4,6 +4,8 @@
 /// <reference path="render-helper"/>
 /// <reference path="layer"/>
 /// <reference path="drawbuffer"/>
+/// <reference path="filter"/>
+/// <reference path="image-layer"/>
 
 class RenderEngine {
     /* Array of layers in the order that we draw them */
@@ -11,16 +13,20 @@ class RenderEngine {
 
     /* Array of layers in the order that the user sees them */
     clientOrder : Array<Layer>;
-    drawbuffer : DrawBuffer;
+    drawbuffer1 : DrawBuffer;
+    drawbuffer2 : DrawBuffer;
 
     /* Width and height of the framebuffer */
     width : number;
     height : number;
 
+    filterPrograms;// = {(FilterType.Brightness) : null};
+
     constructor (width : number, height : number) {
         this.drawOrder = new Array();
         this.clientOrder = new Array();
-        this.drawbuffer = new DrawBuffer(width, height);
+        this.drawbuffer1 = new DrawBuffer(width, height);
+        this.drawbuffer2 = new DrawBuffer(width, height);
 
         this.width = width;
         this.height = height;
@@ -92,33 +98,45 @@ class RenderEngine {
         }
     }
 
-    filterLayers(layers : number[], filter : Filter) : ImageLayer {
-        var buffer1:DrawBuffer = new DrawBuffer(this.width, this.height);
-        var buffer2:DrawBuffer = new DrawBuffer(this.width, this.height);
+    filterLayers(layerIndices : number[], filter : Filter) {
 
-        foreach (layer in layers) {
-            buffer1.bind();
-            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-            layer.render(this.drawOrder.length);
+        for (var i = 0; i < layerIndices.length; i ++) {
+            var layer = this.clientOrder[i];
+            if (layer.layerType !== LayerType.ImageLayer) {
+                continue;
+            }
 
-            buffer2.bind();
+            var imageLayer = <ImageLayer> layer;
+            this.drawbuffer1.bind();
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-            filter.copyTexture(buffer1.getWebGLTexture());
-            filter.render();
+            imageLayer.render(this.drawOrder.length);
+
+            this.drawbuffer2.bind();
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+            var filterProgram = this.filterPrograms[filter.filterType];
+
+            filterProgram.render(this.drawbuffer1.getWebGlTexture(), 0);
+
+            var newTexture = this.drawbuffer2.texture;
+            var oldTexture = imageLayer.switchTexture(newTexture);
+            this.drawbuffer2.setWebGlTexture(oldTexture);
 
             // Replace layer with ImageLayer (if it was not an ImageLayer) or set the texture of ImageLayer to buffer2.getWebGLTexture();
 
         }
-        buffer2.unbind();
+        this.drawbuffer2.unbind();
     }
 
     renderToImg() {
         /* Render all layers to a framebuffer and return a 64base encoded image */
-        var buffer : DrawBuffer = new DrawBuffer(this.width, this.height);
-        buffer.bind();
+        this.drawbuffer1.bind();
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
         this.render();
-        var val = buffer.getImage();
-        buffer.unbind();
+        var val = this.drawbuffer1.getImage();
+        this.drawbuffer1.unbind();
+
         return val;
     }
 }

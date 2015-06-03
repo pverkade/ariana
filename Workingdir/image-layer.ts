@@ -5,7 +5,7 @@
 
 class ImageLayer extends Layer {
     static program = null;
-    layerType : number = 0;
+    layerType : LayerType = LayerType.ImageLayer;
 
 	matrixLocation : WebGLUniformLocation;
     samplerLocation : WebGLUniformLocation;
@@ -66,5 +66,12 @@ class ImageLayer extends Layer {
 
 		ImageLayer.program.setStuff(this.texture, matrix, this.depth / depthFrac);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+	}
+	
+	switchTexture(texture : WebGLTexture) : WebGLTexture {
+		var oldTexture = this.texture;
+		this.texture = texture;
+
+		return oldTexture;
 	}
 }

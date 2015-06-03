@@ -58,4 +58,15 @@ class DrawBuffer {
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
     }
+
+    getWebGlTexture() : WebGLTexture {
+        return this.texture;
+    }
+
+    setWebGlTexture(texture : WebGLTexture) {
+        this.bind();
+        this.texture = texture;
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.texture, 0);
+        this.unbind();
+    }
 }

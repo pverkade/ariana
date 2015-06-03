@@ -1,20 +1,22 @@
 /// <reference path="gl-matrix"/>
+enum LayerType {ImageLayer};
 
 class Layer {
 	static MaxID = 0;
 	layerType : number;
-	ID : number;
+	ID : LayerType;
 	angle : number;
 	scaleX : number;
 	scaleY : number;
 	posX : number;
 	posY : number;
 	depth : number;
-	
+
 	scaleMatrix : Float32Array;
 	rotationMatrix : Float32Array;
 	translationMatrix : Float32Array;
-	
+
+
 	constructor() {
 		this.ID = Layer.MaxID++;
 		
@@ -79,4 +81,5 @@ class Layer {
 	
 	setupRender() { }
 	render(depthFrac : number) { }
+
 }

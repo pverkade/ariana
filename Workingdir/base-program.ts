@@ -4,7 +4,7 @@
 /// <reference path="render-helper"/>
 /// <reference path="shader-program"/>
 
-class BaseProgram implements ShaderProgram{
+class BaseProgram implements ShaderProgram {
     program : WebGLProgram;
 
     matrixLocation : WebGLUniformLocation;
