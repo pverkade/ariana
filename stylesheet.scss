@@ -185,19 +185,20 @@ body {
     background-color : $light;
     
     #color-left, #color-right {
-        float : left;
+        position : absolute;
         height : 0.5 * $block;
         width : 0.5 * $block;
         margin : 0.125 * $block;
     }
     
     #color-left {
-        background-color : red;
-        margin-right : 0;
+        left : 0.125 * $block;
+        bottom : 0.125 * $block;
     }
     
     #color-right {
-        background-color : green;
+        left : 0.5 * $block;
+        bottom : 0.5 * $block;
     }
 }
 
