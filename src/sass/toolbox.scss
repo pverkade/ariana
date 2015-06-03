@@ -1,0 +1,81 @@
+#toolset {
+    width : $blocksize;
+    left : 0;
+    top : 1.5 * $blocksize; 
+    height : auto;
+    @extend .gui-item;
+    
+    .tool {
+        display : block;
+        height : $blocksize;
+        width : $blocksize;        
+        
+        &:hover {
+            background-color : lighten($light, 10%);
+        }
+        
+        @extend .has-icons;
+    }
+}
+
+#sub-toolsets {
+    top : 1.5 * $blocksize; 
+    height : auto;
+    width : 2 * $blocksize;
+    position : absolute;
+    z-index : 1;
+    transform : translate(-2 * $blocksize, 0px);
+
+    .sub-toolset {
+        @extend .box-shadow;
+        position : absolute;
+        height : auto;
+        width : inherit;
+        top : 0;
+        
+        background-color : lighten($light, 10%);
+        transition : transform 500ms ease;
+
+        .sub-tool {
+            height : $blocksize;
+            width : $blocksize;
+            transform : translate($blocksize, 0px);
+            
+            &:hover {
+                background-color : lighten($light, 20%);
+            }
+            
+            @extend .has-icons;
+        }
+    }
+}
+
+#color-preview {
+    position : absolute;
+    bottom : 0;
+    left : 0;
+    
+    height : $blocksize;
+    width : $blocksize;
+    
+    #color-left, #color-right {
+        position : absolute;
+        height : 0.625 * $blocksize;
+        width : 0.625 * $blocksize;
+        @extend .box-shadow;
+    }
+    
+    #color-left {
+        left : 0.125 * $blocksize;
+        bottom : 0.125 * $blocksize;
+        background-color : red;
+        z-index : 3;
+    }
+    
+    #color-right {
+        left :  0.25 * $blocksize;
+        bottom : 0.25 * $blocksize;
+        background-color : green;
+        z-index : 4;
+    }
+}

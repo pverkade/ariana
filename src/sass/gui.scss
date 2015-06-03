@@ -1,0 +1,102 @@
+* {
+    margin : 0;
+    padding : 0;
+}
+
+body {
+    background-color : $dark;
+    color : $white;
+    font-family : $fonts;
+}
+
+#main-canvas {
+    position : absolute;
+    background-color : $dark;
+    left : 0;
+    top : 0;
+}
+
+/* Style-class for box-shadow. */
+.box-shadow {
+    box-shadow : 0px 0px 5px $black; 
+}
+
+/* Styleclass for element with icons. */
+.has-icons {
+    svg {
+        margin : 20%;
+        height : 60%;
+        width : 60%;
+    }
+    
+    svg path {
+        fill : darken($white, 20%);
+    }
+}
+
+/* Styleclass for all GUI elements that float above the canvas. */
+.gui-item {
+    @extend .box-shadow;
+    position : absolute;
+    background-color : $light;
+    z-index : 2;
+}
+
+#layers {
+    top : 1.5 * $blocksize;
+    @extend .gui-item;
+    height : auto;
+    right : 0;
+    width : 3 * $blocksize;
+    height : calc(100% - 2 * $blocksize);
+    overflow : hidden;
+    
+    .layer {
+        margin-left : 0.25 * $blocksize;
+        margin-top : 0.25 * $blocksize;
+        width : calc(100% - 0.5 * $blocksize);
+        height : 2 * $blocksize;
+        background-color : lighten($light, 10%);
+        @extend .box-shadow;
+        z-index : 2;
+    }
+    
+    padding-bottom : 0.25 * $blocksize;
+}
+
+.pop-up {
+    position: absolute;
+    top : calc(3 * 36px);
+    left : calc(3 * 36px);
+    
+    height : calc(100% - 2 * $blocksize);
+    width : calc(100% - 5 * $blocksize);
+    background-color : $light;
+    z-index : 2;
+    overflow : hidden;
+    
+    @extend .box-shadow;
+
+    .name {
+        display : block;
+        padding : 6px 12px;
+        font-size : 30pt;
+        background-color : darken($light, 10%);
+    }
+    
+    .option {
+        float : left;
+        margin-left : 12px;
+        margin-top : 12px;
+        width : calc( (100% - (4 + 1) * 12px) * 0.25 ); 
+        height : 144px;
+        background-color : lighten($light, 10%);
+        
+        .name {
+            display : block;
+            padding : 6px 12px;
+            font-size : 15pt;
+            background-color : darken($light, 10%);
+        }
+    }
+}
