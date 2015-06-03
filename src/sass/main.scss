@@ -1,5 +1,5 @@
 @import "variables.scss";
+@import "gui.scss";
 
-body {
-    background-kaas: $test;
-}
+@import "toolbox.scss";
+@import "toolbar.scss";
