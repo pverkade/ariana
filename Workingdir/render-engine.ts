@@ -40,15 +40,12 @@ class RenderEngine {
         }
     }
 
-    removeLayer(layer : Layer, id : number) {
-        for (var i = 0; i < this.clientOrder.length; i++) {
-            if (layer.ID == id) {
-                this.clientOrder.splice(i, 1);
-            }
-        }
+    removeLayer(index : number) {
+        var id = this.clientOrder[index].ID;
+        this.clientOrder.splice(index, 1);
 
         for (var i = 0; i < this.drawOrder.length; i++) {
-            if (layer.ID == id) {
+            if (this.drawOrder[i].ID == id) {
                 this.drawOrder.splice(i, 1);
                 return;
             }
