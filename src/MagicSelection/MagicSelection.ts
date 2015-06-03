@@ -38,38 +38,31 @@ class MagicSelection {
 		}
 
 		this.magicWandColor = this.getColorPoint(x, y);
-		// console.log(x);
-		// console.log(y);
-		// console.log(this.magicWandColor);
-		// console.log(imageData.data[4*(43*imageData.width+100)]);
 
-		/* Use searchLine to get a horizontal line of points with colors next to given point. */
+		/* Use searchLine to get a horizontal line of points with colors next to given point
+			and push to stack. */
 		curLine = this.searchLine(x, y);
-		console.log(curLine);
 		stack.push(curLine);
-		/* Keep popping line elements from stack until stack is empty. */
+
+		/* Keep popping line elements from stack until stack is empty. Push first all line elements
+			above current line and then push all line elements below current line.  */
 		while (stack.length > 0 && curLine != null) {
 			curLine = stack.pop();
-			// console.log(curLine);
-			// console.log(curLine.length);
-			// console.log(stack.length);
-
-
 
 			for (var i = 0; i < curLine.length; i++) {
-				this.bitMaskData[curLine[i].x + curLine[i].y * imageData.width] = 255;
-
 				/* Check if there is a line element above current position. */
-				newLine = this.searchLine(x, y - 1);
+				newLine = this.searchLine(curLine[i].x, curLine[i].y - 1);
 				if (newLine != null) {
 					stack.push(newLine);
-				}
+				}			
+			}
 
+			for (var i = 0; i < curLine.length; i++) {
 				/* Check if there is a line element below current position. */
-				newLine = this.searchLine(x, y + 1);
+				newLine = this.searchLine(curLine[i].x, curLine[i].y + 1);
 				if (newLine != null) {
 					stack.push(newLine);
-				}				
+				}	
 			}
 		}
 
@@ -80,7 +73,7 @@ class MagicSelection {
 	searchLine(startX : number, startY : number) {
 		var line = [];
 		var left : number = startX;
-		var right : number = startY;
+		var right : number = startX;
 	
 		/* Check if a valid position is given. */
 		if (startY < 0 || startY >= this.imageData.height || startX < 0 || startX >= this.imageData.width ) {
@@ -113,9 +106,10 @@ class MagicSelection {
 			}	
 		}
 
-		/* Make line by adding all ... */
+		/* Make line by adding all points that are found and adjust bitmask */
 		for (var x = left; x <= right; x++) {
 			line.push(new Point(x, startY));
+			this.bitMaskData[x + startY * this.imageData.width] = 255;
 		}
 
 		return line;
