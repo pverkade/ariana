@@ -2,16 +2,11 @@ module.exports = {
     build_dir: 'build',
 
     src_files: {
-        js: ['src/js/*.js'],
-        html: 'src/index.html',
+        html: 'src/**/*.html',
+        js: ['src/**/*.js'],
+        ts: ['src/**/*.ts'],
         css: 'style.css',
         scss: 'src/sass/main.scss',
         sass: ['src/sass/*.scss']
-    },
-
-    bower_files: {
-        js: ['/*.js', 'bower_components/**/*.js'],
-        html: ['/*.html', 'bower_components/**/*.html'],
-        css: ['/*.css', 'bower_components/**/*.css']
     }
 }
