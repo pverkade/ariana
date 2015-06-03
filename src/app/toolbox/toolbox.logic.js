@@ -151,7 +151,7 @@ angular.module('ariana').controller('toolboxCtrl', function($scope) {
         
         return;
     }
-}   
+}); 
     
     
     
