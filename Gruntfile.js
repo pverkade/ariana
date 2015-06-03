@@ -40,6 +40,9 @@ module.exports = function(grunt) {
             }
         },
 
+        /*
+         * Concat all tpl.html into a javascript file
+         */
         html2js: {
             options: {
                 module: 'templates-ariana'
@@ -69,6 +72,9 @@ module.exports = function(grunt) {
             ],
             css_hard: [
                 '<%= build_dir %>/*.css'
+            ],
+            assets: [
+                '<% build_dir %>/assets'
             ]
         },
 
@@ -96,7 +102,15 @@ module.exports = function(grunt) {
             build_css: {
                 files: [{
                     src: '<%= src_files.css %>',
-                    dest: '<%= build_dir %>/<%= src_files.css %>',
+                    dest: '<%= build_dir %>/<%= src_files.css %>'
+                }]
+            },
+            build_assets: {
+                files: [{
+                    src: [ '**' ],
+                    dest: '<%= build_dir %>/assets',
+                    cwd: 'src/assets/',
+                    expand: true
                 }]
             }
         },
@@ -168,6 +182,10 @@ module.exports = function(grunt) {
             sass: {
                 files: ['<%= src_files.sass %>'],
                 tasks: ['clean:css_hard', 'chain_css']
+            },
+            assets: {
+                files: ['<%= src_files.assets %>'],
+                tasks: ['clean:assets', 'chain_assets']
             }
         }
     };
@@ -185,6 +203,7 @@ module.exports = function(grunt) {
         'copy:build_js',
         'copy:build_html',
         'copy:build_css',
+        'copy:build_assets',
         'concat',
         'clean:js',
         'clean:css'
@@ -201,4 +220,5 @@ module.exports = function(grunt) {
     grunt.registerTask('chain_html', ['copy:build_html', 'html2js']);
     grunt.registerTask('chain_js', ['typescript', 'copy:build_js', 'bower_concat:js', 'concat:js', 'clean:js']);
     grunt.registerTask('chain_css', ['sass', 'copy:build_css', 'bower_concat:css', 'concat:css', 'clean:css']);
+    grunt.registerTask('chain_assets', ['copy:build_assets']);
 }

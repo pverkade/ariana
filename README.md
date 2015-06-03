@@ -83,6 +83,7 @@ $ cd ariana
 Now that you have the repository cloned enter
 
 ```sh
+$ sudo npm -g install grunt-cli karma bower
 $ npm install
 $ bower install
 $ grunt watch

@@ -8,6 +8,7 @@ module.exports = {
         ts: ['src/**/*.ts'],
         css: 'style.css',
         scss: 'src/sass/main.scss',
-        sass: ['src/sass/*.scss']
+        sass: ['src/sass/*.scss'],
+        assets: ['src/assets/**/*.*']
     }
 }
