@@ -1,8 +1,8 @@
 angular.module('ariana').controller('toolboxCtrl', function($scope) {
     
-    $scope.leftColor  = "#ffaa00";
-    $scope.rightColor = "#88cc44";
-    updateColorPreview();
+    //$scope.leftColor  = "#ffaa00";
+    //$scope.rightColor = "#88cc44";
+    //updateColorPreview();
     
     /* make tools. */
     var toolset = document.getElementById('toolset');   
@@ -122,7 +122,7 @@ function hideSubToolsets(){
         subtoolsets[i].style.transform = "translate(-144px, 0px)";
     }
 }
-
+/*
 function setLeftColor(color){
     $scope.leftColor = color;
     updateColorPreview();
@@ -136,5 +136,5 @@ function setRightColor(color){
 function updateColorPreview(leftColor, rightColor){
     document.getElementById('color-left').style.background  = $scope.leftColor; 
     document.getElementById('color-right').style.background = $scope.rightColor; 
-} 
+} */
     
