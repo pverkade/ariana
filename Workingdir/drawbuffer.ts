@@ -32,17 +32,17 @@ class DrawBuffer {
     }
 
     getImage() {
-        // Read the contents of the framebuffer
+        /* Read the contents of the framebuffer */
         var data = new Uint8Array(this.width * this.height * 4);
         gl.readPixels(0, 0, this.width, this.height, gl.RGBA, gl.UNSIGNED_BYTE, data);
 
-        // Create a 2D canvas to store the result
+        /* Create a 2D canvas to store the result */
         var canvas = document.createElement('canvas');
         canvas.width = this.width;
         canvas.height = this.height;
         var context = canvas.getContext('2d');
 
-        // Copy the pixels to a 2D canvas
+        /* Copy the pixels to a 2D canvas */
         var imageData = context.createImageData(this.width, this.height);
         imageData.data.set(data);
         context.putImageData(imageData, 0, 0);
