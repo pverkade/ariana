@@ -7,15 +7,22 @@
  */
 
  /// <reference path="render-helper"/>
+ /// <reference path="render-engine"/>
  /// <reference path="image-layer"/>
 
 class UploadImage {
-    constructor(public uploadbutton: HTMLDivElement,
-                public imageupload: HTMLInputElement,
-                public canvas: HTMLCanvasElement) {
+
+    imageupload : HTMLInputElement;
+
+    constructor(public canvas: HTMLCanvasElement,
+                public renderEngine : RenderEngine,
+                public uploadbutton: HTMLDivElement) {
+
+        this.imageupload = document.createElement('input');
+        this.imageupload.type = "file";
 
         uploadbutton.addEventListener("click", this.uploadButtonClick);
-        imageupload.addEventListener("change", this.onFilesChanged);
+        this.imageupload.addEventListener("change", this.onFilesChanged);
 
         this.initDragnDrop();
     }
@@ -88,8 +95,10 @@ class UploadImage {
         imageLayer.setScale(1, 1);
         imageLayer.setRotation(0);
         imageLayer.setPos(0, 0);
-        imageLayer.setupRender();
-        imageLayer.render();
+
+        this.renderEngine.addLayer(imageLayer);
+        this.renderEngine.reorder(1, 0);
+        this.renderEngine.render();
 
         /* Get pixel data by adding the image to a new canvas */
         var canvas = <HTMLCanvasElement>document.createElement("canvas");
@@ -135,13 +144,13 @@ class UploadImage {
 /* on load, start the Upload functionality */
 window.onload = function() {
     var uploadbutton : HTMLDivElement = <HTMLDivElement>document.getElementById("uploadbutton");
-    var imageupload : HTMLInputElement = <HTMLInputElement>document.getElementById("imageupload");
+    //var imageupload : HTMLInputElement = <HTMLInputElement>document.getElementById("imageupload");
     var canvas : HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("imageframe");
 
     canvas.width = document.body.clientWidth;
     canvas.height = document.body.clientHeight;
 
-    var classstart = new UploadImage(uploadbutton, imageupload, canvas);
-
     createGLContext("imageframe");
+    var renderEngine = new RenderEngine(canvas.width, canvas.height);
+    var classstart = new UploadImage(canvas, renderEngine, uploadbutton);
 }
