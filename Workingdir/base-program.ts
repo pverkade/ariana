@@ -7,7 +7,6 @@
 class BaseProgram implements ShaderProgram {
     program : WebGLProgram;
 
-    matrixLocation : WebGLUniformLocation;
     vertexBuffer : WebGLBuffer;
 
     vertexSource : string = "image-shader-vs";
@@ -20,7 +19,6 @@ class BaseProgram implements ShaderProgram {
         this.program = compileProgram(vertexShader, fragmentShader);
 
         var positionLocation = gl.getAttribLocation(this.program, "a_position");
-        this.matrixLocation = gl.getUniformLocation(this.program, "u_matrix");
 
         this.vertexBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
@@ -44,9 +42,5 @@ class BaseProgram implements ShaderProgram {
     activate() : void {
         gl.useProgram(this.program);
         gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-    }
-
-    setStuff(texture : WebGLTexture, matrix : Float32Array, depth : number) : void {
-        gl.uniformMatrix3fv(this.matrixLocation, false, matrix);
     }
 }
