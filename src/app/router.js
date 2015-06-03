@@ -7,9 +7,9 @@ angular.module('ariana').config(function($stateProvider) {
                     templateUrl: "app/content/content.tpl.html",
                     controller: 'contentCtrl'
                 },
-                "header": {
-                    templateUrl: "app/header/header.tpl.html",
-                    controller: 'headerCtrl'
+                "toolbar": {
+                    templateUrl: "app/toolbar/toolbar.tpl.html",
+                    controller: 'toolbarCtrl'
                 },
                 "layers": {
                     templateUrl: "app/layers/layers.tpl.html",
