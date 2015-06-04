@@ -32,8 +32,10 @@ class RenderEngine {
     }
  
     removeLayer(index : number) {
-        var id = this.layers[index].ID;
-        this.layers.splice(index, 1);
+        var layer : Layer = this.layers[index];
+        this.layers.splice(layer.ID, 1);
+        layer.destroy();
+        delete layer;
     }
 
     reorder(i : number, j : number) {
@@ -89,7 +91,7 @@ class RenderEngine {
 
             // Replace layer with ImageLayer (if it was not an ImageLayer) or set the texture of ImageLayer to buffer2.getWebGLTexture();
         }
-        //this.drawbuffer2.unbind();
+        this.drawbuffer2.unbind();
     }
 
     renderToImg() {
@@ -102,5 +104,14 @@ class RenderEngine {
         this.drawbuffer1.unbind();
 
         return val;
+    }
+
+    destroy() {
+        for (var i = 0; i < this.layers.length; i++) {
+            //this.layers[i].destroy();
+        }
+
+        this.drawbuffer1.destroy();
+        this.drawbuffer2.destroy();
     }
 }

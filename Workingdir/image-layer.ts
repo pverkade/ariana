@@ -52,7 +52,7 @@ class ImageLayer extends Layer {
 		ImageLayer.program.activate();
 	}
 	
-	render(depthFrac : number) {
+	render() {
 		var matrix : Float32Array = mat3.create();
 		mat3.identity(matrix);
 		mat3.multiply(matrix, matrix, this.translationMatrix);
@@ -71,5 +71,11 @@ class ImageLayer extends Layer {
     setDefaults() {
         super.setDefaults();
         mat3.identity(this.internalScaleMatrix);
+    }
+
+    destroy() {
+        super.destroy();
+        delete this.internalScaleMatrix;
+        gl.deleteTexture(this.texture);
     }
 }

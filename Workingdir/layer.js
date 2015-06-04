@@ -67,7 +67,12 @@ var Layer = (function () {
     };
     Layer.prototype.setupRender = function () {
     };
-    Layer.prototype.render = function (depthFrac) {
+    Layer.prototype.render = function () {
+    };
+    Layer.prototype.destroy = function () {
+        delete this.rotationMatrix;
+        delete this.scaleMatrix;
+        delete this.translationMatrix;
     };
     Layer.MaxID = 0;
     return Layer;

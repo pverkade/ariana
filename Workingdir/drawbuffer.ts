@@ -61,10 +61,15 @@ class DrawBuffer {
 
     unbind() {
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-
     }
 
     getWebGlTexture() : WebGLTexture {
         return this.texture;
+    }
+
+    destroy() {
+        //gl.deleteTexture(this.texture);
+        gl.deleteRenderbuffer(this.renderbuffer);
+        gl.deleteFramebuffer(this.framebuffer);
     }
 }

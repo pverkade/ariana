@@ -94,6 +94,11 @@ class Layer {
 	}
 	
 	setupRender() { }
-	render(depthFrac : number) { }
+	render() { }
 
+    destroy() {
+        delete this.rotationMatrix;
+        delete this.scaleMatrix;
+        delete this.translationMatrix;
+    }
 }
