@@ -11,7 +11,7 @@ class BrightnessProgram extends FilterProgram {
     brightnessLocation;
 
     constructor() {
-        super.setShaderSource("image-shader-vs", "brightness-fs");
+        super.setShaderSource("filter-vs", "brightness-fs");
         super();
         this.brightnessLocation = gl.getUniformLocation(this.program, "u_brightness");
     }
@@ -28,7 +28,7 @@ class BrightnessFilter extends Filter {
     constructor () {
         super();
         this.attributes = {
-            'brightness' : 10
+            "brightness" : 1.0
         };
 
         if (!BrightnessFilter.program) {

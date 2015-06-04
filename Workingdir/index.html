@@ -39,14 +39,14 @@
                     imageLayer2.setPos(0.5,0);
 
                     renderEngine.addLayer(imageLayer);
-                    renderEngine.addLayer(imageLayer2);
+                    //renderEngine.addLayer(imageLayer2);
                     //renderEngine.reorder(1, 0);
 
                     var brightnessFilter = new BrightnessFilter();
-                    brightnessFilter.setAttribute("brightness", 1.);
+                    brightnessFilter.setAttribute("brightness", 0.8);
                     renderEngine.filterLayers([0], brightnessFilter);
 
-                    //renderEngine.render();
+                    renderEngine.render();
 
                     //var imageEl = document.getElementById("images");
                     //imageEl.src = renderEngine.renderToImg();
@@ -69,6 +69,17 @@
             gl_FragColor = texture2D(u_sampler, v_texCoord);
         }
     </script>
+    <script id="filter-vs" type="x-shader/x-vertex">
+    attribute vec2 a_position;
+    attribute vec2 a_texCoord;
+
+    varying highp vec2 v_texCoord;
+
+    void main(void) {
+      gl_Position = vec4(a_position, 0, 1);
+      v_texCoord = a_texCoord;
+    }
+    </script>
     <script id="brightness-fs" type="x-shader/x-fragment">
         precision highp float;
 
@@ -79,7 +90,7 @@
 
         void main() {
 	        vec4 texColor = texture2D(u_sampler, v_texCoord);
-	        gl_FragColor = vec4((texColor * u_brightness).xyz, 1.);
+	        gl_FragColor = vec4(texColor.rgb*u_brightness, texColor.a);
         }
     </script>
     <script id="image-shader-vs" type="x-shader/x-vertex">

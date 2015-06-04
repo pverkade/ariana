@@ -5,25 +5,6 @@
 
 enum FilterType {Brightness};
 
-class Filter {
-    attributes:Object;
-    filterType:FilterType;
-
-    constructor() {
-        this.attributes = {};
-    }
-
-    setAttribute(name:string, value:any) {
-        this.attributes[name] = value
-    }
-
-    getAttributeNames():Array<string> {
-        return Object.keys(this.attributes);
-    }
-
-    render(texture:WebGLTexture) { }
-}
-
 class FilterProgram extends BaseProgram {
     program : WebGLProgram;
 
@@ -47,4 +28,23 @@ class FilterProgram extends BaseProgram {
     bindTexture(texture : WebGLTexture) {
         gl.bindTexture(gl.TEXTURE_2D, texture);
     }
+}
+
+class Filter {
+    attributes:Object;
+    filterType:FilterType;
+
+    constructor() {
+        this.attributes = {};
+    }
+
+    setAttribute(name:string, value:any) {
+        this.attributes[name] = value
+    }
+
+    getAttributeNames():Array<string> {
+        return Object.keys(this.attributes);
+    }
+
+    render(texture:WebGLTexture) { }
 }

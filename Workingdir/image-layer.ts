@@ -70,4 +70,8 @@ class ImageLayer extends Layer {
         gl.bindTexture(gl.TEXTURE_2D, this.texture);
         gl.copyTexImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 0, 0, width, height, 0);
 	}
+
+    setTexture(texture : WebGLTexture) {
+        this.texture = texture;
+    }
 }

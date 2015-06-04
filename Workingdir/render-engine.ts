@@ -97,9 +97,8 @@ class RenderEngine {
     }
 
     filterLayers(layerIndices : number[], filter : Filter) {
-
         for (var i = 0; i < layerIndices.length; i ++) {
-            var layer = this.clientOrder[i];
+            var layer = this.clientOrder[layerIndices[i]];
             if (layer.layerType !== LayerType.ImageLayer) {
                 continue;
             }
@@ -111,18 +110,18 @@ class RenderEngine {
             imageLayer.render(this.drawOrder.length);
             this.drawbuffer1.unbind();
 
-            //gl.copyTexImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 0, 0, this.width, this,height, 0);
-            //this.drawbuffer2.bind();
+            this.drawbuffer2.bind();
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
             filter.render(this.drawbuffer1.getWebGlTexture());
-
             //imageLayer.copyFramebuffer(this.width, this.height);
+            var image2 : WebGLTexture = this.drawbuffer2.getWebGlTexture();
+            this.drawbuffer2.unbind();
+            imageLayer.setTexture(image2);
+
 
             // Replace layer with ImageLayer (if it was not an ImageLayer) or set the texture of ImageLayer to buffer2.getWebGLTexture();
-
         }
-        this.drawbuffer2.unbind();
+        //this.drawbuffer2.unbind();
     }
 
     renderToImg() {
