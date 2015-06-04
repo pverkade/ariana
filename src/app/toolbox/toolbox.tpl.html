@@ -1,39 +1,13 @@
-<div id="toolset"> 
-    <div class="tool"> arrow-all.svg </div>     <!-- basic -->
-    <div class="tool"> brush.svg </div>         <!-- painting -->
-    <div class="tool"> select.svg </div>        <!-- select -->
-    <div class="tool"> format-size.svg </div>   <!-- text --> 
-</div>
-
-<div id="sub-toolsets">
-    <div class="sub-toolset"> 
-        <div class="sub-tool"> arrow-all.svg </div>     <!-- translate -->
-        <div class="sub-tool"> arrow-expand.svg </div>  <!-- scale --> 
-        <div class="sub-tool"> rotate-left.svg </div>   <!-- rotate -->
-        <div class="sub-tool"> crop.svg </div>
-        <!--
-        <div class="sub-tool"> content-copy.svg </div>
-        <div class="sub-tool"> content-cut.svg </div>
-        <div class="sub-tool"> content-paste.svg </div>
-        -->
-    </div>
-    <div class="sub-toolset"> 
-        <div class="sub-tool"> close.svg </div>         <!-- color selector --> 
-        <div class="sub-tool"> border-color.svg </div>  <!-- pencil : hard draw -->
-        <div class="sub-tool"> brush.svg </div>         <!-- brush - soft draw -->
-        <div class="sub-tool"> eraser.svg </div>        <!-- eraser -->  
-        <div class="sub-tool"> close.svg </div>         <!-- color picker --> 
-        <div class="sub-tool"> format-color-fill.svg </div>
-    </div>
-    <div class="sub-toolset"> 
-        <div class="sub-tool"> select.svg </div>                        <!-- rectangle selector -->
-        <div class="sub-tool"> checkbox-blank-circle-outline.svg </div> <!-- elipse selector -->
-        <div class="sub-tool"> vector-curve.svg </div>                  <!-- curve selector -->
-        <div class="sub-tool"> auto-fix.svg </div>                      <!-- magic wand selector -->                             
+<div id="toolset">
+    <div class="tool" id="{{name}}" ng-repeat="(name, tool) in toolbox" ng-controller="toolsetCtrl" ng-click="toggle($event)">
+        <img src="assets/vectors/{{tool.image}}"></img>
+        <div class="tool" id="{{name}}" ng-repeat="(name, subtool) in tool.tools" ng-controller="toolsetCtrl" ng-click="">
+            <img src="assets/vectors/{{subtool.image}}"></img>
+        </div>
     </div>
 </div>
 
-<div id="color-preview" color-preview>
-    <div id="color-left"> </div>
-    <div id="color-right"> </div>
+<div id="color-preview" ng-click="swapColors()">
+    <div id="color-left" style="background-color: {{primary}}"> </div>
+    <div id="color-right" style="background-color: {{secondary}}"> </div>
 </div>
