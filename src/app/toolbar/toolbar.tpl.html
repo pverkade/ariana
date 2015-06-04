@@ -1,3 +1,67 @@
-<div id="toolbar"> </div>
+<!--div id="toolbar">
     <div class="tool" ng-repeat="item in menuItems"> {{item}} </div>
-</div>
+</div-->
+
+<nav id="toolbar" class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand m-r-xl" href="/">
+                <!-- img alt="ariana" src="/assets/vectors/" -->
+                BRAND
+            </a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="tool">
+                    <a> 
+                        <img class="svg-img" alt="new" src="/assets/vectors/file.svg">
+                    </a>
+                </li>
+                <li class="tool">
+                    <a> 
+                        <img class="svg-img" alt="upload" src="/assets/vectors/upload.svg">
+                    </a>
+                </li>
+                <li class="tool">
+                    <a> 
+                        <img class="svg-img" alt="save" src="/assets/vectors/floppy.svg">
+                    </a>
+                </li>
+                <li class="seperator"></li>
+                <li class="tool">
+                    <a> 
+                        <img class="svg-img" alt="transform" src="/assets/vectors/rotate-right-variant.svg">
+                    </a>
+                </li>
+                <li class="tool">
+                    <a> 
+                        <img class="svg-img" alt="filters" src="/assets/vectors/star-outline.svg">
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="tool">
+                    <a> 
+                        <img class="svg-img" alt="undo" src="/assets/vectors/undo-variant.svg">
+                    </a>
+                </li>
+                <li class="tool">
+                    <a> 
+                        <img class="svg-img" alt="redo" src="/assets/vectors/redo-variant.svg">
+                    </a>
+                </li>
+                <li class="seperator"></li>
+                <li class="tool">
+                    <a> 
+                        <img class="svg-img" alt="help" src="/assets/vectors/school.svg">
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

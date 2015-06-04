@@ -1,23 +1,48 @@
 #toolbar {    
-    top : 0;
-    width : 100%;
-    height : $blocksize;
     @extend .gui-item;
-    
+    position: relative;
+    border-color: transparent;
+
     .tool {
-        display : block;
-        float : left;
-        width : $blocksize;
+        width : $blocksize + 10;
         height : $blocksize;
-        
-        font-size : 30pt;
-        backround-color : $light;
-        
+        padding: 0 5px;
+               
         &:hover {
             background-color : lighten($light, $hover-lighten);
         }
         
         @extend .is-button;
         @extend .has-icons;
+
+        > a {
+            width: $blocksize;
+            height: $blocksize;
+            padding: 0;          
+        }
+    }
+
+    .seperator {
+        /*width: 2px;*/
+        height: $blocksize - 20;
+        margin: 10px 5px;
+        border-right: 2px solid $dark;
+    }
+
+    .navbar-brand {
+        margin-right: 20px;
+    }
+
+    img {
+        width: 60%;
+        height: 60%;
+        margin: 20%;
+    }
+
+    button.navbar-toggle {
+        background-color: $black;
+        .icon-bar {
+            background-color: $white;
+        }
     }
 }
