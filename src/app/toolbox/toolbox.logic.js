@@ -1,6 +1,9 @@
 angular.module('ariana').controller('toolboxCtrl', function($scope) {
     
-    /* make tools. */
+    /* Update the color-preview. */
+    updatePreview();
+    
+    /* Make tools. */
     var toolset = document.getElementById('toolset');   
     tools = toolset.children;
     
@@ -123,34 +126,17 @@ angular.module('ariana').controller('toolboxCtrl', function($scope) {
         
         return;
     }
+    
+    $scope.switchColors = function() {
+        leftColor  = getLeftColor();
+        rightColor = getRightColor();
+        setLeftColor(rightColor);
+        setRightColor(leftColor);
+        updatePreview();
+    }
 });
 
-angular.module('ariana').directive('preview', function() {
-    return {
-        link: function(scope, element, attr) {
-            updatePreview();
-            
-            /*
-            element.css({
-                   position: 'relative',
-                   border: '1px solid red',
-                   backgroundColor: 'lightgrey',
-                   cursor: 'pointer'
-            });
-            */
-
-            element.on('click', function(event) {
-                event.preventDefault();              
-                switchColors();
-            });
-
-            function updatePreview(){
-                // TODO animation
-                document.getElementById('color-left').style.background  = getLeftColor(); 
-                document.getElementById('color-right').style.background = getRightColor(); 
-            }
-            
-        }
-    };
-    
-}); 
+function updatePreview() {
+    document.getElementById('color-left').style.background  = getLeftColor(); 
+    document.getElementById('color-right').style.background = getRightColor(); 
+} 

@@ -24,23 +24,15 @@ function getTool(){
 var leftColor  = "#000000";
 var rightColor = "#ffffff";
 
-function switchColors(){
-    var temp = leftColor;
-    leftColor = rightColor;
-    rightColor = temp;
-    find('preview').updatePreview();
-    return true;
-}
-
 function setLeftColor(newLeftColor){
     leftColor = newLeftColor;
-    find('preview').updatePreview();
+    updatePreview();
     return true;
 }
 
 function setRightColor(newRightColor){
     rightColor = newRightColor;
-    find('preview').updatePreview();
+    updatePreview();
     return true;
 }
 
