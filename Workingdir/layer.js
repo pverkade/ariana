@@ -10,7 +10,26 @@ var Layer = (function () {
         this.scaleMatrix = mat3.create();
         this.rotationMatrix = mat3.create();
         this.translationMatrix = mat3.create();
+        /* Apperently calling a function on this object from within the constructor crashes it */
+        this.posX = 0;
+        this.posY = 0;
+        this.scaleX = 1;
+        this.scaleY = 1;
+        this.angle = 0;
+        mat3.identity(this.scaleMatrix);
+        mat3.identity(this.rotationMatrix);
+        mat3.identity(this.translationMatrix);
     }
+    Layer.prototype.setDefaults = function () {
+        this.posX = 0;
+        this.posY = 0;
+        this.scaleX = 1;
+        this.scaleY = 1;
+        this.angle = 0;
+        mat3.identity(this.scaleMatrix);
+        mat3.identity(this.rotationMatrix);
+        mat3.identity(this.translationMatrix);
+    };
     Layer.prototype.setRotation = function (angle) {
         this.angle = angle;
         mat3.identity(this.rotationMatrix);
@@ -42,12 +61,6 @@ var Layer = (function () {
     };
     Layer.prototype.getPosY = function () {
         return this.posY;
-    };
-    Layer.prototype.setDepth = function (depth) {
-        this.depth = depth;
-    };
-    Layer.prototype.getDepth = function () {
-        return this.depth;
     };
     Layer.prototype.getID = function () {
         return this.ID;

@@ -8,11 +8,8 @@
 /// <reference path="image-layer"/>
 
 class RenderEngine {
-    /* Array of layers in the order that we draw them */
-    drawOrder : Array<Layer>;
-
     /* Array of layers in the order that the user sees them */
-    clientOrder : Array<Layer>;
+    layers : Array<Layer>;
     drawbuffer1 : DrawBuffer;
     drawbuffer2 : DrawBuffer;
 
@@ -21,8 +18,7 @@ class RenderEngine {
     height : number;
 
     constructor (width : number, height : number) {
-        this.drawOrder = new Array();
-        this.clientOrder = new Array();
+        this.layers = new Array();
         this.drawbuffer1 = new DrawBuffer(width, height);
         this.drawbuffer2 = new DrawBuffer(width, height);
 
@@ -32,57 +28,30 @@ class RenderEngine {
 
     addLayer(layer : Layer) {
         /* Append layer to user array */
-        this.clientOrder.push(layer);
-        layer.setDepth(this.clientOrder.length);
-
-
-        /* Insert layer into the draw array so that it groups the same kind of layers */
-        if (this.drawOrder.length === 0) {
-            this.drawOrder.push(layer);
-        }
-
-        for (var i = 0; i < this.drawOrder.length; i++) {
-            if (this.drawOrder[i].layerType <= layer.layerType) {
-                this.drawOrder.splice(i, 0, layer);
-                return;
-            }
-        }
+        this.layers.push(layer);
     }
  
     removeLayer(index : number) {
-        var id = this.clientOrder[index].ID;
-        this.clientOrder.splice(index, 1);
-
-        /* Remove layer from draw array */
-        for (var i = 0; i < this.drawOrder.length; i++) {
-            if (this.drawOrder[i].ID == id) {
-                this.drawOrder.splice(i, 1);
-                return;
-            }
-        }
+        var id = this.layers[index].ID;
+        this.layers.splice(index, 1);
     }
 
     reorder(i : number, j : number) {
-        /* Switch depth values */
-        var tempDepth = this.clientOrder[i].getDepth();
-        this.clientOrder[i].setDepth(this.clientOrder[j].getDepth());
-        this.clientOrder[j].setDepth(tempDepth);
-
         /* Switch places in the user array */
-        var temp = this.clientOrder[i];
-        this.clientOrder[i] = this.clientOrder[j];
-        this.clientOrder[j] = temp;
+        var temp = this.layers[i];
+        this.layers[i] = this.layers[j];
+        this.layers[j] = temp;
     }
 
     render() {
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
         var oldType = -1;
-        var numItems = this.drawOrder.length;
+        var numItems = this.layers.length;
 
         /* Draw all layers to the currently bound framebuffer */
         for (var i = 0; i < numItems; i++) {
-            var layer = this.drawOrder[i];
+            var layer = this.layers[i];
             if (layer.layerType != oldType) {
                 /*
                  * We're drawing a different type of layer then our previous one,
@@ -98,7 +67,7 @@ class RenderEngine {
 
     filterLayers(layerIndices : number[], filter : Filter) {
         for (var i = 0; i < layerIndices.length; i ++) {
-            var layer = this.clientOrder[layerIndices[i]];
+            var layer = this.layers[layerIndices[i]];
             if (layer.layerType !== LayerType.ImageLayer) {
                 continue;
             }
@@ -107,17 +76,16 @@ class RenderEngine {
             this.drawbuffer1.bind();
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
             imageLayer.setupRender();
-            imageLayer.render(this.drawOrder.length);
+            imageLayer.render();
             this.drawbuffer1.unbind();
 
             this.drawbuffer2.bind();
             gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
             filter.render(this.drawbuffer1.getWebGlTexture());
-            //imageLayer.copyFramebuffer(this.width, this.height);
-            var image2 : WebGLTexture = this.drawbuffer2.getWebGlTexture();
+            imageLayer.copyFramebuffer(this.width, this.height);
             this.drawbuffer2.unbind();
-            imageLayer.setTexture(image2);
 
+            imageLayer.setDefaults();
 
             // Replace layer with ImageLayer (if it was not an ImageLayer) or set the texture of ImageLayer to buffer2.getWebGLTexture();
         }

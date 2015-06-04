@@ -7,7 +7,6 @@ class ImageShaderProgram extends BaseProgram {
     program : WebGLProgram;
 
     samplerLocation : WebGLUniformLocation;
-    depthLocation : WebGLUniformLocation;
     matrixLocation : WebGLUniformLocation;
 
     constructor() {
@@ -16,7 +15,6 @@ class ImageShaderProgram extends BaseProgram {
 
         var texCoordLocation = gl.getAttribLocation(this.program, "a_texCoord");
         this.samplerLocation = gl.getUniformLocation(this.program, "u_sampler");
-        this.depthLocation = gl.getUniformLocation(this.program, "u_depth");
         this.matrixLocation = gl.getUniformLocation(this.program, "u_matrix");
 
         gl.enableVertexAttribArray(texCoordLocation);
@@ -29,9 +27,8 @@ class ImageShaderProgram extends BaseProgram {
         gl.uniform1i(this.samplerLocation, 0);
     }
 
-    setUniforms(texture : WebGLTexture, matrix : Float32Array, depth : number) : void {
+    setUniforms(texture : WebGLTexture, matrix : Float32Array) : void {
         gl.bindTexture(gl.TEXTURE_2D, texture);
-        gl.uniform1f(this.depthLocation, depth);
         gl.uniformMatrix3fv(this.matrixLocation, false, matrix);
     }
 }

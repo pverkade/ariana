@@ -10,7 +10,6 @@ class Layer {
 	scaleY : number;
 	posX : number;
 	posY : number;
-	depth : number;
 
 	scaleMatrix : Float32Array;
 	rotationMatrix : Float32Array;
@@ -19,12 +18,35 @@ class Layer {
 
 	constructor() {
 		this.ID = Layer.MaxID++;
-		
+
 		this.scaleMatrix = mat3.create();
 		this.rotationMatrix = mat3.create();
 		this.translationMatrix = mat3.create();
+
+        /* Apperently calling a function on this object from within the constructor crashes it */
+        this.posX = 0;
+        this.posY = 0;
+        this.scaleX = 1;
+        this.scaleY = 1;
+        this.angle = 0;
+
+        mat3.identity(this.scaleMatrix);
+        mat3.identity(this.rotationMatrix);
+        mat3.identity(this.translationMatrix);
 	}
-	
+
+	setDefaults() {
+        this.posX = 0;
+        this.posY = 0;
+        this.scaleX = 1;
+        this.scaleY = 1;
+        this.angle = 0;
+
+        mat3.identity(this.scaleMatrix);
+        mat3.identity(this.rotationMatrix);
+        mat3.identity(this.translationMatrix);
+	}
+
 	setRotation(angle : number) {
 		this.angle = angle;
 		mat3.identity(this.rotationMatrix);
@@ -65,14 +87,6 @@ class Layer {
 	
 	getPosY() : number {
 		return this.posY;
-	}
-	
-	setDepth(depth : number) {
-		this.depth = depth;
-	}
-	
-	getDepth() : number {
-		return this.depth;
 	}
 	
 	getID() : number {

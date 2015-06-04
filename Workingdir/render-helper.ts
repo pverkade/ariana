@@ -6,9 +6,13 @@ function createGLContext(id : string) : void {
 	try {
 		/* Try to grab the standard context. If it fails, fallback to experimental. */
 		gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
-		gl.enable(gl.DEPTH_TEST);
-		gl.depthFunc(gl.LEQUAL);
-		gl.depthRange(0., 100.);
+		//gl.enable(gl.DEPTH_TEST);
+		//gl.depthFunc(gl.LEQUAL);
+
+        gl.enable(gl.BLEND);
+        //gl.blendEquation(gl.FUNC_ADD);
+        //gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+        gl.blendFunc( gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA );
 	}
 	catch(e) {
 		console.log(e.stack);

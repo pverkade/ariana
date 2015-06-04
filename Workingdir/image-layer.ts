@@ -12,7 +12,7 @@ class ImageLayer extends Layer {
     internalScaleMatrix : Float32Array;
 	
 	constructor(image : HTMLImageElement) {
-		super();
+        super();
 
         if (ImageLayer.program == null) {
             ImageLayer.program = new ImageShaderProgram();
@@ -59,19 +59,17 @@ class ImageLayer extends Layer {
 		mat3.multiply(matrix, matrix, this.rotationMatrix);
 		mat3.multiply(matrix, matrix, this.scaleMatrix);
         mat3.multiply(matrix, matrix, this.internalScaleMatrix);
-
-		ImageLayer.program.setUniforms(this.texture, matrix, this.depth / depthFrac);
+		ImageLayer.program.setUniforms(this.texture, matrix);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 	}
 	
 	copyFramebuffer(width : number, height : number) {
-		//TODO: Zet rotatie en andere shit op default SHIT VLADIM HOUDT VAN SHIT
-
         gl.bindTexture(gl.TEXTURE_2D, this.texture);
         gl.copyTexImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 0, 0, width, height, 0);
 	}
 
-    setTexture(texture : WebGLTexture) {
-        this.texture = texture;
+    setDefaults() {
+        super.setDefaults();
+        mat3.identity(this.internalScaleMatrix);
     }
 }
