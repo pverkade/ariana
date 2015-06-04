@@ -9,9 +9,9 @@ class ImageShaderProgram extends BaseProgram {
     samplerLocation : WebGLUniformLocation;
     matrixLocation : WebGLUniformLocation;
 
-    constructor() {
+    constructor(gl : WebGLRenderingContext) {
         super.setShaderSource("image-shader-vs", "image-shader-fs");
-        super();
+        super(gl);
 
         var texCoordLocation = gl.getAttribLocation(this.program, "a_texCoord");
         this.samplerLocation = gl.getUniformLocation(this.program, "u_sampler");
@@ -23,12 +23,12 @@ class ImageShaderProgram extends BaseProgram {
 
     activate() : void {
         super.activate();
-        gl.activeTexture(gl.TEXTURE0);
-        gl.uniform1i(this.samplerLocation, 0);
+        this.gl.activeTexture(this.gl.TEXTURE0);
+        this.gl.uniform1i(this.samplerLocation, 0);
     }
 
     setUniforms(texture : WebGLTexture, matrix : Float32Array) : void {
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-        gl.uniformMatrix3fv(this.matrixLocation, false, matrix);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+        this.gl.uniformMatrix3fv(this.matrixLocation, false, matrix);
     }
 }

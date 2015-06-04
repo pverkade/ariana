@@ -10,14 +10,14 @@
 class BrightnessProgram extends FilterProgram {
     brightnessLocation;
 
-    constructor() {
+    constructor(gl : WebGLRenderingContext) {
         super.setShaderSource("filter-vs", "brightness-fs");
-        super();
-        this.brightnessLocation = gl.getUniformLocation(this.program, "u_brightness");
+        super(gl);
+        this.brightnessLocation = this.gl.getUniformLocation(this.program, "u_brightness");
     }
 
     setUniforms(brightness : number) : void {
-        gl.uniform1f(this.brightnessLocation, brightness);
+        this.gl.uniform1f(this.brightnessLocation, brightness);
     }
 }
 
@@ -25,8 +25,8 @@ class BrightnessFilter extends Filter {
     filterType = FilterType.Brightness;
     static program : BrightnessProgram;
 
-    constructor () {
-        super();
+    constructor (gl : WebGLRenderingContext) {
+        super(gl);
         this.attributes = {
             "brightness" : {
                 "value" : 1,
@@ -38,7 +38,7 @@ class BrightnessFilter extends Filter {
         };
 
         if (!BrightnessFilter.program) {
-            BrightnessFilter.program = new BrightnessProgram();
+            BrightnessFilter.program = new BrightnessProgram(this.gl);
         }
     }
 
@@ -47,6 +47,6 @@ class BrightnessFilter extends Filter {
         BrightnessFilter.program.bindTexture(texture);
         BrightnessFilter.program.setUniforms(this.attributes["brightness"]["value"]);
 
-        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
     }
 }

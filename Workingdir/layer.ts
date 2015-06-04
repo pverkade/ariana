@@ -2,6 +2,7 @@
 enum LayerType {ImageLayer};
 
 class Layer {
+    gl : WebGLRenderingContext;
 	static MaxID = 0;
 	layerType : number;
 	ID : LayerType;
@@ -16,7 +17,8 @@ class Layer {
 	translationMatrix : Float32Array;
 
 
-	constructor() {
+	constructor(gl : WebGLRenderingContext) {
+        this.gl = gl;
 		this.ID = Layer.MaxID++;
 
 		this.scaleMatrix = mat3.create();
@@ -94,6 +96,11 @@ class Layer {
 	}
 	
 	setupRender() { }
-	render(depthFrac : number) { }
+	render() { }
 
+    destroy() {
+        delete this.rotationMatrix;
+        delete this.scaleMatrix;
+        delete this.translationMatrix;
+    }
 }

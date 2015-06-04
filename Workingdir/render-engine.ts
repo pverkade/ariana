@@ -8,6 +8,8 @@
 /// <reference path="image-layer"/>
 
 class RenderEngine {
+    gl : WebGLRenderingContext;
+
     /* Array of layers in the order that the user sees them */
     layers : Array<Layer>;
     drawbuffer1 : DrawBuffer;
@@ -17,13 +19,29 @@ class RenderEngine {
     width : number;
     height : number;
 
-    constructor (width : number, height : number) {
-        this.layers = new Array();
-        this.drawbuffer1 = new DrawBuffer(width, height);
-        this.drawbuffer2 = new DrawBuffer(width, height);
+    constructor (canvas : HTMLCanvasElement) {
+        this.width = canvas.width;
+        this.height = canvas.height;
 
-        this.width = width;
-        this.height = height;
+        this.layers = new Array();
+
+        try {
+            /* Try to grab the standard context. If it fails, fallback to experimental. */
+            this.gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+            //gl.enable(gl.DEPTH_TEST);
+            //gl.depthFunc(gl.LEQUAL);
+
+            this.gl.enable(this.gl.BLEND);
+            //gl.blendEquation(gl.FUNC_ADD);
+            //gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+            this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA );
+        }
+        catch(e) {
+            alert(e.stack);
+        }
+
+        this.drawbuffer1 = new DrawBuffer(this.gl, this.width, this.height);
+        this.drawbuffer2 = new DrawBuffer(this.gl, this.width, this.height);
     }
 
     addLayer(layer : Layer) {
@@ -32,8 +50,10 @@ class RenderEngine {
     }
  
     removeLayer(index : number) {
-        var id = this.layers[index].ID;
-        this.layers.splice(index, 1);
+        var layer : Layer = this.layers[index];
+        this.layers.splice(layer.ID, 1);
+        layer.destroy();
+        delete layer;
     }
 
     reorder(i : number, j : number) {
@@ -44,7 +64,7 @@ class RenderEngine {
     }
 
     render() {
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 
         var oldType = -1;
         var numItems = this.layers.length;
@@ -61,7 +81,7 @@ class RenderEngine {
                 oldType = layer.layerType;
             }
 
-            layer.render(numItems);
+            layer.render();
         }
     }
 
@@ -74,13 +94,13 @@ class RenderEngine {
 
             var imageLayer = <ImageLayer> layer;
             this.drawbuffer1.bind();
-            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+            this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
             imageLayer.setupRender();
             imageLayer.render();
             this.drawbuffer1.unbind();
 
             this.drawbuffer2.bind();
-            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+            this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
             filter.render(this.drawbuffer1.getWebGlTexture());
             imageLayer.copyFramebuffer(this.width, this.height);
             this.drawbuffer2.unbind();
@@ -89,18 +109,31 @@ class RenderEngine {
 
             // Replace layer with ImageLayer (if it was not an ImageLayer) or set the texture of ImageLayer to buffer2.getWebGLTexture();
         }
-        //this.drawbuffer2.unbind();
+        this.drawbuffer2.unbind();
     }
 
     renderToImg() {
         /* Render all layers to a framebuffer and return a 64base encoded image */
         this.drawbuffer1.bind();
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 
         this.render();
         var val = this.drawbuffer1.getImage();
         this.drawbuffer1.unbind();
 
         return val;
+    }
+
+    getWebGLRenderingContext() : WebGLRenderingContext {
+        return this.gl;
+    }
+
+    destroy() {
+        for (var i = 0; i < this.layers.length; i++) {
+            this.layers[i].destroy();
+        }
+
+        this.drawbuffer1.destroy();
+        this.drawbuffer2.destroy();
     }
 }

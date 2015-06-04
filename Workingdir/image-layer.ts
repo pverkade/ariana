@@ -11,11 +11,11 @@ class ImageLayer extends Layer {
 
     internalScaleMatrix : Float32Array;
 	
-	constructor(image : HTMLImageElement) {
-        super();
+	constructor(gl : WebGLRenderingContext, image : HTMLImageElement) {
+        super(gl);
 
         if (ImageLayer.program == null) {
-            ImageLayer.program = new ImageShaderProgram();
+            ImageLayer.program = new ImageShaderProgram(gl);
         }
 	
 		this.texture = gl.createTexture();
@@ -52,7 +52,7 @@ class ImageLayer extends Layer {
 		ImageLayer.program.activate();
 	}
 	
-	render(depthFrac : number) {
+	render() {
 		var matrix : Float32Array = mat3.create();
 		mat3.identity(matrix);
 		mat3.multiply(matrix, matrix, this.translationMatrix);
@@ -60,16 +60,22 @@ class ImageLayer extends Layer {
 		mat3.multiply(matrix, matrix, this.scaleMatrix);
         mat3.multiply(matrix, matrix, this.internalScaleMatrix);
 		ImageLayer.program.setUniforms(this.texture, matrix);
-        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
 	}
 	
 	copyFramebuffer(width : number, height : number) {
-        gl.bindTexture(gl.TEXTURE_2D, this.texture);
-        gl.copyTexImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 0, 0, width, height, 0);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
+        this.gl.copyTexImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 0, 0, width, height, 0);
 	}
 
     setDefaults() {
         super.setDefaults();
         mat3.identity(this.internalScaleMatrix);
+    }
+
+    destroy() {
+        super.destroy();
+        delete this.internalScaleMatrix;
+        this.gl.deleteTexture(this.texture);
     }
 }
