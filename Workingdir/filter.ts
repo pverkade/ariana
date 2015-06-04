@@ -3,7 +3,17 @@
  */
 /// <reference path="base-program"/>
 
+
+function clamp(x : number, low: number, high: number) {
+    return Math.max(low, Math.min(x, high));
+}
+
+function normalize100(x, low, high) {
+    return clamp(x, 0, 100) / 100 * (high - low) + low;
+}
+
 enum FilterType {Brightness};
+enum FilterValueType {Slider};
 
 class FilterProgram extends BaseProgram {
     program : WebGLProgram;
@@ -38,8 +48,15 @@ class Filter {
         this.attributes = {};
     }
 
-    setAttribute(name:string, value:any) {
-        this.attributes[name] = value
+    setAttribute(name:string, value:any) :void {
+        var attribute = this.attributes[name];
+        attribute["value"] = attribute["setter"](value);
+
+        console.log(name, attribute["value"]);
+    }
+
+    getAttribute(name : string) : Object {
+        return this.attributes[name];
     }
 
     getAttributeNames():Array<string> {

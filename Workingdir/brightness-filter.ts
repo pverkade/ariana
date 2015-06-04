@@ -28,7 +28,11 @@ class BrightnessFilter extends Filter {
     constructor () {
         super();
         this.attributes = {
-            "brightness" : 1.0
+            "brightness" : {
+                "value" : 50,
+                "type" : FilterValueType.Slider,
+                "setter" : (x) => normalize100(x, 0, 2.5)
+            }
         };
 
         if (!BrightnessFilter.program) {
@@ -39,7 +43,7 @@ class BrightnessFilter extends Filter {
     render (texture : WebGLTexture) {
         BrightnessFilter.program.activate();
         BrightnessFilter.program.bindTexture(texture);
-        BrightnessFilter.program.setUniforms(this.attributes["brightness"]);
+        BrightnessFilter.program.setUniforms(this.attributes["brightness"]["value"]);
 
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     }
