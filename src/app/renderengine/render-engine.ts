@@ -27,13 +27,9 @@ class RenderEngine {
 
         try {
             /* Try to grab the standard context. If it fails, fallback to experimental. */
-            this.gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
-            //gl.enable(gl.DEPTH_TEST);
-            //gl.depthFunc(gl.LEQUAL);
+            this.gl = <WebGLRenderingContext> (canvas.getContext("webgl") || canvas.getContext("experimental-webgl"));
 
             this.gl.enable(this.gl.BLEND);
-            //gl.blendEquation(gl.FUNC_ADD);
-            //gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
             this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA );
         }
         catch(e) {
@@ -53,7 +49,6 @@ class RenderEngine {
         var layer : Layer = this.layers[index];
         this.layers.splice(layer.ID, 1);
         layer.destroy();
-        delete layer;
     }
 
     reorder(i : number, j : number) {

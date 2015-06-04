@@ -11,7 +11,7 @@ class ImageLayer extends Layer {
 
     internalScaleMatrix : Float32Array;
 	
-	constructor(gl : WebGLRenderingContext, image : HTMLImageElement) {
+	constructor(gl : WebGLRenderingContext, image : ImageData) {
         super(gl);
 
         if (ImageLayer.program == null) {

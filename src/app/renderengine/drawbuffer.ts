@@ -23,7 +23,9 @@ class DrawBuffer {
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
 
-        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, width, height, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, null);
+        // typescript doens't have signature for this function.
+        // is a bug of typescript 1.5 beta.
+        (<any>gl).texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, width, height, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, null);
 
         this.renderbuffer = this.gl.createRenderbuffer();
         this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, this.renderbuffer);
@@ -47,11 +49,11 @@ class DrawBuffer {
         var canvas = document.createElement('canvas');
         canvas.width = this.width;
         canvas.height = this.height;
-        var context = canvas.getContext('2d');
+        var context : any = canvas.getContext('2d');
 
         /* Copy the pixels to a 2D canvas */
         var imageData = context.createImageData(this.width, this.height);
-        imageData.data.set(data);
+        (<any>(imageData.data)).set(data);
         context.putImageData(imageData, 0, 0);
 
         return canvas.toDataURL();
