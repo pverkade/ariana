@@ -16,35 +16,37 @@ enum FilterType {Brightness};
 enum FilterValueType {Slider};
 
 class FilterProgram extends BaseProgram {
-    program : WebGLProgram;
+    program : WebGLRenderingContext;
 
     samplerLocation : WebGLUniformLocation;
 
-    constructor() {
-        super();
-        var texCoordLocation = gl.getAttribLocation(this.program, "a_texCoord");
-        this.samplerLocation = gl.getUniformLocation(this.program, "u_sampler");
+    constructor(gl : WebGLRenderingContext) {
+        super(gl);
+        var texCoordLocation = this.gl.getAttribLocation(this.program, "a_texCoord");
+        this.samplerLocation = this.gl.getUniformLocation(this.program, "u_sampler");
 
-        gl.enableVertexAttribArray(texCoordLocation);
-        gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 16, 8);
+        this.gl.enableVertexAttribArray(texCoordLocation);
+        this.gl.vertexAttribPointer(texCoordLocation, 2, this.gl.FLOAT, false, 16, 8);
     }
 
     activate() : void {
         super.activate();
-        gl.activeTexture(gl.TEXTURE0);
-        gl.uniform1i(this.samplerLocation, 0);
+        this.gl.activeTexture(this.gl.TEXTURE0);
+        this.gl.uniform1i(this.samplerLocation, 0);
     }
 
     bindTexture(texture : WebGLTexture) {
-        gl.bindTexture(gl.TEXTURE_2D, texture);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
     }
 }
 
 class Filter {
+    gl : WebGLRenderingContext;
     attributes:Object;
     filterType:FilterType;
 
-    constructor() {
+    constructor(gl : WebGLRenderingContext) {
+        this.gl = gl;
         this.attributes = {};
     }
 

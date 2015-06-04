@@ -16,11 +16,11 @@
 
     <script>
         function start() {
-            createGLContext("glcanvas");
             var image = new Image();
             var image2 = new Image();
             var canvas = document.getElementById("glcanvas");
-            var renderEngine = new RenderEngine(canvas.width, canvas.height);
+            var renderEngine = new RenderEngine(canvas);
+            var gl = renderEngine.getWebGLRenderingContext();
 
             var counter = 1;
             function done() {
@@ -28,12 +28,12 @@
                     counter --;
                 }
                 else {
-                    var imageLayer = new ImageLayer(image);
+                    var imageLayer = new ImageLayer(gl, image);
                     imageLayer.setScale(.5,.5);
                     imageLayer.setRotation(1.);
                     imageLayer.setPos(0,0.5);
 
-                    var imageLayer2 = new ImageLayer(image2);
+                    var imageLayer2 = new ImageLayer(gl, image2);
                     imageLayer2.setScale(.3,.3);
                     imageLayer2.setRotation(-1.);
                     imageLayer2.setPos(0.5,0);
@@ -42,7 +42,7 @@
                     renderEngine.addLayer(imageLayer2);
                     //renderEngine.reorder(1, 0);
 
-                    var brightnessFilter = new BrightnessFilter();
+                    var brightnessFilter = new BrightnessFilter(gl);
                     brightnessFilter.setAttribute("brightness", 0.3);
                     renderEngine.filterLayers([0], brightnessFilter);
                     

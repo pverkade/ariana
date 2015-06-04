@@ -1,26 +1,4 @@
-var gl, squareVertexBuffer;
-
-function createGLContext(id : string) : void {
-	var canvas : HTMLCanvasElement = <HTMLCanvasElement>document.getElementById(id);
-
-	try {
-		/* Try to grab the standard context. If it fails, fallback to experimental. */
-		gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
-		//gl.enable(gl.DEPTH_TEST);
-		//gl.depthFunc(gl.LEQUAL);
-
-        gl.enable(gl.BLEND);
-        //gl.blendEquation(gl.FUNC_ADD);
-        //gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
-        gl.blendFunc( gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA );
-	}
-	catch(e) {
-		console.log(e.stack);
-		return;
-	}
-}
-
-function compileProgram(vertexShader : WebGLShader, fragmentShader : WebGLShader) : WebGLProgram{
+function compileProgram(gl : WebGLRenderingContext, vertexShader : WebGLShader, fragmentShader : WebGLShader) : WebGLProgram{
 	/* Create the shader program */
 	var shaderProgram : WebGLProgram = gl.createProgram();
 
@@ -37,7 +15,7 @@ function compileProgram(vertexShader : WebGLShader, fragmentShader : WebGLShader
 	return shaderProgram;
 }
 
-function compileShaderFromScript(id : string) : WebGLShader {
+function compileShaderFromScript(gl : WebGLRenderingContext, id : string) : WebGLShader {
 	var shaderScript, theSource, currentChild, shader;
 	
 	shaderScript = document.getElementById(id);
@@ -59,15 +37,15 @@ function compileShaderFromScript(id : string) : WebGLShader {
 	}
 
 	if (shaderScript.type == "x-shader/x-fragment") {
-		return compileShader(theSource, gl.FRAGMENT_SHADER);
+		return compileShader(gl, theSource, gl.FRAGMENT_SHADER);
 	} else if (shaderScript.type == "x-shader/x-vertex") {
-		return compileShader(theSource, gl.VERTEX_SHADER);
+		return compileShader(gl, theSource, gl.VERTEX_SHADER);
 	} else {
 		return null;
 	}	
 }
 
-function compileShader(shaderSource : string, shaderType : number) : WebGLShader {
+function compileShader(gl : WebGLRenderingContext, shaderSource : string, shaderType : number) : WebGLShader {
 	var shader = gl.createShader(shaderType);
 	gl.shaderSource(shader, shaderSource);
 		

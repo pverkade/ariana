@@ -4,42 +4,44 @@
 /// <reference path="render-helper" />
 
 class DrawBuffer {
+    gl : WebGLRenderingContext;
     texture : WebGLTexture;
     framebuffer : WebGLFramebuffer;
     renderbuffer : WebGLRenderbuffer;
     width : number;
     height : number;
 
-    constructor(width : number, height : number) {
+    constructor(gl : WebGLRenderingContext, width : number, height : number) {
+        this.gl = gl;
         this.width = width;
         this.height = height;
 
-        this.texture = gl.createTexture();
-        gl.bindTexture(gl.TEXTURE_2D, this.texture);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+        this.texture = this.gl.createTexture();
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
+        this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
 
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, width, height, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, null);
 
-        this.renderbuffer = gl.createRenderbuffer();
-        gl.bindRenderbuffer(gl.RENDERBUFFER, this.renderbuffer);
-        gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, width, height);
+        this.renderbuffer = this.gl.createRenderbuffer();
+        this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, this.renderbuffer);
+        this.gl.renderbufferStorage(this.gl.RENDERBUFFER, this.gl.DEPTH_COMPONENT16, width, height);
 
-        this.framebuffer = gl.createFramebuffer();
-        gl.bindFramebuffer(gl.FRAMEBUFFER, this.framebuffer);
-        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.texture, 0);
-        gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, this.renderbuffer);
+        this.framebuffer = this.gl.createFramebuffer();
+        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.framebuffer);
+        this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, this.texture, 0);
+        this.gl.framebufferRenderbuffer(this.gl.FRAMEBUFFER, this.gl.DEPTH_ATTACHMENT, this.gl.RENDERBUFFER, this.renderbuffer);
 
-        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-        gl.bindRenderbuffer(gl.RENDERBUFFER, null);
+        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
+        this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, null);
     }
 
     getImage() {
         /* Read the contents of the framebuffer */
         var data = new Uint8Array(this.width * this.height * 4);
-        gl.readPixels(0, 0, this.width, this.height, gl.RGBA, gl.UNSIGNED_BYTE, data);
+        this.gl.readPixels(0, 0, this.width, this.height, this.gl.RGBA, this.gl.UNSIGNED_BYTE, data);
 
         /* Create a 2D canvas to store the result */
         var canvas = document.createElement('canvas');
@@ -56,11 +58,11 @@ class DrawBuffer {
     }
 
     bind() {
-        gl.bindFramebuffer(gl.FRAMEBUFFER, this.framebuffer);
+        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.framebuffer);
     }
 
     unbind() {
-        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
     }
 
     getWebGlTexture() : WebGLTexture {
@@ -68,8 +70,8 @@ class DrawBuffer {
     }
 
     destroy() {
-        //gl.deleteTexture(this.texture);
-        gl.deleteRenderbuffer(this.renderbuffer);
-        gl.deleteFramebuffer(this.framebuffer);
+        //this.gl.deleteTexture(this.texture);
+        this.gl.deleteRenderbuffer(this.renderbuffer);
+        this.gl.deleteFramebuffer(this.framebuffer);
     }
 }
