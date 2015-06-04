@@ -42,7 +42,7 @@ angular.module('ariana').controller('toolsetCtrl', function($scope) {
      * Collapses this toolset
      */
     $scope.collapse = function(e) {
-        console.log(e);
+        // TODO
     }
 });
 
