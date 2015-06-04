@@ -24,9 +24,14 @@
 
     .seperator {
         /*width: 2px;*/
-        height: $blocksize - 20;
-        margin: 10px 5px;
-        border-right: 2px solid $dark;
+        top: 0.1 * $blocksize;
+        height: 0.8 * $blocksize;
+        width: 2px;
+        margin: auto;
+        background-color: $dark;
+        margin-left: -1px;
+        margin-right: -1px;
+        z-index: 3;
     }
 
     .navbar-brand {
@@ -40,9 +45,18 @@
     }
 
     button.navbar-toggle {
-        background-color: $black;
-        .icon-bar {
-            background-color: $white;
+        border-color: transparent;
+        width: $blocksize;
+        height : $blocksize;
+        border-radius: 0px;
+        margin: 0;
+        padding: 0;
+    
+        @extend .has-icons;
+        @extend .is-button;
+        
+        &:hover, &:active, &:focus {
+            background-color: lighten($light, $hover-lighten);
         }
     }
 }

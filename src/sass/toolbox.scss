@@ -1,19 +1,17 @@
 #toolset {
-    width : $blocksize;
-    left : 0;
-    top : 1.5 * $blocksize; 
-    height : auto;
+    width: $blocksize;
+    left: 0;
+    top: 1.5 * $blocksize; 
+    height: auto;
     @extend .gui-item;
     
     .tool {
-        display : block;
-        height : $blocksize;
-        width : $blocksize;
-        
-              
+        display: block;
+        height: $blocksize;
+        width: $blocksize;      
         
         &:hover {
-            background-color : lighten($light, $hover-lighten);
+            background-color: lighten($light, $hover-lighten);
         }
         
         @extend .is-button;
@@ -22,30 +20,30 @@
 }
 
 #sub-toolsets {
-    top : 1.5 * $blocksize; 
-    height : auto;
-    width : 2 * $blocksize;
-    position : absolute;
-    z-index : 1;
-    transform : translate(-2 * $blocksize, 0px);
+    top: 1.5 * $blocksize; 
+    height: auto;
+    width: 2 * $blocksize;
+    position: absolute;
+    z-index: 1;
+    transform: translate(-2 * $blocksize, 0px);
 
     .sub-toolset {
         @extend .box-shadow;
-        position : absolute;
-        height : auto;
-        width : inherit;
-        top : 0;
+        position: absolute;
+        height: auto;
+        width: inherit;
+        top: 0;
         
-        background-color : lighten($light, $hover-lighten);
-        transition : transform $toolbox-animation-time ease;
+        background-color: lighten($light, $hover-lighten);
+        transition: transform $toolbox-animation-time ease;
 
         .sub-tool {
-            height : $blocksize;
-            width : $blocksize;
-            transform : translate($blocksize, 0px);
+            height: $blocksize;
+            width: $blocksize;
+            transform: translate($blocksize, 0px);
             
             &:hover {
-                background-color : lighten($light, 2 * $hover-lighten);
+                background-color: lighten($light, 2 * $hover-lighten);
             }
             
             @extend .is-button;
@@ -55,34 +53,34 @@
 }
 
 #color-preview {
-    position : absolute;
-    bottom : 0;
-    left : 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
     
-    height : $blocksize;
-    width : $blocksize;
+    height: $blocksize;
+    width: $blocksize;
     
     @extend .is-button;
     @extend .gui-item;
     
     #color-left, #color-right {
-        position : absolute;
-        height : 0.625 * $blocksize;
-        width : 0.625 * $blocksize;
+        position: absolute;
+        height: 0.625 * $blocksize;
+        width: 0.625 * $blocksize;
         @extend .box-shadow;
     }
     
     #color-left {
-        left : 0.125 * $blocksize;
-        bottom : 0.125 * $blocksize;
-        background-color : red;
-        z-index : 3;
+        left: 0.125 * $blocksize;
+        bottom: 0.125 * $blocksize;
+        background-color: red;
+        z-index: 3;
     }
     
     #color-right {
-        left :  0.25 * $blocksize;
-        bottom : 0.25 * $blocksize;
-        background-color : green;
-        z-index : 4;
+        left:  0.25 * $blocksize;
+        bottom: 0.25 * $blocksize;
+        background-color: green;
+        z-index: 4;
     }
 }
