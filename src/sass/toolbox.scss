@@ -24,7 +24,12 @@
     width : 2 * $blocksize;
     position : absolute;
     z-index : 1;
-    transform : translate(-2 * $blocksize, 0px);
+
+    -ms-transform: translate(-2 * $blocksize, 0px);
+    -webkit-transform: translate(-2 * $blocksize, 0px);
+    -moz-transform: translate(-2 * $blocksize, 0px);
+    -o-transform: translate(-2 * $blocksize, 0px);
+    transform: translate(-2 * $blocksize, 0px);
 
     .sub-toolset {
         @extend .box-shadow;
@@ -34,18 +39,41 @@
         top : 0;
         
         background-color : lighten($light, 10%);
-        transition : transform 500ms ease;
 
         .sub-tool {
             height : $blocksize;
             width : $blocksize;
-            transform : translate($blocksize, 0px);
+            margin-left: $blocksize;
             
             &:hover {
                 background-color : lighten($light, 20%);
             }
             
             @extend .has-icons;
+        }
+
+        -webkit-transition: all 500ms ease;
+        -moz-transition: all 500ms ease;
+        -o-transition: all 500ms ease;
+        transition: all 500ms ease;
+
+        -ms-transform: translate(-2 * $blocksize, 0px);
+        -webkit-transform: translate(-2 * $blocksize, 0px);
+        -moz-transform: translate(-2 * $blocksize, 0px);
+        -o-transform: translate(-2 * $blocksize, 0px);
+        transform: translate(-2 * $blocksize, 0px);
+
+        &.show {
+            -webkit-transition: all 500ms ease;
+            -moz-transition: all 500ms ease;
+            -o-transition: all 500ms ease;
+            transition: all 500ms ease;
+
+            -ms-transform: translate(2 * $blocksize, 0px);
+            -webkit-transform: translate(2 * $blocksize, 0px);
+            -moz-transform: translate(2 * $blocksize, 0px);
+            -o-transform: translate(2 * $blocksize, 0px);
+            transform: translate(2 * $blocksize, 0px);
         }
     }
 }
