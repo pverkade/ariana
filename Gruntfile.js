@@ -9,10 +9,36 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-typescript');
     grunt.loadNpmTasks('grunt-html2js');
     grunt.loadNpmTasks('grunt-include-source');
+    grunt.loadNpmTasks('grunt-preprocess');
 
     var appConfig = require('./build.config.js');
     var taskConfig = {
         pkg: grunt.file.readJSON('package.json'),
+
+        /*
+         * Run preprocessor over index.html
+         */
+        preprocess: {
+            options: {
+                inline: true
+            },
+            dev: {
+                options: {
+                    context: {
+                        DEV: true
+                    }
+                },
+                src: '<%= build_dir %>/index.html',
+            },
+            prod: {
+                options: {
+                    context: {
+                        PROD: true
+                    }
+                },
+                src: '<%= build_dir %>/index.html',
+            }
+        },
 
         /*
          * Expand sass. Compile from the main.scss file.
@@ -93,6 +119,12 @@ module.exports = function(grunt) {
             ],
             template: [
                 '<%= build_dir %>/js/template.js',
+            ],
+            prod: [
+                '<%= build_dir %>/js',
+                '<%= build_dir %>/assets',
+                '<%= build_dir %>/css',
+                '<%= build_dir %>/vendor'
             ]
         },
 
@@ -126,10 +158,13 @@ module.exports = function(grunt) {
                     expand: false
                 }]
             },
-            build_css: {
+            build_vendorcss: {
                 files: [{
-                    src: '<%= src_files.css %>',
-                    dest: '<%= build_dir %>/css/<%= src_files.css %>'
+                    src: '<%= vendor_files.css %>',
+                    dest: '<%= build_dir %>/css',
+                    cwd: '.',
+                    expand: true,
+                    flatten: true
                 }]
             },
             build_assets: {
@@ -172,11 +207,14 @@ module.exports = function(grunt) {
          */
         concat: {
             js: {
-                src: ['<%=build_dir%>/*.js'],
+                src: ['<%= vendor_files.js %>', '<%=build_dir%>/js/*.js'],
                 dest: '<%=build_dir%>/ariana.js'
             },
             css: {
-                src: ['<%=build_dir%>/*.css'],
+                options: {
+                    sourceMap: true
+                },
+                src: ['<%=build_dir%>/**/*.css'],
                 dest: '<%=build_dir%>/ariana.css'
             }
         },
@@ -218,8 +256,8 @@ module.exports = function(grunt) {
     /* Extend config with our custom config */
     grunt.initConfig(grunt.util._.extend(taskConfig, appConfig));
 
-    /* The build task completely builds, concats and (SOON) minifies the src */
-    grunt.registerTask('build', [
+    /* The build_dev task does not concat and minify */
+    grunt.registerTask('build_dev', [
         'clean:build', // Remove build/
         'sass', // Compile sass -> build/css/ariana.css
         'bower_concat:css', // Concatenate all bower css -> build/css/bower.css
@@ -229,19 +267,39 @@ module.exports = function(grunt) {
         'copy:build_vendorjs', // Copy all javascript -> build/js/
         'copy:build_html', // Copy index.html -> build/index.html
         'copy:build_assets', // Copy assets -> build/assets/
-        'includeSource'
-        // 'clean:js',
-        // 'clean:css'
-        // 'concat',
-        // 'bower_concat:js'
+        'includeSource', // Link all js and css files to index.html
+        'preprocess:dev' // Add some links to index.html
+    ]);
+
+    /* The build_prod task completely builds, concats and (SOON) minifies the src */
+    grunt.registerTask('build_prod', [
+        'clean:build', // Remove build/
+        'sass', // Compile sass -> build/css/ariana.css
+        'bower_concat:css', // Concatenate all bower css -> build/css/bower.css
+        'typescript', // Compile TypeScript -> build/js/typescript.js
+        'html2js', // Combine all tpl.html -> build/js/template.js
+        'copy:build_js', // Copy all javascript -> build/js/
+        'copy:build_html', // Copy index.html -> build/index.html
+        'copy:build_assets', // Copy assets -> build/assets/
+        'copy:build_vendorcss', // Copy bower css -> build/css/
+        'concat', // Concat all js and css files
+        'clean:prod', // remove redundant folders
+        'includeSource', // Link ariana.js and ariana.css to index.html
+        'preprocess:prod' // Remove redundant links in index.html
     ]);
 
     /* grunt */
-    grunt.registerTask('default', 'build');
+    grunt.registerTask('default', 'build_dev');
+
+    /* grunt dev */    
+    grunt.registerTask('dev', 'build_dev');
+
+    /* grunt prod */
+    grunt.registerTask('prod', 'build_prod');
 
     /* grunt watch task */
     grunt.renameTask('watch', 'delta');
-    grunt.registerTask('watch', ['build', 'delta']);
+    grunt.registerTask('watch', ['build_dev', 'delta']);
 
     /*
      * Removes index.html and templates.js
@@ -252,7 +310,8 @@ module.exports = function(grunt) {
         'clean:template',
         'copy:build_html',
         'html2js',
-        'includeSource'
+        'includeSource',
+        'preprocess:dev'
     ]);
 
     /*
@@ -266,7 +325,8 @@ module.exports = function(grunt) {
         'typescript',
         'copy:build_js',
         'copy:build_html',
-        'includeSource'
+        'includeSource',
+        'preprocess:dev'
     ]);
 
     /*

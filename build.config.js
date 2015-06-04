@@ -13,10 +13,13 @@ module.exports = {
 
     vendor_files: {
         js: [
-            'bower_components/angular/angular.js',
-            'bower_components/angular-ui-router/release/angular-ui-router.js',
+            'bower_components/jquery/dist/jquery.js',
             'bower_components/bootstrap/dist/js/bootstrap.js',
-            'bower_components/jquery/dist/jquery.js'
+            'bower_components/angular/angular.js',
+            'bower_components/angular-ui-router/release/angular-ui-router.js'
+        ],
+        css: [
+            'bower_components/bootstrap/dist/css/bootstrap.css.map',
         ]
     }
 }
