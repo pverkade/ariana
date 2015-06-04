@@ -1,3 +1,11 @@
+/*
+ * Project Arinana
+ * gui.scss
+ *
+ * This file contains the style definition for eneric GUI elements.
+ *
+ */
+ 
 * {
     margin : 0;
     padding : 0;
@@ -18,7 +26,7 @@ body {
 
 /* Style-class for box-shadow. */
 .box-shadow {
-    box-shadow : 0px 0px 5px $black; 
+    box-shadow : 0px 0px $box-shadow-size $black; 
 }
 
 /* Styleclass for element with icons. */
