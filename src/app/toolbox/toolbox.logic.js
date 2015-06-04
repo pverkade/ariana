@@ -128,9 +128,7 @@ angular.module('ariana').controller('toolboxCtrl', function($scope) {
 angular.module('ariana').directive('preview', function() {
     return {
         link: function(scope, element, attr) {
-            var leftColor  = "#ffaa00";
-            var rightColor = "#88cc44";
-            updateColorPreview();
+            updatePreview();
             
             /*
             element.css({
@@ -143,17 +141,13 @@ angular.module('ariana').directive('preview', function() {
 
             element.on('click', function(event) {
                 event.preventDefault();              
-                /* Switch color left and right. */
-                // TODO fancy animation
-                var t = leftColor;
-                leftColor = rightColor;
-                rightColor = t;
-                updateColorPreview();
+                switchColors();
             });
 
-            function updateColorPreview(){
-                document.getElementById('color-left').style.background  = leftColor; 
-                document.getElementById('color-right').style.background = rightColor; 
+            function updatePreview(){
+                // TODO animation
+                document.getElementById('color-left').style.background  = getLeftColor(); 
+                document.getElementById('color-right').style.background = getRightColor(); 
             }
             
         }

@@ -1,9 +1,11 @@
 angular.module('ariana').controller('contentCtrl', function($scope) {
     setCanvasSize();
     
-    // TODO set resize canvas on resize
+    // TODO set resize canvas on window resize
     
     // TODO set resize canvas on orientation change 
+    
+    // TODO call mouseLeftClick and mouseMove in the interface. 
     
 });
 
