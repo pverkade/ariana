@@ -29,9 +29,11 @@ class BrightnessFilter extends Filter {
         super();
         this.attributes = {
             "brightness" : {
-                "value" : 50,
+                "value" : 1,
                 "type" : FilterValueType.Slider,
-                "setter" : (x) => normalize100(x, 0, 2.5)
+                "setter" : (x) => clamp(x, 0, 2.5),
+                "max": 2.5,
+                "min": 0
             }
         };
 
