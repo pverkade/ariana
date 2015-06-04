@@ -42,26 +42,8 @@ body {
     z-index : 2;
 }
 
-#layers {
-    top : 1.5 * $blocksize;
-    @extend .gui-item;
-    height : auto;
-    right : 0;
-    width : 3 * $blocksize;
-    height : calc(100% - 2 * $blocksize);
-    overflow : hidden;
-    
-    .layer {
-        margin-left : 0.25 * $blocksize;
-        margin-top : 0.25 * $blocksize;
-        width : calc(100% - 0.5 * $blocksize);
-        height : 2 * $blocksize;
-        background-color : lighten($light, 10%);
-        @extend .box-shadow;
-        z-index : 2;
-    }
-    
-    padding-bottom : 0.25 * $blocksize;
+.is-button {
+    cursor: pointer;   
 }
 
 .pop-up {

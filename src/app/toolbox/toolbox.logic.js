@@ -1,9 +1,5 @@
 angular.module('ariana').controller('toolboxCtrl', function($scope) {
     
-    $scope.leftColor  = "#ffaa00";
-    $scope.rightColor = "#88cc44";
-    updateColorPreview();
-    
     /* make tools. */
     var toolset = document.getElementById('toolset');   
     tools = toolset.children;
@@ -87,31 +83,7 @@ angular.module('ariana').controller('toolboxCtrl', function($scope) {
         }
     }
     
-    document.getElementById('color-preview').onclick = switchColors();
-    
-    function switchColors(){
-        console.log("switch");
-        var t = $scope.leftColor;
-        $scope.leftColor = $scope.rightColor;
-        $scope.rightColor = t;
-        updateColorPreview();
-        console.log("done");
-    }
-    
-    function setLeftColor(color){
-        $scope.leftColor = color;
-        updateColorPreview();
-    }
-
-    function setRightColor(color){
-        $scope.rightColor = color;
-        updateColorPreview(); 
-    }
-
-    function updateColorPreview(leftColor, rightColor){
-        document.getElementById('color-left').style.background  = $scope.leftColor; 
-        document.getElementById('color-right').style.background = $scope.rightColor; 
-    }   
+    //document.getElementById('color-preview').onclick = switchColors();  
     
    /* This function shows a certain toolblock. */
     function showSubToolset(setnumber) {
@@ -151,9 +123,40 @@ angular.module('ariana').controller('toolboxCtrl', function($scope) {
         
         return;
     }
+});
+
+angular.module('ariana').directive('preview', function() {
+    return {
+        link: function(scope, element, attr) {
+            var leftColor  = "#ffaa00";
+            var rightColor = "#88cc44";
+            updateColorPreview();
+            
+            /*
+            element.css({
+                   position: 'relative',
+                   border: '1px solid red',
+                   backgroundColor: 'lightgrey',
+                   cursor: 'pointer'
+            });
+            */
+
+            element.on('click', function(event) {
+                event.preventDefault();              
+                /* Switch color left and right. */
+                // TODO fancy animation
+                var t = leftColor;
+                leftColor = rightColor;
+                rightColor = t;
+                updateColorPreview();
+            });
+
+            function updateColorPreview(){
+                document.getElementById('color-left').style.background  = leftColor; 
+                document.getElementById('color-right').style.background = rightColor; 
+            }
+            
+        }
+    };
+    
 }); 
-    
-    
-    
-    
-    

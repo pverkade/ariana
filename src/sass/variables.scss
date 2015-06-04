@@ -1,6 +1,20 @@
-$fonts  : Roboto, Noto, Helvetica, Arial, sans-serif;
-$dark   : #222;
-$light  : #333;
-$white  : #f5f5f5;
-$black  : #000;
-$blocksize : 72px;
+/* Fonts */
+$fonts: Roboto, Noto, Helvetica, Arial, sans-serif;
+
+/* Colors */
+$dark:      #222;
+$light:     #333;
+$white:     #eee;
+$black:     #000;
+
+/* Layout */
+$blocksize: 72px;
+
+/* Effects */
+$hover-lighten: 10%;
+
+/* Toolbox */
+$toolbox-animation-time: 400ms;
+
+/* Toolbar */
+// ...

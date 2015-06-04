@@ -7,15 +7,17 @@
     .tool {
         display : block;
         float : left;
-        height : $blocksize;
-        font-size : 30pt;
         width : $blocksize;
+        height : $blocksize;
+        
+        font-size : 30pt;
         backround-color : $light;
         
         &:hover {
-            background-color : lighten($light, 10%);
+            background-color : lighten($light, $hover-lighten);
         }
         
+        @extend .is-button;
         @extend .has-icons;
     }
 }
