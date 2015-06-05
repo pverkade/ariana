@@ -42,8 +42,7 @@ class DrawBuffer {
 
     getImage() {
         /* Read the contents of the framebuffer */
-        var data = new Uint8Array(this.width * this.height * 4);
-        this.gl.readPixels(0, 0, this.width, this.height, this.gl.RGBA, this.gl.UNSIGNED_BYTE, data);
+        var data = this.getData;
 
         /* Create a 2D canvas to store the result */
         var canvas = document.createElement('canvas');
@@ -57,6 +56,12 @@ class DrawBuffer {
         context.putImageData(imageData, 0, 0);
 
         return canvas.toDataURL();
+    }
+
+    getData() : Uint8Array {
+        var data = new Uint8Array(this.width * this.height * 4);
+        this.gl.readPixels(0, 0, this.width, this.height, this.gl.RGBA, this.gl.UNSIGNED_BYTE, data);
+        return data;
     }
 
     bind() {
