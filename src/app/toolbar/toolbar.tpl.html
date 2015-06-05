@@ -41,7 +41,7 @@
                         <img class="svg-img" alt="transform" src="/assets/vectors/rotate-right-variant.svg">
                     </a>
                 </li>
-                <li class="tool" ng-click="toggleFilters()">
+                <li class="tool" data-toggle="modal" data-target="#filters">
                     <a> 
                         <!-- filters and effects -->
                         <img class="svg-img" alt="filters" src="/assets/vectors/star-outline.svg">
@@ -74,11 +74,32 @@
 </nav>
 
 <!-- filters pop-up -->
-<div class="custom-pop-up" ng-show="filtersActive">
-    <span class="title"> Filters en Effecten </span>
-    <span class="subtitle"> subtitel </span>
-    <div class="option" ng-repeat="filter in filters"> 
-        <span class="title"> {{filter.name}} </span> 
-        <img ng-src="{{filter.image}}"> </img>
+<div id="filters" class="modal fade custom-pop-up" role="dialog">
+    <div class="modal-dialog modal-lg">
+    
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1> Filters and Effects </h1>
+            <!-- <h2> optional subtitel </h2> -->
+        </div>
+        
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2" ng-repeat="filter in filters">
+                    <div class="thumbnail"> 
+                        <img ng-src="{{filter.image}}"> </img>
+                        <div class="caption">
+                            <h4> {{filter.name}} </h4> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
+        </div>
+    </div>
+    
     </div>
 </div>

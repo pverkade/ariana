@@ -5,7 +5,8 @@
  * This file contains the style definition for the Toolbar element.
  *
  */
- 
+
+
 #toolbar {    
     @extend .gui-item;
     position: relative;
@@ -17,7 +18,6 @@
     .navbar-collapse, .navbar-header, .container-fluid, .navbar-right {
         margin: 0px;
         padding: 0px; 
-        // 100% - width of brand
         width: calc(100% - 2 * $blocksize);
     }
 
@@ -43,7 +43,6 @@
     }
 
     .seperator {
-        /*width: 2px;*/
         top: 0.1 * $blocksize;
         height: 0.8 * $blocksize;
         width: 2px;
@@ -82,6 +81,7 @@
     }
 }
 
+/*
 .custom-pop-up {
     position: absolute;
     top:    1.5 * $blocksize;
@@ -98,18 +98,18 @@
     
     @extend .box-shadow;
 
-    .title, .subtitle {
+    h1, h2 {
         display: block;
         padding: 0.125 * $blocksize 0.25 * $blocksize;
         margin: 0;
     }
         
-    .title {
+    h1 {
         font-size: 30pt;
         background-color: darken($light, 10%);
     }
     
-    .subtitle {
+    h2 {
         font-size: 20pt;
         background-color: darken($light, 5%);
     }
@@ -122,7 +122,10 @@
         opacity: 1;
     }
     
-    .option {
+    
+}
+
+.option {
         float: left;
         height: auto;
         background-color: lighten($light, 10%);
@@ -130,10 +133,11 @@
         margin-left: 0.25 * $blocksize;
         margin-top:  0.25 * $blocksize;
         
-        width: calc(#{(100 / $pop-up-options) (($pop-up-options + 1) * 0.25 * $blocksize) / $pop-up-options}); 
+        width: calc(25% - #{($pop-up-options + 1)/($pop-up-options) * 0.25 * $blocksize}); 
         
-        .title {
+        h1 {
             display: block;
+            padding: 0.125 * $blocksize;
             font-size: 15pt;
             background-color: darken($light, 5%);
             width : 100%;
@@ -141,8 +145,7 @@
         }
         
         img {
-            width : 25%;
+            width : 100%;
             height : $blocksize;
         }
-    }
-}
+    } */

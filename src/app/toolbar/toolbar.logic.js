@@ -30,26 +30,31 @@ angular.module('ariana').controller('toolbarCtrl', function($scope) {
         }, 'xml');
     }); */
     
-    
+    /*
     $scope.filterActive = false;
     $scope.toggleFilters = function() {
         if ($scope.filtersActive) $scope.filtersActive = false;
         else $scope.filtersActive = true;
-    }
+    }*/
+    
+    $scope.transformations = [
+        {name: "Rotate left 90", image: "/assets/img/arnold2.jpg"},
+        {name: "Rotate right", image: "/assets/img/arnold2.jpg"},
+    ];
     
     $scope.filters = [
-        {name: "Gauss", image: "unkown.png"},
-        {name: "Gauss", image: "unkown.png"},
-        {name: "Gauss", image: "unkown.png"},
-        {name: "Gauss", image: "unkown.png"},
-        {name: "Gauss", image: "unkown.png"},
-        {name: "Gauss", image: "unkown.png"},
-        {name: "Gauss", image: "unkown.png"},
-        {name: "Gauss", image: "unkown.png"},
-        {name: "Gauss", image: "unkown.png"},
-        {name: "Gauss", image: "unkown.png"},
-        {name: "Gauss", image: "unkown.png"},
-        {name: "Gauss", image: "unkown.png"}
+        {name: "Arnold filter", image: "/assets/img/arnold2.jpg"},
+        {name: "Arnold filter", image: "/assets/img/arnold2.jpg"},
+        {name: "Arnold filter", image: "/assets/img/arnold2.jpg"},
+        {name: "Arnold filter", image: "/assets/img/arnold2.jpg"},
+        {name: "Arnold filter", image: "/assets/img/arnold2.jpg"},
+        {name: "Arnold filter", image: "/assets/img/arnold2.jpg"},
+        {name: "Arnold filter", image: "/assets/img/arnold2.jpg"},
+        {name: "Arnold filter", image: "/assets/img/arnold2.jpg"},
+        {name: "Arnold filter", image: "/assets/img/arnold2.jpg"},
+        {name: "Arnold filter", image: "/assets/img/arnold2.jpg"},
+        {name: "Arnold filter", image: "/assets/img/arnold2.jpg"},
+        {name: "Arnold filter", image: "/assets/img/arnold2.jpg"}
     ];
 
 });
