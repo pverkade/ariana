@@ -42,7 +42,7 @@ class DrawBuffer {
 
     getImage() {
         /* Read the contents of the framebuffer */
-        var data = this.getData;
+        var data = this.getData();
 
         /* Create a 2D canvas to store the result */
         var canvas = document.createElement('canvas');

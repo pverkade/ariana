@@ -47,16 +47,16 @@
                     drawbuffer.bind();
                     imageLayer2.setupRender();
                     imageLayer2.render();
+                    var data = drawbuffer.getData();
                     drawbuffer.unbind();
 
-                    var data = drawbuffer.getData();
                     //var bitmask = magicSelection.getSelection(data, 255, 250, 0.1, drawbuffer.width, drawbuffer.height);
                     var worker = new Worker("magic-selection-worker.js");
                     worker.postMessage({
                         "data": data,
-                        "x": 134,
+                        "x": 255,
                         "y": 243,
-                        "threshold": 0.2,
+                        "threshold": 0.02,
                         "width": drawbuffer.width,
                         "height": drawbuffer.height
                     });

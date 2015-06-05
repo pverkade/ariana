@@ -21,26 +21,26 @@ class MagicSelection {
     constructor() {
         this.imageData = null;
         this.magicWandColor = null;
-        this.treshold = 0.0;
+        this.bitmaskData = null;
+        this.treshold = 0.2;
         this.bmON = 255;
     }
 
     /* Given image data, pixel and treshold value a bitmask for the magic wand is returned.
      Algorithm checks for lines horizontally and adds line elements above and below to the
      stack when they match the color of the given point. */
-    getSelection(imageData : Uint8Array, x : number, y : number, threshold : number, width : number, height : number) {
-        this.treshold = threshold * 1020;
-
+    getSelection(imageData : Uint8Array, x : number, y : number, treshold : number, width : number, height : number) {
         var stack = [];
         var curLine = [];
         var newLine = [];
+
+        this.treshold = treshold;
+        this.imageData = imageData;
         this.width = width;
         this.height = height;
 
-        this.imageData = imageData;
-
         /* Fill bitmask with zeros. */
-        this.bitmaskData = new Uint8Array(imageData.length / 4);
+        this.bitmaskData = new Uint8Array(width * height);
 
         this.magicWandColor = this.getColorPoint(x, y);
 
@@ -71,8 +71,7 @@ class MagicSelection {
             }
         }
 
-        this.getBoundingPath();
-
+        //this.getBoundingPath();
         return this.bitmaskData;
     }
 
@@ -122,8 +121,10 @@ class MagicSelection {
         return line;
     }
 
+
+
     getBoundingPath() {
-        var newBMData = new Uint8Array(this.bitmaskData.length);
+        var newBMData = new Uint8Array(this.imageData.length);
 
         /* Iterate over bitmaskData and possible adjust bits that are set. */
         for (var i = 0; i < this.bitmaskData.length ; i++) {
@@ -149,30 +150,77 @@ class MagicSelection {
         }
 
         /* Copy adjusted bitmask back bitmaskData class field. */
-        //for (var i = 0; i < this.bitmaskData.length; i++) {
-        //    this.bitmaskData[i] = newBMData[i];
-        //}
         this.bitmaskData = newBMData;
     }
 
-    getColorPoint(x : number, y : number) {
-        var offset : number = (x + y * this.width) * 4;
-        var Red : number	= this.imageData[offset];
-        var Green : number	= this.imageData[offset + 1];
-        var Blue  : number	= this.imageData[offset + 2];
-        var Alpha : number	= this.imageData[offset + 3];
+    marchingAnts() {
+        var max_size : number;
+        var filter = [];
+        var squareSize; // filter
+        var firstLineBlack : number;
 
-        return [Red, Green, Blue, Alpha];
+        /* A square of maximum size width/height of image data has to be created. */
+        max_size = Math.max(this.width, this.height);
+
+        /* Create checkboard pattern. */
+        for (var i = 0; i < max_size; i++) {
+            if (i % 8 >= 4){
+                firstLineBlack = 0;
+            } else {
+                firstLineBlack = 1;
+            }
+            for (var j = 0; j < max_size; j++) {
+
+            }
+        }
+    }
+
+    /* filter always has a square shape. */
+    composite(bitmaskData : number[], filter : number[]) {
+        var newBMData = [];
+
+        // if ( bitmaskData.length != filter.length ) {
+        // 	return null;
+        // }
+
+        /* Fill new bitmask with zeros. */
+        for (var i = 0; i < this.bitmaskData.length; i++) {
+            newBMData.push(0);
+        }
+
+        for (var i = 0; i < bitmaskData.length; i++) {
+            if ( bitmaskData[i] == this.bmON && filter[i] == this.bmON) {
+                newBMData[i] = this.bmON;
+            }
+        }
+
+        return newBMData;
+    }
+
+    getColorPoint(x : number, y : number) {
+        //console.log((x + y * this.width) * 4);
+        var red : number	= this.imageData[(x + y * this.width) * 4];
+        var green : number	= this.imageData[(x + y * this.width) * 4 + 1];
+        var blue  : number	= this.imageData[(x + y * this.width) * 4 + 2];
+        var alpha : number	= this.imageData[(x + y * this.width) * 4 + 3];
+
+        return [red, green, blue, alpha];
     }
 
     matchPoint(x : number, y : number) {
         var curColor = this.getColorPoint(x, y);
         var value = 0.0;
 
-        for (var i = 0; i < 4; i++) {
+        for (var i = 0; i < 3; i++) {
             value += Math.abs(this.magicWandColor[i] - curColor[i]);
         }
 
-        return (value <= this.treshold);
+        value /= 3.0 * 255.0;
+
+        if (value <= this.treshold) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
