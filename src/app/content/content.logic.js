@@ -1,5 +1,4 @@
 angular.module('ariana').controller('contentCtrl', function($scope, $window) {
-    setCanvasSize();
     $scope.mouseMove = function(e) {
         $scope.config.mouse.location.x = e.x;
         $scope.config.mouse.location.y = e.y;
