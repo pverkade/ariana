@@ -3,3 +3,4 @@
 .idea/*
 
 !gl-matrix.js
+!magic-selection-worker.js
