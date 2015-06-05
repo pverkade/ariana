@@ -53,8 +53,6 @@ class Filter {
     setAttribute(name:string, value:any) :void {
         var attribute = this.attributes[name];
         attribute["value"] = attribute["setter"](value);
-
-        console.log(name, attribute["value"]);
     }
 
     getAttribute(name : string) : Object {
