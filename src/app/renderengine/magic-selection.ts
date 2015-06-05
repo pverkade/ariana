@@ -10,32 +10,31 @@ class Point {
 }
 
 class MagicSelection {
-	imageData : ImageData;
+	imageData : Uint8Array;
 	magicWandColor : number[];
-	bitMaskData : number[];
+	bitMaskData : Uint8Array;
 	treshold : number;
+	width : number;
+    height : number;
 
 	constructor() {
-		this.imageData = null;
-		this.magicWandColor = null;
-		this.bitMaskData = [];
-		this.treshold = 0.0;
 	}
 
 	/* Given image data, pixel and treshold value a bitmask for the magic wand is returned. 
-		Algorithm checks for lines horizontally and adds line elements above and below to the 
-		stack when they match the color of the given point. */
-	getSelection(imageData : ImageData, x : number, y : number, treshold : number) {
+	 *	Algorithm checks for lines horizontally and adds line elements above and below to the
+	 *	stack when they match the color of the given point.
+	 */
+	getSelection(imageData : Uint8Array, x : number, y : number, treshold : number, width : number, height: number) : Uint8Array {
 		var stack = [];
 		var curLine = [];
 		var newLine = [];
 
 		this.imageData = imageData;
+        this.width = width;
+        this.height = height;
 
 		/* Fill bitmask with zeros. */
-		for (var i = 0; i < imageData.data.length / 4; i++) {
-			this.bitMaskData.push(0);
-		}
+        this.bitMaskData = new Uint8Array(imageData.length / 4);
 
 		this.magicWandColor = this.getColorPoint(x, y);
 
@@ -70,18 +69,18 @@ class MagicSelection {
 	}
 
 	/* Return array of points on same line as given point. */
-	searchLine(startX : number, startY : number) {
+	private searchLine(startX : number, startY : number) {
 		var line = [];
 		var left : number = startX;
 		var right : number = startX;
 	
 		/* Check if a valid position is given. */
-		if (startY < 0 || startY >= this.imageData.height || startX < 0 || startX >= this.imageData.width ) {
+		if (startY < 0 || startY >= this.height || startX < 0 || startX >= this.width ) {
 			return null;
 		}
 
 		/* Check if point is marked in bitMaskData as part of the selection. */ 
-		if (this.bitMaskData[startX + startY * this.imageData.width] != 0) {
+		if (this.bitMaskData[startX + startY * this.width] != 0) {
 			return null;
 		}
 
@@ -99,7 +98,7 @@ class MagicSelection {
 		}
 
 		/* Search right from starting point. */
-		for (var x = startX + 1; x < this.imageData.width; x++) {
+		for (var x = startX + 1; x < this.width; x++) {
 			if (this.matchPoint(x, startY) == false) {
 				right = x;
 				break;
@@ -109,22 +108,22 @@ class MagicSelection {
 		/* Make line by adding all points that are found and adjust bitmask */
 		for (var x = left; x <= right; x++) {
 			line.push(new Point(x, startY));
-			this.bitMaskData[x + startY * this.imageData.width] = 255;
+			this.bitMaskData[x + startY * this.width] = 255;
 		}
 
 		return line;
 	}
 
-	getColorPoint(x : number, y : number) {
-		var Red : number	= this.imageData.data[(x + y * this.imageData.width) * 4];
-		var Green : number	= this.imageData.data[(x + y * this.imageData.width) * 4 + 1];
-		var Blue  : number	= this.imageData.data[(x + y * this.imageData.width) * 4 + 2];
-		var Alpha : number	= this.imageData.data[(x + y * this.imageData.width) * 4 + 3];
+	private getColorPoint(x : number, y : number) {
+		var Red : number	= this.imageData[(x + y * this.width) * 4];
+		var Green : number	= this.imageData[(x + y * this.width) * 4 + 1];
+		var Blue  : number	= this.imageData[(x + y * this.width) * 4 + 2];
+		var Alpha : number	= this.imageData[(x + y * this.width) * 4 + 3];
 
 		return [Red, Green, Blue, Alpha];
 	}
 
-	matchPoint(x : number, y : number) {
+	private matchPoint(x : number, y : number) {
 		var curColor = this.getColorPoint(x, y);
 		var value = 0.0;
 
