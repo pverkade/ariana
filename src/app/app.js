@@ -16,7 +16,8 @@ app.controller('AppCtrl', ['$scope',
 				}
 			},
 			tools: {
-				active: null,
+				activeTool:     null,
+				activeToolset:  null,
 				colors: {
 					primary:   '#000000',
 					secondary: '#ffffff'

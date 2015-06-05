@@ -1,12 +1,14 @@
-<div class="toolbox fix-top">
+<div id="toolbox">
     
-    <div class="tool" id="{{name}}" ng-repeat="(name, tool) in toolbox" ng-controller="toolsetCtrl" ng-click="toggle($event)">
+    <div class="tool" id="{{name}}" ng-repeat="(name, tool) in toolbox" 
+        ng-controller="toolsetCtrl" ng-click="toggle($event)">
 
         <img class="svg-img" ng-src="assets/vectors/{{tool.image}}"></img>
 
-        <div class="toolset sub fix-top" ng-show="config.tools.active == '{{name}}'">
+        <div class="toolset fix-top" ng-show="config.tools.activeToolset == '{{name}}'">
 	        
-	        <div class="tool" id="{{name}}" ng-repeat="(name, subtool) in tool.tools" ng-controller="toolsetCtrl" ng-click="">
+	        <div class="subtool" id="{{name}}" ng-repeat="(name, subtool) in tool.tools" 
+	            ng-controller="toolsetCtrl" ng-click="selectTool(name)">
 
 	            <img class="svg-img" ng-src="assets/vectors/{{subtool.image}}"></img>
 

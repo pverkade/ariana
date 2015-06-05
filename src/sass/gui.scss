@@ -52,8 +52,4 @@ body {
 
 .is-button {
     cursor: pointer;
-
-    &:hover {
-        background-color: lighten($light, $hover-lighten);
-    }
 }
