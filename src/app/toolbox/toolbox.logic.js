@@ -31,7 +31,7 @@ angular.module('ariana').controller('toolsetCtrl', function($scope) {
 
         }, 'xml');
     });
-    
+
     $scope.collapsed = true;
 
     /*
