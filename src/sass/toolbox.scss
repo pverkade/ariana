@@ -29,11 +29,16 @@
 }
 
 #sub-toolsets {
-    top: 1.5 * $blocksize; 
-    height: auto;
-    width: 2 * $blocksize;
-    position: absolute;
-    z-index: 1;
+    top : 1.5 * $blocksize; 
+    height : auto;
+    width : 2 * $blocksize;
+    position : absolute;
+    z-index : 1;
+
+    -ms-transform: translate(-2 * $blocksize, 0px);
+    -webkit-transform: translate(-2 * $blocksize, 0px);
+    -moz-transform: translate(-2 * $blocksize, 0px);
+    -o-transform: translate(-2 * $blocksize, 0px);
     transform: translate(-2 * $blocksize, 0px);
 
     .sub-toolset {
@@ -43,13 +48,12 @@
         width: inherit;
         top: 0;
         
-        background-color: lighten($light, $hover-lighten);
-        transition: transform $toolbox-animation-time ease;
+        background-color : lighten($light, $hover-lighten);
 
         .sub-tool {
-            height: $blocksize;
-            width: $blocksize;
-            transform: translate($blocksize, 0px);
+            height : $blocksize;
+            width : $blocksize;
+            margin-left: $blocksize;
             
             &:hover {
                 background-color: lighten($light, 2 * $hover-lighten);
@@ -57,6 +61,30 @@
             
             @extend .is-button;
             @extend .has-icons;
+        }
+
+        -webkit-transition: all $toolbox-animation-time ease;
+        -moz-transition: all $toolbox-animation-time ease;
+        -o-transition: all $toolbox-animation-time ease;
+        transition: all $toolbox-animation-time ease;
+
+        -ms-transform: translate(-2 * $blocksize, 0px);
+        -webkit-transform: translate(-2 * $blocksize, 0px);
+        -moz-transform: translate(-2 * $blocksize, 0px);
+        -o-transform: translate(-2 * $blocksize, 0px);
+        transform: translate(-2 * $blocksize, 0px);
+
+        &.show {
+            -webkit-transition: all $toolbox-animation-time ease;
+            -moz-transition: all $toolbox-animation-time ease;
+            -o-transition: all $toolbox-animation-time ease;
+            transition: all $toolbox-animation-time ease;
+
+            -ms-transform: translate(2 * $blocksize, 0px);
+            -webkit-transform: translate(2 * $blocksize, 0px);
+            -moz-transform: translate(2 * $blocksize, 0px);
+            -o-transform: translate(2 * $blocksize, 0px);
+            transform: translate(2 * $blocksize, 0px);
         }
     }
 }

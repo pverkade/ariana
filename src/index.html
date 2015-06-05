@@ -6,11 +6,25 @@
     <meta description="">
     <title> Project Ariana </title>
 
-    <!-- style -->
-    <link rel="stylesheet" type="text/css" href="ariana.css">
 
-    <!-- javascript -->
-    <script type="text/javascript" src="ariana.js"></script>
+    <!-- @ifdef DEV -->
+    <!-- style -->
+    <!-- include: "type": "css", "files": "build/css/*.css" -->
+
+    <!-- bower -->
+    <script src="vendor/jquery.js"></script>
+    <script src="vendor/bootstrap.js"></script>
+    <script src="vendor/angular.js"></script>
+    <script src="vendor/angular-ui-router.js"></script>
+
+    <!-- ariana -->
+    <!-- include: "type": "js", "files": "build/js/*.js" -->
+    <!-- @endif -->
+
+    <!-- @ifdef PROD -->
+    <script src="ariana.js"></script>
+    <link rel="stylesheet" type="text/css" href="ariana.css">
+    <!-- @endif -->
 </head>
 
 <body>

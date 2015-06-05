@@ -41,7 +41,7 @@
                         <img class="svg-img" alt="transform" src="/assets/vectors/rotate-right-variant.svg">
                     </a>
                 </li>
-                <li class="tool">
+                <li class="tool" ng-click="toggleFilters()">
                     <a> 
                         <!-- filters and effects -->
                         <img class="svg-img" alt="filters" src="/assets/vectors/star-outline.svg">
@@ -72,3 +72,14 @@
         </div>
     </div>
 </nav>
+
+<!-- filters pop-up -->
+<div class="pop-up" ng-show="filtersActive">
+    <h1> Filters en Effecten </h1>
+    <h2> let op: dit is een pop-up </h2>
+    <div class="option" ng-repeat="filter in filters"> 
+        <h1> {{filter.name}} </h1> 
+        <img ng-src="{{filter.image}}"> </img>
+    </div>
+</div>
+

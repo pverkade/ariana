@@ -81,3 +81,61 @@
         }
     }
 }
+
+.pop-up {
+    position: absolute;
+    top:  10%;
+    left: 10%;   
+    height: 80%;
+    width:  80%;
+    background-color: $light;
+    z-index: 2;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    
+    transition: opacity $pop-up-animation-time ease, transform $pop-up-animation-time ease;
+    
+    @extend .box-shadow;
+
+    h1, h2 {
+        display: block;
+        padding: 0.125 * $blocksize, 0.25 * $blocksize;
+        width : calc(100% - 0.25 * $blocksize);
+    }
+        
+    h1 {
+        font-size: 30pt;
+        background-color: darken($light, 10%);
+    }
+    
+    h2 {
+        font-size: 20pt;
+        background-color: darken($light, 5%);
+    }
+    
+    .ng-hide {
+        opacity: 0;
+    }
+    
+    .ng-show {
+        opacity: 1;
+    }
+    
+    .option {
+        float: left;
+        width: 25%;
+        height: auto;
+        background-color: lighten($light, 10%);
+        
+        h1 {
+            display: block;
+            font-size: 15pt;
+            background-color: darken($light, 5%);
+        }
+        
+        img {
+            width : 25%;
+            height : $blocksize;
+        }
+    }
+}

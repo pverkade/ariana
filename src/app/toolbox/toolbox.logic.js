@@ -263,8 +263,13 @@ angular.module('ariana').controller('toolboxCtrl', function($scope) {
          * original position. */
         var subtoolsets = document.getElementById('sub-toolsets').children;
         for (var i = 0; i < subtoolsets.length; i++) {
-            if (i == setnumber) subtoolsets[i].style.transform = "translate(144px, 0px)";
-            else subtoolsets[i].style.transform = "translate(-144px, 0px)";
+            if (i == setnumber) {
+                //subtoolsets[i].style.transform = "translate(144px, 0px)";
+                subtoolsets[i].className = "sub-toolset show";
+            } else {
+                //subtoolsets[i].style.transform = "translate(-144px, 0px)";
+                subtoolsets[i].className = "sub-toolset";
+            }
         }
 
         return;
@@ -282,7 +287,7 @@ angular.module('ariana').controller('toolboxCtrl', function($scope) {
         /* Move all tool blocks to their original position. */
         var subtoolsets = document.getElementById('sub-toolsets').children;
         for (var i = 0; i < subtoolsets.length; i++) {
-            subtoolsets[i].style.transform = "translate(-144px, 0px)";
+            subtoolsets[i].className = "sub-toolset";//style.transform = "translate(-144px, 0px)";
         }
 
         return;

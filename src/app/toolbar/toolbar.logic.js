@@ -28,5 +28,26 @@ angular.module('ariana').controller('toolbarCtrl', function($scope) {
 
         }, 'xml');
     });
+    
+    $scope.filterActive = false;
+    $scope.toggleFilters = function() {
+        if ($scope.filtersActive) $scope.filtersActive = false;
+        else $scope.filtersActive = true
+    }
+    
+    $scope.filters = [
+        {name: "Gauss", image: "fuckyou.png",},
+        {name: "Swag",  image: "fuckyou.png",},
+        {name: "Yolo",  image: "fuckyou.png",},
+        {name: "420",   image: "fuckyou.png",}
+        {name: "P",     image: "fuckyou.png",},
+        {name: "KKK",   image: "fuckyou.png",},
+        {name: "1488",  image: "fuckyou.png",},
+        {name: "A",     image: "fuckyou.png",}
+        {name: "BN",    image: "fuckyou.png",},
+        {name: "pPOO",  image: "fuckyou.png",},
+        {name: "HAJA",  image: "fuckyou.png",},
+        {name: "911",   image: "fuckyou.png",},
+    ];
 
 });
