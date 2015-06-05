@@ -1,6 +1,6 @@
 "use strict";
 
-var app = angular.module('ariana', ['ui.router', 'templates-ariana']);
+var app = angular.module('ariana', ['ui.router', 'templates-ariana', 'ui.bootstrap']);
 
 angular.module('ariana').controller('AppCtrl', function($scope) {
 	$scope.config = {
