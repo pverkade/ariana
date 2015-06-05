@@ -6,30 +6,31 @@
 class SelectionProgram extends BaseProgram {
     program : WebGLRenderingContext;
 
-    samplerLocation : WebGLUniformLocation;
     bitmapLocation : WebGLUniformLocation;
+    samplerLocation : WebGLTexture;
 
-    bitmap : WebGLTexture;
+    bitmask : WebGLTexture;
 
     constructor(gl : WebGLRenderingContext) {
         super.setShaderSource("filter-vs", "selection-fs");
         super(gl);
-        var texCoordLocation = this.gl.getAttribLocation(this.program, "a_texCoord");
-        this.samplerLocation = this.gl.getUniformLocation(this.program, "u_sampler");
-        this.bitmapLocation = this.gl.getUniformLocation(this.program, "u_bitmap");
 
-        this.gl.enableVertexAttribArray(texCoordLocation);
-        this.gl.vertexAttribPointer(texCoordLocation, 2, this.gl.FLOAT, false, 16, 8);
+        var texCoordLocation = gl.getAttribLocation(this.program, "a_texCoord");
+        this.bitmapLocation = this.gl.getUniformLocation(this.program, "u_bitmap");
+        this.samplerLocation = this.gl.getUniformLocation(this.program, "u_sampler");
+
+        gl.enableVertexAttribArray(texCoordLocation);
+        gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 16, 8);
     }
 
     setBitmask(bitmap : Uint8Array, width: number, height: number) : void {
-        if (!this.bitmap) {
-            this.gl.deleteTexture(this.bitmap);
+        if (!this.bitmask) {
+            this.gl.deleteTexture(this.bitmask);
         }
 
-        this.bitmap = this.gl.createTexture();
+        this.bitmask = this.gl.createTexture();
 
-        this.gl.bindTexture(this.gl.TEXTURE_2D, this.bitmap);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.bitmask);
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_S, this.gl.CLAMP_TO_EDGE);
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_WRAP_T, this.gl.CLAMP_TO_EDGE);
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
@@ -43,10 +44,10 @@ class SelectionProgram extends BaseProgram {
         this.gl.uniform1i(this.samplerLocation, 0);
         this.gl.uniform1i(this.bitmapLocation, 1);
 
-        this.gl.activeTexture(this.gl.TEXTURE1);
-        this.gl.bindTexture(this.gl.TEXTURE_2D, this.bitmap);
-
         this.gl.activeTexture(this.gl.TEXTURE0);
         this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+
+        this.gl.activeTexture(this.gl.TEXTURE1);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.bitmask);
     }
 }
