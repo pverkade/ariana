@@ -1,28 +1,188 @@
-<div class="container">
-<div class="row">
-    <div>
-        <div ng-controller="CarouselDemoCtrl" class="col-md-4">
-            <div style="height: 305px">
-                <carousel interval="myInterval">
-                    <slide ng-repeat="slide in slides" active="slide.active">
-                        <img ng-src="{{slide.image}}" style="margin:auto;">
-                        <div class="carousel-caption">
-                            <h4>Slide {{$index}}</h4>
-                            <p>{{slide.text}}</p>
-                        </div>
-                    </slide>
-                </carousel>
+    <!-- Header -->
+<div class="landing">
+    <header>
+        <div class="container">
+            <div class="intro-text">
+                <div class="intro-lead-in">Image editing made easy</div>
+                <div class="intro-heading">project ariana</div>
+                <a href="/" class="btn btn-primary btn-lg">Start now</a>
             </div>
+        </div>
+    </header>
+
+    <!-- Features -->
+    <section>
+        <div class="container">
             <div class="row">
-                <div class="col-md-6">
-                    <button type="button" class="btn btn-info" ng-click="addSlide()">Add Slide</button>
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Features</h2>
+                    <h3 class="section-subheading text-muted">Turn your images into masterpieces</h3>
                 </div>
-                <div class="col-md-6">
-                    Interval, in milliseconds: <input type="number" class="form-control" ng-model="myInterval">
-                    <br />Enter a negative number or 0 to stop the interval.
+            </div>
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="TODO"></i>
+                        <i class="TODO"></i>
+                    </span>
+                    <h4 class="service-heading">Cross-platform</h4>
+                    <p class="text-muted">
+                        Allahu akbar
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="TODO"></i>
+                        <i class="TODO"></i>
+                    </span>
+                    <h4 class="service-heading">Something Something</h4>
+                    <p class="text-muted">
+                        Wow that shit is AMAZING
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="TODO"></i>
+                        <i class="TODO"></i>
+                    </span>
+                    <h4 class="service-heading">Scrubmaster</h4>
+                    <p class="text-muted">
+                        Peter is de beste scrubmaster
+                    </p>
+                </div>
+            </div>
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="TODO"></i>
+                        <i class="TODO"></i>
+                    </span>
+                    <h4 class="service-heading">Cyka Blyat</h4>
+                    <p class="text-muted">
+                        Cyka blyat idi nahui gif me awp ghamburgar america
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="TODO"></i>
+                        <i class="TODO"></i>
+                    </span>
+                    <h4 class="service-heading">David's flesje</h4>
+                    <p class="text-muted">
+                        Gooi die shit om
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <span class="fa-stack fa-4x">
+                        <i class="TODO"></i>
+                        <i class="TODO"></i>
+                    </span>
+                    <h4 class="service-heading">Te laat</h4>
+                    <p class="text-muted">
+                        dat hebben we liever niet
+                    </p>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="bg-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Our Amazing Team</h2>
+                    <h3 class="section-subheading text-muted">Team Swaggerboiiz best name 2019</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="team-member">
+                        <img src="img/team/1.jpg" class="img-responsive img-circle" alt="">
+                        <h4>Naam A</h4>
+                        <p class="text-muted">Lead Designer</p>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="team-member">
+                        <img src="img/team/2.jpg" class="img-responsive img-circle" alt="">
+                        <h4>Naam B</h4>
+                        <p class="text-muted">Lead Bullshit</p>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="team-member">
+                        <img src="img/team/3.jpg" class="img-responsive img-circle" alt="">
+                        <h4>Naam C</h4>
+                        <p class="text-muted">Lead Leader</p>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="team-member">
+                        <img src="img/team/3.jpg" class="img-responsive img-circle" alt="">
+                        <h4>Naam D</h4>
+                        <p class="text-muted">Lead Singer</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="team-member">
+                        <img src="img/team/1.jpg" class="img-responsive img-circle" alt="">
+                        <h4>Naam E</h4>
+                        <p class="text-muted">Lead Worshipper</p>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="team-member">
+                        <img src="img/team/2.jpg" class="img-responsive img-circle" alt="">
+                        <h4>Naam F</h4>
+                        <p class="text-muted">Lead Eating</p>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="team-member">
+                        <img src="img/team/3.jpg" class="img-responsive img-circle" alt="">
+                        <h4>Naam G</h4>
+                        <p class="text-muted">Lead Slacking</p>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="team-member">
+                        <img src="img/team/3.jpg" class="img-responsive img-circle" alt="">
+                        <h4>Naam H</h4>
+                        <p class="text-muted">Lead Scrum</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <p class="large text-muted">
+                        This team drops bombs wut wuut
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <span class="copyright">Copyright &copy; Project ARIANA 2019</span>
+                </div>
+                <div class="col-md-4">
+                    #SWAG
+                </div>
+                <div class="col-md-4">
+                    <ul class="list-inline quicklinks">
+                        <li><a href="watdenkjijdatditdoet?">Privacy Policy</a>
+                        </li>
+                        <li><a href="gatocheensweg">Terms of Use</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
 </div>
