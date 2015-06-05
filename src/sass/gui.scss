@@ -2,7 +2,7 @@
  * Project Arinana
  * gui.scss
  *
- * This file contains the style definition for eneric GUI elements.
+ * This file contains the style definition for generic GUI elements.
  *
  */
  
@@ -53,4 +53,24 @@ body {
 
 .is-button {
     cursor: pointer;   
+}
+
+/* Upload */
+.modal-body{
+    .drop-box {
+        background: #F8F8F8;
+        border: 5px dashed #DDD;
+        height: 200px;
+        line-height: 200px;
+        text-align: center;
+        margin: 10px;
+    }
+    .dragover {
+        border: 5px dashed blue;
+    }
+
+    span {
+        display: inline-block;
+        vertical-align: middle;
+    }
 }
