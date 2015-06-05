@@ -27,10 +27,14 @@ class RenderEngine {
 
         try {
             /* Try to grab the standard context. If it fails, fallback to experimental. */
-            this.gl = <WebGLRenderingContext> (canvas.getContext("webgl") || canvas.getContext("experimental-webgl"));
+            this.gl = <WebGLRenderingContext> (canvas.getContext("webgl", {stencil:true}) || canvas.getContext("experimental-webgl", {stencil:true}));
+            var contextAttributes = this.gl.getContextAttributes();
+            var haveStencilBuffer = contextAttributes.stencil;
+            console.log("Has stencil buffer: " + haveStencilBuffer);
 
-            this.gl.enable(this.gl.BLEND);
-            this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA );
+
+            //this.gl.enable(this.gl.BLEND);
+            //this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
         }
         catch(e) {
             alert(e.stack);
@@ -59,7 +63,7 @@ class RenderEngine {
     }
 
     render() {
-        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+        //this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
 
         var oldType = -1;
         var numItems = this.layers.length;
@@ -89,13 +93,13 @@ class RenderEngine {
 
             var imageLayer = <ImageLayer> layer;
             this.drawbuffer1.bind();
-            this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+            this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
             imageLayer.setupRender();
             imageLayer.render();
             this.drawbuffer1.unbind();
 
             this.drawbuffer2.bind();
-            this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+            this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
             filter.render(this.drawbuffer1.getWebGlTexture());
             imageLayer.copyFramebuffer(this.width, this.height);
             this.drawbuffer2.unbind();
@@ -110,7 +114,7 @@ class RenderEngine {
     renderToImg() {
         /* Render all layers to a framebuffer and return a 64base encoded image */
         this.drawbuffer1.bind();
-        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
 
         this.render();
         var val = this.drawbuffer1.getImage();

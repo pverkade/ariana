@@ -39,14 +39,28 @@
                     imageLayer2.setPos(0.5,0);
 
                     renderEngine.addLayer(imageLayer);
-                    renderEngine.addLayer(imageLayer2);
+                    //renderEngine.addLayer(imageLayer2);
                     //renderEngine.reorder(1, 0);
 
-                    var brightnessFilter = new BrightnessFilter(gl);
-                    brightnessFilter.setAttribute("brightness", 0.3);
-                    renderEngine.filterLayers([0], brightnessFilter);
-                    
+                    //var brightnessFilter = new BrightnessFilter(gl);
+                    //brightnessFilter.setAttribute("brightness", 0.3);
+                    //renderEngine.filterLayers([0], brightnessFilter);
+                    gl.enable(gl.STENCIL_TEST);
+                    gl.stencilFunc(gl.ALWAYS, 1, 0xFF);
+                    gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE);
+                    gl.colorMask(false, false, false, false);
+
                     renderEngine.render();
+
+                    gl.colorMask(true, true, true, true);
+                    gl.stencilFunc(gl.EQUAL, 0, 0xFF);
+                    gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP);
+
+                    renderEngine.addLayer(imageLayer2);
+                    renderEngine.render();
+
+                    gl.disable(gl.STENCIL_TEST);
+
                     renderEngine.destroy();
                 }
             }
