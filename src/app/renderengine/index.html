@@ -7,12 +7,14 @@
     <script src="render-helper.js"></script>
     <script src="layer.js"></script>
     <script src="base-program.js"></script>
+    <script src="magic-selection.js"></script>
     <script src="image-layer.js"></script>
     <script src="image-shader-program.js"></script>
     <script src="render-engine.js"></script>
     <script src="drawbuffer.js"></script>
     <script src="filter.js"></script>
     <script src="brightness-filter.js"></script>
+    <script src="selection-program.js"></script>
 
     <script>
         function start() {
@@ -20,7 +22,10 @@
             var image2 = new Image();
             var canvas = document.getElementById("glcanvas");
             var renderEngine = new RenderEngine(canvas);
+            var magicSelection = new MagicSelection();
             var gl = renderEngine.getWebGLRenderingContext();
+            var selectionProgram = new SelectionProgram(gl);
+            var drawbuffer = renderEngine.drawbuffer1;
 
             var counter = 1;
             function done() {
@@ -35,31 +40,41 @@
 
                     var imageLayer2 = new ImageLayer(gl, image2);
                     imageLayer2.setScale(.3,.3);
-                    imageLayer2.setRotation(-1.);
-                    imageLayer2.setPos(0.5,0);
 
                     renderEngine.addLayer(imageLayer);
                     //renderEngine.addLayer(imageLayer2);
                     //renderEngine.reorder(1, 0);
+                    drawbuffer.bind();
+                    imageLayer2.setupRender();
+                    imageLayer2.render();
+                    drawbuffer.unbind();
+
+                    var bitmask = magicSelection.getSelection(drawbuffer.getData(), 300, 250, 0.3, drawbuffer.width, drawbuffer.height);
 
                     //var brightnessFilter = new BrightnessFilter(gl);
                     //brightnessFilter.setAttribute("brightness", 0.3);
                     //renderEngine.filterLayers([0], brightnessFilter);
-                    gl.enable(gl.STENCIL_TEST);
+                    /*gl.enable(gl.STENCIL_TEST);
                     gl.stencilFunc(gl.ALWAYS, 1, 0xFF);
                     gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE);
-                    gl.colorMask(false, false, false, false);
+                    gl.colorMask(false, false, false, false);*/
 
-                    renderEngine.render();
+                    selectionProgram.setBitmask(bitmask, drawbuffer.width, drawbuffer.height);
+                    selectionProgram.activate();
+                    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
-                    gl.colorMask(true, true, true, true);
+                    //renderEngine.render();
+
+                    /*gl.colorMask(true, true, true, true);
                     gl.stencilFunc(gl.EQUAL, 0, 0xFF);
                     gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP);
 
-                    renderEngine.addLayer(imageLayer2);
-                    renderEngine.render();
+                    //renderEngine.addLayer(imageLayer2);
+                    //renderEngine.render();
+                    imageLayer2.setupRender();
+                    imageLayer2.render();
 
-                    gl.disable(gl.STENCIL_TEST);
+                    gl.disable(gl.STENCIL_TEST);*/
 
                     renderEngine.destroy();
                 }
@@ -72,7 +87,7 @@
             image.onload = done;
         }
     </script>
-    <script id="selection-shader-fs" type="x-shader/x-fragment">
+    <script id="selection-fs" type="x-shader/x-fragment">
         precision highp float;
 
         varying vec2 v_texCoord;
@@ -81,7 +96,7 @@
         void main() {
             float mask = texture2D(u_bitmask, v_texCoord).a;
 
-            if (mask == 0) {
+            if (mask == 0.0) {
             discard;
             }
 

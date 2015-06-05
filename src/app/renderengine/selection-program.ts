@@ -6,8 +6,7 @@
 class SelectionProgram extends BaseProgram {
     program : WebGLRenderingContext;
 
-    bitmapLocation : WebGLUniformLocation;
-    samplerLocation : WebGLTexture;
+    bitmaskLocation : WebGLUniformLocation;
 
     bitmask : WebGLTexture;
 
@@ -16,14 +15,13 @@ class SelectionProgram extends BaseProgram {
         super(gl);
 
         var texCoordLocation = gl.getAttribLocation(this.program, "a_texCoord");
-        this.bitmapLocation = this.gl.getUniformLocation(this.program, "u_bitmap");
-        this.samplerLocation = this.gl.getUniformLocation(this.program, "u_sampler");
+        this.bitmaskLocation = this.gl.getUniformLocation(this.program, "u_bitmap");
 
         gl.enableVertexAttribArray(texCoordLocation);
         gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 16, 8);
     }
 
-    setBitmask(bitmap : Uint8Array, width: number, height: number) : void {
+    setBitmask(bitmask : Uint8Array, width: number, height: number) : void {
         if (!this.bitmask) {
             this.gl.deleteTexture(this.bitmask);
         }
@@ -36,18 +34,14 @@ class SelectionProgram extends BaseProgram {
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
 
-        (<any>this.gl).texImage2D(this.gl.TEXTURE_2D, 0, this.gl.ALPHA, width, height, 0, this.gl.ALPHA, this.gl.UNSIGNED_BYTE, bitmap);
+        (<any>this.gl).texImage2D(this.gl.TEXTURE_2D, 0, this.gl.ALPHA, width, height, 0, this.gl.ALPHA, this.gl.UNSIGNED_BYTE, bitmask);
     }
 
-    setupRender(texture : WebGLTexture) {
+    activate() {
         super.activate();
-        this.gl.uniform1i(this.samplerLocation, 0);
-        this.gl.uniform1i(this.bitmapLocation, 1);
+        this.gl.uniform1i(this.bitmaskLocation, 0);
 
         this.gl.activeTexture(this.gl.TEXTURE0);
-        this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
-
-        this.gl.activeTexture(this.gl.TEXTURE1);
         this.gl.bindTexture(this.gl.TEXTURE_2D, this.bitmask);
     }
 }
