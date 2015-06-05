@@ -22,15 +22,12 @@ div .toolset {
     margin-left: $blocksize;
     width: $blocksize;
 
-    @extend .has-icons;
-    @extend .gui-item;
+    //@extend .gui-element;
     
     z-index: 1;
-    background-color: $very-light;
+    background-color: $very-light;   
     
-    
-    .subtool {
-        @extend tool;
+    .tool {
         
         background-color: $very-light;
         
@@ -67,6 +64,5 @@ div .toolset {
         bottom: 0.125 * $blocksize;
         background-color: red;
         z-index: 3;
-    }
-    
+    }   
 }

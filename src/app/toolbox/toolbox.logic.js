@@ -39,15 +39,13 @@ angular.module('ariana').controller('toolsetCtrl', function($scope) {
      * Toggles the current state
      */
     $scope.toggle = function(e) {
-        if ($scope.active) {
-            // TODO check if e is a toolset, not a subtool
+        if ($scope.active && e.currentTarget.id == $scope.config.tools.activeToolset) {
             $scope.config.tools.activeToolset = null;
             $scope.active = false;
+            return;
         }
-        else {
-            $scope.config.tools.activeToolset = e.currentTarget.id;
-            $scope.active = true;
-        }
+        $scope.config.tools.activeToolset = e.currentTarget.id;
+        $scope.active = true;    
     };
     
     $scope.selectTool = function(tool) {
