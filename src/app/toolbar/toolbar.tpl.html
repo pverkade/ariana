@@ -74,12 +74,11 @@
 </nav>
 
 <!-- filters pop-up -->
-<div class="pop-up" ng-show="filtersActive">
-    <h1> Filters en Effecten </h1>
-    <h2> let op: dit is een pop-up </h2>
+<div class="custom-pop-up" ng-show="filtersActive">
+    <span class="title"> Filters en Effecten </span>
+    <span class="subtitle"> subtitel </span>
     <div class="option" ng-repeat="filter in filters"> 
-        <h1> {{filter.name}} </h1> 
+        <span class="title"> {{filter.name}} </span> 
         <img ng-src="{{filter.image}}"> </img>
     </div>
 </div>
-
