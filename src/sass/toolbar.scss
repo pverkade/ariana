@@ -9,6 +9,7 @@
 
 #toolbar {
     @extend .gui-item;
+    position: fixed;
     border-color: transparent;
     width : 100%;
     padding: 0;
