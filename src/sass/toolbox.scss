@@ -6,90 +6,109 @@
  * elements.
  *
  */
- 
-#toolset {
+
+.toolbox {
     width: $blocksize;
     left: 0;
-    top: 1.5 * $blocksize; 
-    height: auto;
     @extend .gui-item;
+}
+
+.toolset {
+    display: block;
+    width: $blocksize;
+
+    @extend .is-button;
+    @extend .has-icons;
+}
+
+.tool {
+    display: block;
+    height: $blocksize;
+    width: $blocksize;
     
-    .tool {
-        display: block;
-        height: $blocksize;
-        width: $blocksize;      
-        
-        &:hover {
-            background-color: lighten($light, $hover-lighten);
-        }
-        
-        @extend .is-button;
-        @extend .has-icons;
-    }
+    @extend .is-button;
+    @extend .has-icons;
 }
 
-#sub-toolsets {
-    top : 1.5 * $blocksize; 
-    height : auto;
-    width : 2 * $blocksize;
+.fix-top {
     position : absolute;
-    z-index : 1;
-
-    -ms-transform: translate(-2 * $blocksize, 0px);
-    -webkit-transform: translate(-2 * $blocksize, 0px);
-    -moz-transform: translate(-2 * $blocksize, 0px);
-    -o-transform: translate(-2 * $blocksize, 0px);
-    transform: translate(-2 * $blocksize, 0px);
-
-    .sub-toolset {
-        @extend .box-shadow;
-        position: absolute;
-        height: auto;
-        width: inherit;
-        top: 0;
-        
-        background-color : lighten($light, $hover-lighten);
-
-        .sub-tool {
-            height : $blocksize;
-            width : $blocksize;
-            margin-left: $blocksize;
-            
-            &:hover {
-                background-color: lighten($light, 2 * $hover-lighten);
-            }
-            
-            @extend .is-button;
-            @extend .has-icons;
-        }
-
-        -webkit-transition: all $toolbox-animation-time ease;
-        -moz-transition: all $toolbox-animation-time ease;
-        -o-transition: all $toolbox-animation-time ease;
-        transition: all $toolbox-animation-time ease;
-
-        -ms-transform: translate(-2 * $blocksize, 0px);
-        -webkit-transform: translate(-2 * $blocksize, 0px);
-        -moz-transform: translate(-2 * $blocksize, 0px);
-        -o-transform: translate(-2 * $blocksize, 0px);
-        transform: translate(-2 * $blocksize, 0px);
-
-        &.show {
-            -webkit-transition: all $toolbox-animation-time ease;
-            -moz-transition: all $toolbox-animation-time ease;
-            -o-transition: all $toolbox-animation-time ease;
-            transition: all $toolbox-animation-time ease;
-
-            -ms-transform: translate(2 * $blocksize, 0px);
-            -webkit-transform: translate(2 * $blocksize, 0px);
-            -moz-transform: translate(2 * $blocksize, 0px);
-            -o-transform: translate(2 * $blocksize, 0px);
-            transform: translate(2 * $blocksize, 0px);
-        }
-    }
+    top: 1.5 * $blocksize;
 }
 
-#color-preview {
+.sub {
+    margin-left: $blocksize;
+    position : absolute;
+    top: 0;
+
+    // -ms-transform: translate($blocksize, 0px);
+    // -webkit-transform: translate($blocksize, 0px);
+    // -moz-transform: translate($blocksize, 0px);
+    // -o-transform: translate($blocksize, 0px);
+    // transform: translate($blocksize, 0px);
+}
+
+// .sub-toolsets {
+//     top : 1.5 * $blocksize; 
+//     height : auto;
+//     width : 2 * $blocksize;
+//     position : absolute;
+//     z-index : 1;
+
+    // -ms-transform: translate(-2 * $blocksize, 0px);
+    // -webkit-transform: translate(-2 * $blocksize, 0px);
+    // -moz-transform: translate(-2 * $blocksize, 0px);
+    // -o-transform: translate(-2 * $blocksize, 0px);
+    // transform: translate(-2 * $blocksize, 0px);
+
+//     .sub-toolset {
+//         @extend .box-shadow;
+//         position: absolute;
+//         height: auto;
+//         width: inherit;
+//         top: 0;
+        
+//         background-color : lighten($light, $hover-lighten);
+
+//         .sub-tool {
+//             height : $blocksize;
+//             width : $blocksize;
+//             margin-left: $blocksize;
+            
+//             &:hover {
+//                 background-color: lighten($light, 2 * $hover-lighten);
+//             }
+            
+//             @extend .is-button;
+//             @extend .has-icons;
+//         }
+
+//         -webkit-transition: all $toolbox-animation-time ease;
+//         -moz-transition: all $toolbox-animation-time ease;
+//         -o-transition: all $toolbox-animation-time ease;
+//         transition: all $toolbox-animation-time ease;
+
+//         -ms-transform: translate(-2 * $blocksize, 0px);
+//         -webkit-transform: translate(-2 * $blocksize, 0px);
+//         -moz-transform: translate(-2 * $blocksize, 0px);
+//         -o-transform: translate(-2 * $blocksize, 0px);
+//         transform: translate(-2 * $blocksize, 0px);
+
+//         &.show {
+//             -webkit-transition: all $toolbox-animation-time ease;
+//             -moz-transition: all $toolbox-animation-time ease;
+//             -o-transition: all $toolbox-animation-time ease;
+//             transition: all $toolbox-animation-time ease;
+
+//             -ms-transform: translate(2 * $blocksize, 0px);
+//             -webkit-transform: translate(2 * $blocksize, 0px);
+//             -moz-transform: translate(2 * $blocksize, 0px);
+//             -o-transform: translate(2 * $blocksize, 0px);
+//             transform: translate(2 * $blocksize, 0px);
+//         }
+//     }
+// }
+
+.color-preview {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -100,24 +119,25 @@
     @extend .is-button;
     @extend .gui-item;
     
-    #color-left, #color-right {
+    .color-primary, .color-secondary {
         position: absolute;
         height: 0.625 * $blocksize;
         width: 0.625 * $blocksize;
         @extend .box-shadow;
     }
     
-    #color-left {
+    .color-primary {
+        left:  0.25 * $blocksize;
+        bottom: 0.25 * $blocksize;
+        background-color: green;
+        z-index: 4;
+    }
+
+    .color-secondary {
         left: 0.125 * $blocksize;
         bottom: 0.125 * $blocksize;
         background-color: red;
         z-index: 3;
     }
     
-    #color-right {
-        left:  0.25 * $blocksize;
-        bottom: 0.25 * $blocksize;
-        background-color: green;
-        z-index: 4;
-    }
 }

@@ -17,7 +17,7 @@ body {
     font-family: $fonts;
 }
 
-#main-canvas {
+.main-canvas {
     position: absolute;
     background-color: $dark;
     left: 0;
@@ -51,5 +51,9 @@ body {
 }
 
 .is-button {
-    cursor: pointer;   
+    cursor: pointer;
+
+    &:hover {
+        background-color: lighten($light, $hover-lighten);
+    }
 }

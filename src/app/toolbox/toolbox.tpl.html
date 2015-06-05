@@ -1,13 +1,24 @@
-<div id="toolset">
+<div class="toolbox fix-top">
+    
     <div class="tool" id="{{name}}" ng-repeat="(name, tool) in toolbox" ng-controller="toolsetCtrl" ng-click="toggle($event)">
+
         <img class="svg-img" ng-src="assets/vectors/{{tool.image}}"></img>
-        <div class="tool" id="{{name}}" ng-repeat="(name, subtool) in tool.tools" ng-controller="toolsetCtrl" ng-click="">
-            <img class="svg-img" ng-src="assets/vectors/{{subtool.image}}"></img>
-        </div>
+
+        <div class="toolset sub fix-top" ng-show="config.tools.active == '{{name}}'">
+	        
+	        <div class="tool" id="{{name}}" ng-repeat="(name, subtool) in tool.tools" ng-controller="toolsetCtrl" ng-click="">
+
+	            <img class="svg-img" ng-src="assets/vectors/{{subtool.image}}"></img>
+
+	        </div>
+
+	    </div>
+
     </div>
+
 </div>
 
-<div id="color-preview" ng-click="swapColors()">
-    <div id="color-left" style="background-color: {{primary}}"> </div>
-    <div id="color-right" style="background-color: {{secondary}}"> </div>
+<div class="color-preview" ng-click="swapColors()">
+    <div class="color-primary" style="background-color: {{primary}}"> </div>
+    <div class="color-secondary" style="background-color: {{secondary}}"> </div>
 </div>
