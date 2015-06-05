@@ -74,30 +74,26 @@
 </nav>
 
 <!-- filters pop-up -->
-<div id="filters" class="modal fade custom-pop-up" role="dialog">
+<div id="filters" class="modal fade custom-pop-up" role="dialog" ng-controller="FilterController">
     <div class="modal-dialog modal-lg">
     
     <div class="modal-content">
         <div class="modal-header">
-            <h1> Filters and Effects </h1>
-            <!-- <h2> optional subtitel </h2> -->
+            <h1> {{title}} </h1>
+            <h2> {{subtitle}} </h2>
         </div>
         
         <div class="modal-body">
             <div class="row">
                 <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2" ng-repeat="filter in filters">
-                    <div class="thumbnail"> 
+                    <div class="thumbnail" ng-click="selectFilter($index)"> 
                         <img ng-src="{{filter.image}}"> </img>
                         <div class="caption">
-                            <h4> {{filter.name}} </h4> 
+                            <h3> {{filter.name}} </h3> 
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
         </div>
     </div>
     
