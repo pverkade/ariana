@@ -12,7 +12,7 @@
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="tool">
+                <li class="inactive tool">
                     <a> 
                         <!-- new file -->
                         <img class="svg-img" alt="new" src="/assets/vectors/file.svg">
@@ -24,20 +24,20 @@
                         <img class="svg-img" alt="upload" src="/assets/vectors/upload.svg">
                     </a>
                 </li>
-                <li class="tool">
+                <li class="inactive tool">
                     <a> 
                         <!-- export file --> 
                         <img class="svg-img" alt="save" src="/assets/vectors/floppy.svg">
                     </a>
                 </li>
                 <li class="seperator"></li>
-                <li class="tool">
-                    <a>
+                <li class="inactive tool">
+                    <a href ng-click="openTransformationModal()">
                         <!-- standard transformations -->
                         <img class="svg-img" alt="transform" src="/assets/vectors/rotate-right-variant.svg">
                     </a>
                 </li>
-                <li class="tool">
+                <li class="inactive tool">
                     <a href ng-click="openFilterModal()"> 
                         <!-- filters and effects -->
                         <img class="svg-img" alt="filters" src="/assets/vectors/star-outline.svg">
@@ -45,20 +45,20 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li class="tool">
+                <li class="inactive tool">
                     <a> 
                         <!-- undo button -->
                         <img class="svg-img" alt="undo" src="/assets/vectors/undo-variant.svg">
                     </a>
                 </li>
-                <li class="tool">
+                <li class="inactive tool">
                     <a> 
                         <!-- redo button -->
                         <img class="svg-img" alt="redo" src="/assets/vectors/redo-variant.svg">
                     </a>
                 </li>
                 <li class="seperator"></li>
-                <li class="tool">
+                <li class="inactive tool">
                     <a> 
                         <!-- help button -->
                         <img class="svg-img" alt="help" src="/assets/vectors/school.svg">

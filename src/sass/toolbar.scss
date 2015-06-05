@@ -8,7 +8,7 @@
 
 
 #toolbar {    
-    @extend .gui-item;
+    @extend .gui-element;
     position: relative;
     border-color: transparent;
     width : 100%;
@@ -19,27 +19,6 @@
         margin: 0px;
         padding: 0px; 
         width: calc(100% - 2 * $blocksize);
-    }
-
-    .tool {
-        width: $blocksize;
-        height: $blocksize;
-        padding: 0;
-        margin: 0;
-               
-        &:hover {
-            background-color: lighten($light, $hover-lighten);
-        }
-        
-        @extend .is-button;
-        @extend .has-icons;
-
-        a {
-            width: $blocksize;
-            height: $blocksize;
-            padding: 0;       
-            margin: 0;   
-        }
     }
 
     .seperator {
@@ -72,8 +51,7 @@
         margin: 0;
         padding: 0;
     
-        @extend .has-icons;
-        @extend .is-button;
+        @extend .tool;
         
         &:hover, &:active, &:focus {
             background-color: lighten($light, $hover-lighten);
@@ -83,7 +61,7 @@
 
 // FIXME style for popup
 .thumbnail:hover {
-    background-color: darken(#e5e5e5, 10%);
+    background-color: darken(#e5e5e5, 5%);
 }
 
 /*
@@ -97,7 +75,8 @@
     z-index: 2;
     overflow: hidden;
     
-    transition: opacity 300ms ease;
+    opacity: 0;
+    transition: opacity $pop-up-animation-time ease;
     font-family: $fonts;
     color: $white;
     
@@ -119,18 +98,11 @@
         background-color: darken($light, 5%);
     }
     
-    .ng-hide {
-        opacity: 0;
-    }
-    
     .ng-show {
         opacity: 1;
-    }
+    }  
     
-    
-}
-
-.option {
+    .option {
         float: left;
         height: auto;
         background-color: lighten($light, 10%);
@@ -153,4 +125,5 @@
             width : 100%;
             height : $blocksize;
         }
-    } */
+    }
+}*/

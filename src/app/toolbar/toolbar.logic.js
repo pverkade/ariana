@@ -29,21 +29,31 @@ app.controller('toolbarCtrl', ['$scope', '$modal',
 
             }, 'xml');
         }); 
+        
+        $scope.openUploadModal = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'app/toolbar/upload/upload.tpl.html',
+                controller:  'UploadModalCtrl',
+                size: 'lg'
+            });
+        };
+        
+        $scope.openTransformationModal = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'app/toolbar/transformations/transformations.tpl.html',
+                controller:  'TransformationModalController',
+                size: 'lg'
+            });
+        };
     
         $scope.openFilterModal = function() {
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/filters/filters.tpl.html',
-                controller: 'FilterModalController',
+                controller:  'FilterModalController',
                 size: 'lg'
             });
         };    
 
-        $scope.openUploadModal = function() {
-            var modalInstance = $modal.open({
-                templateUrl: 'app/toolbar/upload/upload.tpl.html',
-                controller: 'UploadModalCtrl',
-                size: 'lg'
-            });
-        };
+        
     }
 ]);

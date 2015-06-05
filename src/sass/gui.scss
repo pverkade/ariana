@@ -29,27 +29,62 @@ body {
     box-shadow: 0px 0px $box-shadow-size $black; 
 }
 
-/* Styleclass for element with icons. */
-.has-icons {
-    svg, img {
-        margin: 0.2 * $blocksize;
-        height: 0.6 * $blocksize;;
-        width: 0.6 * $blocksize;;
-    }
-    
-    svg path, img path {
-        fill: darken($white, 20%);
-    }
-}
-
 /* Styleclass for all GUI elements that float above the canvas. */
-.gui-item {
+.gui-element {
     @extend .box-shadow;
     position: absolute;
     background-color: $light;
     z-index: 2;
 }
 
-.is-button {
+.tool {
+    width: $blocksize;
+    height: $blocksize;
+    padding: 0 !important;
+    margin: 0 !important;
+    
     cursor: pointer;
+    @include user-select(none);
+    
+    a {
+        width: $blocksize;
+        height: $blocksize;
+        padding: 0 !important;       
+        margin: 0 !important;   
+    }
+    
+    svg, img {
+        margin: 0.2 * $blocksize;
+        padding: 0 !important; 
+        height: 0.6 * $blocksize;
+        width: 0.6 * $blocksize;      
+    }
+    
+    svg path, img path {
+        fill: $white;
+    }
+    
+    &:hover {
+        background-color: lighten($light, $hover-lighten);
+    }
+}
+
+.inactive {
+    cursor: default !important;
+    
+    &:hover {
+        background-color: $light !important;
+    }
+    
+    a {
+        cursor: default !important;
+    }
+    
+    svg, img {
+        cursor: default !important;
+    }
+
+    svg path, img path {
+        fill: darken($white, 50%) !important;
+    }
 }

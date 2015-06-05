@@ -1,0 +1,17 @@
+<div class="modal-header">
+    <h1> {{title}} </h1>
+    <h2> {{subtitle}} </h2>
+</div>
+
+<div class="modal-body">
+    <div class="row">
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2" ng-repeat="transformation in transformations">
+            <div class="thumbnail" ng-click="selectTransformation($index)"> 
+                <img ng-src="{{filter.image}}"> </img>
+                <div class="caption">
+                    <h3> {{transformation.name}} </h3> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

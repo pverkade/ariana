@@ -26,13 +26,21 @@ app.controller('AppCtrl', ['$scope',
 		}
 	}
 	
+	/*
 	// TODO create render engine
+	this.canvas = $("#main-canvas");
+	this.renderEngine = new RenderEngine(canvas);
 	
 	// TODO function to create layer form images
+	$scope.newLayerFromImage = function(image) {
+	    //... = this.renderEngine.get ...
+	    //this.renderEngine.addLayer(image, ...);
+	}
 	
-	// TODO function to create blank layer
-	
-	// TODO function to Apply filter to image
+    $scope.saveImage = function() {
+        return null;    
+    }
+    */
 	
 	// TODO function to get image as file
 ]);

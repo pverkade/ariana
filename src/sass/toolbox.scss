@@ -12,16 +12,8 @@ div #toolbox {
     width: $blocksize;
     left: 0;
     top: 1.5 * $blocksize;
-    @extend .gui-item;
-
-    .tool {
-        display: block;
-        height: $blocksize;
-        width: $blocksize;
-        
-        @extend .is-button;
-        @extend .has-icons;
-    }  
+    
+    @extend .gui-element;
 }
 
 div .toolset {
@@ -30,7 +22,6 @@ div .toolset {
     margin-left: $blocksize;
     width: $blocksize;
 
-    @extend .is-button;
     @extend .has-icons;
     @extend .gui-item;
     
@@ -39,12 +30,9 @@ div .toolset {
     
     
     .subtool {
-        display: block;
-        height: $blocksize;
-        width: $blocksize;
+        @extend tool;
         
-        @extend .is-button;
-        @extend .has-icons;
+        background-color: $very-light;
         
         &:hover {
             background-color: lighten($very-light, $hover-lighten);
@@ -57,11 +45,8 @@ div .toolset {
     bottom: 0;
     left: 0;
     
-    height: $blocksize;
-    width: $blocksize;
-    
-    @extend .is-button;
-    @extend .gui-item;
+    @extend .tool;
+    @extend .gui-element;
     
     .color-primary, .color-secondary {
         position: absolute;
