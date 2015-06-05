@@ -4,6 +4,7 @@
 angular.module('ariana').controller('toolsetCtrl', function($scope) {
     
     // SVG FIX FOT STACK OVEFLOW
+    /*
     $('.svg-img').each(function(){
         var $img = $(this);
         var imgID = $img.attr('id');
@@ -30,8 +31,8 @@ angular.module('ariana').controller('toolsetCtrl', function($scope) {
             $img.replaceWith($svg);
 
         }, 'xml');
-    });
-
+    }); */
+    
     $scope.collapsed = true;
 
     /*
