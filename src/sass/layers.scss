@@ -10,10 +10,11 @@
     top: 1.5 * $blocksize;
     @extend .gui-item;
     height: auto;
-    max-height : 6 * $blocksize;
+    max-height: 6 * $blocksize;
     right: 0;
     width: 3 * $blocksize;
-    height: calc(100% - 2 * $blocksize);
+    height : auto;
+    max-height: calc(100% - 2 * $blocksize);
     overflow-x: hidden;
     overflow-y: scroll;
     
