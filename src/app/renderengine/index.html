@@ -39,7 +39,7 @@
                     imageLayer.setPos(0,0.5);
 
                     var imageLayer2 = new ImageLayer(gl, image2);
-                    imageLayer2.setScale(.3,.3);
+                    //imageLayer2.setScale(.3,.3);
 
                     renderEngine.addLayer(imageLayer);
                     //renderEngine.addLayer(imageLayer2);
@@ -52,36 +52,50 @@
                     var data = drawbuffer.getData();
                     //var bitmask = magicSelection.getSelection(data, 255, 250, 0.1, drawbuffer.width, drawbuffer.height);
                     var worker = new Worker("magic-selection-worker.js");
-                    worker.postMessage({"data": data, "width": drawbuffer.width, "height": drawbuffer.height});
+                    worker.postMessage({
+                        "data": data,
+                        "x": 134,
+                        "y": 243,
+                        "threshold": 0.2,
+                        "width": drawbuffer.width,
+                        "height": drawbuffer.height
+                    });
                     worker.addEventListener('message', function(e) {
                         var bitmask = e.data;
                         worker.terminate();
+                        var count = 0;
+                        for (var i = 0; i < bitmask.length; i++) {
+                            if (bitmask[i] != 0) {
+                                count++;
+                            }
+                        }
+                        console.log("Values in bitmap not zero: " + count + " out of " + bitmask.length);
                         //console.log(data.length);
 
                         //var brightnessFilter = new BrightnessFilter(gl);
                         //brightnessFilter.setAttribute("brightness", 0.3);
                         //renderEngine.filterLayers([0], brightnessFilter);
-                        /*gl.enable(gl.STENCIL_TEST);
-                         gl.stencilFunc(gl.ALWAYS, 1, 0xFF);
-                         gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE);
-                         gl.colorMask(false, false, false, false);*/
+                        gl.enable(gl.STENCIL_TEST);
+                        gl.stencilFunc(gl.ALWAYS, 1, 0xFF);
+                        gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE);
+                        gl.colorMask(false, false, false, false);
 
-                        //selectionProgram.setBitmask(bitmask, drawbuffer.width, drawbuffer.height);
-                        //selectionProgram.activate();
-                        //gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                        selectionProgram.setBitmask(bitmask, drawbuffer.width, drawbuffer.height);
+                        selectionProgram.activate();
+                        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
                         //renderEngine.render();
 
-                        /*gl.colorMask(true, true, true, true);
-                         gl.stencilFunc(gl.EQUAL, 0, 0xFF);
-                         gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP);
+                        gl.colorMask(true, true, true, true);
+                        gl.stencilFunc(gl.EQUAL, 0, 0xFF);
+                        gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP);
 
-                         //renderEngine.addLayer(imageLayer2);
-                         //renderEngine.render();
-                         imageLayer2.setupRender();
-                         imageLayer2.render();
+                        //renderEngine.addLayer(imageLayer2);
+                        //renderEngine.render();
+                        imageLayer2.setupRender();
+                        imageLayer2.render();
 
-                         gl.disable(gl.STENCIL_TEST);*/
+                        gl.disable(gl.STENCIL_TEST);
 
                         renderEngine.destroy();
                     }, false);
