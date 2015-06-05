@@ -1,7 +1,3 @@
-<!--div id="toolbar">
-    <div class="tool" ng-repeat="item in menuItems"> {{item}} </div>
-</div-->
-
 <nav id="toolbar" class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -23,7 +19,7 @@
                     </a>
                 </li>
                 <li class="tool">
-                    <a> 
+                    <a href ng-click="openUploadModal()"> 
                         <!-- load file -->
                         <img class="svg-img" alt="upload" src="/assets/vectors/upload.svg">
                     </a>
@@ -41,8 +37,8 @@
                         <img class="svg-img" alt="transform" src="/assets/vectors/rotate-right-variant.svg">
                     </a>
                 </li>
-                <li class="tool" ng-click="openFilterModal">
-                    <a> 
+                <li class="tool">
+                    <a href ng-click="openFilterModal()"> 
                         <!-- filters and effects -->
                         <img class="svg-img" alt="filters" src="/assets/vectors/star-outline.svg">
                     </a>

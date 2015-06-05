@@ -49,6 +49,7 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
         $scope.selectFilter = function(index){
             console.log("Selected " + $scope.filters[index].name);
             //TODO her comes the call to use the filter
+            $modalInstance.dismiss();
         };
 
         $scope.close = function () {
