@@ -81,6 +81,11 @@
     }
 }
 
+// FIXME style for popup
+.thumbnail:hover {
+    background-color: darken(#e5e5e5, 10%);
+}
+
 /*
 .custom-pop-up {
     position: absolute;
