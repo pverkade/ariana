@@ -49,6 +49,9 @@ module.exports = function(grunt) {
                 files: {
                     '<%= build_dir %>/css/ariana.css': '<%= src_files.scss %>'
                 }
+            },
+            options: {
+                includePaths: require('node-bourbon').includePaths
             }
         },
 
@@ -97,6 +100,7 @@ module.exports = function(grunt) {
                 },
             }
         },
+
         /*
          * Various cleaning operations.
          * Mostly used to clean build and clean temp items.
@@ -291,7 +295,7 @@ module.exports = function(grunt) {
     /* grunt */
     grunt.registerTask('default', 'build_dev');
 
-    /* grunt dev */    
+    /* grunt dev */
     grunt.registerTask('dev', 'build_dev');
 
     /* grunt prod */
