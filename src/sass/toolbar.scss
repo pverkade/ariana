@@ -48,7 +48,7 @@
         height: 0.8 * $blocksize;
         width: 2px;
         margin: auto;
-        background-color: $dark;
+        background-color: darken($light, 5%);
         margin-left: -1px;
         margin-right: -1px;
         z-index: 3;
@@ -61,6 +61,8 @@
         padding: 0 0.25 * $blocksize;
         font-size: 20pt;
         line-height: $blocksize;
+        font-family : $fonts;
+        color: $brand-color;
     }
 
     button.navbar-toggle {

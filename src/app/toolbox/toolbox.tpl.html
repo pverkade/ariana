@@ -1,8 +1,8 @@
 <div id="toolset">
     <div class="tool" id="{{name}}" ng-repeat="(name, tool) in toolbox" ng-controller="toolsetCtrl" ng-click="toggle($event)">
-        <img src="assets/vectors/{{tool.image}}"></img>
+        <img class="svg-img" ng-src="assets/vectors/{{tool.image}}"></img>
         <div class="tool" id="{{name}}" ng-repeat="(name, subtool) in tool.tools" ng-controller="toolsetCtrl" ng-click="">
-            <img src="assets/vectors/{{subtool.image}}"></img>
+            <img class="svg-img" ng-src="assets/vectors/{{subtool.image}}"></img>
         </div>
     </div>
 </div>
