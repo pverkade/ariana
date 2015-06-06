@@ -14,35 +14,6 @@ module.exports = function(grunt) {
     var path = require('path');
     var fs   = require('fs');
 
-    function bundleShaders(srcPattern, dst) {
-        var result = {};
-        var filenames = glob.sync(srcPattern, {});
-
-        for (var i = 0; i < filenames.length; i++) {
-            var filename = filenames[i];
-            var sourceName = path.basename(filename, path.extname(filename, 1));
-            var typeName = path.extname(sourceName);
-            var type;
-
-            if (typeName == "vert") {
-                type = "x-shader/x-fragment"
-            }
-            else if (typeName == "frag") {
-                type = "x-shader/x-vertex";
-            }
-            else {
-                throw "Unknown shader type:"
-            }
-
-            result[sourceName] = {
-                source: fs.readFileSync(filename).toString(),
-                type: type
-            };
-        }
-
-        fs.writeFileSync(dst, "SHADERS = " + JSON.stringify(result, null, 4) + "\n");
-    }
-
     var appConfig = require('./build.config.js');
     var taskConfig = {
         pkg: grunt.file.readJSON('package.json'),
@@ -93,7 +64,8 @@ module.exports = function(grunt) {
         ts: {
             default: {
                 src: ['<%= src_files.ts %>'],
-                out: '<%= build_dir %>/js/renderEngine.js'
+                out: '<%= build_dir %>/js/renderEngine.js',
+                sourceMap: false
             }
         },
 
@@ -283,7 +255,7 @@ module.exports = function(grunt) {
             },
             shaders: {
                 files: ['<%= src_files.shaders %>'],
-                tasks: ['bundle_shaders']
+                tasks: ['build_renderengine']
             }
         }
     };
@@ -294,10 +266,9 @@ module.exports = function(grunt) {
     /* The build_dev task does not concat and minify */
     grunt.registerTask('build_dev', [
         'clean:build', // Remove build/
-        'bundle_shaders',
         'sass', // Compile sass -> build/css/ariana.css
         'bower_concat:css', // Concatenate all bower css -> build/css/bower.css
-        'ts', // Compile TypeScript -> build/js/typescript.js
+        'build_renderengine', // Compile render engine -> build/js/renderengine.js
         'html2js', // Combine all tpl.html -> build/js/template.js
         'copy:build_js', // Copy all javascript -> build/js/
         'copy:build_vendorjs', // Copy all javascript -> build/js/
@@ -310,10 +281,9 @@ module.exports = function(grunt) {
     /* The build_prod task completely builds, concats and (SOON) minifies the src */
     grunt.registerTask('build_prod', [
         'clean:build', // Remove build/
-        'bundle_shaders',
         'sass', // Compile sass -> build/css/ariana.css
         'bower_concat:css', // Concatenate all bower css -> build/css/bower.css
-        'ts', // Compile TypeScript -> build/js/typescript.js
+        'build_renderengine', // Compile render engine -> build/js/renderengine.js
         'html2js', // Combine all tpl.html -> build/js/template.js
         'copy:build_js', // Copy all javascript -> build/js/
         'copy:build_html', // Copy index.html -> build/index.html
@@ -353,13 +323,12 @@ module.exports = function(grunt) {
 
     /*
      * Removes index.html and all project js (excluding vendor/ and template.js)
-     * Compiles TypeScript and copies all project javascript
+     * and copies all project javascript
      * Rebuilds index.html
      */
     grunt.registerTask('chain_js', [
         'clean:html',
         'clean:js',
-        'typescript',
         'copy:build_js',
         'copy:build_html',
         'includeSource',
@@ -384,8 +353,44 @@ module.exports = function(grunt) {
         'copy:build_assets'
     ]);
 
+    function bundleShaders(srcPattern, dst) {
+        var result = {};
+        var filenames = glob.sync(srcPattern, {});
+
+        for (var i = 0; i < filenames.length; i++) {
+            var filename = filenames[i];
+            var sourceName = path.basename(filename, path.extname(filename));
+            var typeName = path.extname(sourceName);
+            var type;
+
+            if (typeName == ".vert") {
+                type = "x-shader/x-vertex";
+            }
+            else if (typeName == ".frag") {
+                type = "x-shader/x-fragment"
+            }
+            else {
+                return false;
+            }
+
+            result[sourceName] = {
+                source: fs.readFileSync(filename).toString(),
+                type: type
+            };
+        }
+
+        fs.writeFileSync(dst, "var SHADERS = " + JSON.stringify(result, null, 4) + "\n");
+        return true;
+    }
+
+    /*
+     * Bundles all shaders to a global object.
+     */
     grunt.registerTask('bundle_shaders', 'Bundles the Shader source code into a js file', function() {
-        grunt.log.writeln('Bundeling shaders.');
-        bundleShaders(appConfig.src_files.shaders[0], path.join(appConfig.build_dir, "js/shaders.js"));
+        if (!bundleShaders(appConfig.src_files.shaders[0], "src/app/renderengine/shaders.ts")) {
+            grunt.fail.fatal("Unsupported/unknown shader type.");
+        }
     });
+
+    grunt.registerTask('build_renderengine', ['bundle_shaders', 'ts']);
 }
