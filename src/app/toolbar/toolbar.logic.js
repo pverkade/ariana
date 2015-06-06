@@ -38,6 +38,12 @@ app.controller('toolbarCtrl', ['$scope', '$modal',
             });
         };
         
+        $scope.saveImage = function() {
+            // TODO I have no idea if this works :^)
+            //var image = $scope.renderEngine.renderToImg();
+            //window.location.href = image;
+        }
+        
         $scope.openTransformationModal = function() {
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/transformations/transformations.tpl.html',

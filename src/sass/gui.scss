@@ -89,8 +89,8 @@ body {
     }
 }
 
-/* Upload */
-.modal-body{
+/* Upload modal */
+.modal-body {
     .drop-box {
         background: #F8F8F8;
         border: 5px dashed #DDD;
@@ -99,6 +99,7 @@ body {
         text-align: center;
         margin: 10px;
     }
+    
     .dragover {
         border: 5px dashed blue;
     }

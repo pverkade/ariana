@@ -27,34 +27,25 @@ app.controller('AppCtrl', ['$scope',
 					"primary":   '#000000',
 					"secondary": '#ffffff'
 				}
-			}
+			},
+			"layers": {
+			    "numberOfLayers": 0,
+			    "currentLayer": null
+			} 
 		}
 		
 		$scope.renderEngine = null;
+		
+		$scope.newLayerFromImage = function(image) {
+		    // TODO add new layer to renderEngine from image
+		    // get webgl context
+		    // create layer
+		    // append layer to renderEngine
+		    // update config
+		}
+		
+		$scope.getImage = function() {
+		    // return rendered image
+		}
 	}
-	
-	/*
-	var image = new Image();
-    image.src = "assets/img/arnold2.jpg";
-    */
-    
-    /*
-	image.onload = function() {
-        console.log("OK");
-	};*/
-
-	// TODO create render engine
-	
-	/*
-	// TODO function to create layer form images
-	$scope.newLayerFromImage = function(image) {
-	    //... = this.renderEngine.get ...
-	    //this.renderEngine.addLayer(image, ...);
-	}
-	
-    $scope.saveImage = function() {
-        return null;    
-    }*/
-	
-	// TODO function to get image as file
 ]);
