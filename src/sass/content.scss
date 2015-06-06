@@ -1,0 +1,19 @@
+.main-canvas {
+    position: absolute;
+    background-color: $dark;
+    left: 0;
+    top: 0;
+}
+
+.cursor-grab {
+    cursor: grab;
+}
+
+.cursor-grabbing {
+    cursor: grabbing !important;
+    background-color : red;
+}
+
+.cursor-default {
+    cursor: default;
+}

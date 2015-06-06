@@ -17,13 +17,6 @@ body {
     font-family: $fonts;
 }
 
-.main-canvas {
-    position: absolute;
-    background-color: $dark;
-    left: 0;
-    top: 0;
-}
-
 /* Style-class for box-shadow. */
 .box-shadow {
     box-shadow: 0px 0px $box-shadow-size $black; 

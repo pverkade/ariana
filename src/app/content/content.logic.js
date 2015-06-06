@@ -1,49 +1,52 @@
 angular.module('ariana').controller('contentCtrl', function($scope, $window) {
 
-    this.position       = {"x": 0, "y": 0};
-    this.lastPosition   = {"x": 0, "y": 0};
+    $scope.position       = {"x": 0, "y": 0};
+    $scope.lastPosition   = {"x": 0, "y": 0};
     
     /* This function pans over the image. */
     $scope.pan = function() {
         var x = $scope.config.mouse.location.x;
         var y = $scope.config.mouse.location.y;
-    
-        var dx = this.lastPosition.x - x;
-        var dy = this.lastPosition.y - y;
-            
-        this.position.x += dx;
-        this.position.y += dy;
-            
-        // TODO renderEngine set layer position
-        console.log("PAN", x, y);
         
-        this.lastPosition.x = x;
-        this.lastPosition.y = y;
+        var dx = x - $scope.lastPosition.x;
+        var dy = y - $scope.lastPosition.y;
+        console.log("PAN", dx, dy);
+            
+        $scope.position.x += dx;
+        $scope.position.y += dy;
+            
+        // TODO renderEngine set top layer position
+        
+        $scope.lastPosition.x = x;
+        $scope.lastPosition.y = y;
     };
 
-    $scope.mouseMove = function(event) {
-        event.preventDefault();
-        
-        $scope.config.mouse.location.x = event.x;
-        $scope.config.mouse.location.y = event.y;
+    $scope.mouseMove = function(e) {
+        e.preventDefault();
+        $scope.config.mouse.location.x = e.pageX;
+        $scope.config.mouse.location.y = e.pageY;
         
         /* If the mouse is down, */
         if ($scope.config.mouse.click.down) {
             // TODO only on left button
-            //if ($scope.config.tools.activeTool == null) $scope.pan();
+            if ($scope.config.tools.activeTool == null) $scope.pan();
         };          
     }
 
-    $scope.mouseDown = function(event) {
-        event.preventDefault();
+    $scope.mouseDown = function(e) {
+        e.preventDefault();
         $scope.config.mouse.click.down = true;
-        $scope.config.mouse.click.x = event.x;
-        $scope.config.mouse.click.y = event.y;
+        $scope.config.mouse.click.x = e.pageX;
+        $scope.config.mouse.click.y = e.pageY;
+        
+        if ($scope.config.tools.activeTool == null) $("#main-canvas").addClass("cursor-grabbing");
     }
     
-    $scope.mouseUp = function(event) {
-        event.preventDefault();
+    $scope.mouseUp = function(e) {
+        e.preventDefault();
         $scope.config.mouse.click.down = false;
+        
+        if ($scope.config.tools.activeTool == null) $("#main-canvas").removeClass("cursor-grabbing");
     }
     
     /* Get the canvas element. */
