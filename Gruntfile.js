@@ -65,7 +65,8 @@ module.exports = function(grunt) {
             default: {
                 src: ['<%= src_files.ts %>'],
                 out: '<%= build_dir %>/js/renderEngine.js',
-                sourceMap: false
+                sourceMap: false,
+                fast: 'never'
             }
         },
 
@@ -332,7 +333,8 @@ module.exports = function(grunt) {
         'copy:build_js',
         'copy:build_html',
         'includeSource',
-        'preprocess:dev'
+        'preprocess:dev',
+        'ts'
     ]);
 
     /*
