@@ -16,8 +16,6 @@ app.controller('toolbarCtrl', ['$scope', '$modal',
                 if(typeof id !== 'undefined') {
                     $svg = $svg.attr('id', id);
                 }
-                
-                console.log($svg);
 
                 // Remove any invalid XML tags as per http://validator.w3.org
                 $svg = $svg.removeAttr('xmlns');
