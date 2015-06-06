@@ -29,6 +29,7 @@
     "grunt-typescript": "^0.6.2",
     "grunt-wiredep": "^2.0.0",
     "request": "^2.57.0",
-    "node-bourbon": "~1.0.0"
+    "node-bourbon": "~1.0.0",
+    "glob": "~5.0.10"
   }
 }
