@@ -1,24 +1,20 @@
-<!-- <div class="modal fade" role="dialog"> -->
 <div class="modal-header clearfix">
-    <h3 class="modal-title pull-left">
-        Upload file
+    <button type="button" class="close" ng-click="close()">x</button>
+    <h3 class="modal-title">
+        Import file
     </h3>
-    <a class="btn pull-right" ng-click="close()">
-        <span class="glyphicon glyphicon-remove"></span>
-    </a>
 </div>
 <div class="modal-body">
-    <div>
-        <span>Drag a file into the box below</span>
+    <div ngf-drop ng-model="files" class="drop-box" ngf-drag-over-class="dragover" ngf-multiple="true" ngf-accept="'image/*'">
+        <span ng-if="files==undefined">Drag images here</span>
+        <div ng-repeat="file in files">
+            <img src="">
+        </div>
     </div>
-    <div>
-        
-    </div>
-    <div>
-        <a ng-click="openFile()">Or press here to open a file picker</a>
-    </div>
-    <div class="pull-right">
-        <button type="button" class="btn btn-default btn-lg" ng-click="upload()">Upload</button>
-    </div>
+    <!--div class="button" ngf-select ng-model="files">Or press here to open a file picker</div-->
 </div>
-<!-- </div> -->
+<div class="modal-footer">
+    <button type="button" class="btn btn-default btn-lg" ng-click="upload()">
+        Import
+    </button>
+</div>

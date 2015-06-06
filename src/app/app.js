@@ -1,6 +1,11 @@
 "use strict";
 
-var app = angular.module('ariana', ['ui.router', 'ui.bootstrap', 'templates-ariana']);
+var app = angular.module('ariana', [
+	'ui.router', 
+	'ui.bootstrap', 
+	'templates-ariana',
+	'ngFileUpload'
+]);
 
 app.controller('AppCtrl', ['$scope', 
 	function ($scope) {
