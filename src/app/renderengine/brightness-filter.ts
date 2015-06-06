@@ -11,7 +11,7 @@ class BrightnessProgram extends FilterProgram {
     brightnessLocation;
 
     constructor(gl : WebGLRenderingContext) {
-        super.setShaderSource("filter-vs", "brightness-fs");
+        super.setShaderSource("filter.vert", "brightness.frag");
         super(gl);
         this.brightnessLocation = this.gl.getUniformLocation(this.program, "u_brightness");
     }

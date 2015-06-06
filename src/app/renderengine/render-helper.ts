@@ -1,3 +1,5 @@
+/// <reference path="shaders"/>
+
 function compileProgram(gl : WebGLRenderingContext, vertexShader : WebGLShader, fragmentShader : WebGLShader) : WebGLProgram{
 	/* Create the shader program */
 	var shaderProgram : WebGLProgram = gl.createProgram();
@@ -16,36 +18,24 @@ function compileProgram(gl : WebGLRenderingContext, vertexShader : WebGLShader, 
 }
 
 function compileShaderFromScript(gl : WebGLRenderingContext, id : string) : WebGLShader {
-	var shaderScript, theSource, currentChild, shader;
-	
-	shaderScript = document.getElementById(id);
-	
-	if (!shaderScript) {
-		alert(id + ": shader not found in DOM!");
-		return null;
-	}
-	
-	theSource = "";
-	currentChild = shaderScript.firstChild;
-	
-	while(currentChild) {
-		if (currentChild.nodeType == currentChild.TEXT_NODE) {
-			theSource += currentChild.textContent;
-		}
-		
-		currentChild = currentChild.nextSibling;
-	}
+    console.log(id in SHADERS);
+    if (! (id in SHADERS)) {
+        return null;
+    }
+
+    var shaderScript = SHADERS[id];
 
 	if (shaderScript.type == "x-shader/x-fragment") {
-		return compileShader(gl, theSource, gl.FRAGMENT_SHADER);
+		return compileShader(gl, shaderScript.source, gl.FRAGMENT_SHADER);
 	} else if (shaderScript.type == "x-shader/x-vertex") {
-		return compileShader(gl, theSource, gl.VERTEX_SHADER);
+		return compileShader(gl, shaderScript.source, gl.VERTEX_SHADER);
 	} else {
 		return null;
 	}	
 }
 
 function compileShader(gl : WebGLRenderingContext, shaderSource : string, shaderType : number) : WebGLShader {
+    console.log('compileShader', shaderSource);
 	var shader = gl.createShader(shaderType);
 	gl.shaderSource(shader, shaderSource);
 		

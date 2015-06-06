@@ -11,7 +11,7 @@ class SelectionProgram extends BaseProgram {
     bitmask : WebGLTexture;
 
     constructor(gl : WebGLRenderingContext) {
-        super.setShaderSource("filter-vs", "selection-fs");
+        super.setShaderSource("filter.vert", "selection.frag");
         super(gl);
 
         var texCoordLocation = gl.getAttribLocation(this.program, "a_texCoord");

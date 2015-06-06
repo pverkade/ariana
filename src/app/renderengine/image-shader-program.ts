@@ -10,7 +10,7 @@ class ImageShaderProgram extends BaseProgram {
     matrixLocation : WebGLUniformLocation;
 
     constructor(gl : WebGLRenderingContext) {
-        super.setShaderSource("image-shader-vs", "image-shader-fs");
+        super.setShaderSource("image.vert", "image.frag");
         super(gl);
 
         var texCoordLocation = gl.getAttribLocation(this.program, "a_texCoord");
