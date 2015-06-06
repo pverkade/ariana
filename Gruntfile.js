@@ -31,7 +31,7 @@ module.exports = function(grunt) {
                         DEV: true
                     }
                 },
-                src: '<%= build_dir %>/index.html',
+                src: '<%= build_dir %>/index.html'
             },
             prod: {
                 options: {
@@ -39,7 +39,7 @@ module.exports = function(grunt) {
                         PROD: true
                     }
                 },
-                src: '<%= build_dir %>/index.html',
+                src: '<%= build_dir %>/index.html'
             }
         },
 
@@ -97,7 +97,7 @@ module.exports = function(grunt) {
             target: {
                 files: {
                     'build/index.html': 'build/index.html'
-                },
+                }
             }
         },
 
@@ -113,7 +113,7 @@ module.exports = function(grunt) {
                 '<%= build_dir %>/js/*.js', '!<%= build_dir %>/js/template.js'
             ],
             css: [
-                '<%= build_dir %>/css/ariana.css',
+                '<%= build_dir %>/css/ariana.css'
             ],
             assets: [
                 '<% build_dir %>/assets/'
@@ -122,7 +122,7 @@ module.exports = function(grunt) {
                 '<%= build_dir %>/index.html'
             ],
             template: [
-                '<%= build_dir %>/js/template.js',
+                '<%= build_dir %>/js/template.js'
             ],
             prod: [
                 '<%= build_dir %>/js',
@@ -256,7 +256,7 @@ module.exports = function(grunt) {
             },
             shaders: {
                 files: ['<%= src_files.shaders %>'],
-                tasks: ['build_renderengine']
+                tasks: ['bundle_shaders']
             }
         }
     };
@@ -330,11 +330,11 @@ module.exports = function(grunt) {
     grunt.registerTask('chain_js', [
         'clean:html',
         'clean:js',
+        'ts',
         'copy:build_js',
         'copy:build_html',
         'includeSource',
-        'preprocess:dev',
-        'ts'
+        'preprocess:dev'
     ]);
 
     /*
@@ -343,7 +343,7 @@ module.exports = function(grunt) {
      */
     grunt.registerTask('chain_css', [
         'clean:css',
-        'sass',
+        'sass'
     ]);
 
     /*
@@ -395,4 +395,4 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('build_renderengine', ['bundle_shaders', 'ts']);
-}
+};
