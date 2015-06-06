@@ -4,7 +4,6 @@
 angular.module('ariana').controller('toolsetCtrl', function($scope) {
     
     // SVG FIX FOT STACK OVEFLOW
-    /*
     $('.svg-img').each(function(){
         var $img = $(this);
         var imgID = $img.attr('id');
@@ -31,7 +30,7 @@ angular.module('ariana').controller('toolsetCtrl', function($scope) {
             $img.replaceWith($svg);
 
         }, 'xml');
-    });*/
+    });
     
     $scope.active = false;
 
@@ -97,13 +96,13 @@ angular.module('ariana').controller('toolboxCtrl', function($scope) {
             }
         },
         painting: {
-            image: 'brush.svg',
+            image: 'border-color.svg',
             tools: {
                 color: {
-                    image: 'close.svg'
+                    image: 'palette.svg'
                 },
                 pencil: {
-                    image: 'border-color.svg'
+                    image: 'pen.svg'
                 },
                 brush: {
                     image: 'brush.svg'
@@ -112,7 +111,7 @@ angular.module('ariana').controller('toolboxCtrl', function($scope) {
                     image: 'eraser.svg'
                 },
                 picker: {
-                    image: 'close.svg'
+                    image: 'eyedropper.svg'
                 },
                 fill: {
                     image: 'format-color-fill.svg'
