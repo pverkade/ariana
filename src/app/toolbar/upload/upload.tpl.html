@@ -8,13 +8,13 @@
     <div ngf-drop ng-model="files" class="drop-box" ngf-drag-over-class="dragover" ngf-multiple="true" ngf-accept="'image/*'">
         <span ng-if="files==undefined">Drag images here</span>
         <div ng-repeat="file in files">
-            <img src="">
+            <img ng-src="">
         </div>
     </div>
     <!--div class="button" ngf-select ng-model="files">Or press here to open a file picker</div-->
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-default btn-lg" ng-click="upload()">
+    <button type="button" class="btn btn-default btn-lg" ng-click="upload()" ng-disabled="files==undefined">
         Import
     </button>
 </div>
