@@ -18,7 +18,6 @@ function compileProgram(gl : WebGLRenderingContext, vertexShader : WebGLShader, 
 }
 
 function compileShaderFromScript(gl : WebGLRenderingContext, id : string) : WebGLShader {
-    console.log(id in SHADERS);
     if (! (id in SHADERS)) {
         return null;
     }
@@ -35,7 +34,6 @@ function compileShaderFromScript(gl : WebGLRenderingContext, id : string) : WebG
 }
 
 function compileShader(gl : WebGLRenderingContext, shaderSource : string, shaderType : number) : WebGLShader {
-    console.log('compileShader', shaderSource);
 	var shader = gl.createShader(shaderType);
 	gl.shaderSource(shader, shaderSource);
 		
