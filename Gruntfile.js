@@ -5,7 +5,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-bower-concat');
     grunt.loadNpmTasks('grunt-sass');
-    grunt.loadNpmTasks('grunt-typescript');
+    grunt.loadNpmTasks('grunt-ts');
     grunt.loadNpmTasks('grunt-html2js');
     grunt.loadNpmTasks('grunt-include-source');
     grunt.loadNpmTasks('grunt-preprocess');
@@ -14,15 +14,30 @@ module.exports = function(grunt) {
     var path = require('path');
     var fs   = require('fs');
 
-
     function bundleShaders(srcPattern, dst) {
         var result = {};
         var filenames = glob.sync(srcPattern, {});
 
         for (var i = 0; i < filenames.length; i++) {
             var filename = filenames[i];
-            var ext = path.extname(filename, 1);
-            result[path.basename(filename, ext)] = fs.readFileSync(filename).toString();
+            var sourceName = path.basename(filename, path.extname(filename, 1));
+            var typeName = path.extname(sourceName);
+            var type;
+
+            if (typeName == "vert") {
+                type = "x-shader/x-fragment"
+            }
+            else if (typeName == "frag") {
+                type = "x-shader/x-vertex";
+            }
+            else {
+                throw "Unknown shader type:"
+            }
+
+            result[sourceName] = {
+                source: fs.readFileSync(filename).toString(),
+                type: type
+            };
         }
 
         fs.writeFileSync(dst, "SHADERS = " + JSON.stringify(result, null, 4) + "\n");
@@ -75,15 +90,10 @@ module.exports = function(grunt) {
         /*
          * Compile and concat TypeScript (WIP)
          */
-        typescript: {
-            base: {
+        ts: {
+            default: {
                 src: ['<%= src_files.ts %>'],
-                dest: '<%= build_dir %>/js/typescript.js',
-                options: {
-                    module: 'commonjs',
-                    target: 'es5',
-                    keepDirectoryHierarchy: false
-                }
+                out: '<%= build_dir %>/js/renderEngine.js'
             }
         },
 
@@ -261,7 +271,7 @@ module.exports = function(grunt) {
             },
             ts: {
                 files: ['<%= src_files.ts %>'],
-                tasks: ['chain_js']
+                tasks: ['ts']
             },
             sass: {
                 files: ['<%= src_files.sass %>'],
@@ -287,7 +297,7 @@ module.exports = function(grunt) {
         'bundle_shaders',
         'sass', // Compile sass -> build/css/ariana.css
         'bower_concat:css', // Concatenate all bower css -> build/css/bower.css
-        'typescript', // Compile TypeScript -> build/js/typescript.js
+        'ts', // Compile TypeScript -> build/js/typescript.js
         'html2js', // Combine all tpl.html -> build/js/template.js
         'copy:build_js', // Copy all javascript -> build/js/
         'copy:build_vendorjs', // Copy all javascript -> build/js/
@@ -303,7 +313,7 @@ module.exports = function(grunt) {
         'bundle_shaders',
         'sass', // Compile sass -> build/css/ariana.css
         'bower_concat:css', // Concatenate all bower css -> build/css/bower.css
-        'typescript', // Compile TypeScript -> build/js/typescript.js
+        'ts', // Compile TypeScript -> build/js/typescript.js
         'html2js', // Combine all tpl.html -> build/js/template.js
         'copy:build_js', // Copy all javascript -> build/js/
         'copy:build_html', // Copy index.html -> build/index.html
@@ -376,6 +386,6 @@ module.exports = function(grunt) {
 
     grunt.registerTask('bundle_shaders', 'Bundles the Shader source code into a js file', function() {
         grunt.log.writeln('Bundeling shaders.');
-        bundleShaders(appConfig.src_files.shaders[0], "src/shaders/shaders.js");
+        bundleShaders(appConfig.src_files.shaders[0], path.join(appConfig.build_dir, "js/shaders.js"));
     });
 }

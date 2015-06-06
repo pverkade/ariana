@@ -8,6 +8,7 @@ app.controller('UploadModalCtrl', ['$scope', '$modalInstance', 'Upload',
             $scope.files.forEach(function (file) {
                 console.log(file);
             })
+            $scope.close();
         };
     }
 ])
