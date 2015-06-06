@@ -1,12 +1,49 @@
 angular.module('ariana').controller('contentCtrl', function($scope, $window) {
-    $scope.mouseMove = function(e) {
-        $scope.config.mouse.location.x = e.x;
-        $scope.config.mouse.location.y = e.y;
+
+    this.position       = {"x": 0, "y": 0};
+    this.lastPosition   = {"x": 0, "y": 0};
+    
+    /* This function pans over the image. */
+    $scope.pan = function() {
+        var x = $scope.config.mouse.location.x;
+        var y = $scope.config.mouse.location.y;
+    
+        var dx = this.lastPosition.x - x;
+        var dy = this.lastPosition.y - y;
+            
+        this.position.x += dx;
+        this.position.y += dy;
+            
+        // TODO renderEngine set layer position
+        console.log("PAN", x, y);
+        
+        this.lastPosition.x = x;
+        this.lastPosition.y = y;
+    };
+
+    $scope.mouseMove = function(event) {
+        event.preventDefault();
+        
+        $scope.config.mouse.location.x = event.x;
+        $scope.config.mouse.location.y = event.y;
+        
+        /* If the mouse is down, */
+        if ($scope.config.mouse.click.down) {
+            // TODO only on left button
+            //if ($scope.config.tools.activeTool == null) $scope.pan();
+        };          
     }
 
-    $scope.mouseClick = function(e) {
-        $scope.config.mouse.click.x = e.x;
-        $scope.config.mouse.click.y = e.y;
+    $scope.mouseDown = function(event) {
+        event.preventDefault();
+        $scope.config.mouse.click.down = true;
+        $scope.config.mouse.click.x = event.x;
+        $scope.config.mouse.click.y = event.y;
+    }
+    
+    $scope.mouseUp = function(event) {
+        event.preventDefault();
+        $scope.config.mouse.click.down = false;
     }
     
     /* Get the canvas element. */
@@ -16,4 +53,5 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
     // FIXME cannot create renderEngine
     //$scope.renderEngine = new RenderEngine(canvas);   
     //console.log($scope.renderEngine);
+    
 });

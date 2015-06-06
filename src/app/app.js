@@ -30,7 +30,10 @@ app.controller('AppCtrl', ['$scope',
 			},
 			"layers": {
 			    "numberOfLayers": 0,
-			    "currentLayer": null
+			    "currentLayer": null,
+			    "layerInfo": {
+			        //{"x": 0, "y": 0, "zoom": 1}
+			    }
 			} 
 		}
 		
