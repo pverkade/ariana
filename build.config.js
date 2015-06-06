@@ -8,7 +8,8 @@ module.exports = {
         sass: 'src/**/*.scss',
         html: 'src/index.html',
         scss: 'src/sass/main.scss',
-        assets: ['src/assets/**/*.*']
+        assets: ['src/assets/**/*.*'],
+        shaders : ['src/shaders/*.glsl']
     },
 
     vendor_files: {

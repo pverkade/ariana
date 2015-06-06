@@ -1,5 +1,4 @@
 module.exports = function(grunt) {
-
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-clean');
@@ -10,6 +9,24 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-html2js');
     grunt.loadNpmTasks('grunt-include-source');
     grunt.loadNpmTasks('grunt-preprocess');
+
+    var glob = require('glob');
+    var path = require('path');
+    var fs   = require('fs');
+
+
+    function bundleShaders(srcPattern, dst) {
+        var result = {};
+        var filenames = glob.sync(srcPattern, {});
+
+        for (var i = 0; i < filenames.length; i++) {
+            var filename = filenames[i];
+            var ext = path.extname(filename, 1);
+            result[path.basename(filename, ext)] = fs.readFileSync(filename).toString();
+        }
+
+        fs.writeFileSync(dst, "SHADERS = " + JSON.stringify(result, null, 4) + "\n");
+    }
 
     var appConfig = require('./build.config.js');
     var taskConfig = {
@@ -88,9 +105,9 @@ module.exports = function(grunt) {
          */
         includeSource: {
             options: {
-                rename: function(dest, matchedSrcPath, options) {
+                rename: function (dest, matchedSrcPath, options) {
                     // Strip build/ from path
-                    return matchedSrcPath.replace('build/', '');;
+                    return matchedSrcPath.replace('build/', '');
                 },
                 ordering: 'top-down'
             },
@@ -253,6 +270,10 @@ module.exports = function(grunt) {
             assets: {
                 files: ['<%= src_files.assets %>'],
                 tasks: ['chain_assets']
+            },
+            shaders: {
+                files: ['<%= src_files.shaders %>'],
+                tasks: ['bundle_shaders']
             }
         }
     };
@@ -263,6 +284,7 @@ module.exports = function(grunt) {
     /* The build_dev task does not concat and minify */
     grunt.registerTask('build_dev', [
         'clean:build', // Remove build/
+        'bundle_shaders',
         'sass', // Compile sass -> build/css/ariana.css
         'bower_concat:css', // Concatenate all bower css -> build/css/bower.css
         'typescript', // Compile TypeScript -> build/js/typescript.js
@@ -278,6 +300,7 @@ module.exports = function(grunt) {
     /* The build_prod task completely builds, concats and (SOON) minifies the src */
     grunt.registerTask('build_prod', [
         'clean:build', // Remove build/
+        'bundle_shaders',
         'sass', // Compile sass -> build/css/ariana.css
         'bower_concat:css', // Concatenate all bower css -> build/css/bower.css
         'typescript', // Compile TypeScript -> build/js/typescript.js
@@ -350,4 +373,9 @@ module.exports = function(grunt) {
         'clean:assets',
         'copy:build_assets'
     ]);
+
+    grunt.registerTask('bundle_shaders', 'Bundles the Shader source code into a js file', function() {
+        grunt.log.writeln('Bundeling shaders.');
+        bundleShaders(appConfig.src_files.shaders[0], "src/shaders/shaders.js");
+    });
 }
