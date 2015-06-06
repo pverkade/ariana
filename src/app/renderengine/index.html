@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=utf-8 />
+    <title></title>
+    <script src="gl-matrix.js"></script>
+    <script src="render-helper.js"></script>
+    <script src="layer.js"></script>
+    <script src="base-program.js"></script>
+    <script src="magic-selection.js"></script>
+    <script src="image-layer.js"></script>
+    <script src="image-shader-program.js"></script>
+    <script src="render-engine.js"></script>
+    <script src="drawbuffer.js"></script>
+    <script src="filter.js"></script>
+    <script src="brightness-filter.js"></script>
+    <script src="selection-program.js"></script>
+
+    <script>
+        function start() {
+            var image = new Image();
+            var image2 = new Image();
+            var canvas = document.getElementById("glcanvas");
+            var renderEngine = new RenderEngine(canvas);
+            var magicSelection = new MagicSelection();
+            var gl = renderEngine.getWebGLRenderingContext();
+            var selectionProgram = new SelectionProgram(gl);
+            var drawbuffer = renderEngine.drawbuffer1;
+
+            var counter = 1;
+            function done() {
+                if (counter === 1) {
+                    counter --;
+                }
+                else {
+                    var imageLayer = new ImageLayer(gl, image);
+                    imageLayer.setScale(.5,.5);
+                    imageLayer.setRotation(1.);
+                    imageLayer.setPos(0,0.5);
+
+                    var imageLayer2 = new ImageLayer(gl, image2);
+                    //imageLayer2.setScale(.3,.3);
+
+                    renderEngine.addLayer(imageLayer);
+                    //renderEngine.addLayer(imageLayer2);
+                    //renderEngine.reorder(1, 0);
+                    drawbuffer.bind();
+                    imageLayer2.setupRender();
+                    imageLayer2.render();
+                    var data = drawbuffer.getData();
+                    drawbuffer.unbind();
+
+                    //var bitmask = magicSelection.getSelection(data, 255, 250, 0.1, drawbuffer.width, drawbuffer.height);
+                    var worker = new Worker("magic-selection-worker.js");
+                    worker.postMessage({
+                        "data": data,
+                        "x": 255,
+                        "y": 243,
+                        "threshold": 0.02,
+                        "width": drawbuffer.width,
+                        "height": drawbuffer.height
+                    });
+                    worker.addEventListener('message', function(e) {
+                        var bitmask = e.data;
+                        worker.terminate();
+                        var count = 0;
+                        for (var i = 0; i < bitmask.length; i++) {
+                            if (bitmask[i] != 0) {
+                                count++;
+                            }
+                        }
+                        console.log("Values in bitmap not zero: " + count + " out of " + bitmask.length);
+                        //console.log(data.length);
+
+                        //var brightnessFilter = new BrightnessFilter(gl);
+                        //brightnessFilter.setAttribute("brightness", 0.3);
+                        //renderEngine.filterLayers([0], brightnessFilter);
+                        gl.enable(gl.STENCIL_TEST);
+                        gl.stencilFunc(gl.ALWAYS, 1, 0xFF);
+                        gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE);
+                        gl.colorMask(false, false, false, false);
+
+                        selectionProgram.setBitmask(bitmask, drawbuffer.width, drawbuffer.height);
+                        selectionProgram.activate();
+                        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+                        //renderEngine.render();
+
+                        gl.colorMask(true, true, true, true);
+                        gl.stencilFunc(gl.EQUAL, 0, 0xFF);
+                        gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP);
+
+                        //renderEngine.addLayer(imageLayer2);
+                        //renderEngine.render();
+                        imageLayer2.setupRender();
+                        imageLayer2.render();
+
+                        gl.disable(gl.STENCIL_TEST);
+
+                        renderEngine.destroy();
+                    }, false);
+                }
+            }
+
+            image2.src = "wall.png";
+            image2.onload = done;
+
+            image.src = "image.jpg";
+            image.onload = done;
+        }
+    </script>
+    <script id="selection-fs" type="x-shader/x-fragment">
+        precision highp float;
+
+        varying vec2 v_texCoord;
+        uniform sampler2D u_bitmask;
+
+        void main() {
+            float mask = texture2D(u_bitmask, v_texCoord).a;
+
+            if (mask == 0.0) {
+            discard;
+            }
+
+            gl_FragColor = vec4(0.3, 0.6, 0.8, 1.0);
+        }
+    </script>
+    <script id="image-shader-fs" type="x-shader/x-fragment">
+        varying highp vec2 v_texCoord;
+
+        uniform sampler2D u_sampler;
+
+        void main(void) {
+            gl_FragColor = texture2D(u_sampler, v_texCoord);
+        }
+    </script>
+    <script id="filter-vs" type="x-shader/x-vertex">
+    attribute vec2 a_position;
+    attribute vec2 a_texCoord;
+
+    varying highp vec2 v_texCoord;
+
+    void main(void) {
+      gl_Position = vec4(a_position, 0, 1);
+      v_texCoord = a_texCoord;
+    }
+    </script>
+    <script id="brightness-fs" type="x-shader/x-fragment">
+        precision highp float;
+
+        varying vec2 v_texCoord;
+
+        uniform float u_brightness;
+        uniform sampler2D u_sampler;
+
+        void main() {
+	        vec4 texColor = texture2D(u_sampler, v_texCoord);
+	        gl_FragColor = vec4(texColor.rgb*u_brightness, texColor.a);
+        }
+    </script>
+    <script id="image-shader-vs" type="x-shader/x-vertex">
+    attribute vec2 a_position;
+    attribute vec2 a_texCoord;
+
+    varying highp vec2 v_texCoord;
+
+    uniform mat3 u_matrix;
+
+    void main(void) {
+      gl_Position = vec4((u_matrix * vec3(a_position, 1)).xy, 1, 1);
+      v_texCoord = a_texCoord;
+    }
+    </script>
+</head>
+
+<body onload="start()">
+<div id="canvas">
+    <canvas id="glcanvas" width="640" height="640">
+        Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
+    </canvas>
+</div>
+<div id="filters"></div>
+<div id="layers"></div>
+<img id="images" />
+</body>
+</html>

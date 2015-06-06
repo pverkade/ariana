@@ -26,6 +26,7 @@ ariana/
   |- src/
   | |- app/
   | | |- <app logic>
+  | | |- renderengine/
   | | |- content/
   | | |- header/
   | | |- layers/
@@ -50,6 +51,7 @@ ariana/
 A brief description of each entry
 - `src/` - ariana sources
   - `app/` - is used for application specific code, e.g. templates and controllers
+    - `renderengine/` - the renderengine  
   - `assets/` - images etc.
   - `common/` - all code that is likely to be used by different modules
   - `sass/` - all style files

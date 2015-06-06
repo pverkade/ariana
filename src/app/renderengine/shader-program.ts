@@ -1,0 +1,4 @@
+interface ShaderProgram
+{
+    activate() : void;
+}

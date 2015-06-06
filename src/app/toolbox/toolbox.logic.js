@@ -78,65 +78,65 @@ angular.module('ariana').controller('toolboxCtrl', function($scope) {
      * Toolsets
      */
     $scope.toolbox = {
-        basic: {
-            image: 'arrow-all.svg',
-            tools: {
-                translate: {
-                    image: 'arrow-all.svg'
+        "basic": {
+            "image": 'arrow-all.svg',
+            "tools": {
+                "translate": {
+                    "image": 'arrow-all.svg'
                 },
-                scale: {
-                    image: 'arrow-expand.svg'
+                "scale": {
+                    "image": 'arrow-expand.svg'
                 },
-                rotate: {
-                    image: 'rotate-left.svg'
+                "rotate": {
+                    "image": 'rotate-left.svg'
                 },
-                crop: {
-                    image: 'crop.svg'
+                "crop": {
+                    "image": 'crop.svg'
                 }
             }
         },
-        painting: {
-            image: 'border-color.svg',
-            tools: {
-                color: {
-                    image: 'palette.svg'
+        "painting": {
+            "image": 'border-color.svg',
+            "tools": {
+                "color": {
+                    "image": 'palette.svg'
                 },
-                pencil: {
-                    image: 'pen.svg'
+                "pencil": {
+                    "image": 'pen.svg'
                 },
-                brush: {
-                    image: 'brush.svg'
+                "brush": {
+                    "image": 'brush.svg'
                 },
-                eraser: {
-                    image: 'eraser.svg'
+                "eraser": {
+                    "image": 'eraser.svg'
                 },
-                picker: {
-                    image: 'eyedropper.svg'
+                "picker": {
+                    "image": 'eyedropper.svg'
                 },
-                fill: {
-                    image: 'format-color-fill.svg'
+                "fill": {
+                    "image": 'format-color-fill.svg'
                 }
             }
         },
-        select: {
-            image: 'select.svg',
-            tools: {
-                rectangle: {
-                    image: 'select.svg'
+        "select": {
+            "image": 'select.svg',
+            "tools": {
+                "rectangle": {
+                    "image": 'select.svg'
                 },
-                elipse: {
-                    image: 'checkbox-blank-circle-outline.svg'
+                "elipse": {
+                    "image": 'checkbox-blank-circle-outline.svg'
                 },
-                curve: {
-                    image: 'vector-curve.svg'
+                "curve": {
+                    "image": 'vector-curve.svg'
                 },
-                wand: {
-                    image: 'auto-fix.svg' 
+                "wand": {
+                    "image": 'auto-fix.svg' 
                 }
             }
         },
-        text: {
-            image: 'format-size.svg'
+        "text": {
+            "image": 'format-size.svg'
         }
     }
 });
