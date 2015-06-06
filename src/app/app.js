@@ -48,17 +48,12 @@ app.controller('AppCtrl', ['$scope',
             console.log("new layer!!");
             console.log("image", image);
             console.log("engine", $scope.renderEngine);
-            
-            /*
-		    var context = $scope.renderEngine.getWebGLRenderingContext();
-            console.log("context", context);
-            var layer = new ImageLayer(context, image);
-            console.log("layer", layer);
-            */
+
 		    // create layer
 		    // append layer to renderEngine
 		    // update config
-            
+            var imageLayer = new ImageLayer($scope.renderEngine.getWebGLRenderingContext(), image);
+            $scope.renderEngine.addLayer(imageLayer);
             console.log("finished");
 		};
 		

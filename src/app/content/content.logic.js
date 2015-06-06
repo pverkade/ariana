@@ -57,6 +57,7 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
     image.src="/assets/img/arnold2.jpg";
     
     image.onload = function() {
-        $scope.newLayerFromImage(this);
+        $scope.newLayerFromImage(image);
+        $scope.renderEngine.render();
     }
 });
