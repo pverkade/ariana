@@ -2,6 +2,7 @@ app.controller('toolbarCtrl', ['$scope', '$modal',
     function ($scope, $modal) {
 
         // SVG FIX FOT STACK OVEFLOW
+        /*
         $('.svg-img').each(function(){
             var $img = $(this);
             var imgID = $img.attr('id');
@@ -28,7 +29,7 @@ app.controller('toolbarCtrl', ['$scope', '$modal',
                 $img.replaceWith($svg);
 
             }, 'xml');
-        }); 
+        });*/
         
         $scope.openUploadModal = function() {
             var modalInstance = $modal.open({

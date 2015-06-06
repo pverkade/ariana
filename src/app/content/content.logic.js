@@ -11,9 +11,13 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
     
     /* Get the canvas element. */
     var canvas = document.getElementById('main-canvas');
-    console.log(canvas);
+    $scope.startEngine(canvas);
     
-    // FIXME cannot create renderEngine
-    //$scope.renderEngine = new RenderEngine(canvas);   
-    //console.log($scope.renderEngine);
+    var image = new Image();
+    image.src="/assets/img/arnold2.jpg";
+    
+    image.onload = function() {
+        $scope.newLayerFromImage(this);
+    }
+    
 });

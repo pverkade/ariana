@@ -10,42 +10,56 @@ var app = angular.module('ariana', [
 app.controller('AppCtrl', ['$scope', 
 	function ($scope) {
 		$scope.config = {
-			"mouse": {
-				"location": {
-					"x": 0,
-					"y": 0
+			mouse: {
+				location: {
+					x: 0,
+					y: 0
 				},
-				"click": {
-					"x": 0,
-					"y": 0
+				click: {
+					x: 0,
+					y: 0
 				}
 			},
-			"tools": {
-				"activeTool":     null,
-				"activeToolset":  null,
-				"colors": {
-					"primary":   '#000000',
-					"secondary": '#ffffff'
+			tools: {
+				activeTool:     null,
+				activeToolset:  null,
+				colors: {
+					primary:   '#000000',
+					secondary: '#ffffff'
 				}
 			},
-			"layers": {
-			    "numberOfLayers": 0,
-			    "currentLayer": null
+			layers: {
+			    numberOfLayers: 0,
+			    currentLayer: null
 			} 
-		}
-		
+		};
+         
 		$scope.renderEngine = null;
-		
+        
+        $scope.startEngine = function(canvas) {
+            $scope.renderEngine = new RenderEngine(canvas);
+            console.log("Broom broom!");
+        };
+        
 		$scope.newLayerFromImage = function(image) {
-		    // TODO add new layer to renderEngine from image
-		    // get webgl context
+            console.log("new layer!!");
+            console.log("image", image);
+            console.log("engine", $scope.renderEngine);
+            
+		    var context = $scope.renderEngine.getWebGLRenderingContext();
+            console.log("context", context);
+            var layer = new ImageLayer(context, image);
+            console.log("layer", layer);
+            
 		    // create layer
 		    // append layer to renderEngine
 		    // update config
-		}
+            
+            console.log("finished");
+		};
 		
 		$scope.getImage = function() {
 		    // return rendered image
-		}
+		};
 	}
 ]);
