@@ -10,17 +10,17 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
         
         var dx = x - $scope.lastPosition.x;
         var dy = y - $scope.lastPosition.y;
-        console.log("PAN", dx, dy);
             
         $scope.position.x += dx;
         $scope.position.y += dy;
-            
-        // TODO renderEngine set top layer position
+
         var currentLayer = $scope.config.layers.currentLayer;
         
+        /* Set the position of the top layer. */
+        // TODO later: use selected layer
         if (currentLayer >= 0) {
-            console.log("setPos", $scope.position.x, $scope.position.y);
             $scope.renderEngine.layers[currentLayer].setPos($scope.position.x, $scope.position.y);
+            $scope.renderEngine.render();
         }
         
         $scope.lastPosition.x = x;
@@ -44,6 +44,10 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
         $scope.config.mouse.click.down = true;
         $scope.config.mouse.click.x = e.pageX;
         $scope.config.mouse.click.y = e.pageY;
+        
+        /* Set the last position for correct panning etc. */
+        $scope.lastPosition.x = e.pageX;
+        $scope.lastPosition.y = e.pageY;
         
         if ($scope.config.tools.activeTool == null) $("#main-canvas").addClass("cursor-grabbing");
     }

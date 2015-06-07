@@ -53,7 +53,7 @@ app.controller('AppCtrl', ['$scope',
             console.log($scope.renderEngine.layers);
             console.log($scope.config.layers.currentLayer);
             
-            //$scope.renderEngine.layers[$scope.config.layers.currentLayer].setPos(200, 200);
+            $scope.renderEngine.layers[$scope.config.layers.currentLayer].setPos(200, 200);
             $scope.renderEngine.render();
 		};
 		
