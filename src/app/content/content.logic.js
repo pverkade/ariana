@@ -19,6 +19,7 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
         var currentLayer = $scope.config.layers.currentLayer;
         
         if (currentLayer >= 0) {
+            console.log("setPos", $scope.position.x, $scope.position.y);
             $scope.renderEngine.layers[currentLayer].setPos($scope.position.x, $scope.position.y);
         }
         

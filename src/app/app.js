@@ -48,8 +48,12 @@ app.controller('AppCtrl', ['$scope',
             var imageLayer = new ImageLayer($scope.renderEngine.getWebGLRenderingContext(), image);
             $scope.renderEngine.addLayer(imageLayer);
             $scope.config.layers.numberOfLayers += 1;
+            $scope.config.layers.currentLayer += 1;
             
-            //$scope.renderEngine.layers[$scope.config.layers.numberOfLayers].setPos(200, 200);
+            console.log($scope.renderEngine.layers);
+            console.log($scope.config.layers.currentLayer);
+            
+            //$scope.renderEngine.layers[$scope.config.layers.currentLayer].setPos(200, 200);
             $scope.renderEngine.render();
 		};
 		

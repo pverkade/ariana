@@ -8,6 +8,7 @@ angular.module('ariana').directive('autosize', function($window) {
             /* HTML width (resolution) */
             //TODO also use $elem
             // jQuery width() and height() also set css sizes
+            
             var canvas = document.getElementById("main-canvas");
             canvas.width = $window.innerWidth;
             canvas.height = $window.innerHeight;
