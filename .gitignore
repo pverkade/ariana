@@ -4,3 +4,6 @@ build/
 *.log
 */Thumbs.db
 .sass-cache/
+.tscache/*
+src/.idea/*
+.idea/*
