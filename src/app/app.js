@@ -30,7 +30,7 @@ app.controller('AppCtrl', ['$scope',
 			},
 			layers: {
 			    numberOfLayers: 0,
-			    currentLayer: null,
+			    currentLayer:   -1,
 			    layerInfo: {
 			        //{"x": 0, "y": 0, "zoom": 1}
 			    }
@@ -45,16 +45,12 @@ app.controller('AppCtrl', ['$scope',
         };
         
 		$scope.newLayerFromImage = function(image) {
-            console.log("new layer!!");
-            console.log("image", image);
-            console.log("engine", $scope.renderEngine);
-
-		    // create layer
-		    // append layer to renderEngine
-		    // update config
             var imageLayer = new ImageLayer($scope.renderEngine.getWebGLRenderingContext(), image);
             $scope.renderEngine.addLayer(imageLayer);
-            console.log("finished");
+            $scope.config.layers.numberOfLayers += 1;
+            
+            //$scope.renderEngine.layers[$scope.config.layers.numberOfLayers].setPos(200, 200);
+            $scope.renderEngine.render();
 		};
 		
 		$scope.getImage = function() {

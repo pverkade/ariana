@@ -46,14 +46,18 @@ body {
         margin: 0 !important;   
     }
     
-    svg, img {
+    img {
+        display: none;
+    }
+    
+    svg {
         margin: 0.2 * $blocksize;
         padding: 0 !important; 
         height: 0.6 * $blocksize;
         width: 0.6 * $blocksize;      
     }
     
-    svg path, img path {
+    svg path {
         fill: $white;
     }
     

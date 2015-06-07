@@ -16,6 +16,11 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
         $scope.position.y += dy;
             
         // TODO renderEngine set top layer position
+        var currentLayer = $scope.config.layers.currentLayer;
+        
+        if (currentLayer >= 0) {
+            $scope.renderEngine.layers[currentLayer].setPos($scope.position.x, $scope.position.y);
+        }
         
         $scope.lastPosition.x = x;
         $scope.lastPosition.y = y;
@@ -58,6 +63,6 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
     
     image.onload = function() {
         $scope.newLayerFromImage(image);
-        $scope.renderEngine.render();
+        //$scope.renderEngine.render();
     }
 });
