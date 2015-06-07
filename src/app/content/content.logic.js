@@ -19,7 +19,8 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
         /* Set the position of the top layer. */
         // TODO later: use selected layer
         if (currentLayer >= 0) {
-            $scope.renderEngine.layers[currentLayer].setPos($scope.position.x, $scope.position.y);
+            //FIXME cannot set position without Arnold dissapearing
+            //$scope.renderEngine.layers[currentLayer].setPos($scope.position.x, $scope.position.y);
             $scope.renderEngine.render();
         }
         
