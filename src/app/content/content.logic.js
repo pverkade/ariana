@@ -4,19 +4,17 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
     $scope.pan = function(translate) {
         var dx = $scope.config.mouse.current.x - $scope.config.mouse.lastClick.x;
         var dy = $scope.config.mouse.current.y - $scope.config.mouse.lastClick.y;
-        console.log("DELTA'" , dx, dy)
 
         /* Translate: set the position of the selected layer. */
         if (translate) {
             var currentLayer = $scope.config.layers.currentLayer;
-            if (currentLayer > -1) {
-                var xOffset = $scope.config.layers.layerInfo[currentLayer].x;
-                var yOffset = $scope.config.layers.layerInfo[currentLayer].y;
-                console.log("GET", xOffset, yOffset);
-                
-                $scope.renderEngine.layers[currentLayer].setPos(2*dx/1920 + xOffset, -2*dy/1080 + yOffset);
-                $scope.renderEngine.render();
-            }
+            if (currentLayer == -1) return;
+            
+            var xOffset = $scope.config.layers.layerInfo[currentLayer].x;
+            var yOffset = $scope.config.layers.layerInfo[currentLayer].y;
+            
+            $scope.renderEngine.layers[currentLayer].setPos(2*dx/1920 + xOffset, -2*dy/1080 + yOffset);
+            $scope.renderEngine.render();
         }
         /* Pan: set the position of all layers. */
         else {
@@ -47,6 +45,7 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
 
     $scope.mouseDown = function(e) {
         e.preventDefault();
+        /* Set correct position in config. */
         $scope.config.mouse.click.down = true;
         $scope.config.mouse.current.x = e.pageX;
         $scope.config.mouse.current.y = e.pageY;
@@ -59,13 +58,15 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
     
     $scope.mouseUp = function(e) {
         e.preventDefault();
+        /* Set correct position in config. */
         $scope.config.mouse.click.down = false;
         
         /* Reset cursor. */
         if ($scope.config.tools.activeTool == "pan") $("#main-canvas").css("cursor", "grab");
-            
+           
+        /* Store new offset in config */
         if ($scope.config.tools.activeTool == "pan" || $scope.config.tools.activeTool == "translate") {
-            /* Set offset in config */
+            
             for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) {
                 var xOffset = $scope.renderEngine.layers[i].getPosX();
                 var yOffset = $scope.renderEngine.layers[i].getPosY();
@@ -80,19 +81,19 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
     var canvas = document.getElementById('main-canvas');
     $scope.startEngine(canvas);
     
-    var image = new Image();
-    image.src="/assets/img/arnold2.jpg";
+    // Add Arnold the First
+    var image1 = new Image();
+    image1.src="/assets/img/arnold2.jpg";
     
-    image.onload = function() {
-        $scope.newLayerFromImage(image);
-        //$scope.renderEngine.render();
+    image1.onload = function() {
+        $scope.newLayerFromImage(image1);
     }
     
+    // Add Arnold the Second
     var image2 = new Image();
     image2.src="/assets/img/arnold2.jpg";
     
     image2.onload = function() {
         $scope.newLayerFromImage(image2);
-        //$scope.renderEngine.render();
     }
 });
