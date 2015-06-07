@@ -50,11 +50,10 @@ app.controller('AppCtrl', ['$scope',
             $scope.config.layers.numberOfLayers += 1;
             $scope.config.layers.currentLayer += 1;
             
-            console.log($scope.renderEngine.layers);
-            console.log($scope.config.layers.currentLayer);
-            
             //FIXME cannot set position without Arnold dissapearing
-            //$scope.renderEngine.layers[$scope.config.layers.currentLayer].setPos(200, 200);
+            $scope.renderEngine.layers[$scope.config.layers.currentLayer].setPos(-0.25, -0.25);
+            //FIXME scale only works for arnold 
+            $scope.renderEngine.layers[$scope.config.layers.currentLayer].setScale(0.5, 0.625);
             $scope.renderEngine.render();
 		};
 		

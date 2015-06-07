@@ -19,8 +19,9 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
         /* Set the position of the top layer. */
         // TODO later: use selected layer
         if (currentLayer >= 0) {
-            //FIXME cannot set position without Arnold dissapearing
-            $scope.renderEngine.layers[currentLayer].setPos($scope.position.x/1024*2 -1, 1-$scope.position.y/1024*2);
+            console.log("NEW POS", $scope.position.x, $scope.position.y);
+            // FIXME offset is not dynamic
+            $scope.renderEngine.layers[currentLayer].setPos(2*$scope.position.x/1920 - 0.25, -2*$scope.position.y/1080 - 0.25);
             $scope.renderEngine.render();
         }
         
