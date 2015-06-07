@@ -66,13 +66,11 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
            
         /* Store new offset in config */
         if ($scope.config.tools.activeTool == "pan" || $scope.config.tools.activeTool == "translate") {
-            
             for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) {
                 var xOffset = $scope.renderEngine.layers[i].getPosX();
                 var yOffset = $scope.renderEngine.layers[i].getPosY();
                 $scope.config.layers.layerInfo[i].x = xOffset;
                 $scope.config.layers.layerInfo[i].y = yOffset;
-                console.log("SET", xOffset, yOffset);
             }
         }
     }
