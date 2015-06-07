@@ -28,24 +28,22 @@ angular.module('ariana').controller('toolsetCtrl', function($scope) {
 
         }, 'xml');
     });
-    
-    $scope.active = false;
 
-    /*
-     * Toggles the current state
-     */
-    $scope.toggle = function(e) {
-        if ($scope.active && e.currentTarget.id == $scope.config.tools.activeToolset) {
-            $scope.config.tools.activeToolset = null;
-            $scope.active = false;
-            return;
-        }
-        $scope.config.tools.activeToolset = e.currentTarget.id;
-        $scope.active = true;    
+    /* This function selects a toolset and therefore opens a toolbox. */
+    $scope.selectToolSet = function(name) {
+        if ($scope.config.tools.activeToolset == name) $scope.config.tools.activeToolset = null;
+        else $scope.config.tools.activeToolset = name;;    
     };
     
+    /* This function selects a tool. */
     $scope.selectTool = function(tool) {
-        config.tools.activeTool = tool;
+        $scope.config.tools.activeTool = tool;
+        console.log("selected tool: " + $scope.config.tools.activeTool);
+        
+        /* Set the cursor over the canas. */
+        if (tool == "pan")              $("#main-canvas").css("cursor", "grab");
+        else if (tool == "translate")   $("#main-canvas").css("cursor", "move");
+        else                            $("#main-canvas").css("cursor", "default")
     };
 });
 
@@ -75,65 +73,68 @@ angular.module('ariana').controller('toolboxCtrl', function($scope) {
      * Toolsets
      */
     $scope.toolbox = {
-        "basic": {
-            "image": 'arrow-all.svg',
-            "tools": {
-                "translate": {
-                    "image": 'arrow-all.svg'
+        basic: {
+            image: 'arrow-all.svg',
+            tools: {
+                pan: {
+                    image: 'cursor-pointer.svg'
                 },
-                "scale": {
-                    "image": 'arrow-expand.svg'
+                translate: {
+                    image: 'arrow-all.svg'
                 },
-                "rotate": {
-                    "image": 'rotate-left.svg'
+                scale: {
+                    image: 'arrow-expand.svg'
                 },
-                "crop": {
-                    "image": 'crop.svg'
+                rotate: {
+                    image: 'rotate-left.svg'
+                },
+                crop: {
+                    image: 'crop.svg'
                 }
             }
         },
-        "painting": {
-            "image": 'border-color.svg',
-            "tools": {
-                "color": {
-                    "image": 'palette.svg'
+        painting: {
+            image: 'border-color.svg',
+            tools: {
+                color: {
+                    image: 'palette.svg'
                 },
-                "pencil": {
-                    "image": 'pen.svg'
+                pencil: {
+                    image: 'pen.svg'
                 },
-                "brush": {
-                    "image": 'brush.svg'
+                brush: {
+                    image: 'brush.svg'
                 },
-                "eraser": {
-                    "image": 'eraser.svg'
+                eraser: {
+                    image: 'eraser.svg'
                 },
-                "picker": {
-                    "image": 'eyedropper.svg'
+                picker: {
+                    image: 'eyedropper.svg'
                 },
-                "fill": {
-                    "image": 'format-color-fill.svg'
+                fill: {
+                    image: 'format-color-fill.svg'
                 }
             }
         },
-        "select": {
-            "image": 'select.svg',
-            "tools": {
-                "rectangle": {
-                    "image": 'select.svg'
+        select: {
+            image: 'select.svg',
+            tools: {
+                rectangle: {
+                    image: 'select.svg'
                 },
-                "elipse": {
-                    "image": 'checkbox-blank-circle-outline.svg'
+                elipse: {
+                    image: 'checkbox-blank-circle-outline.svg'
                 },
-                "curve": {
-                    "image": 'vector-curve.svg'
+                curve: {
+                    image: 'vector-curve.svg'
                 },
-                "wand": {
-                    "image": 'auto-fix.svg' 
+                wand: {
+                    image: 'auto-fix.svg' 
                 }
             }
         },
-        "text": {
-            "image": 'format-size.svg'
+        text: {
+            image: 'format-size.svg'
         }
     }
 });

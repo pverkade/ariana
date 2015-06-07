@@ -11,17 +11,18 @@ app.controller('AppCtrl', ['$scope',
 	function ($scope) {
 		$scope.config = {
 			mouse: {
-				location: {
+				current: {
 					x: 0,
 					y: 0
 				},
-				click: {
+                lastClick: {
 					x: 0,
 					y: 0
-				}
+				},
+                click: {down: false}
 			},
 			tools: {
-				activeTool:     null,
+				activeTool:     "pan",
 				activeToolset:  null,
 				colors: {
 					primary:   '#000000',
@@ -31,9 +32,9 @@ app.controller('AppCtrl', ['$scope',
 			layers: {
 			    numberOfLayers: 0,
 			    currentLayer:   -1,
-			    layerInfo: {
+			    layerInfo: [
 			        //{"x": 0, "y": 0, "zoom": 1}
-			    }
+			    ]
             }
 		};
          
@@ -47,18 +48,44 @@ app.controller('AppCtrl', ['$scope',
 		$scope.newLayerFromImage = function(image) {
             var imageLayer = new ImageLayer($scope.renderEngine.getWebGLRenderingContext(), image);
             $scope.renderEngine.addLayer(imageLayer);
+            
+            /* set the correct layer info in config. */
             $scope.config.layers.numberOfLayers += 1;
             $scope.config.layers.currentLayer += 1;
+            $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {"x": -0.25, "y": -0.25, "zoom": 1}
             
-            //FIXME cannot set position without Arnold dissapearing
             $scope.renderEngine.layers[$scope.config.layers.currentLayer].setPos(-0.25, -0.25);
             //FIXME scale only works for arnold 
-            $scope.renderEngine.layers[$scope.config.layers.currentLayer].setScale(0.5, 0.625);
+            $scope.renderEngine.layers[$scope.config.layers.currentLayer].setScale(0.4, 0.65);
             $scope.renderEngine.render();
 		};
 		
 		$scope.getImage = function() {
-		    // return rendered image
+		    // TODO
 		};
+        
+        $scope.layerDown = function() {
+            if ($scope.config.layers.currentLayer > 0) {
+                $scope.config.layers.currentLayer -= 1;
+                return true;
+            }   
+            return false;
+        }
+        
+        $scope.layerUp = function() {
+            if ($scope.config.layers.currentLayer < $scope.config.layers.numberOfLayers - 1) {
+                $scope.config.layers.currentLayer += 1;
+                return true;
+            }   
+            return false;
+        };
+        
+        $scope.layerSelect = function(newIndex) {
+            if (0 <= newIndex && newIndex < $scope.config.layers.numberOfLayers) {
+                $scope.config.layers.currentLayer = newIndex;
+                return true;
+            }   
+            return false;
+        };
 	}
 ]);
