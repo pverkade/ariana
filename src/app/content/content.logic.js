@@ -20,7 +20,7 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
         // TODO later: use selected layer
         if (currentLayer >= 0) {
             //FIXME cannot set position without Arnold dissapearing
-            //$scope.renderEngine.layers[currentLayer].setPos($scope.position.x, $scope.position.y);
+            $scope.renderEngine.layers[currentLayer].setPos($scope.position.x/1024*2 -1, 1-$scope.position.y/1024*2);
             $scope.renderEngine.render();
         }
         
