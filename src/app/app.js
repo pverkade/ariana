@@ -26,8 +26,8 @@ app.controller('AppCtrl', ['$scope',
                 activeToolFunctions: null,
 				activeToolset: null,
 				colors: {
-					primary:   '#000000',
-					secondary: '#ffffff'
+					primary:   {r: 255, g: 255, b: 255},
+					secondary: {r: 0,   g: 0,   b: 0},
 				}
 			},
 			layers: {

@@ -2,6 +2,7 @@ var colorPicker = {
     
     start: function() {
         $("#main-canvas").css("cursor", "crosshair");
+        console.log($("#main-canvas").css("cursor"));
     },
     
     mouseDown: function($scope) {
@@ -9,16 +10,17 @@ var colorPicker = {
         var y = $scope.config.mouse.current.x;
         
         var value = $scope.renderEngine.getPixelColor(x, y);
-        console.log(value);
-        // TODO finish code
-        //$scope.config.tools.color.primary = ...
+        
+        /* Write color to config. */
+        $scope.config.tools.colors.primary.r = value[0];
+        $scope.config.tools.colors.primary.g = value[1];
+        $scope.config.tools.colors.primary.b = value[2];
     },
     
     mouseUp: function($scope) {
     },
     
     mouseMove: function($scope) {    
-        // TODO call mouseDown 
-        $("#main-canvas").css("cursor", "crosshair");
+        // TODO call mouseDown
     },
 }

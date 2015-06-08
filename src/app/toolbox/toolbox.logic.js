@@ -77,9 +77,10 @@ angular.module('ariana').controller('toolboxCtrl', function($scope) {
     }
 
     $scope.swapColors = function() {
-        var temp = $scope.primary;
-        $scope.primary = $scope.secondary;
-        $scope.secondary = temp;
+        var temp = $scope.config.tools.colors.primary;
+        $scope.config.tools.colors.primary = $scope.config.tools.colors.secondary;
+        $scope.config.tools.colors.secondary = temp;
+        console.log($scope.config.tools.colors.primary);
     }
 
     /*
