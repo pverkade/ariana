@@ -2,6 +2,7 @@ var connect = require('connect');
 var serveStatic = require('serve-static');
 var fs = require('fs');
 var request = require('request');
+var qs = require('querystring');
 
 // Init
 var app = connect();
@@ -40,6 +41,48 @@ function startServer() {
     });
 }
 
+/* This function resends an image received from a post back, if
+ * a correct post was made to /save-image.
+ *
+ * The image size limit is roughly 100mb.
+ *
+ * Returns true if a response was send.
+ */
+function saveImageRouter(req, res) {
+    if (req.method == "POST" && req.url == "/save-image") {
+        var body = '';
+        req.on('data', function (data) {
+            body += data;
+
+            // kill connection if too much data (100mb).
+            if (body.length > 100 * 1e6) {
+                console.log("message is to long:", body.length);
+                request.connection.destroy();
+            }
+        });
+
+        req.on('end', function () {
+            var post = qs.parse(body);
+            if (!post['image-data'] && !post['image-name']) {
+                res.writeHead(400, { "Content-Type": "text/plain" });
+                res.end("");
+                return;
+            }
+
+            res.writeHead(200, {
+                "Content-Type": "Content-type: image/png" ,
+                'Content-Disposition': 'attachment; filename="' + post["image-name"]
+            });
+
+            res.end(post['image-data'], "base64");
+        });
+
+        return true;
+    }
+
+    return false;
+}
+
 /*
  * Starts the servers and index.html is only loaded once at startup.
  */
@@ -48,6 +91,10 @@ function staticServe() {
         if (err) throw err;
 
         app.use(function(req, res) {
+            if (saveImageRouter(req, res)) {
+                return;
+            }
+
             res.writeHead(200, { "Content-Type": "text/html" });
             res.end(content);
         });
@@ -61,9 +108,13 @@ function staticServe() {
  */
 function dynamicServe() {
     app.use(function(req, res) {
+        if (saveImageRouter(req, res)) {
+            return;
+        }
+
         readIndex(function(err, content) {
             if (err) {
-                res.writeHead(404, { "Content-Type": "text/html" });
+                res.writeHead(404, { "Content-Type": "text/plain" });
                 res.end("File not Found.");
                 return;
             }
