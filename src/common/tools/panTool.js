@@ -26,6 +26,6 @@ var panTool = {
         canvasLocationX += dx;
         canvasLocationY += dy;
         
-        window.requestAnimationFrame(function() {$("#main-canvas").css("transform", "translate(" + canvasLocationX + "px, " + canvasLocationY + "px)");});
+        $("#main-canvas").css("transform", "translate(" + canvasLocationX + "px, " + canvasLocationY + "px)");
     },
 }
