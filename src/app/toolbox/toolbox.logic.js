@@ -4,7 +4,7 @@
 angular.module('ariana').controller('toolsetCtrl', function($scope) {
     
     // SVG FIX FOT STACK OVEFLOW
-    $('img.svg').each(function(){
+    $('.svg').each(function(){
         var $img    = $(this);
         var id      = $img.attr('id');
         var src     = $img.attr('src');
@@ -43,13 +43,18 @@ angular.module('ariana').controller('toolsetCtrl', function($scope) {
     /* This function selects a tool. */
     $scope.selectTool = function(tool) {
         $scope.config.tools.activeTool = tool;
-        console.log("selected tool: " + $scope.config.tools.activeTool);
+        var toolset = $scope.config.tools.activeToolset;
+        var toolFunctions = $scope.toolbox[toolset].tools[tool].toolFunctions;
+        $scope.config.tools.activeToolFunctions = toolFunctions;
+        toolFunctions.start();
         
         /* Set the cursor over the canvas. */
         if      (tool == "pan")         $("#main-canvas").css("cursor", "grab");
         else if (tool == "translate")   $("#main-canvas").css("cursor", "move");
+        else if (tool == "rotate")      $("#main-canvas").css("cursor", "grab");
         else                            $("#main-canvas").css("cursor", "default")
     };
+    
 });
 
 /*
@@ -82,16 +87,19 @@ angular.module('ariana').controller('toolboxCtrl', function($scope) {
             image: 'arrow-all.svg',
             tools: {
                 pan: {
-                    image: 'cursor-pointer.svg'
+                    image: 'cursor-pointer.svg',
+                    toolFunctions: panTool,
                 },
                 translate: {
-                    image: 'arrow-all.svg'
+                    image: 'arrow-all.svg',
+                    toolFunctions: translateTool,
                 },
                 scale: {
                     image: 'arrow-expand.svg'
                 },
                 rotate: {
-                    image: 'rotate-left.svg'
+                    image: 'rotate-left.svg',
+                    toolFunctions: null,
                 },
                 crop: {
                     image: 'crop.svg'

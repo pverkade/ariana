@@ -22,8 +22,9 @@ app.controller('AppCtrl', ['$scope',
                 click: {down: false}
 			},
 			tools: {
-				activeTool:     "pan",
-				activeToolset:  null,
+				activeTool: null,
+                activeToolFunctions: null,
+				activeToolset: null,
 				colors: {
 					primary:   '#000000',
 					secondary: '#ffffff'
@@ -49,16 +50,14 @@ app.controller('AppCtrl', ['$scope',
             var imageLayer = new ImageLayer($scope.renderEngine.getWebGLRenderingContext(), image);
             $scope.renderEngine.addLayer(imageLayer);
             
-            console.log(image);
             var width = image.naturalWidth;
             var height = image.naturalHeight;
-            console.log(width, height);
             
             /* set the correct layer info in config. The new layer comes on top
              * and is immediately selected. */
             $scope.config.layers.numberOfLayers += 1;
             $scope.config.layers.currentLayer = $scope.config.layers.numberOfLayers - 1;
-            $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {"x": -0.25, "y": -0.25, "scale": 1}
+            $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {"x": -0.25, "y": -0.25, "xScale": width/1920, "yScale": height/1080, "rotation": 0}
             
             $scope.renderEngine.layers[$scope.config.layers.currentLayer].setPos(-0.25, -0.25);
             //FIXME hardcoded height / width

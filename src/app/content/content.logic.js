@@ -1,31 +1,20 @@
 angular.module('ariana').controller('contentCtrl', function($scope, $window) {
     
-    /* This function pans over the image. */
-    $scope.pan = function(translate) {
-        var dx = $scope.config.mouse.current.x - $scope.config.mouse.lastClick.x;
-        var dy = $scope.config.mouse.current.y - $scope.config.mouse.lastClick.y;
-
-        /* Translate: set the position of the selected layer. */
-        if (translate) {
-            var currentLayer = $scope.config.layers.currentLayer;
-            if (currentLayer == -1) return;
-            
-            var xOffset = $scope.config.layers.layerInfo[currentLayer].x;
-            var yOffset = $scope.config.layers.layerInfo[currentLayer].y;
-            
-            $scope.renderEngine.layers[currentLayer].setPos(2*dx/1920 + xOffset, -2*dy/1080 + yOffset);
-            $scope.renderEngine.render();
-        }
-        /* Pan: set the position of all layers. */
-        else {
-            for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) {
-                var xOffset = $scope.config.layers.layerInfo[i].x;
-                var yOffset = $scope.config.layers.layerInfo[i].y;
-                
-                $scope.renderEngine.layers[i].setPos(2*dx/1920 + xOffset, -2*dy/1080 + yOffset);
-            }
-            $scope.renderEngine.render();
-        }
+    $scope.rotate = function() {
+        
+        var currentLayer = $scope.config.layers.currentLayer;
+        if (currentLayer == -1) return;
+        
+        // FIXME wrong cordinates
+        var centerX = 1920 * ($scope.config.layers.layerInfo[currentLayer].x + 0.5 * $scope.config.layers.layerInfo[currentLayer].xScale);
+        var centerY = 1080 * (1 - ($scope.config.layers.layerInfo[currentLayer].y + 0.5 * $scope.config.layers.layerInfo[currentLayer].yScale));
+        
+        console.log(centerX, centerY);
+        
+        var originalDirection = math.atan2($scope.config.mouse.lastClick.y - centerY, $scope.config.mouse.lastClick.x - centerX); 
+        var newDirection = math.atan2($scope.config.mouse.current.x - centerX, $scope.config.mouse.current.x - centerX); 
+    
+        console.log("directions", originalDirection, newDirection);
     };
 
     $scope.mouseMove = function(e) {
@@ -33,14 +22,8 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
         $scope.config.mouse.current.x = e.pageX;
         $scope.config.mouse.current.y = e.pageY;
         
-        /* If the mouse is down, */
-        if ($scope.config.mouse.click.down) {
-            // TODO only on left button
-            if ($scope.config.tools.activeTool == "pan")        { $scope.pan(false); return; }
-            if ($scope.config.tools.activeTool == "translate")  { $scope.pan(true); return; }
-            if ($scope.config.tools.activeTool == "scale")      { return; }
-            if ($scope.config.tools.activeTool == "rotate")     { return; }
-        };          
+        var toolFunctions = $scope.config.tools.activeToolFunctions;
+        if (toolFunctions && $scope.config.mouse.click.down) toolFunctions.mouseMove($scope);      
     }
 
     $scope.mouseDown = function(e) {
@@ -52,27 +35,21 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
         $scope.config.mouse.lastClick.x = e.pageX;
         $scope.config.mouse.lastClick.y = e.pageY;
         
-        /* Set cursor. */
-        if ($scope.config.tools.activeTool == "pan") $("#main-canvas").css("cursor", "grabbing");
+        /* Start current toolset. */
+        var toolFunctions = $scope.config.tools.activeToolFunctions;
+        if (toolFunctions) {
+                toolFunctions.mouseDown($scope);
+                console.log("HOE HOE");
+        }
     }
     
-    $scope.mouseUp = function(e) {
-        e.preventDefault();
-        /* Set correct position in config. */
+    $scope.mouseUp = function(event) {
+        event.preventDefault();
         $scope.config.mouse.click.down = false;
         
-        /* Reset cursor. */
-        if ($scope.config.tools.activeTool == "pan") $("#main-canvas").css("cursor", "grab");
-           
-        /* Store new offset in config */
-        if ($scope.config.tools.activeTool == "pan" || $scope.config.tools.activeTool == "translate") {
-            for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) {
-                var xOffset = $scope.renderEngine.layers[i].getPosX();
-                var yOffset = $scope.renderEngine.layers[i].getPosY();
-                $scope.config.layers.layerInfo[i].x = xOffset;
-                $scope.config.layers.layerInfo[i].y = yOffset;
-            }
-        }
+        /* End current toolset. */
+        var toolFunctions = $scope.config.tools.activeToolFunctions;
+        if (toolFunctions) toolFunctions.mouseUp($scope);
     }
     
     /* Get the canvas element. */
