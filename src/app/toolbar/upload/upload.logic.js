@@ -1,5 +1,5 @@
-app.controller('UploadModalCtrl', ['$scope', '$rootScope', '$modalInstance', 'Upload', 
-    function ($scope, $rootScope, $modalInstance, Upload) {
+app.controller('UploadModalCtrl', ['$scope', '$modalInstance', 'Upload', 
+    function ($scope, $modalInstance, Upload) {
         $scope.imageUrls = [];
 
         $scope.close = function () {
@@ -11,7 +11,7 @@ app.controller('UploadModalCtrl', ['$scope', '$rootScope', '$modalInstance', 'Up
                 var image = new Image();
                 image.src = url;
                 image.onload = function() {
-                    $rootScope.newLayerFromImage(image);
+                    $scope.newLayerFromImage(image);
                 };
             });
 

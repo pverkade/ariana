@@ -7,8 +7,8 @@ var app = angular.module('ariana', [
     'ngFileUpload'
 ]);
 
-app.controller('AppCtrl', ['$scope', '$rootScope',
-    function($scope, $rootScope) {
+app.controller('AppCtrl', ['$scope',
+    function($scope) {
         $scope.config = {
             mouse: {
                 old : {
@@ -60,7 +60,7 @@ app.controller('AppCtrl', ['$scope', '$rootScope',
             console.log("Broom broom!");
         };
 
-        $rootScope.newLayerFromImage = function(image) {
+        $scope.newLayerFromImage = function(image) {
             var imageLayer = new ImageLayer($scope.renderEngine.getWebGLRenderingContext(), image);
             $scope.renderEngine.addLayer(imageLayer);
 

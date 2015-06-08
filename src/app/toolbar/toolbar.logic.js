@@ -1,15 +1,6 @@
 app.controller('toolbarCtrl', ['$scope', '$modal',
     function ($scope, $modal) {
-
-
-        $scope.openUploadModal = function() {
-            var modalInstance = $modal.open({
-                templateUrl: 'app/toolbar/upload/upload.tpl.html',
-                controller:  'UploadModalCtrl',
-                size: 'lg'
-            });
-        };
-        
+      
         $scope.saveImage = function() {
             // TODO I have no idea if this works :^)
             var image = $scope.renderEngine.renderToImg();
@@ -41,6 +32,7 @@ app.controller('toolbarCtrl', ['$scope', '$modal',
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/transformations/transformations.tpl.html',
                 controller:  'TransformationModalController',
+                scope: $scope,
                 size: 'lg'
             });
         };
@@ -54,5 +46,14 @@ app.controller('toolbarCtrl', ['$scope', '$modal',
         };    
 
         
+        $scope.openUploadModal = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'app/toolbar/upload/upload.tpl.html',
+                controller:  'UploadModalCtrl',
+                scope: $scope,
+                size: 'lg'
+            });
+        };
+
     }
 ]);
