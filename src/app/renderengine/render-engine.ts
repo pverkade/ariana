@@ -38,8 +38,8 @@ class RenderEngine {
             console.log("Has stencil buffer: " + haveStencilBuffer);
 
 
-            //this.gl.enable(this.gl.BLEND);
-            //this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+            this.gl.enable(this.gl.BLEND);
+            this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
         }
         catch(e) {
             alert(e.stack);
@@ -69,7 +69,8 @@ class RenderEngine {
 
     render() {
         //this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
-
+        var aspectRatio = 1. * this.width / this.height;
+        console.log(aspectRatio);
         var oldType = -1;
         var numItems = this.layers.length;
 
@@ -85,11 +86,12 @@ class RenderEngine {
                 oldType = layer.getLayerType();
             }
 
-            layer.render();
+            layer.render(aspectRatio);
         }
     }
 
     filterLayers(layerIndices : number[], filter : Filter) {
+        var aspectRatio = this.width / this.height;
         for (var i = 0; i < layerIndices.length; i ++) {
             var layer = this.layers[layerIndices[i]];
             if (layer.getLayerType() !== LayerType.ImageLayer) {
@@ -100,7 +102,7 @@ class RenderEngine {
             this.drawbuffer1.bind();
             this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
             imageLayer.setupRender();
-            imageLayer.render();
+            imageLayer.render(aspectRatio);
             this.drawbuffer1.unbind();
 
             this.drawbuffer2.bind();

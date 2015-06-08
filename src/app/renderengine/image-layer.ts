@@ -52,9 +52,11 @@ class ImageLayer extends Layer {
 		ImageLayer.program.activate();
 	}
 	
-	render() {
+	render(aspectRatio : number) {
+        super.render(aspectRatio);
 		var matrix : Float32Array = mat3.create();
 		mat3.identity(matrix);
+        mat3.multiply(matrix, matrix, this.aspectRatioMatrix);
 		mat3.multiply(matrix, matrix, this.translationMatrix);
 		mat3.multiply(matrix, matrix, this.rotationMatrix);
 		mat3.multiply(matrix, matrix, this.scaleMatrix);
