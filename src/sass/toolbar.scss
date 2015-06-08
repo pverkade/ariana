@@ -33,7 +33,7 @@
     }
 
     .navbar-brand {
-        width: 2 * $blocksize;
+        width: 2.5 * $blocksize;
         height: $blocksize;
         margin: 0;
         padding: 0 0.25 * $blocksize;
@@ -52,6 +52,7 @@
         padding: 0;
     
         @extend .tool;
+        cursor: context-menu;
         
         &:hover, &:active, &:focus {
             background-color: lighten($light, $hover-lighten);

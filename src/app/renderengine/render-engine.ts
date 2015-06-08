@@ -8,16 +8,16 @@
 /// <reference path="image-layer"/>
 
 class RenderEngine {
-    gl : WebGLRenderingContext;
+    private gl : WebGLRenderingContext;
 
     /* Array of layers in the order that the user sees them */
-    layers : Array<Layer>;
-    drawbuffer1 : DrawBuffer;
-    drawbuffer2 : DrawBuffer;
+    private layers : Array<Layer>;
+    private drawbuffer1 : DrawBuffer;
+    private drawbuffer2 : DrawBuffer;
 
     /* Width and height of the framebuffer */
-    width : number;
-    height : number;
+    private width : number;
+    private height : number;
 
     constructor (canvas : HTMLCanvasElement) {
         this.width = canvas.width;
@@ -27,14 +27,17 @@ class RenderEngine {
 
         try {
             /* Try to grab the standard context. If it fails, fallback to experimental. */
-            //this.gl = <WebGLRenderingContext> (canvas.getContext("webgl", {stencil:true}) || canvas.getContext("experimental-webgl", {stencil:true}));
-            this.gl = <WebGLRenderingContext> (canvas.getContext("webgl") || canvas.getContext("experimental-webgl"));
-            /*var contextAttributes = this.gl.getContextAttributes();
+            this.gl = <WebGLRenderingContext> (
+                canvas.getContext("webgl", {stencil:true, preserveDrawingBuffer: true}) ||
+                canvas.getContext("experimental-webgl", {stencil:true, preserveDrawingBuffer: true})
+            );
+            var contextAttributes = this.gl.getContextAttributes();
+
             var haveStencilBuffer = contextAttributes.stencil;
 
             if (!haveStencilBuffer) {
                 console.log("Your browser has limited support for WebGL (missing stencil buffer).\nSelection will not work!");
-            }*/
+            }
 
             this.gl.enable(this.gl.BLEND);
             this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
@@ -55,7 +58,7 @@ class RenderEngine {
  
     removeLayer(index : number) {
         var layer : Layer = this.layers[index];
-        this.layers.splice(layer.ID, 1);
+        this.layers.splice(layer.getID(), 1);
         layer.destroy();
     }
 
@@ -75,13 +78,13 @@ class RenderEngine {
         /* Draw all layers to the currently bound framebuffer */
         for (var i = 0; i < numItems; i++) {
             var layer = this.layers[i];
-            if (layer.layerType != oldType) {
+            if (layer.getLayerType() != oldType) {
                 /*
                  * We're drawing a different type of layer then our previous one,
                  * so we need to do some extra stuff.
                  */
                 layer.setupRender();
-                oldType = layer.layerType;
+                oldType = layer.getLayerType();
             }
 
             layer.render();
@@ -91,7 +94,7 @@ class RenderEngine {
     filterLayers(layerIndices : number[], filter : Filter) {
         for (var i = 0; i < layerIndices.length; i ++) {
             var layer = this.layers[layerIndices[i]];
-            if (layer.layerType !== LayerType.ImageLayer) {
+            if (layer.getLayerType() !== LayerType.ImageLayer) {
                 continue;
             }
 
@@ -109,8 +112,6 @@ class RenderEngine {
             this.drawbuffer2.unbind();
 
             imageLayer.setDefaults();
-
-            // Replace layer with ImageLayer (if it was not an ImageLayer) or set the texture of ImageLayer to buffer2.getWebGLTexture();
         }
         this.drawbuffer2.unbind();
     }
@@ -128,6 +129,12 @@ class RenderEngine {
 
     getWebGLRenderingContext() : WebGLRenderingContext {
         return this.gl;
+    }
+
+    getPixelColor(x : number, y : number) : Uint8Array {
+        var value = new Uint8Array(4);
+        this.gl.readPixels(x, this.height-y-1, 1, 1, this.gl.RGBA, this.gl.UNSIGNED_BYTE, value);
+        return value;
     }
 
     destroy() {

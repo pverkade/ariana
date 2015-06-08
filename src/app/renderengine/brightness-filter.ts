@@ -8,7 +8,7 @@
 
 
 class BrightnessProgram extends FilterProgram {
-    brightnessLocation;
+    protected brightnessLocation;
 
     constructor(gl : WebGLRenderingContext) {
         super.setShaderSource("filter.vert", "brightness.frag");
@@ -22,8 +22,8 @@ class BrightnessProgram extends FilterProgram {
 }
 
 class BrightnessFilter extends Filter {
-    filterType = FilterType.Brightness;
-    static program : BrightnessProgram;
+    protected filterType = FilterType.Brightness;
+    protected static program : BrightnessProgram;
 
     constructor (gl : WebGLRenderingContext) {
         super(gl);

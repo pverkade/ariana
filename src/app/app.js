@@ -1,20 +1,20 @@
 "use strict";
 
 var app = angular.module('ariana', [
-	'ui.router', 
-	'ui.bootstrap', 
-	'templates-ariana',
-	'ngFileUpload'
+    'ui.router',
+    'ui.bootstrap',
+    'templates-ariana',
+    'ngFileUpload'
 ]);
 
-app.controller('AppCtrl', ['$scope', 
-	function ($scope) {
-		$scope.config = {
-			mouse: {
-				current: {
-					x: 0,
-					y: 0
-				},
+app.controller('AppCtrl', ['$scope',
+    function($scope) {
+        $scope.config = {
+            mouse: {
+                current: {
+                    x: 0,
+                    y: 0
+                },
                 lastClick: {
 					x: 0,
 					y: 0
@@ -22,11 +22,12 @@ app.controller('AppCtrl', ['$scope',
                 click: {down: false}
 			},
 			tools: {
-				activeTool:     "pan",
-				activeToolset:  null,
+				activeTool: null,
+                activeToolFunctions: null,
+				activeToolset: null,
 				colors: {
-					primary:   '#000000',
-					secondary: '#ffffff'
+					primary:   {r: 255, g: 255, b: 255},
+					secondary: {r: 0,   g: 0,   b: 0},
 				}
 			},
 			layers: {
@@ -49,16 +50,24 @@ app.controller('AppCtrl', ['$scope',
             var imageLayer = new ImageLayer($scope.renderEngine.getWebGLRenderingContext(), image);
             $scope.renderEngine.addLayer(imageLayer);
             
+            var width = image.naturalWidth;
+            var height = image.naturalHeight;
+            
             /* set the correct layer info in config. The new layer comes on top
              * and is immediately selected. */
             $scope.config.layers.numberOfLayers += 1;
             $scope.config.layers.currentLayer = $scope.config.layers.numberOfLayers - 1;
-            $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {"x": -0.25, "y": -0.25, "scale": 1}
             
-            $scope.renderEngine.layers[$scope.config.layers.currentLayer].setPos(-0.25, -0.25);
-            //FIXME scale only works for arnold. It should be scaled so that it
-            // fits the screen and keeps the correct aspect ratio
-            $scope.renderEngine.layers[$scope.config.layers.currentLayer].setScale(0.4, 0.65);
+            var layer = $scope.renderEngine.layers[$scope.config.layers.currentLayer];
+            layer.setPos(-0.25, -0.25);
+            layer.setScale(width/1920, height/1080);
+
+            $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {
+                "x": layer.getPosX(), 
+                "y": layer.getPosY(), 
+                "xScale": layer.getScaleX(), 
+                "yScale": layer.getScaleY(), 
+                "rotation": layer.getRotation()}
             
             $scope.renderEngine.render();
 		};

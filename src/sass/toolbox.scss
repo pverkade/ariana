@@ -22,11 +22,9 @@ div .toolset {
     margin-left: $blocksize;
     width: $blocksize;
 
-    //@extend .gui-element;
-    
     z-index: 1;
     background-color: $very-light;   
-    
+
     .tool {
         
         background-color: $very-light;

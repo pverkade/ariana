@@ -4,12 +4,12 @@
 /// <reference path="image-shader-program"/>
 
 class ImageLayer extends Layer {
-    static program = null;
-    layerType : LayerType = LayerType.ImageLayer;
+    protected static program = null;
+    protected layerType : LayerType = LayerType.ImageLayer;
 
-	texture : WebGLTexture;
+	private texture : WebGLTexture;
 
-    internalScaleMatrix : Float32Array;
+    private internalScaleMatrix : Float32Array;
 	
 	constructor(gl : WebGLRenderingContext, image : ImageData) {
         super(gl);

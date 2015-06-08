@@ -33,45 +33,43 @@ angular.module('ariana').controller('toolsetCtrl', function($scope) {
     $scope.selectToolSet = function(name) {
         if ($scope.config.tools.activeToolset == name) {
             $scope.config.tools.activeToolset = null;
-            // FIXME switch back to pan-tool. Currently not possible due to
-            // toolbox closing on selection
-            //$scope.config.tools.activeTool = "pan";
         }
-        else $scope.config.tools.activeToolset = name;;    
+        else {
+            $scope.config.tools.activeToolset = name;
+        }
     };
     
     /* This function selects a tool. */
-    $scope.selectTool = function(tool) {
+    $scope.selectTool = function(e, tool) {
+        e.stopPropagation()
+
         $scope.config.tools.activeTool = tool;
-        console.log("selected tool: " + $scope.config.tools.activeTool);
+
+        var toolset = $scope.config.tools.activeToolset;
+        toolFunctions = $scope.toolbox[toolset].tools[tool].toolFunctions;
         
-        /* Set the cursor over the canvas. */
-        if      (tool == "pan")         $("#main-canvas").css("cursor", "grab");
-        else if (tool == "translate")   $("#main-canvas").css("cursor", "move");
-        else                            $("#main-canvas").css("cursor", "default")
+        if (toolFunctions) {
+            $scope.config.tools.activeToolFunctions = toolFunctions;
+            toolFunctions.start();
+        }
+        else {
+            $scope.config.tools.activeToolFunctions = null;
+            $("#main-canvas").css("cursor", "default");
+        }
     };
+
 });
 
 /*
  * The toolbox controller contains all logic of the whole toolbar!
  */
 angular.module('ariana').controller('toolboxCtrl', function($scope) {
-    $scope.primary = $scope.config.tools.colors.primary;
-    $scope.secondary = $scope.config.tools.colors.secondary;
-    $scope.active = $scope.config.tools.active;
-
-    $scope.setPrimary = function(color) {
-        $scope.primary = color;
-    }
-
-    $scope.setSecondary = function(color) {
-        $scope.secondary = color;
-    }
-
+    
     $scope.swapColors = function() {
-        var temp = $scope.primary;
-        $scope.primary = $scope.secondary;
-        $scope.secondary = temp;
+        var temp = $scope.config.tools.colors.primary;
+        $scope.config.tools.colors.primary = $scope.config.tools.colors.secondary;
+        $scope.config.tools.colors.secondary = temp;
+        console.log($scope.config.tools.colors.primary);
     }
 
     /*
@@ -82,16 +80,19 @@ angular.module('ariana').controller('toolboxCtrl', function($scope) {
             image: 'arrow-all.svg',
             tools: {
                 pan: {
-                    image: 'cursor-pointer.svg'
+                    image: 'cursor-pointer.svg',
+                    toolFunctions: panTool,
                 },
                 translate: {
-                    image: 'arrow-all.svg'
+                    image: 'arrow-all.svg',
+                    toolFunctions: translateTool,
                 },
                 scale: {
                     image: 'arrow-expand.svg'
                 },
                 rotate: {
-                    image: 'rotate-left.svg'
+                    image: 'rotate-left.svg',
+                    toolFunctions: rotateTool,
                 },
                 crop: {
                     image: 'crop.svg'
@@ -99,7 +100,7 @@ angular.module('ariana').controller('toolboxCtrl', function($scope) {
             }
         },
         painting: {
-            image: 'border-color.svg',
+            image: 'brush.svg',
             tools: {
                 color: {
                     image: 'palette.svg'
@@ -114,7 +115,8 @@ angular.module('ariana').controller('toolboxCtrl', function($scope) {
                     image: 'eraser.svg'
                 },
                 picker: {
-                    image: 'eyedropper.svg'
+                    image: 'eyedropper.svg',
+                    toolFunctions: colorPicker,
                 },
                 fill: {
                     image: 'format-color-fill.svg'

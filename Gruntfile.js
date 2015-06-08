@@ -110,7 +110,10 @@ module.exports = function(grunt) {
                 '<%= build_dir %>/'
             ],
             js: [
-                '<%= build_dir %>/js/*.js', '!<%= build_dir %>/js/template.js'
+                '<%= build_dir %>/js/*.js', '!<%= build_dir %>/js/template.js', '!<%= build_dir %>/js/renderEngine.js'
+            ],
+            ts: [
+                '<%= build_dir %>/js/renderEngine.js'
             ],
             css: [
                 '<%= build_dir %>/css/ariana.css'
@@ -244,7 +247,7 @@ module.exports = function(grunt) {
             },
             ts: {
                 files: ['<%= src_files.ts %>'],
-                tasks: ['ts']
+                tasks: ['clean:ts', 'ts']
             },
             sass: {
                 files: ['<%= src_files.sass %>'],
@@ -330,7 +333,6 @@ module.exports = function(grunt) {
     grunt.registerTask('chain_js', [
         'clean:html',
         'clean:js',
-        'ts',
         'copy:build_js',
         'copy:build_html',
         'includeSource',
