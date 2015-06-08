@@ -16,9 +16,9 @@ enum FilterType {Brightness, Contrast};
 enum FilterValueType {Slider};
 
 class FilterProgram extends BaseProgram {
-    program : WebGLRenderingContext;
+    protected program : WebGLRenderingContext;
 
-    samplerLocation : WebGLUniformLocation;
+    protected samplerLocation : WebGLUniformLocation;
 
     constructor(gl : WebGLRenderingContext) {
         super(gl);
@@ -41,9 +41,9 @@ class FilterProgram extends BaseProgram {
 }
 
 class Filter {
-    gl : WebGLRenderingContext;
-    attributes:Object;
-    filterType:FilterType;
+    protected gl : WebGLRenderingContext;
+    protected attributes:Object;
+    protected filterType:FilterType;
 
     constructor(gl : WebGLRenderingContext) {
         this.gl = gl;
@@ -59,8 +59,12 @@ class Filter {
         return this.attributes[name];
     }
 
-    getAttributeNames():Array<string> {
+    getAttributeNames() : Array<string> {
         return Object.keys(this.attributes);
+    }
+
+    getFilterType() : FilterType {
+        return this.filterType;
     }
 
     render(texture:WebGLTexture) { }

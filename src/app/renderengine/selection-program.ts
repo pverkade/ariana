@@ -4,11 +4,11 @@
 /// <reference path="base-program"/>
 
 class SelectionProgram extends BaseProgram {
-    program : WebGLRenderingContext;
+    protected program : WebGLRenderingContext;
 
-    bitmaskLocation : WebGLUniformLocation;
+    protected bitmaskLocation : WebGLUniformLocation;
 
-    bitmask : WebGLTexture;
+    protected bitmask : WebGLTexture;
 
     constructor(gl : WebGLRenderingContext) {
         super.setShaderSource("filter-vs", "selection-fs");

@@ -8,16 +8,16 @@
 /// <reference path="image-layer"/>
 
 class RenderEngine {
-    gl : WebGLRenderingContext;
+    private gl : WebGLRenderingContext;
 
     /* Array of layers in the order that the user sees them */
-    layers : Array<Layer>;
-    drawbuffer1 : DrawBuffer;
-    drawbuffer2 : DrawBuffer;
+    private layers : Array<Layer>;
+    private drawbuffer1 : DrawBuffer;
+    private drawbuffer2 : DrawBuffer;
 
     /* Width and height of the framebuffer */
-    width : number;
-    height : number;
+    private width : number;
+    private height : number;
 
     constructor (canvas : HTMLCanvasElement) {
         this.width = canvas.width;
@@ -51,7 +51,7 @@ class RenderEngine {
  
     removeLayer(index : number) {
         var layer : Layer = this.layers[index];
-        this.layers.splice(layer.ID, 1);
+        this.layers.splice(layer.getID(), 1);
         layer.destroy();
     }
 
@@ -71,13 +71,13 @@ class RenderEngine {
         /* Draw all layers to the currently bound framebuffer */
         for (var i = 0; i < numItems; i++) {
             var layer = this.layers[i];
-            if (layer.layerType != oldType) {
+            if (layer.getLayerType() != oldType) {
                 /*
                  * We're drawing a different type of layer then our previous one,
                  * so we need to do some extra stuff.
                  */
                 layer.setupRender();
-                oldType = layer.layerType;
+                oldType = layer.getLayerType();
             }
 
             layer.render();
@@ -87,7 +87,7 @@ class RenderEngine {
     filterLayers(layerIndices : number[], filter : Filter) {
         for (var i = 0; i < layerIndices.length; i ++) {
             var layer = this.layers[layerIndices[i]];
-            if (layer.layerType !== LayerType.ImageLayer) {
+            if (layer.getLayerType() !== LayerType.ImageLayer) {
                 continue;
             }
 

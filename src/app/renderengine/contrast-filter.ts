@@ -7,7 +7,7 @@
 /// <reference path="filter"/>
 
 class ContrastProgram extends FilterProgram {
-    contrastValueLocation;
+    private contrastValueLocation;
 
     constructor(gl : WebGLRenderingContext) {
         super.setShaderSource("filter-vs", "contrast-fs");
@@ -21,8 +21,8 @@ class ContrastProgram extends FilterProgram {
 }
 
 class ContrastFilter extends Filter {
-    filterType = FilterType.Contrast;
-    static program : ContrastProgram;
+    protected filterType = FilterType.Contrast;
+    protected static program : ContrastProgram;
 
     constructor (gl : WebGLRenderingContext) {
         super(gl);
