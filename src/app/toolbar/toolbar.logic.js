@@ -38,7 +38,28 @@ app.controller('toolbarCtrl', ['$scope', '$modal',
         $scope.saveImage = function() {
             // TODO I have no idea if this works :^)
             var image = $scope.renderEngine.renderToImg();
-            window.location.href = image.replace("image/png", "image/octet-stream");
+            // retrieves the base64 data
+            var data = image.substr(image.indexOf(',') + 1).toString();
+            var url = "/save-image";
+
+            var dataInput = document.createElement("input") ;
+            dataInput.setAttribute("name", 'image-data') ;
+            dataInput.setAttribute("value", data);
+            dataInput.setAttribute("type", "hidden");
+
+            var nameInput = document.createElement("input") ;
+            nameInput.setAttribute("name", 'image-name') ;
+            nameInput.setAttribute("value", "hello_world" + '.png');
+
+            var myForm = document.createElement("form");
+            myForm.method = 'post';
+            myForm.action = url;
+            myForm.appendChild(dataInput);
+            myForm.appendChild(nameInput);
+
+            document.body.appendChild(myForm) ;
+            myForm.submit() ;
+            document.body.removeChild(myForm) ;
         };
         
         $scope.openTransformationModal = function() {

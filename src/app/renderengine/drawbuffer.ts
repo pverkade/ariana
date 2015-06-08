@@ -40,19 +40,13 @@ class DrawBuffer {
         this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, null);
     }
 
+    /* This function returns an image data url.
+     *
+     * The image is flipped upside down.
+     */
     getImage() {
         /* Read the contents of the framebuffer */
-        var upsideDownData = this.getData();
-        var data = new Uint8Array(upsideDownData.length);
-
-        var row, column, color;
-        for (row = 0; row < this.height; row++) {
-            for (column = 0; column < this.width; column++) {
-                for (color = 0; color < 4; color++) {
-                    data[(row*this.width+column)*4 + color] = upsideDownData[((this.height-row)*this.width + column)*4 + color];
-                }
-            }
-        }
+        var data = this.getData();
 
         /* Create a 2D canvas to store the result */
         var canvas = document.createElement('canvas');
