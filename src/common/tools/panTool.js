@@ -1,34 +1,31 @@
+var canvasLocationX = 120;
+var canvasLocationY = 120;
+
 var panTool = {
     
     start: function() {
-        $("#main-canvas").css("cursor", "grab");
+        $("#background").css("cursor", "grab");
     },
     
     mouseDown: function($scope) {
-        $("#main-canvas").css("cursor", "grabbing");
+        $("#background").css("cursor", "grabbing");
     },
     
     mouseUp: function($scope) {
-        $("#main-canvas").css("cursor", "grab");
-        for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) {
-            var xOffset = $scope.renderEngine.layers[i].getPosX();
-            var yOffset = $scope.renderEngine.layers[i].getPosY();
-            $scope.config.layers.layerInfo[i].x = xOffset;
-            $scope.config.layers.layerInfo[i].y = yOffset;
-        }
+        $("#background").css("cursor", "grab");
     },
     
     mouseMove: function($scope) {
         var dx = $scope.config.mouse.current.x - $scope.config.mouse.lastClick.x;
         var dy = $scope.config.mouse.current.y - $scope.config.mouse.lastClick.y;
 
-        for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) {
-            var xOffset = $scope.config.layers.layerInfo[i].x;
-            var yOffset = $scope.config.layers.layerInfo[i].y;
-            
-            $scope.renderEngine.layers[i].setPos(2 * dx/$scope.renderEngine.width + xOffset, -2 * dy/$scope.renderEngine.height + yOffset);
-        }
+        // TODO ugly code
+        $scope.config.mouse.lastClick.x += dx;
+        $scope.config.mouse.lastClick.y += dy;
         
-        window.requestAnimationFrame(function() {$scope.renderEngine.render();});
+        canvasLocationX += dx;
+        canvasLocationY += dy;
+        
+        window.requestAnimationFrame(function() {$("#main-canvas").css("transform", "translate(" + canvasLocationX + "px, " + canvasLocationY + "px)");});
     },
 }
