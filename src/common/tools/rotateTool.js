@@ -37,7 +37,8 @@ var rotateTool = {
     
         console.log("directions", originalDirection, newDirection);
         
-        //$scope.renderEngine.layers[currentLayer].setPos(2 * dx/$scope.renderEngine.width + xOffset, -2 * dy/$scope.renderEngine.height + yOffset);
-        //window.requestAnimationFrame(function() {$scope.renderEngine.render();});
+        var rotation = $scope.renderEngine.layers[currentLayer].getRotation();
+        $scope.renderEngine.layers[currentLayer].setRotation(newDirection - originalDirection + rotation);
+        window.requestAnimationFrame(function() {$scope.renderEngine.render();});
     },
 }

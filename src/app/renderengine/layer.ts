@@ -2,19 +2,19 @@
 enum LayerType {ImageLayer};
 
 class Layer {
-    gl : WebGLRenderingContext;
-	static MaxID = 0;
-	layerType : number;
-	ID : LayerType;
-	angle : number;
-	scaleX : number;
-	scaleY : number;
-	posX : number;
-	posY : number;
+    protected gl : WebGLRenderingContext;
+	protected static MaxID = 0;
+	protected layerType : number;
+	private ID : LayerType;
+	protected angle : number;
+	protected scaleX : number;
+	protected scaleY : number;
+	protected posX : number;
+	protected posY : number;
 
-	scaleMatrix : Float32Array;
-	rotationMatrix : Float32Array;
-	translationMatrix : Float32Array;
+	protected scaleMatrix : Float32Array;
+	protected rotationMatrix : Float32Array;
+	protected translationMatrix : Float32Array;
 
 
 	constructor(gl : WebGLRenderingContext) {
@@ -94,6 +94,10 @@ class Layer {
 	getID() : number {
 		return this.ID;
 	}
+
+    getLayerType() : LayerType {
+        return this.layerType;
+    }
 	
 	setupRender() { }
 	render() { }
