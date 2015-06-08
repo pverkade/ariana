@@ -37,7 +37,7 @@ class RenderEngine {
 
             if (!haveStencilBuffer) {
                 console.log("Your browser has limited support for WebGL (missing stencil buffer).\nSelection will not work!");
-            }*/
+            }
 
             this.gl.enable(this.gl.BLEND);
             this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
