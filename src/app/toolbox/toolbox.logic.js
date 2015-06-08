@@ -50,12 +50,6 @@ angular.module('ariana').controller('toolsetCtrl', function($scope) {
         
         $scope.config.tools.activeToolFunctions = toolFunctions;
         toolFunctions.start();
-        
-        /* Set the cursor over the canvas. */
-        if      (tool == "pan")         $("#main-canvas").css("cursor", "grab");
-        else if (tool == "translate")   $("#main-canvas").css("cursor", "move");
-        else if (tool == "rotate")      $("#main-canvas").css("cursor", "grab");
-        else                            $("#main-canvas").css("cursor", "default")
     };
 
 });

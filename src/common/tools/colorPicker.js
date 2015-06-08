@@ -2,7 +2,6 @@ var colorPicker = {
     
     start: function() {
         $("#main-canvas").css("cursor", "crosshair");
-        console.log($("#main-canvas").css("cursor"));
     },
     
     mouseDown: function($scope) {
