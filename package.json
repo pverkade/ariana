@@ -1,7 +1,7 @@
 {
   "name": "ariana",
-  "version": "0.0.0",
-  "description": "A online photoshop app",
+  "version": "0.1.0",
+  "description": "An online photoshop app",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
