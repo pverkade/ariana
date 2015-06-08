@@ -19,7 +19,7 @@ angular.module('ariana').config(function($stateProvider, $locationProvider) {
                 },
                 "toolbox": {
                     templateUrl: "app/toolbox/toolbox.tpl.html",
-                    controller: 'toolBoxCtrl'
+                    controller: 'toolBoxController'
                 }
             }
         })
