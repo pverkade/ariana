@@ -93,6 +93,10 @@ body {
     svg path, img path {
         fill: darken($white, 50%) !important;
     }
+    
+    img {
+        opacity: 0.25;
+    }
 }
 
 /* Upload modal */
