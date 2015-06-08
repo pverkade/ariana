@@ -42,7 +42,17 @@ class DrawBuffer {
 
     getImage() {
         /* Read the contents of the framebuffer */
-        var data = this.getData();
+        var upsideDownData = this.getData();
+        var data = new Uint8Array(upsideDownData.length);
+
+        var row, column, color;
+        for (row = 0; row < this.height; row++) {
+            for (column = 0; column < this.width; column++) {
+                for (color = 0; color < 4; color++) {
+                    data[(row*this.width+column)*4 + color] = upsideDownData[((this.height-row)*this.width + column)*4 + color];
+                }
+            }
+        }
 
         /* Create a 2D canvas to store the result */
         var canvas = document.createElement('canvas');
