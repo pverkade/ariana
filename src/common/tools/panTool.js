@@ -25,10 +25,14 @@ var panTool = {
         for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) {
             var xOffset = $scope.config.layers.layerInfo[i].x;
             var yOffset = $scope.config.layers.layerInfo[i].y;
+
+            var width = $scope.renderEngine.width;
+            var height = $scope.renderEngine.height;
+            var aspectRatio = width/ height;
             
-            $scope.renderEngine.layers[i].setPos(2 * dx/$scope.renderEngine.width + xOffset, -2 * dy/$scope.renderEngine.height + yOffset);
+            $scope.renderEngine.layers[i].setPos(2 * (dx/width) + xOffset, -2 * (dy/height/aspectRatio) + yOffset);
         }
         
-        window.requestAnimationFrame(function() {$scope.renderEngine.render();});
+        $scope.renderEngine.render();
     },
 }
