@@ -6,28 +6,48 @@
  *
  */
  
-#layers {
+.layer-container {
+    position: absolute;
     top: 1.5 * $blocksize;
-    @extend .gui-item;
-    height: auto;
-    max-height: 6 * $blocksize;
     right: 0;
+
+    @extend .gui-item;
+
     width: 3 * $blocksize;
-    height : auto;
     max-height: calc(100% - 2 * $blocksize);
-    overflow-x: hidden;
-    overflow-y: scroll;
-    
-    .layer {
-        margin-left: 0.25 * $blocksize;
-        margin-top: 0.25 * $blocksize;
-        width: calc(100% - 0.5 * $blocksize);
-        height: 2 * $blocksize;
-        background-color: lighten($light, 10%);
-        @extend .box-shadow;
-        z-index: 2;
+
+    .row {
+        &.layers {
+            margin-bottom: 0.25 * $blocksize;
+            @extend .box-shadow;
+        }
     }
     
-    //padding-bottom: 0.25 * $blocksize;
+    .layer {
+        height: 1 * $blocksize;
+        padding: 0;
+
+        background-color: lighten($light, 10%);
+        
+        &.options {
+            color: $brand-color;
+            text-align: center;
+        }
+
+        &.content {
+
+        }
+    }
+    
+    // .layer-content {
+    //     margin-left: 0.25 * $blocksize;
+    //     margin-top: 0.25 * $blocksize;
+    //     width: calc(100% - 0.5 * $blocksize);
+    //     height: 1 * $blocksize;
+    //     background-color: lighten($light, 10%);
+    //     @extend .box-shadow;
+    // }
+
+    padding-bottom: 0.25 * $blocksize;
 }
 

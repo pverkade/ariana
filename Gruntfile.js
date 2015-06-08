@@ -50,7 +50,7 @@ module.exports = function(grunt) {
         sass: {
             dist: {
                 files: {
-                    '<%= build_dir %>/css/ariana.css': '<%= src_files.scss %>'
+                    '<%= build_dir %>/css/style.css': '<%= src_files.scss %>'
                 }
             },
             options: {
@@ -116,7 +116,7 @@ module.exports = function(grunt) {
                 '<%= build_dir %>/js/renderEngine.js'
             ],
             css: [
-                '<%= build_dir %>/css/ariana.css'
+                '<%= build_dir %>/css/style.css'
             ],
             assets: [
                 '<% build_dir %>/assets/'
@@ -222,7 +222,7 @@ module.exports = function(grunt) {
                     sourceMap: true
                 },
                 src: ['<%=build_dir%>/**/*.css'],
-                dest: '<%=build_dir%>/ariana.css'
+                dest: '<%=build_dir%>/style.css'
             }
         },
 

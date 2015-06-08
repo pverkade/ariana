@@ -1,3 +1,19 @@
-<div id="layers" > 
-    <div class="layer" ng-repeat="layer in layers"> </div>
+<div class="layer-container">
+	<div class="container-fluid">
+
+    	<div class="row layers" ng-repeat="(layer, content) in layers">
+    		<div class="col-md-2 layer options">
+    			<div class="row">
+	    			<div>{{layer}}</div>
+	    			<div ng-click="toggleVisible(layer)">
+	    			<img src="assets/vectors/eye.svg"></img>
+	    			</div>
+    			</div>
+    		</div>
+    		<div class="col-md-10 layer content">
+    		{{content}}
+    		</div>
+    	</div>
+
+    </div>
 </div>

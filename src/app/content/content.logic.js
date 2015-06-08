@@ -66,8 +66,5 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
     image1.onload = done;
     image2.onload = done;
 
-    // Add Arnold the Second
-
-    
     console.log($scope.rendertarget);
 });

@@ -3,7 +3,7 @@ angular.module('ariana').directive('autosize', function($window) {
         $scope.initializeWindowSize = function() {
             var aspectRatio = 1280./720.;
             var width, height;
-            if ($window.innerWidth > aspectRatio*$window.innerHeight) {
+            if ($window.innerWidth > aspectRatio * $window.innerHeight) {
                 width = $window.innerHeight * aspectRatio;
                 height = $window.innerHeight;
             } else {
