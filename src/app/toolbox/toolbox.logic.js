@@ -99,7 +99,7 @@ angular.module('ariana').controller('toolboxCtrl', function($scope) {
             }
         },
         painting: {
-            image: 'border-color.svg',
+            image: 'brush.svg',
             tools: {
                 color: {
                     image: 'palette.svg'
