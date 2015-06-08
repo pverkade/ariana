@@ -141,7 +141,7 @@ class RenderEngine {
     }
 
     resize(width : number, height : number) {
-        if (this.width * this.height % 4 != 0) {
+        if (width * height % 4 != 0) {
             console.log("Width * height needs to be dividable by 4");
             return;
         }
