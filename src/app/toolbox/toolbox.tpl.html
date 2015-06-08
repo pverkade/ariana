@@ -8,7 +8,7 @@
         <div class="toolset fix-top" ng-show="config.tools.activeToolset == '{{name}}'">
 	        
 	        <div class="tool" id="{{name}}" ng-repeat="(name, subtool) in tool.tools" 
-	            ng-controller="toolsetCtrl" ng-click="selectTool(name)">
+	            ng-controller="toolsetCtrl" ng-click="selectTool($event, name)">
 
 	            <img class="svg" ng-src="assets/vectors/{{subtool.image}}"></img>
 
