@@ -50,12 +50,6 @@ angular.module('ariana').controller('toolsetCtrl', function($scope) {
         
         $scope.config.tools.activeToolFunctions = toolFunctions;
         toolFunctions.start();
-        
-        /* Set the cursor over the canvas. */
-        if      (tool == "pan")         $("#main-canvas").css("cursor", "grab");
-        else if (tool == "translate")   $("#main-canvas").css("cursor", "move");
-        else if (tool == "rotate")      $("#main-canvas").css("cursor", "grab");
-        else                            $("#main-canvas").css("cursor", "default")
     };
 
 });
@@ -77,9 +71,10 @@ angular.module('ariana').controller('toolboxCtrl', function($scope) {
     }
 
     $scope.swapColors = function() {
-        var temp = $scope.primary;
-        $scope.primary = $scope.secondary;
-        $scope.secondary = temp;
+        var temp = $scope.config.tools.colors.primary;
+        $scope.config.tools.colors.primary = $scope.config.tools.colors.secondary;
+        $scope.config.tools.colors.secondary = temp;
+        console.log($scope.config.tools.colors.primary);
     }
 
     /*
