@@ -2,32 +2,6 @@
  * The toolset controller contains all logic of the toolsets
  */
 angular.module('ariana').controller('toolsetCtrl', function($scope) {
-    
-    // SVG FIX FOT STACK OVEFLOW
-    $('.svg').each(function(){
-        var $img    = $(this);
-        var id      = $img.attr('id');
-        var src     = $img.attr('src');
-
-        /* Load image src. */
-        $.get(src, function(data) {
-            // Get the SVG tag, ignore the rest
-            var $svg = $(data).find('svg');
-
-            // Add replaced image's ID to the new SVG
-            if(typeof id !== 'undefined') {
-                $svg = $svg.attr('id', id);
-            }
-
-            // Remove any invalid XML tags as per http://validator.w3.org
-            $svg = $svg.removeAttr('xmlns');
-            $svg = $svg.removeAttr('xmlns:xlink');
-
-            // Replace image with new SVG
-            $img.replaceWith($svg);
-
-        }, 'xml');
-    });
 
     /* This function selects a toolset and therefore opens a toolbox. */
     $scope.selectToolSet = function(name) {

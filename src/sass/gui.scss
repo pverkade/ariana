@@ -46,12 +46,8 @@ body {
         padding: 0 !important;       
         margin: 0 !important;   
     }
-    
+
     img {
-        display: none;
-    }
-    
-    svg {
         margin: 0.2 * $blocksize;
         padding: 0 !important; 
         height: 0.6 * $blocksize;
@@ -67,6 +63,10 @@ body {
             background-color: lighten($light, $hover-lighten);
         }
     }
+}
+
+canvas {
+    resize: none;
 }
 
 .active {
