@@ -7,9 +7,9 @@
  */
 
 
-#toolbar {    
-    @extend .gui-element;
-    position: relative;
+#toolbar {
+    @extend .gui-item;
+    position: fixed;
     border-color: transparent;
     width : 100%;
     padding: 0;
@@ -33,7 +33,7 @@
     }
 
     .navbar-brand {
-        width: 2.5 * $blocksize;
+        width: 2 * $blocksize;
         height: $blocksize;
         margin: 0;
         padding: 0 0.25 * $blocksize;
@@ -99,11 +99,18 @@
         background-color: darken($light, 5%);
     }
     
+    .ng-hide {
+        opacity: 0;
+    }
+    
     .ng-show {
         opacity: 1;
-    }  
+    }
     
-    .option {
+    
+}
+
+.option {
         float: left;
         height: auto;
         background-color: lighten($light, 10%);

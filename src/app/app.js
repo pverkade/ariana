@@ -109,4 +109,4 @@ app.controller('AppCtrl', ['$scope', '$rootScope',
             console.log("Apply filter " + name);
         }; */
 	}
-]);
+});
