@@ -36,5 +36,8 @@ var rotateTool = {
         var newDirection      = Math.atan2($scope.config.mouse.current.x   - centerX, $scope.config.mouse.current.x   - centerX); 
     
         console.log("directions", originalDirection, newDirection);
+        
+        $scope.renderEngine.layers[currentLayer].setPos(2 * dx/$scope.renderEngine.width + xOffset, -2 * dy/$scope.renderEngine.height + yOffset);
+        window.requestAnimationFrame(function() {$scope.renderEngine.render();});
     },
 }
