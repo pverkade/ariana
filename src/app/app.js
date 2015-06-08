@@ -11,6 +11,10 @@ app.controller('AppCtrl', ['$scope', '$rootScope',
     function($scope, $rootScope) {
         $scope.config = {
             mouse: {
+                old : {
+                    x : 0,
+                    y : 0
+                },
                 current: {
                     x: 0,
                     y: 0
@@ -68,7 +72,8 @@ app.controller('AppCtrl', ['$scope', '$rootScope',
                 "xScale": layer.getScaleX(), 
                 "yScale": layer.getScaleY(), 
                 "rotation": layer.getRotation()}
-            
+
+            console.log($scope.renderEngine.layers.length);
             $scope.renderEngine.render();
 		};
 		
@@ -110,3 +115,32 @@ app.controller('AppCtrl', ['$scope', '$rootScope',
         }; */
 	}
 ]);
+
+function start() {
+    // SVG FIX FOT STACK OVEFLOW
+    $('.svg').each(function() {
+        var $img    = $(this);
+        var id      = $img.attr('id');
+        var src     = $img.attr('src');
+
+        /* Load image src. */
+        $.get(src, function(data) {
+            // Get the SVG tag, ignore the rest
+            var $svg = $(data).find('svg');
+
+            // Add replaced image's ID to the new SVG
+            if(typeof id !== 'undefined') {
+                $svg = $svg.attr('id', id);
+            }
+
+            // Remove any invalid XML tags as per http://validator.w3.org
+            $svg = $svg.removeAttr('xmlns');
+            $svg = $svg.removeAttr('xmlns:xlink');
+
+            // Replace image with new SVG
+            $img.replaceWith($svg);
+
+        }, 'xml');
+    });
+}
+

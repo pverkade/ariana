@@ -3,6 +3,10 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
 
     $scope.mouseMove = function(e) {
         e.preventDefault();
+
+        $scope.config.mouse.old.x = $scope.config.mouse.current.x;
+        $scope.config.mouse.old.y = $scope.config.mouse.current.y;
+
         $scope.config.mouse.current.x = e.pageX;
         $scope.config.mouse.current.y = e.pageY;
         
@@ -44,18 +48,26 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
     // Add Arnold the First
     var image1 = new Image();
     image1.src="/assets/img/arnold2.jpg";
-    
-    image1.onload = function() {
-        $scope.newLayerFromImage(image1);
-    }
-    
-    // Add Arnold the Second
+
     var image2 = new Image();
     image2.src="/assets/img/InstaAdolf.png";
-    
-    image2.onload = function() {
+
+    var count = 1;
+    function done() {
+        if (count) {
+            count --;
+            return;
+        }
+
+        $scope.newLayerFromImage(image1);
         $scope.newLayerFromImage(image2);
     }
+    
+    image1.onload = done;
+    image2.onload = done;
 
+    // Add Arnold the Second
+
+    
     console.log($scope.rendertarget);
 });
