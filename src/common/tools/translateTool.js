@@ -18,7 +18,7 @@ var translateTool = {
     },
     
     mouseMove: function($scope) {
-        // only when mouse is up
+
         if ($scope.config.mouse.click.down == false) return;
         
         var dx = $scope.config.mouse.current.x - $scope.config.mouse.lastClick.x;

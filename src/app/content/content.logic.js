@@ -1,21 +1,4 @@
 angular.module('ariana').controller('contentCtrl', function($scope, $window) {
-    
-    $scope.rotate = function() {
-        
-        var currentLayer = $scope.config.layers.currentLayer;
-        if (currentLayer == -1) return;
-        
-        // FIXME wrong cordinates
-        var centerX = 1920 * ($scope.config.layers.layerInfo[currentLayer].x + 0.5 * $scope.config.layers.layerInfo[currentLayer].xScale);
-        var centerY = 1080 * (1 - ($scope.config.layers.layerInfo[currentLayer].y + 0.5 * $scope.config.layers.layerInfo[currentLayer].yScale));
-        
-        console.log(centerX, centerY);
-        
-        var originalDirection = math.atan2($scope.config.mouse.lastClick.y - centerY, $scope.config.mouse.lastClick.x - centerX); 
-        var newDirection = math.atan2($scope.config.mouse.current.x - centerX, $scope.config.mouse.current.x - centerX); 
-    
-        console.log("directions", originalDirection, newDirection);
-    };
 
     $scope.mouseMove = function(e) {
         e.preventDefault();

@@ -102,7 +102,7 @@ angular.module('ariana').controller('toolboxCtrl', function($scope) {
                 },
                 rotate: {
                     image: 'rotate-left.svg',
-                    toolFunctions: null,
+                    toolFunctions: rotateTool,
                 },
                 crop: {
                     image: 'crop.svg'
@@ -125,7 +125,8 @@ angular.module('ariana').controller('toolboxCtrl', function($scope) {
                     image: 'eraser.svg'
                 },
                 picker: {
-                    image: 'eyedropper.svg'
+                    image: 'eyedropper.svg',
+                    toolFunctions: colorPicker,
                 },
                 fill: {
                     image: 'format-color-fill.svg'
