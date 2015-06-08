@@ -7,7 +7,7 @@ angular.module('ariana').directive('autosize', function($window) {
             $elem.height = $window.innerHeight;
             
             /* CSS width */
-            $elem.context.style.width = $window.innerWidth + 'px';
+            $elem.context.style.width  = $window.innerWidth + 'px';
             $elem.context.style.height = $window.innerHeight + 'px';
         };
 
