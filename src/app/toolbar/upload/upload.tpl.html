@@ -1,20 +1,18 @@
-<div class="modal-header clearfix">
-    <button type="button" class="close" ng-click="close()">x</button>
-    <h3 class="modal-title">
-        Import file
-    </h3>
-</div>
-<div class="modal-body">
-    <div ngf-drop ng-model="files" class="drop-box" ngf-drag-over-class="dragover" ngf-multiple="true" ngf-accept="'image/*'">
-        <span ng-if="files==undefined">Drag images here</span>
-        <div ng-repeat="file in files">
-            <img ng-src="">
-        </div>
+    <div class="modal-header clearfix">
+        <button type="button" class="close" ng-click="close()">x</button>
+        <h3 class="modal-title">
+            Import file
+        </h3>
     </div>
-    <!--div class="button" ngf-select ng-model="files">Or press here to open a file picker</div-->
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-default btn-lg" ng-click="upload()" ng-disabled="files==undefined">
-        Import
-    </button>
-</div>
+    <div class="modal-body">
+        <div ngf-drop ng-model="files" class="drop-box" ngf-drag-over-class="dragover" ngf-multiple="true" ngf-accept="'image/*'">
+            <span ng-if="files==undefined">Drag images here</span>
+            <img ng-repeat="previewImg in previewImgs track by $index" src="{{previewImg}}">
+        </div>
+        <button class="btn btn-default btn-file-picker" ngf-select ng-model="files">Or press here to open a file picker</button>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-lg" ng-click="upload()" ng-disabled="files==undefined">
+            Import
+        </button>
+    </div>
