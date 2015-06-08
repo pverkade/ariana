@@ -45,11 +45,16 @@ angular.module('ariana').controller('toolsetCtrl', function($scope) {
 
         $scope.config.tools.activeTool = tool;
 
-        var toolset = $scope.config.tools.activeToolset,
-            toolFunctions = $scope.toolbox[toolset].tools[tool].toolFunctions;
+        var toolset = $scope.config.tools.activeToolset;
+        toolFunctions = $scope.toolbox[toolset].tools[tool].toolFunctions;
         
-        $scope.config.tools.activeToolFunctions = toolFunctions;
-        toolFunctions.start();
+        if (toolFunctions) {
+            $scope.config.tools.activeToolFunctions = toolFunctions;
+            toolFunctions.start();
+        }
+        else {
+            $scope.config.tools.activeToolFunctions = null;
+        }
     };
 
 });
@@ -58,18 +63,7 @@ angular.module('ariana').controller('toolsetCtrl', function($scope) {
  * The toolbox controller contains all logic of the whole toolbar!
  */
 angular.module('ariana').controller('toolboxCtrl', function($scope) {
-    $scope.primary = $scope.config.tools.colors.primary;
-    $scope.secondary = $scope.config.tools.colors.secondary;
-    $scope.active = $scope.config.tools.active;
-
-    $scope.setPrimary = function(color) {
-        $scope.primary = color;
-    }
-
-    $scope.setSecondary = function(color) {
-        $scope.secondary = color;
-    }
-
+    
     $scope.swapColors = function() {
         var temp = $scope.config.tools.colors.primary;
         $scope.config.tools.colors.primary = $scope.config.tools.colors.secondary;

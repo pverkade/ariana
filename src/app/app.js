@@ -57,11 +57,17 @@ app.controller('AppCtrl', ['$scope',
              * and is immediately selected. */
             $scope.config.layers.numberOfLayers += 1;
             $scope.config.layers.currentLayer = $scope.config.layers.numberOfLayers - 1;
-            $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {"x": -0.25, "y": -0.25, "xScale": width/1920, "yScale": height/1080, "rotation": 0}
             
-            $scope.renderEngine.layers[$scope.config.layers.currentLayer].setPos(-0.25, -0.25);
-            //FIXME hardcoded height / width
-            $scope.renderEngine.layers[$scope.config.layers.currentLayer].setScale(width/1920, height/1080);
+            var layer = $scope.renderEngine.layers[$scope.config.layers.currentLayer];
+            layer.setPos(-0.25, -0.25);
+            layer.setScale(width/1920, height/1080);
+
+            $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {
+                "x": layer.getPosX(), 
+                "y": layer.getPosY(), 
+                "xScale": layer.getScaleX(), 
+                "yScale": layer.getScaleY(), 
+                "rotation": layer.getRotation()}
             
             $scope.renderEngine.render();
 		};
