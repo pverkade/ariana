@@ -100,10 +100,11 @@ body {
     .drop-box {
         background: #F8F8F8;
         border: 5px dashed #DDD;
-        height: 200px;
-        line-height: 200px;
+        min-height: 300px;
+        line-height: 300px;
         text-align: center;
         margin: 10px;
+        overflow: hidden;
     }
     
     .dragover {
@@ -113,5 +114,16 @@ body {
     span {
         display: inline-block;
         vertical-align: middle;
+    }
+
+    img {
+        float: left;
+        margin: 14px;
+        height: 110px;
+        width: 110px
+    }
+
+    .btn-file-picker {
+        margin: 10px;
     }
 }

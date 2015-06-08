@@ -20,17 +20,21 @@ var translateTool = {
     mouseMove: function($scope) {
 
         if ($scope.config.mouse.click.down == false) return;
-        
-        var dx = $scope.config.mouse.current.x - $scope.config.mouse.lastClick.x;
-        var dy = $scope.config.mouse.current.y - $scope.config.mouse.lastClick.y;
 
         var currentLayer = $scope.config.layers.currentLayer;
         if (currentLayer == -1) return;
+
+        var dx = $scope.config.mouse.current.x - $scope.config.mouse.lastClick.x;
+        var dy = $scope.config.mouse.current.y - $scope.config.mouse.lastClick.y;
         
         var xOffset = $scope.config.layers.layerInfo[currentLayer].x;
         var yOffset = $scope.config.layers.layerInfo[currentLayer].y;
-        
-        $scope.renderEngine.layers[currentLayer].setPos(2 * dx/$scope.renderEngine.width + xOffset, -2 * dy/$scope.renderEngine.height + yOffset);
-        window.requestAnimationFrame(function() {$scope.renderEngine.render();});
+
+        var width = $scope.renderEngine.width;
+        var height = $scope.renderEngine.height;
+        var aspectRatio = width/ height;
+
+        $scope.renderEngine.layers[currentLayer].setPos(2 * (dx/width) + xOffset, -2 * (dy/height/aspectRatio) + yOffset);
+        $scope.renderEngine.render();
     },
 }
