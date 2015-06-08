@@ -33,22 +33,21 @@ angular.module('ariana').controller('toolsetCtrl', function($scope) {
     $scope.selectToolSet = function(name) {
         if ($scope.config.tools.activeToolset == name) {
             $scope.config.tools.activeToolset = null;
-            // FIXME switch back to pan-tool. Currently not possible due to
-            // toolbox closing on selection
-            //$scope.config.tools.activeTool = "pan";
         }
-        else $scope.config.tools.activeToolset = name;;    
+        else {
+            $scope.config.tools.activeToolset = name;
+        }
     };
     
     /* This function selects a tool. */
     $scope.selectTool = function(tool) {
         $scope.config.tools.activeTool = tool;
-        console.log("selected tool: " + $scope.config.tools.activeTool);
+        $scope.config.tools.activeToolset = tool;
         
         /* Set the cursor over the canvas. */
         if      (tool == "pan")         $("#main-canvas").css("cursor", "grab");
         else if (tool == "translate")   $("#main-canvas").css("cursor", "move");
-        else                            $("#main-canvas").css("cursor", "default")
+        else                            $("#main-canvas").css("cursor", "default");
     };
 });
 
