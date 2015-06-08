@@ -18,10 +18,12 @@ class RenderEngine {
     /* Width and height of the framebuffer */
     private width : number;
     private height : number;
+    private canvas : HTMLCanvasElement;
 
     constructor (canvas : HTMLCanvasElement) {
         this.width = canvas.width;
         this.height = canvas.height;
+        this.canvas = canvas;
 
         this.layers = new Array();
 
@@ -42,7 +44,7 @@ class RenderEngine {
         catch(e) {
             alert(e.stack);
         }
-
+        this.gl.viewport(0, 0, this.width, this.height);
         this.drawbuffer1 = new DrawBuffer(this.gl, this.width, this.height);
         this.drawbuffer2 = new DrawBuffer(this.gl, this.width, this.height);
     }
@@ -134,6 +136,21 @@ class RenderEngine {
         var value = new Uint8Array(4);
         this.gl.readPixels(x, this.height-y-1, 1, 1, this.gl.RGBA, this.gl.UNSIGNED_BYTE, value);
         return value;
+    }
+
+    resize(width : number, height : number) {
+        if (this.width * this.height % 4 != 0) {
+            console.log("Width * height needs to be dividable by 4");
+            return;
+        }
+        this.width = width;
+        this.height = height;
+        this.canvas.width = width;
+        this.canvas.height = height;
+
+        this.drawbuffer1.resize(width, height);
+        this.drawbuffer2.resize(width, height);
+        this.gl.viewport(0, 0, width, height);
     }
 
     destroy() {
