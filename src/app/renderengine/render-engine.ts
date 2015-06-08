@@ -27,7 +27,10 @@ class RenderEngine {
 
         try {
             /* Try to grab the standard context. If it fails, fallback to experimental. */
-            this.gl = <WebGLRenderingContext> (canvas.getContext("webgl", {stencil:true}) || canvas.getContext("experimental-webgl", {stencil:true}));
+            this.gl = <WebGLRenderingContext> (
+                canvas.getContext("webgl", {stencil:true, preserveDrawingBuffer: true}) ||
+                canvas.getContext("experimental-webgl", {stencil:true, preserveDrawingBuffer: true})
+            );
             var contextAttributes = this.gl.getContextAttributes();
             var haveStencilBuffer = contextAttributes.stencil;
             console.log("Has stencil buffer: " + haveStencilBuffer);
@@ -125,6 +128,12 @@ class RenderEngine {
 
     getWebGLRenderingContext() : WebGLRenderingContext {
         return this.gl;
+    }
+
+    getPixelColor(x : number, y : number) : Uint8Array {
+        var value = new Uint8Array(4);
+        this.gl.readPixels(x, y, 1, 1, this.gl.RGBA, this.gl.UNSIGNED_BYTE, value);
+        return value;
     }
 
     destroy() {
