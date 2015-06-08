@@ -2,20 +2,20 @@
 enum LayerType {ImageLayer};
 
 class Layer {
-    gl : WebGLRenderingContext;
-	static MaxID = 0;
-	layerType : number;
-	ID : LayerType;
-	angle : number;
-	scaleX : number;
-	scaleY : number;
-	posX : number;
-	posY : number;
+    protected gl : WebGLRenderingContext;
+	protected static MaxID = 0;
+	protected layerType : number;
+	private ID : LayerType;
+	protected angle : number;
+	protected scaleX : number;
+	protected scaleY : number;
+	protected posX : number;
+	protected posY : number;
 
-	scaleMatrix : Float32Array;
-	rotationMatrix : Float32Array;
-	translationMatrix : Float32Array;
-
+	protected scaleMatrix : Float32Array;
+	protected rotationMatrix : Float32Array;
+	protected translationMatrix : Float32Array;
+    protected aspectRatioMatrix : Float32Array;
 
 	constructor(gl : WebGLRenderingContext) {
         this.gl = gl;
@@ -24,6 +24,7 @@ class Layer {
 		this.scaleMatrix = mat3.create();
 		this.rotationMatrix = mat3.create();
 		this.translationMatrix = mat3.create();
+        this.aspectRatioMatrix = mat3.create();
 
         /* Apperently calling a function on this object from within the constructor crashes it */
         this.posX = 0;
@@ -90,17 +91,25 @@ class Layer {
 	getPosY() : number {
 		return this.posY;
 	}
-	
+
 	getID() : number {
 		return this.ID;
 	}
+
+    getLayerType() : LayerType {
+        return this.layerType;
+    }
 	
 	setupRender() { }
-	render() { }
+	render(aspectRatio) {
+        mat3.identity(this.aspectRatioMatrix);
+        mat3.scale(this.aspectRatioMatrix, this.aspectRatioMatrix, new Float32Array([1, aspectRatio]));
+    }
 
     destroy() {
         delete this.rotationMatrix;
         delete this.scaleMatrix;
         delete this.translationMatrix;
+        delete this.aspectRatioMatrix;
     }
 }

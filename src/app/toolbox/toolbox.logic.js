@@ -54,6 +54,7 @@ angular.module('ariana').controller('toolsetCtrl', function($scope) {
         }
         else {
             $scope.config.tools.activeToolFunctions = null;
+            $("#main-canvas").css("cursor", "default");
         }
     };
 

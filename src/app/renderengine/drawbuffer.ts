@@ -4,12 +4,12 @@
 /// <reference path="render-helper" />
 
 class DrawBuffer {
-    gl : WebGLRenderingContext;
-    texture : WebGLTexture;
-    framebuffer : WebGLFramebuffer;
-    renderbuffer : WebGLRenderbuffer;
-    width : number;
-    height : number;
+    private gl : WebGLRenderingContext;
+    private texture : WebGLTexture;
+    private framebuffer : WebGLFramebuffer;
+    private renderbuffer : WebGLRenderbuffer;
+    private width : number;
+    private height : number;
 
     constructor(gl : WebGLRenderingContext, width : number, height : number) {
         this.gl = gl;
@@ -40,19 +40,13 @@ class DrawBuffer {
         this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, null);
     }
 
+    /* This function returns an image data url.
+     *
+     * The image is flipped upside down.
+     */
     getImage() {
         /* Read the contents of the framebuffer */
-        var upsideDownData = this.getData();
-        var data = new Uint8Array(upsideDownData.length);
-
-        var row, column, color;
-        for (row = 0; row < this.height; row++) {
-            for (column = 0; column < this.width; column++) {
-                for (color = 0; color < 4; color++) {
-                    data[(row*this.width+column)*4 + color] = upsideDownData[((this.height-row)*this.width + column)*4 + color];
-                }
-            }
-        }
+        var data = this.getData();
 
         /* Create a 2D canvas to store the result */
         var canvas = document.createElement('canvas');
@@ -86,8 +80,21 @@ class DrawBuffer {
         return this.texture;
     }
 
+    resize(width : number, height : number) {
+        this.width = width;
+        this.height = height;
+
+        // Resize texture
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
+        (<any>this.gl).texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, width, height, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, null);
+
+        // Resize render buffer
+        this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, this.renderbuffer);
+        this.gl.renderbufferStorage(this.gl.RENDERBUFFER, this.gl.DEPTH_COMPONENT16, width, height);
+    }
+
     destroy() {
-        //this.gl.deleteTexture(this.texture);
+        this.gl.deleteTexture(this.texture);
         this.gl.deleteRenderbuffer(this.renderbuffer);
         this.gl.deleteFramebuffer(this.framebuffer);
     }

@@ -1,21 +1,20 @@
 angular.module('ariana').directive('autosize', function($window) {
     return function($scope, $elem) {
-        
         $scope.initializeWindowSize = function() {
-            // TODO handle HDPI
-            // https://www.khronos.org/webgl/wiki/HandlingHighDPI
-            
-            /* HTML width (resolution) */
-            //TODO also use $elem
-            // jQuery width() and height() also set css sizes
-            
-            var canvas = document.getElementById("main-canvas");
-            canvas.width = $window.innerWidth;
-            canvas.height = $window.innerHeight;
-            
-            /* CSS width */
-            $elem.context.style.width = $window.innerWidth + 'px';
-            $elem.context.style.height = $window.innerHeight + 'px';
+            var aspectRatio = 1280./720.;
+            var width, height;
+            if ($window.innerWidth > aspectRatio*$window.innerHeight) {
+                width = $window.innerHeight * aspectRatio;
+                height = $window.innerHeight;
+            } else {
+                width = $window.innerWidth;
+                height = $window.innerWidth / aspectRatio;
+            }
+            width = Math.round(width);
+            height = Math.round(height);
+
+            $scope.renderEngine.resize(width, height);
+            $scope.renderEngine.render();
         };
 
         $scope.initializeWindowSize();

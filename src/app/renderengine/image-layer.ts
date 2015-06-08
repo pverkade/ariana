@@ -4,12 +4,12 @@
 /// <reference path="image-shader-program"/>
 
 class ImageLayer extends Layer {
-    static program = null;
-    layerType : LayerType = LayerType.ImageLayer;
+    protected static program = null;
+    protected layerType : LayerType = LayerType.ImageLayer;
 
-	texture : WebGLTexture;
+	private texture : WebGLTexture;
 
-    internalScaleMatrix : Float32Array;
+    private internalScaleMatrix : Float32Array;
 	
 	constructor(gl : WebGLRenderingContext, image : ImageData) {
         super(gl);
@@ -52,9 +52,11 @@ class ImageLayer extends Layer {
 		ImageLayer.program.activate();
 	}
 	
-	render() {
+	render(aspectRatio : number) {
+        super.render(aspectRatio);
 		var matrix : Float32Array = mat3.create();
 		mat3.identity(matrix);
+        mat3.multiply(matrix, matrix, this.aspectRatioMatrix);
 		mat3.multiply(matrix, matrix, this.translationMatrix);
 		mat3.multiply(matrix, matrix, this.rotationMatrix);
 		mat3.multiply(matrix, matrix, this.scaleMatrix);

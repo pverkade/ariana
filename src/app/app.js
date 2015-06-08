@@ -60,7 +60,7 @@ app.controller('AppCtrl', ['$scope', '$rootScope',
             
             var layer = $scope.renderEngine.layers[$scope.config.layers.currentLayer];
             layer.setPos(-0.25, -0.25);
-            layer.setScale(width/1920, height/1080);
+            layer.setScale(.2,.2);
 
             $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {
                 "x": layer.getPosX(), 
