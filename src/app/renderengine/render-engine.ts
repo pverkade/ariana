@@ -130,8 +130,7 @@ class RenderEngine {
 
     getPixelColor(x : number, y : number) : Uint8Array {
         var value = new Uint8Array(4);
-        this.gl.readPixels(x, this.height-y, 1, 1, this.gl.RGBA, this.gl.UNSIGNED_BYTE, value);
-        console.log(value[2]);
+        this.gl.readPixels(x, this.height-y-1, 1, 1, this.gl.RGBA, this.gl.UNSIGNED_BYTE, value);
         return value;
     }
 
