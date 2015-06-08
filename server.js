@@ -10,7 +10,7 @@ var app = connect();
 var server;
 var indexPage;
 var host = 'localhost';
-var port = 80;
+var port = 3000;
 
 // Handle POSIX signals
 process.on('SIGINT', function() {

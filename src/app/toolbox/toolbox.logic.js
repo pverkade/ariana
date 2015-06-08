@@ -33,6 +33,7 @@ angular.module('ariana').controller('toolsetCtrl', function($scope) {
     $scope.selectToolSet = function(name) {
         if ($scope.config.tools.activeToolset == name) {
             $scope.config.tools.activeToolset = null;
+            //$scope.selectTool(null, "pan");
         }
         else {
             $scope.config.tools.activeToolset = name;
@@ -41,7 +42,7 @@ angular.module('ariana').controller('toolsetCtrl', function($scope) {
     
     /* This function selects a tool. */
     $scope.selectTool = function(e, tool) {
-        e.stopPropagation()
+        if (e) e.stopPropagation();
 
         $scope.config.tools.activeTool = tool;
 
@@ -144,4 +145,6 @@ angular.module('ariana').controller('toolboxCtrl', function($scope) {
             image: 'format-size.svg'
         }
     }
+    
+    //$scope.selectTool(null, "pan");
 });

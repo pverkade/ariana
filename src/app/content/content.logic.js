@@ -34,7 +34,7 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
     }
 
     $scope.rightClick = function(event) {
-        
+        event.preventDefault();
     }
     
     /* Get the canvas element. */
@@ -49,7 +49,7 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
         $scope.newLayerFromImage(image1);
     }
     
-    // Add Arnold the Second
+    // Add the moustache
     var image2 = new Image();
     image2.src="/assets/img/InstaAdolf.png";
     
@@ -57,5 +57,5 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
         $scope.newLayerFromImage(image2);
     }
 
-    console.log($scope.rendertarget);
+    //console.log($scope.rendertarget);
 });

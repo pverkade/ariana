@@ -1,6 +1,7 @@
 angular.module('ariana').directive('autosize', function($window) {
     return function($scope, $elem) {
         $scope.initializeWindowSize = function() {
+            /*
             var aspectRatio = 1280./720.;
             var width, height;
             if ($window.innerWidth > aspectRatio*$window.innerHeight) {
@@ -14,7 +15,12 @@ angular.module('ariana').directive('autosize', function($window) {
             height = Math.round(height);
 
             $scope.renderEngine.resize(width, height);
-            $scope.renderEngine.render();
+            $scope.renderEngine.render();*/
+            
+            console.log($window);
+            console.log($(window));
+            $elem.css("width",  $(window).outerWidth());
+            $elem.css("height", $(window).outerHeight());
         };
 
         $scope.initializeWindowSize();
