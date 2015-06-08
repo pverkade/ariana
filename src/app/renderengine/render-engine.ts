@@ -72,7 +72,7 @@ class RenderEngine {
     }
 
     render() {
-        //this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
         var aspectRatio = 1. * this.width / this.height;
         console.log(aspectRatio);
         var oldType = -1;
@@ -104,13 +104,13 @@ class RenderEngine {
 
             var imageLayer = <ImageLayer> layer;
             this.drawbuffer1.bind();
-            this.gl.clear(this.gl.COLOR_BUFFER_BIT);// | this.gl.STENCIL_BUFFER_BIT);
+            this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
             imageLayer.setupRender();
             imageLayer.render(aspectRatio);
             this.drawbuffer1.unbind();
 
             this.drawbuffer2.bind();
-            this.gl.clear(this.gl.COLOR_BUFFER_BIT);// | this.gl.STENCIL_BUFFER_BIT);
+            this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
             filter.render(this.drawbuffer1.getWebGlTexture());
             imageLayer.copyFramebuffer(this.width, this.height);
             this.drawbuffer2.unbind();
@@ -123,7 +123,7 @@ class RenderEngine {
     renderToImg() {
         /* Render all layers to a framebuffer and return a 64base encoded image */
         this.drawbuffer1.bind();
-        this.gl.clear(this.gl.COLOR_BUFFER_BIT);// | this.gl.STENCIL_BUFFER_BIT);
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
         this.render();
         var val = this.drawbuffer1.getImage();
         this.drawbuffer1.unbind();
@@ -142,7 +142,7 @@ class RenderEngine {
     }
 
     resize(width : number, height : number) {
-        if (this.width * this.height % 4 != 0) {
+        if ((width * height) % 4 != 0) {
             console.log("Width * height needs to be dividable by 4");
             return;
         }
