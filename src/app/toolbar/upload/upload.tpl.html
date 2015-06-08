@@ -5,11 +5,10 @@
         </h3>
     </div>
     <div class="modal-body">
-        <div ngf-drop ng-model="files" class="drop-box" ngf-drag-over-class="dragover" ngf-multiple="true" ngf-accept="'image/*'">
+        <div ngf-drop ng-model="files" class="drop-box" ngf-drag-over-class="dragover" ngf-multiple="true" ngf-accept="'image/*'" ngf-select="">
             <span ng-if="files==undefined">Drag images here</span>
-            <img ng-repeat="previewImg in previewImgs track by $index" src="{{previewImg}}">
+            <img ng-repeat="previewImg in imageUrls track by $index" src="{{previewImg}}">
         </div>
-        <button class="btn btn-default btn-file-picker" ngf-select ng-model="files">Or press here to open a file picker</button>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-primary btn-lg" ng-click="upload()" ng-disabled="files==undefined">
