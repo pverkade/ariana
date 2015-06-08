@@ -19,32 +19,34 @@ var rotateTool = {
     },
 
     mouseMove: function($scope) {
-
-        function normalize(x, c) {
-            return 2 * (x / c) - 1;
-        }
-
         var currentLayer = $scope.config.layers.currentLayer;
         if (currentLayer == -1) return;
 
         var mouse = $scope.config.mouse;
         var canvas = document.getElementById("main-canvas");
-
-        var height = canvas.height;
         var width = canvas.width;
+        var height = canvas.height;
+        var ratio = width / height;
 
-        var oldX = normalize(mouse.old.x, width);
-        var oldY = normalize(mouse.old.y, height);
+        function normalize(x) {
+            /* for y it is :
+             * 2 * (y / (height * (width / height)) =
+             * 2 * (y / height)
+             */
+            return 2 * (x / width) - 1;
+        }
 
-        var newX = normalize(mouse.current.x, width);
-        var newY = normalize(mouse.current.y, height);
+        var oldX = normalize(mouse.old.x);
+        var oldY = normalize(mouse.old.y);
+
+        var newX = normalize(mouse.current.x);
+        var newY = normalize(mouse.current.y);
 
         var layer = $scope.renderEngine.layers[currentLayer];
         var oldAngle = Math.atan2(oldX - layer.getPosX(), oldY - layer.getPosY());
         var newAngle = Math.atan2(newX - layer.getPosX(), newY - layer.getPosY());
 
-        // FIXME: Why is it so slow
-        var deltaAngle = 1.3 * (newAngle - oldAngle);
+        var deltaAngle = (newAngle - oldAngle);
 
         console.log(deltaAngle);
 
