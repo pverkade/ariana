@@ -48,8 +48,8 @@ body {
         padding: 0 !important;       
         margin: 0 !important;   
     }
-
-    img {
+    
+    svg, img {
         margin: 0.2 * $blocksize;
         padding: 0 !important; 
         height: 0.6 * $blocksize;
@@ -92,6 +92,10 @@ canvas {
 
     svg path, img path {
         fill: darken($white, 50%) !important;
+    }
+    
+    img {
+        opacity: 0.25;
     }
 }
 

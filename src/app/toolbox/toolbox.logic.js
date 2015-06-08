@@ -1,43 +1,5 @@
-/*
- * The toolset controller contains all logic of the toolsets
- */
-angular.module('ariana').controller('toolsetCtrl', function($scope) {
+angular.module('ariana').controller('toolBoxController', function($scope) {
 
-    /* This function selects a toolset and therefore opens a toolbox. */
-    $scope.selectToolSet = function(name) {
-        if ($scope.config.tools.activeToolset == name) {
-            $scope.config.tools.activeToolset = null;
-        }
-        else {
-            $scope.config.tools.activeToolset = name;
-        }
-    };
-    
-    /* This function selects a tool. */
-    $scope.selectTool = function(e, tool) {
-        e.stopPropagation()
-
-        $scope.config.tools.activeTool = tool;
-
-        var toolset = $scope.config.tools.activeToolset;
-        toolFunctions = $scope.toolbox[toolset].tools[tool].toolFunctions;
-        
-        if (toolFunctions) {
-            $scope.config.tools.activeToolFunctions = toolFunctions;
-            toolFunctions.start();
-        }
-        else {
-            $scope.config.tools.activeToolFunctions = null;
-            $("#main-canvas").css("cursor", "default");
-        }
-    };
-
-});
-
-/*
- * The toolbox controller contains all logic of the whole toolbar!
- */
-angular.module('ariana').controller('toolboxCtrl', function($scope) {
     
     $scope.swapColors = function() {
         var temp = $scope.config.tools.colors.primary;
@@ -46,9 +8,6 @@ angular.module('ariana').controller('toolboxCtrl', function($scope) {
         console.log($scope.config.tools.colors.primary);
     }
 
-    /*
-     * Toolsets
-     */
     $scope.toolbox = {
         basic: {
             image: 'arrow-all.svg',
@@ -118,4 +77,87 @@ angular.module('ariana').controller('toolboxCtrl', function($scope) {
             image: 'format-size.svg'
         }
     }
+
+    /* This function selects a toolset and therefore opens a toolbox. */
+    $scope.selectToolSet = function(name) {
+        if ($scope.config.tools.activeToolset == name) {
+            $scope.config.tools.activeToolset = null;
+            $scope.selectTool(null, "pan");
+        }
+        else {
+            $scope.config.tools.activeToolset = name;
+        }
+    };
+    
+    /* This function selects a tool. */
+    $scope.selectTool = function(e, tool) {
+        if (e) e.stopPropagation();
+
+        $scope.config.tools.activeTool = tool;
+
+        var toolset = $scope.config.tools.activeToolset;
+        
+        if (toolset) {
+            toolFunctions = $scope.toolbox[toolset].tools[tool].toolFunctions;
+        }
+        else {
+            // exception for basic tools
+            toolFunctions = $scope.toolbox.basic.tools[tool].toolFunctions;
+        }
+        
+        if (toolFunctions) {
+            $scope.config.tools.activeToolFunctions = toolFunctions;
+            toolFunctions.start();
+        }
+        else {
+            $scope.config.tools.activeToolFunctions = null;
+            $("#main-canvas").css("cursor", "default");
+        }
+    };
+    
+    $scope.selectTool(null, "pan");
+    
+    /*
+    $scope.loadImages = function () {
+        $scope.sources = [];
+   
+       // SVG FIX FOT STACK OVEFLOW 
+        $('img.svg').each(function() {
+            var img     = $(this);
+            var id      = img.attr('id');
+            var src     = img.attr('src');
+            
+            if ($scope.sources.indexOf(src) == -1) {
+                
+                $scope.sources.push(src);
+                console.log("Request " + src);
+                
+                $(this).removeClass("svg");
+                
+                $.get(src, function(data) {
+                    console.log("received data");
+                    
+                    // Get the SVG tag, ignore the rest
+                    var svg = $(data).find('svg');
+
+                    // Add replaced image's ID to the new SVG
+                    if(typeof id !== 'undefined') {
+                        svg = svg.attr('id', id);
+                    }
+                    
+                    // Remove any invalid XML tags as per http://validator.w3.org
+                    svg = svg.removeAttr('xmlns');
+                    svg = svg.removeAttr('xmlns:xlink');
+
+                    // Replace image with new SVG
+                    img.replaceWith(svg);
+
+                }, 'xml'); 
+            }
+            else {
+                console.log("HAVE");
+            }
+        });
+    }*/
+    
 });
