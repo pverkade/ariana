@@ -1,4 +1,5 @@
 angular.module('ariana').controller('contentCtrl', function($scope, $window) {
+    $scope.rendertarget = null;
 
     $scope.mouseMove = function(e) {
         e.preventDefault();
@@ -31,6 +32,10 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
         var toolFunctions = $scope.config.tools.activeToolFunctions;
         if (toolFunctions) toolFunctions.mouseUp($scope);
     }
+
+    $scope.rightClick = function(event) {
+        
+    }
     
     /* Get the canvas element. */
     var canvas = document.getElementById('main-canvas');
@@ -51,4 +56,6 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
     image2.onload = function() {
         $scope.newLayerFromImage(image2);
     }
+
+    console.log($scope.rendertarget);
 });
