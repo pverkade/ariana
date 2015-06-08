@@ -50,10 +50,10 @@ body {
     }
     
     img {
-        display: none;
+        //display: none;
     }
     
-    svg {
+    svg, img {
         margin: 0.2 * $blocksize;
         padding: 0 !important; 
         height: 0.6 * $blocksize;
