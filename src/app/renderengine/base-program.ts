@@ -5,13 +5,13 @@
 /// <reference path="shader-program"/>
 
 class BaseProgram implements ShaderProgram {
-    gl : WebGLRenderingContext;
-    program : WebGLProgram;
+    protected gl : WebGLRenderingContext;
+    protected program : WebGLProgram;
 
-    vertexBuffer : WebGLBuffer;
+    protected vertexBuffer : WebGLBuffer;
 
-    public vertexSource : string;
-    public fragmentSource: string;
+    protected vertexSource : string;
+    protected fragmentSource: string;
 
     constructor(gl : WebGLRenderingContext) {
         this.gl = gl;

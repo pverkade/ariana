@@ -52,6 +52,7 @@
         padding: 0;
     
         @extend .tool;
+        cursor: context-menu;
         
         &:hover, &:active, &:focus {
             background-color: lighten($light, $hover-lighten);

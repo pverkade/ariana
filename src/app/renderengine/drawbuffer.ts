@@ -4,12 +4,12 @@
 /// <reference path="render-helper" />
 
 class DrawBuffer {
-    gl : WebGLRenderingContext;
-    texture : WebGLTexture;
-    framebuffer : WebGLFramebuffer;
-    renderbuffer : WebGLRenderbuffer;
-    width : number;
-    height : number;
+    private gl : WebGLRenderingContext;
+    private texture : WebGLTexture;
+    private framebuffer : WebGLFramebuffer;
+    private renderbuffer : WebGLRenderbuffer;
+    private width : number;
+    private height : number;
 
     constructor(gl : WebGLRenderingContext, width : number, height : number) {
         this.gl = gl;

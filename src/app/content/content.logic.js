@@ -51,7 +51,7 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
     
     // Add Arnold the Second
     var image2 = new Image();
-    image2.src="/assets/img/moustache.png";
+    image2.src="/assets/img/InstaAdolf.png";
     
     image2.onload = function() {
         $scope.newLayerFromImage(image2);
