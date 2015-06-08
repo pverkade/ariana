@@ -8,13 +8,13 @@ var translateTool = {
     },
     
     mouseUp: function($scope) {
-        $("#main-canvas").css("cursor", "grab");
-        for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) {
-            var xOffset = $scope.renderEngine.layers[i].getPosX();
-            var yOffset = $scope.renderEngine.layers[i].getPosY();
-            $scope.config.layers.layerInfo[i].x = xOffset;
-            $scope.config.layers.layerInfo[i].y = yOffset;
-        }
+        var currentLayer = $scope.config.layers.currentLayer;
+        if (currentLayer == -1) return;
+        
+        var xOffset = $scope.renderEngine.layers[currentLayer].getPosX();
+        var yOffset = $scope.renderEngine.layers[currentLayer].getPosY();
+        $scope.config.layers.layerInfo[currentLayer].x = xOffset;
+        $scope.config.layers.layerInfo[currentLayer].y = yOffset;
     },
     
     mouseMove: function($scope) {
@@ -31,7 +31,6 @@ var translateTool = {
         var yOffset = $scope.config.layers.layerInfo[currentLayer].y;
         
         $scope.renderEngine.layers[currentLayer].setPos(2 * dx/$scope.renderEngine.width + xOffset, -2 * dy/$scope.renderEngine.height + yOffset);
-        $scope.renderEngine.render();
-        
+        window.requestAnimationFrame(function() {$scope.renderEngine.render();});
     },
 }

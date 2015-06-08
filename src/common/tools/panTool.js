@@ -29,6 +29,6 @@ var panTool = {
             $scope.renderEngine.layers[i].setPos(2 * dx/$scope.renderEngine.width + xOffset, -2 * dy/$scope.renderEngine.height + yOffset);
         }
         
-        $scope.renderEngine.render();
+        window.requestAnimationFrame(function() {$scope.renderEngine.render();});
     },
 }

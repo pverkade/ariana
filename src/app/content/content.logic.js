@@ -37,10 +37,7 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
         
         /* Start current toolset. */
         var toolFunctions = $scope.config.tools.activeToolFunctions;
-        if (toolFunctions) {
-                toolFunctions.mouseDown($scope);
-                console.log("HOE HOE");
-        }
+        if (toolFunctions) toolFunctions.mouseDown($scope);
     }
     
     $scope.mouseUp = function(event) {
