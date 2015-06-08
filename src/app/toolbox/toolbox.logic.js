@@ -4,7 +4,7 @@
 angular.module('ariana').controller('toolsetCtrl', function($scope) {
     
     // SVG FIX FOT STACK OVEFLOW
-    $('.svg').each(function(){
+    $('img.svg').each(function(){
         var $img    = $(this);
         var id      = $img.attr('id');
         var src     = $img.attr('src');

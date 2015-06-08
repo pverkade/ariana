@@ -2,7 +2,7 @@ app.controller('toolbarCtrl', ['$scope', '$modal',
     function ($scope, $modal) {
 
         // SVG FIX FOT STACK OVEFLOW
-        $('.svg').each(function(){
+        $('img.svg').each(function(){
             var $img    = $(this);
             var id      = $img.attr('id');
             var src     = $img.attr('src');

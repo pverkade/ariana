@@ -49,6 +49,11 @@ app.controller('AppCtrl', ['$scope',
             var imageLayer = new ImageLayer($scope.renderEngine.getWebGLRenderingContext(), image);
             $scope.renderEngine.addLayer(imageLayer);
             
+            console.log(image);
+            var width = image.naturalWidth;
+            var height = image.naturalHeight;
+            console.log(width, height);
+            
             /* set the correct layer info in config. The new layer comes on top
              * and is immediately selected. */
             $scope.config.layers.numberOfLayers += 1;
@@ -56,9 +61,8 @@ app.controller('AppCtrl', ['$scope',
             $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {"x": -0.25, "y": -0.25, "scale": 1}
             
             $scope.renderEngine.layers[$scope.config.layers.currentLayer].setPos(-0.25, -0.25);
-            //FIXME scale only works for arnold. It should be scaled so that it
-            // fits the screen and keeps the correct aspect ratio
-            $scope.renderEngine.layers[$scope.config.layers.currentLayer].setScale(0.4, 0.65);
+            //FIXME hardcoded height / width
+            $scope.renderEngine.layers[$scope.config.layers.currentLayer].setScale(width/1920, height/1080);
             
             $scope.renderEngine.render();
 		};
