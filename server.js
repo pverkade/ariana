@@ -3,6 +3,7 @@ var serveStatic = require('serve-static');
 var fs = require('fs');
 var request = require('request');
 var qs = require('querystring');
+var gm = require('gm');
 
 // Init
 var app = connect();
@@ -69,12 +70,26 @@ function saveImageRouter(req, res) {
                 return;
             }
 
-            res.writeHead(200, {
-                "Content-Type": "Content-type: image/png" ,
-                'Content-Disposition': 'attachment; filename="' + post["image-name"]
-            });
+            var inputBuffer = new Buffer(post['image-data'], 'base64');
 
-            res.end(post['image-data'], "base64");
+            gm(inputBuffer, "input.png")
+                .flip()
+                .toBuffer('PNG',function (err, buffer) {
+                    if (err) {
+                        console.log("error", err);
+                        res.writeHead(500, { "Content-Type": "text/plain" });
+                        res.end("");
+                        return;
+                    }
+
+                    res.writeHead(200, {
+                        "Content-Type": "Content-type: image/png" ,
+                        'Content-Disposition': 'attachment; filename="' + post["image-name"]
+                    });
+
+                    res.end(buffer.toString("binary"), "binary");
+                    return;
+                });
         });
 
         return true;
