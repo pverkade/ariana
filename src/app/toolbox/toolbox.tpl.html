@@ -1,7 +1,7 @@
 <div id="toolbox">
     
     <div class="tool" id="{{name}}" ng-repeat="(name, tool) in toolbox" 
-        ng-controller="toolsetCtrl" ng-click="selectToolSet(name)">
+        ng-controller="toolsetCtrl" ng-click="selectToolSet(name)" ng-class="{active: config.tools.activeToolset == '{{name}}'}">
 
         <img class="svg" ng-src="assets/vectors/{{tool.image}}"></img>
 

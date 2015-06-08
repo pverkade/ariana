@@ -62,8 +62,10 @@ body {
         fill: $white;
     }
     
-    &:hover {
-        background-color: lighten($light, $hover-lighten);
+    > .tool {
+        &:hover {
+            background-color: lighten($light, $hover-lighten);
+        }
     }
 }
 
@@ -106,4 +108,8 @@ body {
         display: inline-block;
         vertical-align: middle;
     }
+}
+
+.active {
+    background-color: lighten($light, $hover-lighten);
 }
