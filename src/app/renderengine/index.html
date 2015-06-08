@@ -27,6 +27,8 @@
             var selectionProgram = new SelectionProgram(gl);
             var drawbuffer = renderEngine.drawbuffer1;
 
+            renderEngine.resize(40, 40);
+
             var counter = 1;
             function done() {
                 if (counter === 1) {
@@ -54,8 +56,8 @@
                     var worker = new Worker("magic-selection-worker.js");
                     worker.postMessage({
                         "data": data,
-                        "x": 255,
-                        "y": 243,
+                        "x": 20,
+                        "y": 20,
                         "threshold": 0.02,
                         "width": drawbuffer.width,
                         "height": drawbuffer.height
@@ -175,7 +177,7 @@
 
 <body onload="start()">
 <div id="canvas">
-    <canvas id="glcanvas" width="640" height="640">
+    <canvas id="glcanvas" style="width: 640px; height: 640px;" width="64px" height="64px">
         Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
     </canvas>
 </div>

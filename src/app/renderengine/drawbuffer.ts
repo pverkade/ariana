@@ -86,8 +86,21 @@ class DrawBuffer {
         return this.texture;
     }
 
+    resize(width : number, height : number) {
+        this.width = width;
+        this.height = height;
+
+        // Resize texture
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
+        (<any>this.gl).texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, width, height, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, null);
+
+        // Resize render buffer
+        this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, this.renderbuffer);
+        this.gl.renderbufferStorage(this.gl.RENDERBUFFER, this.gl.DEPTH_COMPONENT16, width, height);
+    }
+
     destroy() {
-        //this.gl.deleteTexture(this.texture);
+        this.gl.deleteTexture(this.texture);
         this.gl.deleteRenderbuffer(this.renderbuffer);
         this.gl.deleteFramebuffer(this.framebuffer);
     }
