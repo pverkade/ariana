@@ -38,8 +38,7 @@ app.controller('toolbarCtrl', ['$scope', '$modal',
         $scope.saveImage = function() {
             // TODO I have no idea if this works :^)
             var image = $scope.renderEngine.renderToImg();
-            console.log(image);
-            //window.location.href = image;
+            window.location.href = image.replace("image/png", "image/octet-stream");
         };
         
         $scope.openTransformationModal = function() {
