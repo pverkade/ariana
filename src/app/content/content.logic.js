@@ -57,5 +57,5 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
         $scope.newLayerFromImage(image2);
     }
 
-    console.log($scope.rendertarget);
+    //console.log($scope.rendertarget);
 });
