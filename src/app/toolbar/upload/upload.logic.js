@@ -27,4 +27,4 @@ app.controller('UploadModalCtrl', ['$scope', '$modalInstance', 'Upload',
             })
         })
     }
-])
+]);
