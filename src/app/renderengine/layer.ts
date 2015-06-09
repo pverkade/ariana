@@ -1,8 +1,10 @@
 /// <reference path="gl-matrix"/>
+/// <reference path="resource-manager"/>
 enum LayerType {ImageLayer};
 
 class Layer {
-    protected gl : WebGLRenderingContext;
+    protected gl;
+    protected resourceManager : ResourceManager;
 	protected static MaxID = 0;
 	protected layerType : number;
 	private ID : LayerType;
@@ -18,12 +20,13 @@ class Layer {
     protected pixelConversionMatrix : Float32Array;
 
 	constructor(
-        gl : WebGLRenderingContext,
+        resourceManager : ResourceManager,
         canvasWidth : number,
         canvasHeight : number,
         width : number,
         height : number) {
-        this.gl = gl;
+        this.gl = resourceManager.getWebGLContext();
+        this.resourceManager = resourceManager;
 		this.ID = Layer.MaxID++;
 
 		this.sizeMatrix = mat3.create();

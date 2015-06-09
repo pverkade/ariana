@@ -6,6 +6,7 @@
 /// <reference path="drawbuffer"/>
 /// <reference path="filter"/>
 /// <reference path="image-layer"/>
+/// <reference path="resource-manager"/>
 
 class RenderEngine {
     private gl : WebGLRenderingContext;
@@ -19,6 +20,8 @@ class RenderEngine {
     private width : number;
     private height : number;
     private canvas : HTMLCanvasElement;
+
+    public resourceManager;
 
     constructor (canvas : HTMLCanvasElement) {
         this.width = canvas.width;
@@ -34,7 +37,6 @@ class RenderEngine {
                 canvas.getContext("experimental-webgl", {stencil:true, preserveDrawingBuffer: true})
             );
             var contextAttributes = this.gl.getContextAttributes();
-
             var haveStencilBuffer = contextAttributes.stencil;
 
             if (!haveStencilBuffer) {
@@ -51,6 +53,7 @@ class RenderEngine {
         this.gl.viewport(0, 0, this.width, this.height);
         this.drawbuffer1 = new DrawBuffer(this.gl, this.width, this.height);
         this.drawbuffer2 = new DrawBuffer(this.gl, this.width, this.height);
+        this.resourceManager = new ResourceManager(this.gl);
     }
 
     addLayer(layer : Layer) {
@@ -108,11 +111,14 @@ class RenderEngine {
 
             this.drawbuffer2.bind();
             this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
-            filter.render(this.drawbuffer1.getWebGlTexture());
+            filter.render(this.resourceManager, this.drawbuffer1.getWebGlTexture());
             imageLayer.copyFramebuffer(this.width, this.height);
             this.drawbuffer2.unbind();
         }
         this.drawbuffer2.unbind();
+
+        imageLayer.setPos(this.canvas.width/2.0, this.canvas.height/2.0);
+        imageLayer.setDimensions(this.canvas.width, this.canvas.height);
     }
 
     renderToImg() {
@@ -158,5 +164,16 @@ class RenderEngine {
 
         this.drawbuffer1.destroy();
         this.drawbuffer2.destroy();
+    }
+
+
+
+    createImageLayer(image : ImageData) {
+        return new ImageLayer(
+            this.resourceManager,
+            this.canvas.width,
+            this.canvas.height,
+            image
+        );
     }
 }

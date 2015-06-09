@@ -4,6 +4,7 @@
     <meta charset=utf-8 />
     <title></title>
     <script src="gl-matrix.js"></script>
+    <script src="resource-manager.js"></script>
     <script src="shaders.js"></script>
     <script src="render-helper.js"></script>
     <script src="layer.js"></script>
@@ -37,19 +38,18 @@
                 else {
                     var imageLayer = renderEngine.createImageLayer(image);
                     var imageLayer2 = renderEngine.createImageLayer(image2);
-                    //imageLayer.setPos(400, 240);
-                    //imageLayer.setDimensions(100, 80);
+                    imageLayer.setPos(400, 240);
                     renderEngine.addLayer(imageLayer);
                     renderEngine.addLayer(imageLayer2);
 
-                    /*var filter = renderEngine.createBrightnessFilter();
-                    filter.setAttribute("brightness", 1.0);
-                    renderEngine.filterLayers([0], filter);*/
+                    var filter = new BrightnessFilter();
+                    filter.setAttribute("brightness", 2.5);
+                    renderEngine.filterLayers([0], filter);
                     renderEngine.render();
 
 
 
-                    
+
 
                     //renderEngine.addLayer(imageLayer2);
                     //renderEngine.reorder(1, 0);

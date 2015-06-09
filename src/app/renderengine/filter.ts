@@ -2,7 +2,7 @@
  * Created by zeta on 6/3/15.
  */
 /// <reference path="base-program"/>
-
+/// <reference path="resource-manager"/>
 
 function clamp(x : number, low: number, high: number) {
     return Math.max(low, Math.min(x, high));
@@ -45,8 +45,7 @@ class Filter {
     protected attributes:Object;
     protected filterType:FilterType;
 
-    constructor(gl : WebGLRenderingContext) {
-        this.gl = gl;
+    constructor() {
         this.attributes = {};
     }
 
@@ -67,5 +66,9 @@ class Filter {
         return this.filterType;
     }
 
-    render(texture:WebGLTexture) { }
+    render(resourceManager : ResourceManager, texture:WebGLTexture) {
+        if (!this.gl) {
+            this.gl = resourceManager.getWebGLContext();
+        }
+    }
 }

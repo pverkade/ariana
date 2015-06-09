@@ -2,23 +2,24 @@
 /// <reference path="gl-matrix"/>
 /// <reference path="layer"/>
 /// <reference path="image-shader-program"/>
+/// <reference path="resource-manager"/>
 
 class ImageLayer extends Layer {
-    protected static program = null;
+    protected program : ImageShaderProgram;
     protected layerType : LayerType = LayerType.ImageLayer;
 
 	private texture : WebGLTexture;
 
 	constructor(
-        gl : WebGLRenderingContext,
+        resourceManager : ResourceManager,
         canvasWidth : number,
         canvasHeight : number,
         image : ImageData) {
-        super(gl, canvasWidth, canvasHeight, image.width, image.height);
+        super(resourceManager, canvasWidth, canvasHeight, image.width, image.height);
 
-        if (ImageLayer.program == null) {
-            ImageLayer.program = new ImageShaderProgram(gl);
-        }
+        this.program = resourceManager.imageShaderProgramInstance();
+
+        var gl = this.gl;
 
 		this.texture = gl.createTexture();
 		gl.bindTexture(gl.TEXTURE_2D, this.texture);
@@ -34,7 +35,7 @@ class ImageLayer extends Layer {
 	}
 
 	setupRender() {
-		ImageLayer.program.activate();
+		this.program.activate();
 	}
 
 	render() {
@@ -44,7 +45,7 @@ class ImageLayer extends Layer {
 		mat3.multiply(matrix, matrix, this.translationMatrix);
 		mat3.multiply(matrix, matrix, this.rotationMatrix);
         mat3.multiply(matrix, matrix, this.sizeMatrix);
-		ImageLayer.program.setUniforms(this.texture, matrix);
+		this.program.setUniforms(this.texture, matrix);
         this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
 	}
 
