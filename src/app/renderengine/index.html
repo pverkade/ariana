@@ -14,9 +14,16 @@
     <script src="image-shader-program.js"></script>
     <script src="render-engine.js"></script>
     <script src="drawbuffer.js"></script>
-    <script src="filter.js"></script>
-    <script src="brightness-filter.js"></script>
     <script src="selection-program.js"></script>
+
+    <script src="filters/filter.js"></script>
+    <script src="filters/contrast-filter.js"></script>
+    <script src="filters/brightness-filter.js"></script>
+    <script src="filters/sepia-filter.js"></script>
+    <script src="filters/invert-colors-filter.js"></script>
+    <script src="filters/saturation-filter.js"></script>
+    <script src="filters/noise-filter.js"></script>
+    <script src="filters/colorize-filter.js"></script>
 
     <script>
         function start() {
@@ -42,13 +49,9 @@
                     renderEngine.addLayer(imageLayer);
                     renderEngine.addLayer(imageLayer2);
 
-                    var filter = new BrightnessFilter();
-                    filter.setAttribute("brightness", 2.5);
+                    var filter = new ColorizeFilter();
                     renderEngine.filterLayers([0], filter);
                     renderEngine.render();
-
-
-
 
 
                     //renderEngine.addLayer(imageLayer2);

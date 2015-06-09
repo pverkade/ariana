@@ -4,7 +4,7 @@
 /// <reference path="render-helper"/>
 /// <reference path="layer"/>
 /// <reference path="drawbuffer"/>
-/// <reference path="filter"/>
+/// <reference path="filters/filter"/>
 /// <reference path="image-layer"/>
 /// <reference path="resource-manager"/>
 

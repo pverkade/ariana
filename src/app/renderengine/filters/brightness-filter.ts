@@ -1,11 +1,11 @@
 /**
  * Created by zeta on 6/2/15.
  */
-/// <reference path="shader-program"/>
-/// <reference path="render-helper"/>
-/// <reference path="image-shader-program"/>
+/// <reference path="../shader-program"/>
+/// <reference path="../render-helper"/>
+/// <reference path="../image-shader-program"/>
+/// <reference path="../resource-manager"/>
 /// <reference path="filter"/>
-/// <reference path="resource-manager"/>
 
 class BrightnessProgram extends FilterProgram {
     protected brightnessLocation;
@@ -46,7 +46,7 @@ class BrightnessFilter extends Filter {
 
         this.program.activate();
         this.program.bindTexture(texture);
-        this.program.setUniforms(this.attributes["brightness"]["value"]);
+        this.program.setUniforms(this.getAttributeValue("brightness"));
 
         this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
     }
