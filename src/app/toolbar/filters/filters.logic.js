@@ -4,33 +4,37 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
         $scope.filters = [
             
             {
-                name:  "Sepia",
+                name:  "sepia",
                 image: "/assets/img/arnold2.jpg", 
             },
             
             {
-                name:  "Gaussian Blur",
+                name:  "gaussian blur",
                 image: "/assets/img/arnold2.jpg", 
             },
             
             {
-                name:  "Brightness",
+                name:  "arnold",
                 image: "/assets/img/arnold2.jpg", 
             },
             
             {
-                name:  "Arnold",
+                name:  "brightness",
                 image: "/assets/img/arnold2.jpg", 
             },
         ];
         
         $scope.selectFilter = function(name) {
-            $scope.applyFilter($scope.selectedFilter, name);
+            $scope.applyFilter(name);
             $scope.close();
         };
 
-        $scope.close = function () {
+        $scope.close = function() {
             $modalInstance.dismiss();
         };
+        
+        $scope.titlecase = function(string) {
+            return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+        }
     }
 ])

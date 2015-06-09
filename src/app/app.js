@@ -118,9 +118,16 @@ app.controller('AppCtrl', ['$scope',
             return false;
         };
 
-        $scope.applyFilter = function(name, layers) {
+        $scope.applyFilter = function(name) {
             console.log("Apply filter " + name);
-            // TODO actually apply filter
+            
+            if (name == "brightness") {
+                // TODO start element with parameters, layer button, 
+                // TODO actually apply filter on current layer/all layers
+                
+                //var brightnessFilter = new BrightnessFilter();
+                //console.log(brightnessFilter);
+            }
         };
 	}
 ]);
