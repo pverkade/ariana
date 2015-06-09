@@ -3,7 +3,8 @@ var serveStatic = require('serve-static');
 var fs = require('fs');
 var request = require('request');
 var qs = require('querystring');
-var gm = require('gm');
+//var gm = require('gm');
+var gm = require('gm').subClass({ imageMagick: true });
 
 // Init
 var app = connect();
