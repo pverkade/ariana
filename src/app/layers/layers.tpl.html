@@ -24,13 +24,28 @@
 </div> -->
 
 <div ng-controller="ToolboxAccordionCtrl">
+
+
     <accordion close-others="true">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <span>
+                        <a class="btn btn-sm" ng-click="addLayer()">
+                            <i class="fa fa-plus"></i>
+                        </a>
+                    </span>
+                </h4>
+            </div>
+        </div>
         
         <accordion-group ng-repeat="layer in config.layers.layerInfo" is-open="open">
             <accordion-heading>
                 {{$index}}
 
                 <i class="pull-left fa " ng-class="{'fa-chevron-up': open, 'fa-chevron-right': !open}"></i>
+                <i class="pull-right fa fa-remove" ng-click="removeLayer($event, $index)"></i>
             </accordion-heading>
             
             <div class="selectable item" ng-repeat="(key, value) in layer">

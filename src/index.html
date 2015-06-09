@@ -40,7 +40,10 @@
 
         <div class="row">
             <div class="col-md-2" ui-view="toolbox"></div>
-            <div class="col-md-8" ui-view="content"></div>
+            <div class="col-md-8">
+                <div class="row content-menu" ui-view="content-menu"></div>
+                <div class="row content-main" ui-view="content"></div>
+            </div>
             <div class="col-md-2" ui-view="layers"></div>
         </div>
     </div>

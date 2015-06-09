@@ -9,6 +9,10 @@ angular.module('ariana').config(function($stateProvider, $locationProvider) {
                     templateUrl: "app/content/content.tpl.html",
                     controller: 'contentCtrl'
                 },
+                "content-menu": {
+                    templateUrl: "app/content/menu/menu.content.tpl.html",
+                    controller: 'MenuContentCtrl'
+                },
                 "toolbar": {
                     templateUrl: "app/toolbar/toolbar.tpl.html",
                     controller: 'toolbarCtrl'
@@ -33,6 +37,31 @@ angular.module('ariana').config(function($stateProvider, $locationProvider) {
                 "toolbar": {
                     templateUrl: "app/toolbar/landing/landing.toolbar.tpl.html",
                     controller: 'LandingToolbarCtrl'
+                }
+            }
+        })
+        .state('settings', {
+            url: "/settings",
+            views: {
+                "content": {
+                    templateUrl: "app/content/settings/settings.content.tpl.html",
+                    controller: 'SettingsContentCtrl'
+                },
+                "content-menu": {
+                    templateUrl: "app/content/menu/menu.content.tpl.html",
+                    controller: 'MenuContentCtrl'
+                },
+                "toolbar": {
+                    templateUrl: "app/toolbar/toolbar.tpl.html",
+                    controller: 'toolbarCtrl'
+                },
+                "layers": {
+                    templateUrl: "app/layers/layers.tpl.html",
+                    controller: 'layersCtrl'
+                },
+                "toolbox": {
+                    templateUrl: "app/toolbox/toolbox.tpl.html",
+                    controller: 'toolBoxController'
                 }
             }
         });
