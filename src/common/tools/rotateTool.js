@@ -36,7 +36,21 @@ var rotateTool = {
             return 2 * (x / width) - 1;
         }
 
-        var oldX = normalize(mouse.old.x);
+        var layer = $scope.renderEngine.layers[currentLayer];
+        var x = (layer.getPosX()+1)/2 * canvas.width;
+        var y = (-1.*layer.getPosY()+1)/2. * canvas.height;
+
+        var dx = x-mouse.current.x;
+        var dy = y+50-mouse.current.y;
+
+        console.log(dx);
+        console.log(dy);
+        var angle = Math.atan2(dx, dy);
+        //console.log(angle);
+        layer.setRotation(angle);
+        $scope.renderEngine.render();
+
+        /*var oldX = normalize(mouse.old.x);
         var oldY = normalize(mouse.old.y);
 
         var newX = normalize(mouse.current.x);
@@ -56,6 +70,6 @@ var rotateTool = {
             $scope.renderEngine.render();
             // FIXME: using request animation fucks things up.
             //requestAnimationFrame($scope.renderEngine.render);
-        }
+        }*/
     }
 };
