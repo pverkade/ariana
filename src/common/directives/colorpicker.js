@@ -1,20 +1,26 @@
-angular.module('ariana').directive('colorpicker', function($window) {
+angular.module('ariana').directive('colorpicker', function() {
+
+    console.log("YOLO DIRECTIVE");
 
     return {
-        // only instantate as element
-        restrict: "E",
-        // HTML template, TODO templateURL
+        // only instantate as element <colorpicker> or attribute colorpicker
+        restrict: "EA",
+        
+        // HTML template, TODO use templateURL
         template: "<h2> Hello </h2>",
         
-        replace: true,
+        // dont overwrite <colorpicker> element with HTML
+        replace: false,
     
+        /*
         controller: ["$scope", function($scope) {
             console.log("contoller");
         }],
+        */
     
+        /*
         link: function($scope, $element, $attibutes) {
-            // WHY
-        },
-        
+        }, 
+        */
     };
 });

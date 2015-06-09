@@ -1,11 +1,14 @@
 <div id="toolbox">
     
-    <div class="tool" id="{{name}}" ng-repeat="(name, tool) in toolbox" 
-        ng-click="selectToolSet(name)" ng-class="{active: config.tools.activeToolset == '{{name}}'}">
+    <div class="tool" id="{{name}}" 
+        ng-repeat="(name, tool) in toolbox" 
+        ng-click="selectToolSet(name)" 
+        ng-class="{active: config.tools.activeToolset == '{{name}}'}">
 
         <img class="svg" alt="{{tool.image}}" data="assets/vectors/{{tool.image}}"></img>
 
-        <div class="toolset fix-top" ng-show="config.tools.activeToolset == '{{name}}'">
+        <div class="toolset fix-top" 
+            ng-show="config.tools.activeToolset == '{{name}}'">
 	        
 	        <div class="tool" id="{{name}}" 
                 ng-repeat="(name, subtool) in tool.tools" 
@@ -26,4 +29,4 @@
     <div class="color-secondary" style="background-color: rgb({{config.tools.colors.secondary.r}}, {{config.tools.colors.secondary.g}}, {{config.tools.colors.secondary.b}})"> </div>
 </div>
 
-<colorpicker style="position:absolute; bottom: 0; left: 100; height:100px; width:100px;" />
+<div colorpicker style="position:absolute; bottom: 0; left: 100px; height:100px; width:100px; background-color:green;" ></div>
