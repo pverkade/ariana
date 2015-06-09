@@ -92,6 +92,7 @@ enum brushType { NORMAL, THIN, PEPPER, DUNES }
  *       - just a dot
  *       - Use secondary color at right mouseclick.
  *
+ *       Gum / eraser
  */
 class Draw {
 
@@ -318,6 +319,10 @@ class Draw {
      */
     draw (path : Path) : void {
         var context = <CanvasRenderingContext2D>this.canvas.getContext('2d');
+        if (context == null) {
+            console.log("Can't draw path, canvas is already rendered in webgl mode.")
+            return;
+        }
 
         /* Append the right brush settings (TODO: is this the right place to do this?) */
         context.strokeStyle = this.color.getRGBA();

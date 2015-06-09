@@ -39,7 +39,8 @@ angular.module('ariana').controller('toolBoxController', function($scope) {
                     image: 'palette.svg'
                 },
                 pencil: {
-                    image: 'pen.svg'
+                    image: 'pen.svg',
+                    toolFunctions: penTool
                 },
                 brush: {
                     image: 'brush.svg'

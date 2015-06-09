@@ -54,6 +54,7 @@ app.controller('AppCtrl', ['$scope',
         };
 
         $scope.renderEngine = null;
+        $scope.drawEngine = null;
 
         $scope.startEngine = function(canvas) {
             $scope.renderEngine = new RenderEngine(canvas);
