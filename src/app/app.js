@@ -4,7 +4,8 @@ var app = angular.module('ariana', [
     'ui.router',
     'ui.bootstrap',
     'templates-ariana',
-    'ngFileUpload'
+    'ngFileUpload',
+    'ngAnimate'
 ]);
 
 app.controller('AppCtrl', ['$scope',
@@ -48,7 +49,10 @@ app.controller('AppCtrl', ['$scope',
                 numberOfLayers: 0,
                 currentLayer: -1,
                 layerInfo: [
-                    //{"x": 0, "y": 0, "scale": 1}
+                    {"x": 0, "y": 0, "scale": 1},
+                    {"x": 0, "y": 0, "scale": 1},
+                    {"x": 0, "y": 0, "scale": 1},
+                    {"x": 0, "y": 0, "scale": 1}
                 ]
             }
         };

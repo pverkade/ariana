@@ -10,71 +10,71 @@ angular.module('ariana').controller('toolBoxController', function($scope) {
 
     $scope.toolbox = {
         basic: {
-            image: 'arrow-all.svg',
+            image: 'fa-arrows',
             tools: {
                 pan: {
-                    image: 'cursor-pointer.svg',
+                    image: 'fa-arrows',
                     toolFunctions: panTool,
                 },
                 translate: {
-                    image: 'arrow-all.svg',
+                    image: 'fa-arrows-alt',
                     toolFunctions: translateTool,
                 },
                 scale: {
-                    image: 'arrow-expand.svg'
+                    image: 'fa-expand'
                 },
                 rotate: {
-                    image: 'rotate-left.svg',
+                    image: 'fa-undo',
                     toolFunctions: rotateTool,
                 },
                 crop: {
-                    image: 'crop.svg'
+                    image: 'fa-crop'
                 }
             }
         },
         painting: {
-            image: 'brush.svg',
+            image: 'fa-pencil',
             tools: {
                 color: {
-                    image: 'palette.svg'
+                    image: 'fa-cloud'
                 },
                 pencil: {
-                    image: 'pen.svg'
+                    image: 'fa-pencil'
                 },
                 brush: {
-                    image: 'brush.svg'
+                    image: 'fa-paint-brush'
                 },
                 eraser: {
-                    image: 'eraser.svg'
+                    image: 'fa-eraser'
                 },
                 picker: {
-                    image: 'eyedropper.svg',
+                    image: 'fa-eyedropper',
                     toolFunctions: colorPicker,
                 },
                 fill: {
-                    image: 'format-color-fill.svg'
+                    image: 'fa-tint'
                 }
             }
         },
         select: {
-            image: 'select.svg',
+            image: 'fa-square-o',
             tools: {
                 rectangle: {
-                    image: 'select.svg'
+                    image: 'fa-square-o'
                 },
                 elipse: {
-                    image: 'checkbox-blank-circle-outline.svg'
+                    image: 'fa-circle-o'
                 },
                 curve: {
-                    image: 'vector-curve.svg'
+                    image: 'fa-circle-o'
                 },
                 wand: {
-                    image: 'auto-fix.svg' 
+                    image: 'fa-magic' 
                 }
             }
         },
         text: {
-            image: 'format-size.svg'
+            image: 'fa-font'
         }
     };
 

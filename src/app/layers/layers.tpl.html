@@ -1,24 +1,44 @@
-<div class="layer-container">
-	<div class="container-fluid">
+<!-- <div class="layer-container">
+    <div class="container-fluid">
 
-    	<div class="row layers" ng-repeat="layer in config.layers.layerInfo">
-    		<div class="col-md-2 layer options">
-    			<div class="row">
-	    			<div>{{$index}}</div>
-	    			<div ng-click="toggleVisible($index)">
-    	    			<img src="assets/vectors/eye.svg"></img>
-	    			</div>
-    			</div>
-    		</div>
-    		<div class="col-md-7 layer content">
-    		  <!--div>{{content}}</div-->
-              <div class="btn btn-default" ng-click="layerSelect($index)">Select layer</div>
-    		</div>
+        <div class="row layers" ng-repeat="layer in config.layers.layerInfo">
+            <div class="col-md-2 layer options">
+                <div class="row">
+                    <div>{{$index}}</div>
+                    <div ng-click="toggleVisible($index)">
+                        <img src="assets/vectors/eye.svg"></img>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7 layer content"> -->
+              <!--div>{{content}}</div-->
+<!--               <div class="btn btn-default" ng-click="layerSelect($index)">Select layer</div>
+            </div>
             <div class="col-md-3 layer content">
                 <div class="btn btn-default btn-sm" ng-click="layerUp($index)">Up</div>
                 <div class="btn btn-default btn-sm" ng-click="layerDown($index)">Down</div>
             </div>
-    	</div>
+        </div>
 
     </div>
+</div> -->
+
+<div ng-controller="ToolboxAccordionCtrl">
+    <accordion close-others="true">
+        
+        <accordion-group ng-repeat="layer in config.layers.layerInfo" is-open="open">
+            <accordion-heading>
+                {{$index}}
+
+                <i class="pull-left fa " ng-class="{'fa-chevron-up': open, 'fa-chevron-right': !open}"></i>
+            </accordion-heading>
+            
+            <div class="selectable item" ng-repeat="(key, value) in layer">
+                <span>
+                    <b>{{key}}</b>: {{value}}
+                </span>
+            </div>
+        </accordion-group>
+
+    </accordion>
 </div>

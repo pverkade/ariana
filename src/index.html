@@ -6,10 +6,9 @@
     <meta description="Project Ariana">
     <title> Project Ariana </title>
 
-
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    
     <!-- @ifdef DEV -->
-    <!-- style -->
-    <!-- include: "type": "css", "files": "build/css/*.css" -->
 
     <!-- bower -->
     <script src="vendor/jquery.js"></script>
@@ -18,9 +17,13 @@
     <script src="vendor/angular-ui-router.js"></script>
     <script src="vendor/ui-bootstrap-tpls.js"></script>
     <script src="vendor/ng-file-upload-all.js"></script>
+    <script src="vendor/angular-animate.js"></script>
 
     <!-- ariana -->
     <!-- include: "type": "js", "files": "build/js/*.js" -->
+    
+    <!-- style -->
+    <!-- include: "type": "css", "files": "build/**/*.css" -->
     <!-- @endif -->
 
     <!-- @ifdef PROD -->
@@ -30,9 +33,16 @@
 </head>
 
 <body>
-	<div ui-view="toolbar"></div>
-    <div ui-view="toolbox"></div>
-    <div ui-view="layers"></div>
-    <div ui-view="content"></div>
+    <div class="container container-full">
+        <div class="row">
+            <div ui-view="toolbar"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-2" ui-view="toolbox"></div>
+            <div class="col-md-8" ui-view="content"></div>
+            <div class="col-md-2" ui-view="layers"></div>
+        </div>
+    </div>
 </body>
 </html>

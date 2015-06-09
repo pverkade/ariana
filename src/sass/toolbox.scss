@@ -7,60 +7,31 @@
  *
  */
 
-div #toolbox {
-    position : absolute;
-    width: $blocksize;
-    left: 0;
-    top: 1.5 * $blocksize;
+.toolbox {
     
-    @extend .gui-element;
 }
 
-div .toolset {
-    position: absolute;
-    top: 0;
-    margin-left: $blocksize;
-    width: $blocksize;
-
-    z-index: 1;
-    background-color: $very-light;   
-
-    .tool {
-        
-        background-color: $very-light;
-        
-        &:hover {
-            background-color: lighten($very-light, $hover-lighten);
-        }
-    }
+accordion {
+	span {
+		text-transform: uppercase;
+	}
 }
 
-.color-preview {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    
-    @extend .tool;
-    @extend .gui-element;
-    
-    .color-primary, .color-secondary {
-        position: absolute;
-        height: 0.625 * $blocksize;
-        width: 0.625 * $blocksize;
-        @extend .box-shadow;
-    }
-    
-    .color-primary {
-        left:  0.25 * $blocksize;
-        bottom: 0.25 * $blocksize;
-        background-color: green;
-        z-index: 4;
-    }
+.item {
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
 
-    .color-secondary {
-        left: 0.125 * $blocksize;
-        bottom: 0.125 * $blocksize;
-        background-color: red;
-        z-index: 3;
-    }   
+.panel-group .panel {
+	border-radius: 0;
+}
+
+.panel-group .panel + .panel {
+	margin-top: 0;
+}
+
+.panel-body {
+	padding: 0;
 }

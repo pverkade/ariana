@@ -1,3 +1,16 @@
+.container-full {
+	margin: 0 auto;
+	padding: 0;
+	width: 100%;
+}
+
 .bg-white {
     background-color: #ffffff;   
+}
+
+.selectable {
+	&:hover {
+        background-color: lighten($light, $hover-lighten);
+        cursor: pointer;
+    }
 }

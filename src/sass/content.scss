@@ -1,7 +1,12 @@
-.main-canvas {
-    position: absolute;
-    background-color: $dark;
-    left: 0;
-    top: 0;
-    cursor: grab;
+/*
+ * Project Arinana
+ * content.scss
+ *
+ * This file contains the style definition for the main content.
+ *
+ */
+
+.content {
+	background-color: red;
+	height: 100%;
 }
