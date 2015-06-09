@@ -5,8 +5,8 @@ var colorPicker = {
     },
     
     mouseDown: function($scope) {
-        var x = $scope.config.mouse.current.x;
-        var y = $scope.config.mouse.current.x;
+        var x = $scope.config.mouse.current.x - canvasLocationX;
+        var y = $scope.config.mouse.current.y - canvasLocationY;
         
         var value = $scope.renderEngine.getPixelColor(x, y);
         
