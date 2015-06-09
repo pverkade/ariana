@@ -3,7 +3,7 @@
     <div class="tool" id="{{name}}" ng-repeat="(name, tool) in toolbox" 
         ng-click="selectToolSet(name)" ng-class="{active: config.tools.activeToolset == '{{name}}'}">
 
-        <img class="svg" ng-src="assets/vectors/{{tool.image}}"></img>
+        <img class="svg" alt="{{tool.image}}" data="assets/vectors/{{tool.image}}"></img>
 
         <div class="toolset fix-top" ng-show="config.tools.activeToolset == '{{name}}'">
 	        
@@ -11,7 +11,7 @@
                 ng-repeat="(name, subtool) in tool.tools" 
 	            ng-click="selectTool($event, name)">
 
-	            <img class="svg" ng-src="assets/vectors/{{subtool.image}}"></img>
+	            <img class="svg" alt="{{subtool.image}}" data="assets/vectors/{{subtool.image}}">
 
 	        </div>
 

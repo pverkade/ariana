@@ -6,7 +6,7 @@ angular.module('ariana').controller('toolBoxController', function($scope) {
         $scope.config.tools.colors.primary = $scope.config.tools.colors.secondary;
         $scope.config.tools.colors.secondary = temp;
         console.log($scope.config.tools.colors.primary);
-    }
+    };
 
     $scope.toolbox = {
         basic: {
@@ -76,7 +76,7 @@ angular.module('ariana').controller('toolBoxController', function($scope) {
         text: {
             image: 'format-size.svg'
         }
-    }
+    };
 
     /* This function selects a toolset and therefore opens a toolbox. */
     $scope.selectToolSet = function(name) {
@@ -114,50 +114,70 @@ angular.module('ariana').controller('toolBoxController', function($scope) {
             $("#main-canvas").css("cursor", "default");
         }
     };
-    
     $scope.selectTool(null, "pan");
-    
-    /*
-    $scope.loadImages = function () {
-        $scope.sources = [];
-   
-       // SVG FIX FOT STACK OVEFLOW 
-        $('img.svg').each(function() {
-            var img     = $(this);
-            var id      = img.attr('id');
-            var src     = img.attr('src');
-            
-            if ($scope.sources.indexOf(src) == -1) {
-                
-                $scope.sources.push(src);
-                console.log("Request " + src);
-                
-                $(this).removeClass("svg");
-                
-                $.get(src, function(data) {
-                    console.log("received data");
-                    
-                    // Get the SVG tag, ignore the rest
-                    var svg = $(data).find('svg');
 
-                    // Add replaced image's ID to the new SVG
-                    if(typeof id !== 'undefined') {
-                        svg = svg.attr('id', id);
-                    }
-                    
-                    // Remove any invalid XML tags as per http://validator.w3.org
-                    svg = svg.removeAttr('xmlns');
-                    svg = svg.removeAttr('xmlns:xlink');
+    /*$scope.loadImages = function() {
+        console.log("Request images");
+        $("div.svg").each(function () {
+            console.log("Image found");
+            var img = $(this);
+            var id = img.attr('id');
+            var src = img.attr('data');
 
-                    // Replace image with new SVG
-                    img.replaceWith(svg);
+            //$scope.sources.push(src);
+            console.log("Request " + src);
 
-                }, 'xml'); 
-            }
-            else {
-                console.log("HAVE");
-            }
+            $(this).removeClass("svg");
+
+            $.get(src, function (data) {
+                // Get the SVG tag, ignore the rest
+                var svg = $(data).find('svg');
+
+                // Add replaced image's ID to the new SVG
+                if (typeof id !== 'undefined') {
+                    svg = svg.attr('id', id);
+                }
+
+                console.log("Setting svg with src="+src);
+
+                // Remove any invalid XML tags as per http://validator.w3.org
+                svg = svg.removeAttr('xmlns');
+                svg = svg.removeAttr('xmlns:xlink');
+
+                // Replace image with new SVG
+                img.replaceWith(svg);
+
+            }, 'xml');
         });
-    }*/
-    
+    };*/
+
+    setTimeout(function() {
+        $("img.svg").each(function () {
+            var img = $(this);
+            var id = img.attr('id');
+            var src = img.attr('data');
+
+            //$scope.sources.push(src);
+            $(this).removeClass("svg");
+
+            $.get(src, function (data) {
+                // Get the SVG tag, ignore the rest
+                var svg = $(data).find('svg');
+
+                // Add replaced image's ID to the new SVG
+                if (typeof id !== 'undefined') {
+                    svg = svg.attr('id', id);
+                }
+
+                // Remove any invalid XML tags as per http://validator.w3.org
+                svg = svg.removeAttr('xmlns');
+                svg = svg.removeAttr('xmlns:xlink');
+
+                // Replace image with new SVG
+                img.replaceWith(svg);
+
+            }, 'xml');
+        });
+    }, 1);
+    //$scope.loadImages();
 });
