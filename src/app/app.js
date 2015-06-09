@@ -118,10 +118,9 @@ app.controller('AppCtrl', ['$scope',
             return false;
         };
 
-        /* FIXME cannot be accesed by FilterModalController
-        $scope.applyFilter = function(name) {
-            // TODO
+        $scope.applyFilter = function(name, layers) {
             console.log("Apply filter " + name);
-        }; */
+            // TODO actually apply filter
+        };
 	}
 ]);
