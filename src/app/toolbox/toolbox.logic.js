@@ -1,164 +1,183 @@
-angular.module('ariana').controller('toolboxCtrl', function($scope) {
+angular.module('ariana').controller('toolBoxController', function($scope) {
+
     
-    $scope.leftColor  = "#ffaa00";
-    $scope.rightColor = "#88cc44";
-    updateColorPreview();
-    
-    /* make tools. */
-    var toolset = document.getElementById('toolset');   
-    tools = toolset.children;
-    
-    /* For every tool in the toolset, get the inner HTML and use it as filename
-    for the icon. Load the icon using a new Request. */
-    for (var i = 0; i < tools.length; i++) {
-        tool = tools[i];
-        icon = tool.innerHTML.trim();
-        tool.innerHTML = "";
-        filename = "assets/vectors/" + icon;
-        
-        var request = new XMLHttpRequest();
-        request.open('GET', filename, true);
-        request.icon_i = i;
-        request.onload = function() {
-            if (this.status >= 200 && this.status < 400) {
-                parser = new DOMParser();
-                svg = parser.parseFromString(this.response,"text/xml").getElementsByTagName("svg")[0];
-                tools[this.icon_i].appendChild(svg);
-            }
-        };
-        request.onerror = function() {
-            // ...
-        };
-        request.send();    
-    }
-    
-    var subtoolsets = document.getElementById('sub-toolsets').children;   
-    var n = [];
-    
-    /* Add onClick handlers for each category-button. */
-    for (var i = 0; i < tools.length; i++) {
-    
-        /* Add variables to button. */
-        tools[i].toolNumber = i;
-        tools[i].toolEnabled = false;
-        
-        tools[i].onclick = function (){
-            if (this.toolEnabled) {
-                this.toolEnabled = false;
-                hideSubToolsets();
-            }
-            else {
-                this.toolEnabled = true;
-                showSubToolset(this.toolNumber);
-            }
-        };
-    }    
-    
-    for (var i = 0; i < subtoolsets.length; i++) {
-        var subtoolset = subtoolsets[i].children;
-        n.push(subtoolset);
-    }
-    
-    /* For every subtool, load the svg to show as icon. */
-    for (var i = 0; i < n.length; i++) {
-        for (var j = 0; j < n[i].length; j++){
-        
-            tool = n[i][j];
-            
-            icon = tool.innerHTML.trim();
-            tool.innerHTML = "";
-            filename = "assets/vectors/" + icon;
-            
-            var request = new XMLHttpRequest();
-            request.open('GET', filename, true);
-            request.icon_i = i;
-            request.icon_j = j;
-            request.onload = function() {
-                if (this.status >= 200 && this.status < 400) {
-                    parser = new DOMParser();
-                    svg = parser.parseFromString(this.response,"text/xml").getElementsByTagName("svg")[0];
-                    n[this.icon_i][this.icon_j].appendChild(svg);
+    $scope.swapColors = function() {
+        var temp = $scope.config.tools.colors.primary;
+        $scope.config.tools.colors.primary = $scope.config.tools.colors.secondary;
+        $scope.config.tools.colors.secondary = temp;
+        console.log($scope.config.tools.colors.primary);
+    };
+
+    $scope.toolbox = {
+        basic: {
+            image: 'arrow-all.svg',
+            tools: {
+                pan: {
+                    image: 'cursor-pointer.svg',
+                    toolFunctions: panTool,
+                },
+                translate: {
+                    image: 'arrow-all.svg',
+                    toolFunctions: translateTool,
+                },
+                scale: {
+                    image: 'arrow-expand.svg'
+                },
+                rotate: {
+                    image: 'rotate-left.svg',
+                    toolFunctions: rotateTool,
+                },
+                crop: {
+                    image: 'crop.svg'
                 }
-            };
-            request.onerror = function() {
-                //
-            };
-            request.send();
-        }
-    }
-    
-    document.getElementById('color-preview').onclick = switchColors();
-    
-    function switchColors(){
-        console.log("switch");
-        var t = $scope.leftColor;
-        $scope.leftColor = $scope.rightColor;
-        $scope.rightColor = t;
-        updateColorPreview();
-        console.log("done");
-    }
-    
-    function setLeftColor(color){
-        $scope.leftColor = color;
-        updateColorPreview();
-    }
-
-    function setRightColor(color){
-        $scope.rightColor = color;
-        updateColorPreview(); 
-    }
-
-    function updateColorPreview(leftColor, rightColor){
-        document.getElementById('color-left').style.background  = $scope.leftColor; 
-        document.getElementById('color-right').style.background = $scope.rightColor; 
-    }   
-    
-   /* This function shows a certain toolblock. */
-    function showSubToolset(setnumber) {
-
-        /* Set all other category-selection tools as disabled. */
-        var toolset = document.getElementById('toolset').children; 
-        for (var i = 0; i < toolset.length; i++) {
-            if (i == setnumber) toolset[i].toolEnabled = true;
-            else toolset[i].toolEnabled = false;
-        } 
-        
-        /* Move the desired toolblock in view. Move all tool blocks to their 
-         * original position. */
-        var subtoolsets = document.getElementById('sub-toolsets').children;
-        for (var i = 0; i < subtoolsets.length; i++) {
-            if (i == setnumber) {
-                //subtoolsets[i].style.transform = "translate(144px, 0px)";
-                subtoolsets[i].className = "sub-toolset show";
-            } else {
-                //subtoolsets[i].style.transform = "translate(-144px, 0px)";
-                subtoolsets[i].className = "sub-toolset";
             }
+        },
+        painting: {
+            image: 'brush.svg',
+            tools: {
+                color: {
+                    image: 'palette.svg'
+                },
+                pencil: {
+                    image: 'pen.svg'
+                },
+                brush: {
+                    image: 'brush.svg'
+                },
+                eraser: {
+                    image: 'eraser.svg'
+                },
+                picker: {
+                    image: 'eyedropper.svg',
+                    toolFunctions: colorPicker,
+                },
+                fill: {
+                    image: 'format-color-fill.svg'
+                }
+            }
+        },
+        select: {
+            image: 'select.svg',
+            tools: {
+                rectangle: {
+                    image: 'select.svg'
+                },
+                elipse: {
+                    image: 'checkbox-blank-circle-outline.svg'
+                },
+                curve: {
+                    image: 'vector-curve.svg'
+                },
+                wand: {
+                    image: 'auto-fix.svg' 
+                }
+            }
+        },
+        text: {
+            image: 'format-size.svg'
+        }
+    };
+
+    /* This function selects a toolset and therefore opens a toolbox. */
+    $scope.selectToolSet = function(name) {
+        if ($scope.config.tools.activeToolset == name) {
+            $scope.config.tools.activeToolset = null;
+            $scope.selectTool(null, "pan");
+        }
+        else {
+            $scope.config.tools.activeToolset = name;
+        }
+    };
+    
+    /* This function selects a tool. */
+    $scope.selectTool = function(e, tool) {
+        if (e) e.stopPropagation();
+
+        $scope.config.tools.activeTool = tool;
+
+        var toolset = $scope.config.tools.activeToolset;
+        
+        if (toolset) {
+            toolFunctions = $scope.toolbox[toolset].tools[tool].toolFunctions;
+        }
+        else {
+            // exception for basic tools
+            toolFunctions = $scope.toolbox.basic.tools[tool].toolFunctions;
         }
         
-        return;
-    }
-
-    /* This function hides all toolsets. */
-    function hideSubToolsets(){
-
-        /* Set all category-selection tools as disabled. */
-        var toolset = document.getElementById('toolset').children; 
-        for (var i = 0; i < toolset.length; i++) {
-            toolset[i].toolEnabled = false;
-        } 
-
-        /* Move all tool blocks to their original position. */
-        var subtoolsets = document.getElementById('sub-toolsets').children;  
-        for (var i = 0; i < subtoolsets.length; i++) {
-            subtoolsets[i].className = "sub-toolset";//style.transform = "translate(-144px, 0px)";
+        if (toolFunctions) {
+            $scope.config.tools.activeToolFunctions = toolFunctions;
+            toolFunctions.start();
         }
-        
-        return;
-    }
-}); 
-    
-    
-    
-    
-    
+        else {
+            $scope.config.tools.activeToolFunctions = null;
+            $("#main-canvas").css("cursor", "default");
+        }
+    };
+    $scope.selectTool(null, "pan");
+
+    /*$scope.loadImages = function() {
+        console.log("Request images");
+        $("div.svg").each(function () {
+            console.log("Image found");
+            var img = $(this);
+            var id = img.attr('id');
+            var src = img.attr('data');
+
+            //$scope.sources.push(src);
+            console.log("Request " + src);
+
+            $(this).removeClass("svg");
+
+            $.get(src, function (data) {
+                // Get the SVG tag, ignore the rest
+                var svg = $(data).find('svg');
+
+                // Add replaced image's ID to the new SVG
+                if (typeof id !== 'undefined') {
+                    svg = svg.attr('id', id);
+                }
+
+                console.log("Setting svg with src="+src);
+
+                // Remove any invalid XML tags as per http://validator.w3.org
+                svg = svg.removeAttr('xmlns');
+                svg = svg.removeAttr('xmlns:xlink');
+
+                // Replace image with new SVG
+                img.replaceWith(svg);
+
+            }, 'xml');
+        });
+    };*/
+
+    setTimeout(function() {
+        $("img.svg").each(function () {
+            var img = $(this);
+            var id = img.attr('id');
+            var src = img.attr('data');
+
+            //$scope.sources.push(src);
+            $(this).removeClass("svg");
+
+            $.get(src, function (data) {
+                // Get the SVG tag, ignore the rest
+                var svg = $(data).find('svg');
+
+                // Add replaced image's ID to the new SVG
+                if (typeof id !== 'undefined') {
+                    svg = svg.attr('id', id);
+                }
+
+                // Remove any invalid XML tags as per http://validator.w3.org
+                svg = svg.removeAttr('xmlns');
+                svg = svg.removeAttr('xmlns:xlink');
+
+                // Replace image with new SVG
+                img.replaceWith(svg);
+
+            }, 'xml');
+        });
+    }, 1);
+    //$scope.loadImages();
+});

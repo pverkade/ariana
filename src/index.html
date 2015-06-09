@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html ng-app="ariana" ng-controller="AppCtrl">
+<html lang="en" ng-app="ariana" ng-controller="AppCtrl">
 <head>
     <base href="/">
-    <meta charset="utf-8"/>
-    <title>ariana</title>
+    <meta charset="UTF-8">
+    <meta description="Project Ariana">
+    <title> Project Ariana </title>
 
 
     <!-- @ifdef DEV -->
@@ -15,6 +16,8 @@
     <script src="vendor/bootstrap.js"></script>
     <script src="vendor/angular.js"></script>
     <script src="vendor/angular-ui-router.js"></script>
+    <script src="vendor/ui-bootstrap-tpls.js"></script>
+    <script src="vendor/ng-file-upload-all.js"></script>
 
     <!-- ariana -->
     <!-- include: "type": "js", "files": "build/js/*.js" -->
@@ -22,7 +25,7 @@
 
     <!-- @ifdef PROD -->
     <script src="ariana.js"></script>
-    <link rel="stylesheet" type="text/css" href="ariana.css">
+    <link rel="stylesheet" type="text/css" href="ariana.css"></link>
     <!-- @endif -->
 </head>
 
@@ -32,3 +35,4 @@
     <div ui-view="layers"></div>
     <div ui-view="content"></div>
 </body>
+</html>

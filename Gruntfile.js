@@ -1,15 +1,18 @@
 module.exports = function(grunt) {
-
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-bower-concat');
     grunt.loadNpmTasks('grunt-sass');
-    grunt.loadNpmTasks('grunt-typescript');
+    grunt.loadNpmTasks('grunt-ts');
     grunt.loadNpmTasks('grunt-html2js');
     grunt.loadNpmTasks('grunt-include-source');
     grunt.loadNpmTasks('grunt-preprocess');
+
+    var glob = require('glob');
+    var path = require('path');
+    var fs   = require('fs');
 
     var appConfig = require('./build.config.js');
     var taskConfig = {
@@ -28,7 +31,7 @@ module.exports = function(grunt) {
                         DEV: true
                     }
                 },
-                src: '<%= build_dir %>/index.html',
+                src: '<%= build_dir %>/index.html'
             },
             prod: {
                 options: {
@@ -36,7 +39,7 @@ module.exports = function(grunt) {
                         PROD: true
                     }
                 },
-                src: '<%= build_dir %>/index.html',
+                src: '<%= build_dir %>/index.html'
             }
         },
 
@@ -47,7 +50,7 @@ module.exports = function(grunt) {
         sass: {
             dist: {
                 files: {
-                    '<%= build_dir %>/css/ariana.css': '<%= src_files.scss %>'
+                    '<%= build_dir %>/css/style.css': '<%= src_files.scss %>'
                 }
             },
             options: {
@@ -58,15 +61,12 @@ module.exports = function(grunt) {
         /*
          * Compile and concat TypeScript (WIP)
          */
-        typescript: {
-            base: {
+        ts: {
+            default: {
                 src: ['<%= src_files.ts %>'],
-                dest: '<%= build_dir %>/js/typescript.js',
-                options: {
-                    module: 'commonjs',
-                    target: 'es5',
-                    keepDirectoryHierarchy: false
-                }
+                out: '<%= build_dir %>/js/renderEngine.js',
+                sourceMap: false,
+                fast: 'never'
             }
         },
 
@@ -88,16 +88,16 @@ module.exports = function(grunt) {
          */
         includeSource: {
             options: {
-                rename: function(dest, matchedSrcPath, options) {
+                rename: function (dest, matchedSrcPath, options) {
                     // Strip build/ from path
-                    return matchedSrcPath.replace('build/', '');;
+                    return matchedSrcPath.replace('build/', '');
                 },
                 ordering: 'top-down'
             },
             target: {
                 files: {
                     'build/index.html': 'build/index.html'
-                },
+                }
             }
         },
 
@@ -110,10 +110,13 @@ module.exports = function(grunt) {
                 '<%= build_dir %>/'
             ],
             js: [
-                '<%= build_dir %>/js/*.js', '!<%= build_dir %>/js/template.js'
+                '<%= build_dir %>/js/*.js', '!<%= build_dir %>/js/template.js', '!<%= build_dir %>/js/renderEngine.js'
+            ],
+            ts: [
+                '<%= build_dir %>/js/renderEngine.js'
             ],
             css: [
-                '<%= build_dir %>/css/ariana.css',
+                '<%= build_dir %>/css/style.css'
             ],
             assets: [
                 '<% build_dir %>/assets/'
@@ -122,7 +125,7 @@ module.exports = function(grunt) {
                 '<%= build_dir %>/index.html'
             ],
             template: [
-                '<%= build_dir %>/js/template.js',
+                '<%= build_dir %>/js/template.js'
             ],
             prod: [
                 '<%= build_dir %>/js',
@@ -219,7 +222,7 @@ module.exports = function(grunt) {
                     sourceMap: true
                 },
                 src: ['<%=build_dir%>/**/*.css'],
-                dest: '<%=build_dir%>/ariana.css'
+                dest: '<%=build_dir%>/style.css'
             }
         },
 
@@ -244,7 +247,7 @@ module.exports = function(grunt) {
             },
             ts: {
                 files: ['<%= src_files.ts %>'],
-                tasks: ['chain_js']
+                tasks: ['clean:ts', 'ts']
             },
             sass: {
                 files: ['<%= src_files.sass %>'],
@@ -253,6 +256,10 @@ module.exports = function(grunt) {
             assets: {
                 files: ['<%= src_files.assets %>'],
                 tasks: ['chain_assets']
+            },
+            shaders: {
+                files: ['<%= src_files.shaders %>'],
+                tasks: ['bundle_shaders']
             }
         }
     };
@@ -265,7 +272,7 @@ module.exports = function(grunt) {
         'clean:build', // Remove build/
         'sass', // Compile sass -> build/css/ariana.css
         'bower_concat:css', // Concatenate all bower css -> build/css/bower.css
-        'typescript', // Compile TypeScript -> build/js/typescript.js
+        'build_renderengine', // Compile render engine -> build/js/renderengine.js
         'html2js', // Combine all tpl.html -> build/js/template.js
         'copy:build_js', // Copy all javascript -> build/js/
         'copy:build_vendorjs', // Copy all javascript -> build/js/
@@ -280,7 +287,7 @@ module.exports = function(grunt) {
         'clean:build', // Remove build/
         'sass', // Compile sass -> build/css/ariana.css
         'bower_concat:css', // Concatenate all bower css -> build/css/bower.css
-        'typescript', // Compile TypeScript -> build/js/typescript.js
+        'build_renderengine', // Compile render engine -> build/js/renderengine.js
         'html2js', // Combine all tpl.html -> build/js/template.js
         'copy:build_js', // Copy all javascript -> build/js/
         'copy:build_html', // Copy index.html -> build/index.html
@@ -320,13 +327,12 @@ module.exports = function(grunt) {
 
     /*
      * Removes index.html and all project js (excluding vendor/ and template.js)
-     * Compiles TypeScript and copies all project javascript
+     * and copies all project javascript
      * Rebuilds index.html
      */
     grunt.registerTask('chain_js', [
         'clean:html',
         'clean:js',
-        'typescript',
         'copy:build_js',
         'copy:build_html',
         'includeSource',
@@ -339,7 +345,7 @@ module.exports = function(grunt) {
      */
     grunt.registerTask('chain_css', [
         'clean:css',
-        'sass',
+        'sass'
     ]);
 
     /*
@@ -350,4 +356,45 @@ module.exports = function(grunt) {
         'clean:assets',
         'copy:build_assets'
     ]);
-}
+
+    function bundleShaders(srcPattern, dst) {
+        var result = {};
+        var filenames = glob.sync(srcPattern, {});
+
+        for (var i = 0; i < filenames.length; i++) {
+            var filename = filenames[i];
+            var sourceName = path.basename(filename, path.extname(filename));
+            var typeName = path.extname(sourceName);
+            var type;
+
+            if (typeName == ".vert") {
+                type = "x-shader/x-vertex";
+            }
+            else if (typeName == ".frag") {
+                type = "x-shader/x-fragment"
+            }
+            else {
+                return false;
+            }
+
+            result[sourceName] = {
+                source: fs.readFileSync(filename).toString(),
+                type: type
+            };
+        }
+
+        fs.writeFileSync(dst, "var SHADERS = " + JSON.stringify(result, null, 4) + "\n");
+        return true;
+    }
+
+    /*
+     * Bundles all shaders to a global object.
+     */
+    grunt.registerTask('bundle_shaders', 'Bundles the Shader source code into a js file', function() {
+        if (!bundleShaders(appConfig.src_files.shaders[0], "src/app/renderengine/shaders.ts")) {
+            grunt.fail.fatal("Unsupported/unknown shader type.");
+        }
+    });
+
+    grunt.registerTask('build_renderengine', ['bundle_shaders', 'ts']);
+};

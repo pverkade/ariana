@@ -1,21 +1,23 @@
 {
-    "name": "ariana",
-    "main": "server.js",
-    "version": "0.1.0",
-    "authors": [
-        "Team Swaggerboiiz"
-    ],
-    "license": "MIT",
-    "ignore": [
-        "**/.*",
-        "node_modules",
-        "bower_components",
-        "test",
-        "tests"
-    ],
-    "dependencies": {
-        "angular": "~1.4.0",
-        "angular-ui-router": "~0.2.15",
-        "bootstrap": "~3.3.4"
-    }
+  "name": "ariana",
+  "main": "server.js",
+  "version": "0.1.0",
+  "authors": [
+    "Team Swaggerboyz"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.0",
+    "bootstrap": "~3.3.4",
+    "angular-ui-router": "~0.2.15",
+    "angular-bootstrap": "~0.13.0",
+    "ng-file-upload": "~5.0.0"
+  }
 }

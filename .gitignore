@@ -2,4 +2,8 @@ bower_components/
 node_modules/
 build/
 *.log
+*/Thumbs.db
+.idea/*
+src/.idea/*
 .sass-cache/
+.tscache/*

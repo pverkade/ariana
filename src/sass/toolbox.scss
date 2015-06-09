@@ -1,109 +1,66 @@
-#toolset {
-    width : $blocksize;
-    left : 0;
-    top : 1.5 * $blocksize; 
-    height : auto;
-    @extend .gui-item;
+/*
+ * Project Arinana
+ * toolbox.scss
+ *
+ * This file contains the style definition for the Toolbox and the Color Preview
+ * elements.
+ *
+ */
+
+div #toolbox {
+    position : absolute;
+    width: $blocksize;
+    left: 0;
+    top: 1.5 * $blocksize;
     
+    @extend .gui-element;
+}
+
+div .toolset {
+    position: absolute;
+    top: 0;
+    margin-left: $blocksize;
+    width: $blocksize;
+
+    z-index: 1;
+    background-color: $very-light;   
+
     .tool {
-        display : block;
-        height : $blocksize;
-        width : $blocksize;        
+        
+        background-color: $very-light;
         
         &:hover {
-            background-color : lighten($light, 10%);
-        }
-        
-        @extend .has-icons;
-    }
-}
-
-#sub-toolsets {
-    top : 1.5 * $blocksize; 
-    height : auto;
-    width : 2 * $blocksize;
-    position : absolute;
-    z-index : 1;
-
-    -ms-transform: translate(-2 * $blocksize, 0px);
-    -webkit-transform: translate(-2 * $blocksize, 0px);
-    -moz-transform: translate(-2 * $blocksize, 0px);
-    -o-transform: translate(-2 * $blocksize, 0px);
-    transform: translate(-2 * $blocksize, 0px);
-
-    .sub-toolset {
-        @extend .box-shadow;
-        position : absolute;
-        height : auto;
-        width : inherit;
-        top : 0;
-        
-        background-color : lighten($light, 10%);
-
-        .sub-tool {
-            height : $blocksize;
-            width : $blocksize;
-            margin-left: $blocksize;
-            
-            &:hover {
-                background-color : lighten($light, 20%);
-            }
-            
-            @extend .has-icons;
-        }
-
-        -webkit-transition: all 500ms ease;
-        -moz-transition: all 500ms ease;
-        -o-transition: all 500ms ease;
-        transition: all 500ms ease;
-
-        -ms-transform: translate(-2 * $blocksize, 0px);
-        -webkit-transform: translate(-2 * $blocksize, 0px);
-        -moz-transform: translate(-2 * $blocksize, 0px);
-        -o-transform: translate(-2 * $blocksize, 0px);
-        transform: translate(-2 * $blocksize, 0px);
-
-        &.show {
-            -webkit-transition: all 500ms ease;
-            -moz-transition: all 500ms ease;
-            -o-transition: all 500ms ease;
-            transition: all 500ms ease;
-
-            -ms-transform: translate(2 * $blocksize, 0px);
-            -webkit-transform: translate(2 * $blocksize, 0px);
-            -moz-transform: translate(2 * $blocksize, 0px);
-            -o-transform: translate(2 * $blocksize, 0px);
-            transform: translate(2 * $blocksize, 0px);
+            background-color: lighten($very-light, $hover-lighten);
         }
     }
 }
 
-#color-preview {
-    position : absolute;
-    bottom : 0;
-    left : 0;
+.color-preview {
+    position: absolute;
+    bottom: 0;
+    left: 0;
     
-    height : $blocksize;
-    width : $blocksize;
+    @extend .tool;
+    @extend .gui-element;
     
-    #color-left, #color-right {
-        position : absolute;
-        height : 0.625 * $blocksize;
-        width : 0.625 * $blocksize;
+    .color-primary, .color-secondary {
+        position: absolute;
+        height: 0.625 * $blocksize;
+        width: 0.625 * $blocksize;
         @extend .box-shadow;
     }
     
-    #color-left {
-        left : 0.125 * $blocksize;
-        bottom : 0.125 * $blocksize;
-        background-color : red;
-        z-index : 3;
+    .color-primary {
+        left:  0.25 * $blocksize;
+        bottom: 0.25 * $blocksize;
+        background-color: green;
+        z-index: 4;
     }
-    
-    #color-right {
-        left :  0.25 * $blocksize;
-        bottom : 0.25 * $blocksize;
-        background-color : green;
-        z-index : 4;
-    }
+
+    .color-secondary {
+        left: 0.125 * $blocksize;
+        bottom: 0.125 * $blocksize;
+        background-color: red;
+        z-index: 3;
+    }   
 }
