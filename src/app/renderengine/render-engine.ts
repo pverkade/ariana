@@ -53,6 +53,20 @@ class RenderEngine {
         this.drawbuffer2 = new DrawBuffer(this.gl, this.width, this.height);
     }
 
+    getLayer(index : number) {
+        return this.layers[index];
+    }
+
+    getLayers(indices : number[]) : Layer[] {
+        var result : Layer[] = [];
+
+        for (var i = 0; i < indices.length; i++) {
+            result.push(this.layers[indices[i]]);
+        }
+
+        return result;
+    }
+
     addLayer(layer : Layer) {
         /* Append layer to user array */
         this.layers.push(layer);
@@ -74,7 +88,6 @@ class RenderEngine {
     render() {
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
         var aspectRatio = 1. * this.width / this.height;
-        console.log(aspectRatio);
         var oldType = -1;
         var numItems = this.layers.length;
 
