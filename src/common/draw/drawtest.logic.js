@@ -3,10 +3,10 @@ angular.module('ariana').controller('drawtestCtrl', function($scope) {
     
     var drawer = new Draw(document.getElementById('main-canvas'));
     drawer.activate();
-    //drawer.setBrush(brushType.THIN);
+    drawer.setBrush(brushType.THIN);//DUNES);
     //drawer.loadBrushSVG('assets/brushes/thin.svg');
 
-    drawer.setDrawType(drawType.CIRCLE);
+    //drawer.setDrawType(drawType.CIRCLE);
     // TODO set resize canvas on resize
     
     // TODO set resize canvas on orientation change 
