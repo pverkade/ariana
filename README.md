@@ -1,8 +1,7 @@
 # Project Ariana
 Project ariana - is a web-based image editing solution. We focus on a clean interface usable for both mouse and touchscreens. Our official website is fazeclan.xxx.
 
-## Project Progress
-[Sprint 1](https://docs.google.com/document/d/12oiV5l1bo-w7UL8XrIKF9Y2DEm7g-BXc2GsCOzvmjbw/edit?usp=sharing)
+[Project voortgang](https://docs.google.com/document/d/12oiV5l1bo-w7UL8XrIKF9Y2DEm7g-BXc2GsCOzvmjbw/edit?usp=sharing)
 
 ## Index
 - [Project structure](https://github.com/ArnoldSwaggernegger/ariana#project-structure)
