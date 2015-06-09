@@ -7,47 +7,58 @@ class Layer {
 	protected layerType : number;
 	private ID : LayerType;
 	protected angle : number;
-	protected scaleX : number;
-	protected scaleY : number;
+    protected width : number;
+    protected height : number;
 	protected posX : number;
 	protected posY : number;
 
-	protected scaleMatrix : Float32Array;
+	protected sizeMatrix : Float32Array;
 	protected rotationMatrix : Float32Array;
 	protected translationMatrix : Float32Array;
-    protected aspectRatioMatrix : Float32Array;
+    protected pixelConversionMatrix : Float32Array;
 
-	constructor(gl : WebGLRenderingContext) {
+	constructor(
+        gl : WebGLRenderingContext,
+        canvasWidth : number,
+        canvasHeight : number,
+        width : number,
+        height : number) {
         this.gl = gl;
 		this.ID = Layer.MaxID++;
 
-		this.scaleMatrix = mat3.create();
+		this.sizeMatrix = mat3.create();
 		this.rotationMatrix = mat3.create();
 		this.translationMatrix = mat3.create();
-        this.aspectRatioMatrix = mat3.create();
+        this.pixelConversionMatrix = mat3.create();
 
         /* Apperently calling a function on this object from within the constructor crashes it */
-        this.posX = 0;
-        this.posY = 0;
-        this.scaleX = 1;
-        this.scaleY = 1;
-        this.angle = 0;
+        this.posX = 0.0;
+        this.posY = 0.0;
+        this.width = 1.0;
+        this.height = 1.0;
+        this.angle = 0.0;
 
-        mat3.identity(this.scaleMatrix);
+        mat3.identity(this.sizeMatrix);
         mat3.identity(this.rotationMatrix);
         mat3.identity(this.translationMatrix);
-	}
+        mat3.identity(this.pixelConversionMatrix);
 
-	setDefaults() {
-        this.posX = 0;
-        this.posY = 0;
-        this.scaleX = 1;
-        this.scaleY = 1;
-        this.angle = 0;
+        mat3.translate(
+            this.pixelConversionMatrix,
+            this.pixelConversionMatrix,
+            new Float32Array([-1.0, 1.0])
+        );
+        mat3.scale(
+            this.pixelConversionMatrix,
+            this.pixelConversionMatrix,
+            new Float32Array([2.0/canvasWidth, 2.0/canvasHeight])
+        );
 
-        mat3.identity(this.scaleMatrix);
-        mat3.identity(this.rotationMatrix);
-        mat3.identity(this.translationMatrix);
+        mat3.scale(
+            this.sizeMatrix,
+            this.sizeMatrix,
+            new Float32Array([width/2.0, height/2.0])
+        );
 	}
 
 	setRotation(angle : number) {
@@ -55,39 +66,43 @@ class Layer {
 		mat3.identity(this.rotationMatrix);
 		mat3.rotate(this.rotationMatrix, this.rotationMatrix, angle);
 	}
-	
+
 	getRotation() : number {
 		return this.angle;
 	}
-	
-	setScale(scaleX : number, scaleY : number) {
-		this.scaleX = scaleX;
-		this.scaleY = scaleY;
-		
-		mat3.identity(this.scaleMatrix);
-		mat3.scale(this.scaleMatrix, this.scaleMatrix, new Float32Array([scaleX, scaleY]));
+
+	setWidth(width : number) {
+		this.setDimensions(width, this.height);
 	}
-	
-	getScaleX() : number {
-		return this.scaleX;
+
+	setHeight(height : number) {
+        this.setDimensions(this.width, height);
 	}
-	
-	getScaleY() : number {
-		return this.scaleY;
+
+	setDimensions(width : number, height : number) {
+        this.width = width;
+        this.height = height;
+
+		mat3.identity(this.sizeMatrix);
+        mat3.scale(
+            this.sizeMatrix,
+            this.sizeMatrix,
+            new Float32Array([width/2.0, height/2.0])
+        );
 	}
-	
+
 	setPos(x : number, y : number) {
 		this.posX = x;
 		this.posY = y;
-		
-		this.translationMatrix = mat3.identity(this.translationMatrix);
-		mat3.translate(this.translationMatrix, this.translationMatrix, new Float32Array([x, y]));
+
+		mat3.identity(this.translationMatrix);
+		mat3.translate(this.translationMatrix, this.translationMatrix, new Float32Array([x, -y]));
 	}
-	
+
 	getPosX() : number {
 		return this.posX;
 	}
-	
+
 	getPosY() : number {
 		return this.posY;
 	}
@@ -99,17 +114,14 @@ class Layer {
     getLayerType() : LayerType {
         return this.layerType;
     }
-	
+
 	setupRender() { }
-	render(aspectRatio) {
-        mat3.identity(this.aspectRatioMatrix);
-        mat3.scale(this.aspectRatioMatrix, this.aspectRatioMatrix, new Float32Array([1, aspectRatio]));
-    }
+	render() { }
 
     destroy() {
         delete this.rotationMatrix;
-        delete this.scaleMatrix;
+        delete this.sizeMatrix;
         delete this.translationMatrix;
-        delete this.aspectRatioMatrix;
+        delete this.pixelConversionMatrix;
     }
 }

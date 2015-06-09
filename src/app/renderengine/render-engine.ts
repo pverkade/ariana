@@ -73,8 +73,6 @@ class RenderEngine {
 
     render() {
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
-        var aspectRatio = 1. * this.width / this.height;
-        console.log(aspectRatio);
         var oldType = -1;
         var numItems = this.layers.length;
 
@@ -90,12 +88,11 @@ class RenderEngine {
                 oldType = layer.getLayerType();
             }
 
-            layer.render(aspectRatio);
+            layer.render();
         }
     }
 
     filterLayers(layerIndices : number[], filter : Filter) {
-        var aspectRatio = this.width / this.height;
         for (var i = 0; i < layerIndices.length; i ++) {
             var layer = this.layers[layerIndices[i]];
             if (layer.getLayerType() !== LayerType.ImageLayer) {
@@ -106,7 +103,7 @@ class RenderEngine {
             this.drawbuffer1.bind();
             this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
             imageLayer.setupRender();
-            imageLayer.render(aspectRatio);
+            imageLayer.render();
             this.drawbuffer1.unbind();
 
             this.drawbuffer2.bind();
@@ -114,8 +111,6 @@ class RenderEngine {
             filter.render(this.drawbuffer1.getWebGlTexture());
             imageLayer.copyFramebuffer(this.width, this.height);
             this.drawbuffer2.unbind();
-
-            imageLayer.setDefaults();
         }
         this.drawbuffer2.unbind();
     }
