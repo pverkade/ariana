@@ -47,7 +47,8 @@ angular.module('ariana').controller('toolBoxController', function($scope) {
                     toolFunctions: brushTool
                 },
                 eraser: {
-                    image: 'eraser.svg'
+                    image: 'eraser.svg',
+                    toolFunctions: eraserTool
                 },
                 picker: {
                     image: 'eyedropper.svg',

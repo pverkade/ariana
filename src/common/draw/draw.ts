@@ -70,7 +70,7 @@ class Color {
  * RECTANGLE : draw rectangles
  * 
  */
-enum drawType { NORMAL, QUADRATIC_BEZIER, BRUSH, LINE, RECTANGLE, CIRCLE };
+enum drawType { NORMAL, QUADRATIC_BEZIER, BRUSH, LINE, RECTANGLE, CIRCLE, ERASE };
 
 /*
  * Brushes
@@ -370,6 +370,13 @@ class Draw {
             this.drawCircle(points, context);
         }
 
+        /*
+         * Erase some drawn things
+         */
+        if (this.drawType == drawType.ERASE) {
+            this.erasePath(points, path, context);
+        }
+
         this.isCleared = false;
     }
 
@@ -517,6 +524,22 @@ class Draw {
                 context.drawImage(this.brushImage, x, y);
             }
         }
+        path.lastDrawnItem = i;
+    }
+
+    /*
+     *
+     */
+    erasePath (points, path : Path, context : CanvasRenderingContext2D) {
+
+        var i : number = path.lastDrawnItem;
+
+        for (i = i; i < points.length; i++) {
+            context.clearRect(points[i].x - this.lineWidth / 2,
+                              points[i].y - this.lineWidth / 2,
+                              this.lineWidth, this.lineWidth);
+        }
+
         path.lastDrawnItem = i;
     }
 
