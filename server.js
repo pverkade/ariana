@@ -85,7 +85,7 @@ function saveImageRouter(req, res) {
 
                     res.writeHead(200, {
                         "Content-Type": "Content-type: image/png" ,
-                        'Content-Disposition': 'attachment; filename="' + post["image-name"]
+                        'Content-Disposition': 'attachment; filename="' + post["image-name"] + '"'
                     });
 
                     res.end(buffer.toString("binary"), "binary");
