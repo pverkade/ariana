@@ -41,15 +41,12 @@ app.controller('AppCtrl', ['$scope',
                         r: 0,
                         g: 0,
                         b: 0
-                    },
+                    }
                 }
             },
             layers: {
-                numberOfLayers: 0,
-                currentLayer: -1,
-                layerInfo: [
-                    //{"x": 0, "y": 0, "scale": 1}
-                ]
+                selectedLayers: [],
+                numberOfLayers: 0
             }
         };
 
@@ -69,53 +66,21 @@ app.controller('AppCtrl', ['$scope',
 
             /* set the correct layer info in config. The new layer comes on top
              * and is immediately selected. */
+            $scope.setSelection([$scope.config.layers.numberOfLayers]);
             $scope.config.layers.numberOfLayers += 1;
-            $scope.config.layers.currentLayer = $scope.config.layers.numberOfLayers - 1;
 
-            var layer = $scope.renderEngine.layers[$scope.config.layers.currentLayer];
-            layer.setPos(-0.25, -0.25);
-            layer.setScale(.2, .2);
-
-            $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {
-                "x": layer.getPosX(),
-                "y": layer.getPosY(),
-                "xScale": layer.getScaleX(),
-                "yScale": layer.getScaleY(),
-                "rotation": layer.getRotation()
-            }
+            imageLayer.setPos(-0.25, -0.25);
+            imageLayer.setScale(.2, .2);
 
             $scope.renderEngine.render();
         };
 
-        $scope.getImage = function() {
-            // TODO render image to file
+        $scope.getSelectedLayers = function() {
+            return $scope.renderEngine.getLayers($scope.config.layers.selectedLayers);
         };
 
-        /* This function selects a lower layer if possible. */
-        $scope.layerDown = function() {
-            if ($scope.config.layers.currentLayer > 0) {
-                $scope.config.layers.currentLayer -= 1;
-                return true;
-            }
-            return false;
-        }
-
-        /* This function selects a higher layer if possible. */
-        $scope.layerUp = function() {
-            if ($scope.config.layers.currentLayer < $scope.config.layers.numberOfLayers - 1) {
-                $scope.config.layers.currentLayer += 1;
-                return true;
-            }
-            return false;
-        };
-
-        /* This function selects a specific layer if possible. */
-        $scope.layerSelect = function(newIndex) {
-            if (0 <= newIndex && newIndex < $scope.config.layers.numberOfLayers) {
-                $scope.config.layers.currentLayer = newIndex;
-                return true;
-            }
-            return false;
+        $scope.setSelection = function(indices) {
+            $scope.config.layers.selectedLayers = indices;
         };
 
         /* FIXME cannot be accesed by FilterModalController

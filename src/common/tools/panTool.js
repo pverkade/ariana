@@ -10,29 +10,29 @@ var panTool = {
     
     mouseUp: function($scope) {
         $("#main-canvas").css("cursor", "grab");
-        for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) {
-            var xOffset = $scope.renderEngine.layers[i].getPosX();
-            var yOffset = $scope.renderEngine.layers[i].getPosY();
-            $scope.config.layers.layerInfo[i].x = xOffset;
-            $scope.config.layers.layerInfo[i].y = yOffset;
-        }
     },
     
     mouseMove: function($scope) {
-        var dx = $scope.config.mouse.current.x - $scope.config.mouse.lastClick.x;
-        var dy = $scope.config.mouse.current.y - $scope.config.mouse.lastClick.y;
+        var dx = $scope.config.mouse.current.x - $scope.config.mouse.old.x;
+        var dy = $scope.config.mouse.current.y - $scope.config.mouse.old.y;
+        var indices = [];
+
+        var width = $scope.renderEngine.width;
+        var height = $scope.renderEngine.height;
+        var aspectRatio = width/ height;
+
+        function normalize(x) {
+            return 2 * (x / width) - 1;
+        }
 
         for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) {
-            var xOffset = $scope.config.layers.layerInfo[i].x;
-            var yOffset = $scope.config.layers.layerInfo[i].y;
+            var layer = $scope.renderEngine.getLayer(i);
+            var xOffset = layer.getPosX();
+            var yOffset = layer.getPosY();
 
-            var width = $scope.renderEngine.width;
-            var height = $scope.renderEngine.height;
-            var aspectRatio = width/ height;
-            
-            $scope.renderEngine.layers[i].setPos(2 * (dx/width) + xOffset, -2 * (dy/height/aspectRatio) + yOffset);
+            layer.setPos(2 * (dx/width) + xOffset, -2 * (dy/height/aspectRatio) + yOffset);
         }
         
         $scope.renderEngine.render();
-    },
-}
+    }
+};
