@@ -49,10 +49,10 @@ app.controller('AppCtrl', ['$scope',
                 numberOfLayers: 0,
                 currentLayer: -1,
                 layerInfo: [
-                    {"x": 0, "y": 0, "scale": 1},
-                    {"x": 1, "y": 0, "scale": 1},
-                    {"x": 0, "y": 0, "scale": 1},
-                    {"x": 0, "y": 0, "scale": 1}
+                    // {"x": 0, "y": 0, "scale": 1},
+                    // {"x": 1, "y": 0, "scale": 1},
+                    // {"x": 0, "y": 0, "scale": 1},
+                    // {"x": 0, "y": 0, "scale": 1}
                 ]
             }
         };
@@ -81,6 +81,7 @@ app.controller('AppCtrl', ['$scope',
             layer.setScale(.2, .2);
 
             $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {
+                "name": $scope.config.layers.currentLayer,
                 "x": layer.getPosX(),
                 "y": layer.getPosY(),
                 "xScale": layer.getScaleX(),
@@ -93,33 +94,6 @@ app.controller('AppCtrl', ['$scope',
 
         $scope.getImage = function() {
             // TODO render image to file
-        };
-
-        /* This function selects a lower layer if possible. */
-        $scope.layerDown = function() {
-            if ($scope.config.layers.currentLayer > 0) {
-                $scope.config.layers.currentLayer -= 1;
-                return true;
-            }
-            return false;
-        }
-
-        /* This function selects a higher layer if possible. */
-        $scope.layerUp = function() {
-            if ($scope.config.layers.currentLayer < $scope.config.layers.numberOfLayers - 1) {
-                $scope.config.layers.currentLayer += 1;
-                return true;
-            }
-            return false;
-        };
-
-        /* This function selects a specific layer if possible. */
-        $scope.layerSelect = function(newIndex) {
-            if (0 <= newIndex && newIndex < $scope.config.layers.numberOfLayers) {
-                $scope.config.layers.currentLayer = newIndex;
-                return true;
-            }
-            return false;
         };
 
         $scope.applyFilter = function(name) {
