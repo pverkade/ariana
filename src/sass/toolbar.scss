@@ -16,6 +16,7 @@
     ul {
         height: $blocksize;
         list-style: none;
+        margin: 0;
         padding: 0;
         
         &:after {
@@ -27,7 +28,11 @@
     }
     
     .seperator {
-        margin: 0.1 * $blocksize -1;
+        margin-top: 0.1 * $blocksize;
+        margin-bottom: 0.1 * $blocksize;
+        margin-left: 0;
+        margin-right: 0;
+        padding: 0;
         height: 0.8 * $blocksize;
         width: 2px;
         background-color: darken($light, 5%);
