@@ -69,7 +69,8 @@ angular.module('ariana').controller('toolBoxController', function($scope) {
                     image: 'vector-curve.svg'
                 },
                 wand: {
-                    image: 'auto-fix.svg' 
+                    image: 'auto-fix.svg',  
+                    toolFunctions: magicSelection,
                 }
             }
         },
@@ -107,7 +108,7 @@ angular.module('ariana').controller('toolBoxController', function($scope) {
         
         if (toolFunctions) {
             $scope.config.tools.activeToolFunctions = toolFunctions;
-            toolFunctions.start();
+            toolFunctions.start($scope);
         }
         else {
             $scope.config.tools.activeToolFunctions = null;

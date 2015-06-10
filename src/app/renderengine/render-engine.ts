@@ -169,6 +169,20 @@ class RenderEngine {
         this.gl.viewport(0, 0, width, height);
     }
 
+    renderAsUint8Array() : Uint8Array {
+        var result;
+
+        this.drawbuffer1.bind() ;
+        {
+            this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
+            this.render();
+            result =  this.drawbuffer1.getData();
+        }
+        this.drawbuffer1.unbind();
+
+        return result;
+    }
+
     destroy() {
         for (var i = 0; i < this.layers.length; i++) {
             this.layers[i].destroy();
@@ -176,5 +190,13 @@ class RenderEngine {
 
         this.drawbuffer1.destroy();
         this.drawbuffer2.destroy();
+    }
+
+    getWidth() {
+        return this.width;
+    }
+
+    getHeight() {
+        return this.height;
     }
 }
