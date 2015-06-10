@@ -1,22 +1,22 @@
 <div class="layer-container">
 	<div class="container-fluid">
 
-    	<div class="row layers" ng-repeat="layer in config.layers.layerInfo">
+    	<div class="row layers" ng-repeat="layer in getAllLayers()">
     		<div class="col-md-2 layer options">
     			<div class="row">
 	    			<div>{{$index}}</div>
-	    			<div ng-click="toggleVisible($index)">
-    	    			<img src="assets/vectors/eye.svg"></img>
+	    			<div ng-click="">
+    	    			<img> src="assets/vectors/eye.svg">
 	    			</div>
     			</div>
     		</div>
     		<div class="col-md-7 layer content">
     		  <!--div>{{content}}</div-->
-              <div class="btn btn-default" ng-click="layerSelect($index)">Select layer</div>
+              <div class="btn btn-default" ng-click="setSelection($index)">Select layer</div>
     		</div>
             <div class="col-md-3 layer content">
-                <div class="btn btn-default btn-sm" ng-click="layerUp($index)">Up</div>
-                <div class="btn btn-default btn-sm" ng-click="layerDown($index)">Down</div>
+                <div class="btn btn-default btn-sm" ng-click="safeLayerReorder($index, $index + 1)">Up</div>
+                <div class="btn btn-default btn-sm" ng-click="safeLayerReorder($index, $index - 1)">Down</div>
             </div>
     	</div>
 
