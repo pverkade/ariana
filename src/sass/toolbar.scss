@@ -5,8 +5,7 @@
  * This file contains the style definition for the Toolbar element.
  *
  */
-
-
+ 
 #toolbar {    
     @extend .gui-element;
     position: absolute;
@@ -58,72 +57,3 @@
         float: right;
     }
 }
-
-// FIXME style for popup
-.thumbnail:hover {
-    background-color: darken(#e5e5e5, 5%);
-}
-
-/*
-.custom-pop-up {
-    position: absolute;
-    top:    1.5 * $blocksize;
-    left:   2.5 * $blocksize;   
-    height: calc(100% - #{2 * $blocksize});
-    width:  calc(100% - #{3 * $blocksize});
-    background-color: $light;
-    z-index: 2;
-    overflow: hidden;
-    
-    opacity: 0;
-    transition: opacity $pop-up-animation-time ease;
-    font-family: $fonts;
-    color: $white;
-    
-    @extend .box-shadow;
-
-    h1, h2 {
-        display: block;
-        padding: 0.125 * $blocksize 0.25 * $blocksize;
-        margin: 0;
-    }
-        
-    h1 {
-        font-size: 30pt;
-        background-color: darken($light, 10%);
-    }
-    
-    h2 {
-        font-size: 20pt;
-        background-color: darken($light, 5%);
-    }
-    
-    .ng-show {
-        opacity: 1;
-    }  
-    
-    .option {
-        float: left;
-        height: auto;
-        background-color: lighten($light, 10%);
-        
-        margin-left: 0.25 * $blocksize;
-        margin-top:  0.25 * $blocksize;
-        
-        width: calc(25% - #{($pop-up-options + 1)/($pop-up-options) * 0.25 * $blocksize}); 
-        
-        h1 {
-            display: block;
-            padding: 0.125 * $blocksize;
-            font-size: 15pt;
-            background-color: darken($light, 5%);
-            width : 100%;
-            height : auto;
-        }
-        
-        img {
-            width : 100%;
-            height : $blocksize;
-        }
-    }
-}*/

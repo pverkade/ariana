@@ -11,7 +11,13 @@ div #toolbox {
     position : absolute;
     width: $blocksize;
     left: 0;
+    
     top: 1.5 * $blocksize;
+    
+    //FIXME
+    @media (min-width: #{10.5 * $blocksize}) {
+        top: 2.5 * $blocksize;
+    }
     
     @extend .gui-element;
 }
@@ -23,15 +29,19 @@ div .toolset {
     width: $blocksize;
 
     z-index: 1;
-    background-color: $very-light;   
+    background-color: $light;   
 
     .tool {
         
-        background-color: $very-light;
+        background-color: lighten($light, $hover-lighten);
         
         &:hover {
-            background-color: lighten($very-light, $hover-lighten);
+            background-color: lighten($light, 2 * $hover-lighten);
         }
+    }
+    
+    .active {
+        background-color: lighten($light, 2 * $hover-lighten);
     }
 }
 

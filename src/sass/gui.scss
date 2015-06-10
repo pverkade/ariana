@@ -88,28 +88,5 @@ body {
         cursor: default !important;
     }
 
-    svg path, img path {
-        fill: darken($white, 50%) !important;
-    }
-}
-
-/* Upload modal */
-.modal-body {
-    .drop-box {
-        background: #F8F8F8;
-        border: 5px dashed #DDD;
-        height: 200px;
-        line-height: 200px;
-        text-align: center;
-        margin: 10px;
-    }
-    
-    .dragover {
-        border: 5px dashed blue;
-    }
-
-    span {
-        display: inline-block;
-        vertical-align: middle;
-    }
+    opacity: 0.25;
 }
