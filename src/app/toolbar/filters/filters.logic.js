@@ -22,13 +22,41 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
                 name:  "brightness",
                 image: "/assets/img/arnold2.jpg", 
             },
+            
+            {
+                name:  "sepia",
+                image: "/assets/img/arnold2.jpg", 
+            },
+            
+            {
+                name:  "gaussian blur",
+                image: "/assets/img/arnold2.jpg", 
+            },
+            
+            {
+                name:  "arnold",
+                image: "/assets/img/arnold2.jpg", 
+            },
+            
+            {
+                name:  "brightness",
+                image: "/assets/img/arnold2.jpg", 
+            },
         ];
         
         $scope.selectFilter = function(name) {
             $scope.applyFilter(name);
             $scope.close();
         };
+        
+        $scope.allLayers = true;
 
+        $scope.toggleLayers = function() {
+            if ($scope.allLayers) $scope.allLayers = false;
+            else $scope.allLayers = true;
+            console.log($scope.allLayers);
+        };
+        
         $scope.close = function() {
             $modalInstance.dismiss();
         };
