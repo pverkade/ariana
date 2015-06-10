@@ -14,12 +14,9 @@ div #toolbox {
     
     top: 1.5 * $blocksize;
     
-    //FIXME
     @media (max-width: 10.5 * $blocksize) {
-    
-        & {
         top: 2.5 * $blocksize;
-    }}
+    }
     
     @extend .gui-element;
 }
@@ -35,15 +32,19 @@ div .toolset {
 
     .tool {
         
-        background-color: lighten($light, $hover-lighten);
+        background-color: lighten($light, $active-lighten);
         
         &:hover {
-            background-color: lighten($light, 2 * $hover-lighten);
+            background-color: lighten($light, $active-lighten + $hover-lighten);
         }
     }
     
     .active {
-        background-color: lighten($light, 2 * $hover-lighten);
+        background-color: lighten($light, 2 * $active-lighten);
+        
+        &:hover {
+            background-color: lighten($light, 2 * $active-lighten);
+        }
     }
 }
 

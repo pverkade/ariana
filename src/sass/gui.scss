@@ -41,24 +41,13 @@ body {
     margin: 0 !important;
     
     cursor: pointer;
-    @include user-select(none);
     
-    a {
-        width: $blocksize;
-        height: $blocksize;
-        padding: 0 !important;       
-        margin: 0 !important;   
-    }
-    
-    img {
-        display: none;
-    }
-    
-    svg {
+    svg, i, img {
         margin: 0.2 * $blocksize;
         padding: 0 !important; 
         height: 0.6 * $blocksize;
-        width: 0.6 * $blocksize;      
+        width: 0.6 * $blocksize; 
+        font-size: 0.6 * $blocksize;
     }
     
     svg path {
@@ -71,7 +60,11 @@ body {
 }
 
 .active {
-    background-color: lighten($light, $hover-lighten);
+    background-color: lighten($light, $active-lighten);
+    
+    &:hover {
+        background-color: lighten($light, $active-lighten);
+    }
 }
 
 .inactive {
