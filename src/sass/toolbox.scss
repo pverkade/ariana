@@ -7,7 +7,7 @@
  *
  */
 
-div #toolbox {
+.toolset {
     position : absolute;
     width: $blocksize;
     left: 0;
@@ -21,7 +21,7 @@ div #toolbox {
     @extend .gui-element;
 }
 
-div .toolset {
+.toolbox {
     position: absolute;
     top: 0;
     margin-left: $blocksize;
@@ -30,8 +30,8 @@ div .toolset {
     z-index: 1;
     background-color: $light;   
 
-    .tool {
-        
+    .tool {      
+    
         background-color: lighten($light, $active-lighten);
         
         &:hover {
@@ -54,7 +54,7 @@ div .toolset {
     left: 0;
     
     @extend .tool;
-    @extend .gui-element;
+    @extend .gui-element;   
     
     .color-primary, .color-secondary {
         position: absolute;

@@ -36,7 +36,7 @@
         padding: 0;
         height: 0.8 * $blocksize;
         width: 2px;
-        background-color: darken($light, 5%);
+        background-color: darken($light, $seperator-darken);
         z-index: 3;
     }
 

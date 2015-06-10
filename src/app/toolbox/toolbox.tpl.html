@@ -1,4 +1,4 @@
-<div id="toolbox">
+<div class="toolset">
     
     <div class="tool" id="{{name}}" 
         ng-repeat="(name, tool) in toolbox" 
@@ -7,7 +7,7 @@
 
         <i class="mdi {{tool.image}}"></i>
 
-        <div class="toolset fix-top" 
+        <div class="toolbox" 
             ng-show="config.tools.activeToolset == '{{name}}'">
 	        
 	        <div class="tool" id="{{name}}" 
