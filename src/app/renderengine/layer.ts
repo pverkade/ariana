@@ -28,6 +28,7 @@ class Layer {
     protected pixelConversionMatrix : Float32Array;
 
     private propertyChanged : MLayer.INotifyPropertyChanged;
+    private propertyChangedTimeout;
 
 	constructor(
         resourceManager : ResourceManager,
@@ -76,7 +77,16 @@ class Layer {
 
     protected notifyPropertyChanged() {
         if (this.propertyChanged != null) {
-            this.propertyChanged.propertyChanged(this);
+            if (this.propertyChangedTimeout) {
+                clearTimeout(this.propertyChangedTimeout);
+            }
+            var thisPointer = this;
+            this.propertyChangedTimeout = setTimeout(
+                function() {
+                    thisPointer.propertyChanged.propertyChanged(thisPointer);
+                },
+                300
+            );
         }
     }
 
