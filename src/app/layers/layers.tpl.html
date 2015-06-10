@@ -23,37 +23,42 @@
     </div>
 </div> -->
 
-<div ng-controller="ToolboxAccordionCtrl">
+<div class="layer-container">
+    <div class="box-shadow" ng-controller="ToolboxAccordionCtrl">
+        <accordion close-others="true">
 
-
-    <accordion close-others="true">
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4 class="panel-title">
-                    <span>
-                        <a class="btn btn-sm" ng-click="addLayer()">
-                            <i class="fa fa-plus"></i>
-                        </a>
-                    </span>
-                </h4>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <span>
+                            <a class="btn btn-sm" ng-click="addLayer()">
+                                <i class="mdi mdi-plus"></i>
+                            </a>
+                        </span>
+                    </h4>
+                </div>
             </div>
-        </div>
-        
-        <accordion-group ng-repeat="layer in config.layers.layerInfo" is-open="open">
-            <accordion-heading>
-                {{$index}}
-
-                <i class="pull-left fa " ng-class="{'fa-chevron-up': open, 'fa-chevron-right': !open}"></i>
-                <i class="pull-right fa fa-remove" ng-click="removeLayer($event, $index)"></i>
-            </accordion-heading>
             
-            <div class="selectable item" ng-repeat="(key, value) in layer">
-                <span>
-                    <b>{{key}}</b>: {{value}}
-                </span>
-            </div>
-        </accordion-group>
+            <accordion-group ng-repeat="layer in config.layers.layerInfo" is-open="open">
+                <accordion-heading>
+                    {{$index}}
 
-    </accordion>
+                    <i class="pull-left mdi " ng-class="{'mdi-chevron-up': open, 'mdi-chevron-left': !open}"></i>
+
+                    <input type="text" value="{{layer.name}}" style="width: 80px;">
+
+                    <i class="pull-right mdi mdi-delete" ng-click="removeLayer($event, $index)"></i>
+                    <i class="pull-right mdi mdi-chevron-double-down" ng-click="moveLayerDown($event, $index)" ng-class="{'inactive': $index == config.layers.numberOfLayers - 1}"></i>
+                    <i class="pull-right mdi mdi-chevron-double-up" ng-click="moveLayerUp($event, $index)" ng-class="{'inactive': $index <= 0}"></i>
+                </accordion-heading>
+                
+                <div class="selectable item" ng-repeat="(key, value) in layer">
+                    <span>
+                        <b>{{key}}</b>: {{value}}
+                    </span>
+                </div>
+            </accordion-group>
+
+        </accordion>
+    </div>
 </div>
