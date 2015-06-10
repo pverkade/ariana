@@ -1,5 +1,5 @@
-var canvasLocationX = 120;
-var canvasLocationY = 120;
+var canvasLocationX = 128;
+var canvasLocationY = 128;
 
 var panTool = {
     
