@@ -7,36 +7,51 @@
  *
  */
 
-.toolbox {
+div #toolbox {
+    position : absolute;
+    width: $blocksize;
+    left: 0;
     
+    top: 1.5 * $blocksize;
+    
+    //FIXME
+    @media (max-width: 10.5 * $blocksize) {
+    
+        & {
+        top: 2.5 * $blocksize;
+    }}
+    
+    @extend .gui-element;
 }
 
-accordion {
-	span {
-		text-transform: uppercase;
-	}
-}
+div .toolset {
+    position: absolute;
+    top: 0;
+    margin-left: $blocksize;
+    width: $blocksize;
 
-.item {
-	padding-left: 15px;
-	padding-right: 15px;
-	padding-top: 2px;
-	padding-bottom: 2px;
-}
+    z-index: 1;
+    background-color: $light;   
 
-.panel-group .panel {
-	border-radius: 0;
-}
-
-.panel-group .panel + .panel {
-	margin-top: 0;
-}
-
-.panel-body {
-	padding: 0;
+    .tool {
+        
+        background-color: lighten($light, $hover-lighten);
+        
+        &:hover {
+            background-color: lighten($light, 2 * $hover-lighten);
+        }
+    }
+    
+    .active {
+        background-color: lighten($light, 2 * $hover-lighten);
+    }
 }
 
 .color-preview {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    
     @extend .tool;
     @extend .gui-element;
     

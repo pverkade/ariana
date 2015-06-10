@@ -1,28 +1,27 @@
-<div ng-controller="ToolboxAccordionCtrl">
-    <accordion close-others="true">
-        
-        <accordion-group ng-repeat="(name, tool) in toolbox" is-open="open">
-            <accordion-heading>
-                {{name}}
-                <i class="pull-right fa " ng-class="{'fa-chevron-up': open, 'fa-chevron-right': !open}"></i>
-            </accordion-heading>
-            
-            <div class="selectable item" ng-repeat="(name2, subtool) in tool.tools"
-                ng-click="selectTool(name, name2)">
-                <span>
-                    {{name2}}
-                    <span class="pull-right fa {{subtool.image}}"></span>
-                </span>
-            </div>
-        </accordion-group>
+<div id="toolbox">
+    
+    <div class="tool" id="{{name}}" ng-repeat="(name, tool) in toolbox" 
+        ng-controller="toolsetCtrl" ng-click="selectToolSet(name)" ng-class="{active: config.tools.activeToolset == '{{name}}'}">
 
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <div class="color-preview" ng-click="swapColors()">
-                    <div class="color-primary"   style="background-color: rgb({{config.tools.colors.primary.r}},   {{config.tools.colors.primary.g}},   {{config.tools.colors.primary.b}})"> </div>
-                    <div class="color-secondary" style="background-color: rgb({{config.tools.colors.secondary.r}}, {{config.tools.colors.secondary.g}}, {{config.tools.colors.secondary.b}})"> </div>
-                </div>
-            </div>
-        </div>
-    </accordion>
+        <img class="svg" ng-src="assets/vectors/{{tool.image}}"></img>
+
+        <div class="toolset fix-top" ng-show="config.tools.activeToolset == '{{name}}'">
+	        
+	        <div class="tool" id="{{name}}" ng-repeat="(name, subtool) in tool.tools" 
+	            ng-controller="toolsetCtrl" ng-click="selectTool($event, name)"
+                ng-class="{active: config.tools.activeTool == '{{name}}'}">
+            
+	            <img class="svg" ng-src="assets/vectors/{{subtool.image}}"></img>
+
+	        </div>
+
+	    </div>
+
+    </div>
+
+</div>
+
+<div class="color-preview" ng-click="swapColors()">
+    <div class="color-primary"   style="background-color: rgb({{config.tools.colors.primary.r}},   {{config.tools.colors.primary.g}},   {{config.tools.colors.primary.b}})"> </div>
+    <div class="color-secondary" style="background-color: rgb({{config.tools.colors.secondary.r}}, {{config.tools.colors.secondary.g}}, {{config.tools.colors.secondary.b}})""> </div>
 </div>

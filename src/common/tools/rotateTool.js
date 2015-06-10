@@ -1,15 +1,15 @@
 var rotateTool = {
     
     start: function() {
-        $("#main-canvas").css("cursor", "grab");
+        $("#background").css("cursor", "grab");
     },
     
     mouseDown: function($scope) {
-        $("#main-canvas").css("cursor", "grabbing");
+        $("#background").css("cursor", "grabbing");
     },
     
     mouseUp: function($scope) {
-        $("#main-canvas").css("cursor", "grab");
+        $("#background").css("cursor", "grab");
         
         var currentLayer = $scope.config.layers.currentLayer;
         if (currentLayer == -1) return;

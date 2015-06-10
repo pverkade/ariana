@@ -1,7 +1,7 @@
 var translateTool = {
     
     start: function() {
-        $("#main-canvas").css("cursor", "move");
+        $("#background").css("cursor", "move");
     },
     
     mouseDown: function($scope) {

@@ -5,10 +5,55 @@
  * This file contains the style definition for the Toolbar element.
  *
  */
+ 
+#toolbar {    
+    @extend .gui-element;
+    position: absolute;
+    width : 100%; 
+    height: auto;
+    
+    ul {
+        height: $blocksize;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        
+        &:after {
+            content : "";
+            display : block;
+            clear : both;
+            visibility : hidden;
+        }
+    }
+    
+    .seperator {
+        margin-top: 0.1 * $blocksize;
+        margin-bottom: 0.1 * $blocksize;
+        margin-left: 0;
+        margin-right: 0;
+        padding: 0;
+        height: 0.8 * $blocksize;
+        width: 2px;
+        background-color: darken($light, 5%);
+        z-index: 3;
+    }
 
-.navbar {
-    border-radius: 0;
-    padding-left: 15px;
-    margin-bottom: 0px;
-    border-bottom: 1px solid $light;
+    .brand {
+        width: 2.5 * $blocksize;
+        height: $blocksize;
+        padding: 0 0.25 * $blocksize;
+        
+        font-size: 20pt;
+        line-height: $blocksize;
+        font-family : $fonts;
+        color: $brand-color;
+    }
+    
+    .float-left {
+        float: left;
+    }
+    
+    .float-right {
+        float: right;
+    }
 }

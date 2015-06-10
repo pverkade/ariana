@@ -16,10 +16,10 @@
 }
 
 #background {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
-    z-index: -2;
+    z-index: 0;
     
     background-color: $dark;
     width: 100%;
@@ -29,7 +29,7 @@
 #main-canvas {
     position: absolute;
     background-color: #ffffff;
-    z-index: -1;
+    z-index: 1;
     @extend .box-shadow;
     @include transform(translate(120px, 120px));
 }

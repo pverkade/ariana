@@ -50,7 +50,11 @@ body {
         margin: 0 !important;   
     }
     
-    svg, img {
+    img {
+        display: none;
+    }
+    
+    svg {
         margin: 0.2 * $blocksize;
         padding: 0 !important; 
         height: 0.6 * $blocksize;
@@ -61,15 +65,9 @@ body {
         fill: $white;
     }
     
-    > .tool {
-        &:hover {
-            background-color: lighten($light, $hover-lighten);
-        }
+    &:hover {
+        background-color: lighten($light, $hover-lighten);
     }
-}
-
-canvas {
-    resize: none;
 }
 
 .active {
@@ -91,44 +89,5 @@ canvas {
         cursor: default !important;
     }
 
-    svg path, img path {
-        fill: darken($white, 50%) !important;
-    }
-    
-    img {
-        opacity: 0.25;
-    }
-}
-
-/* Upload modal */
-.modal-body {
-    .drop-box {
-        background: #F8F8F8;
-        border: 5px dashed #DDD;
-        min-height: 300px;
-        line-height: 300px;
-        text-align: center;
-        margin: 10px;
-        overflow: hidden;
-    }
-    
-    .dragover {
-        border: 5px dashed blue;
-    }
-
-    span {
-        display: inline-block;
-        vertical-align: middle;
-    }
-
-    img {
-        float: left;
-        margin: 14px;
-        height: 110px;
-        width: 110px
-    }
-
-    .btn-file-picker {
-        margin: 10px;
-    }
+    opacity: 0.25;
 }
