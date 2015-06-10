@@ -22,8 +22,6 @@ class Position2D {
 
 /*
  * Class that defines a path
- * TODO: add function that generates a smooth path between the points using Bezier curves?
- * Maybe look at the canvas beginPath etc for inspiration (and use bitmaps to not overdraw itself)
  */
 
 class Path {
@@ -100,27 +98,21 @@ class Draw {
 
     isActive : boolean;
     isCleared : boolean = true; /* Boolean that tells the drawer if the canvas is cleared */
-    currentPath : Path;
-
-    /* Information about the drawstyle */
-    drawType : drawType = drawType.NORMAL;
-    color : Color = new Color(255, 255, 255, 0.8);
-    opacity : number = 0.6;
     lineWidth : number = 10;
-
+    currentPath : Path;
+    color : Color = new Color(255, 255, 255, 0.8);
+    drawType : drawType = drawType.NORMAL;
+    memCanvas : HTMLCanvasElement;
+    memContext : CanvasRenderingContext2D;
+    opacity : number = 0.6;
     brush : brushType;
     brushImage : HTMLImageElement;
 
-    /* Canvas elements and its contexts */
-    //mainCanvas : HTMLCanvasElement;
-    memCanvas : HTMLCanvasElement;
-    memContext : CanvasRenderingContext2D;
-    drawCanvas : HTMLCanvasElement;
-    drawContext : CanvasRenderingContext2D;
-
     constructor(public canvas : HTMLCanvasElement) {
-        console.log("Drawengine initialized.");
-        //this.mainCanvas = canvas;
+        this.memCanvas = document.createElement('canvas');
+        this.memCanvas.width = canvas.width;
+        this.memCanvas.height = canvas.height;
+        this.memContext = <CanvasRenderingContext2D>this.memCanvas.getContext('2d');
     }
 
     /*
@@ -152,6 +144,8 @@ class Draw {
 
     /*
      * Funtion that is called when the mouse is moved
+     *
+     * TODO: if drawType == drawType.LINE, replace last instead of adding new coords
      */
     onMousemove = (e : MouseEvent) : void => {
         if (this.currentPath) {
@@ -198,49 +192,26 @@ class Draw {
      */
     activate () : void {
         if (!this.isActive) {
-            console.log("Draw Engine activated");
             this.isActive = true;
 
-            /* Generate a temporarily canvas to store the contents of the main canvas */
-            this.memCanvas = document.createElement('canvas');
-            this.memCanvas.width = this.canvas.width;
-            this.memCanvas.height = this.canvas.height;
-            this.memContext = <CanvasRenderingContext2D>this.memCanvas.getContext('2d');
-
-            /* Generate a temporarily canvas to draw on.. */
-            this.drawCanvas = document.createElement('canvas');
-            this.drawCanvas.width = this.canvas.width;
-            this.drawCanvas.height = this.canvas.height;
-            this.drawCanvas.style.width = this.canvas.style.width;
-            this.drawCanvas.style.height = this.canvas.style.height;
-            this.drawContext = <CanvasRenderingContext2D>this.drawCanvas.getContext('2d');
-            this.drawCanvas.className = "main-canvas";
-
-            this.drawCanvas.addEventListener("mousedown", this.onMousedown);
-            this.drawCanvas.addEventListener("mousemove", this.onMousemove);
-            this.drawCanvas.addEventListener("mouseup", this.onMouseup);
-            this.drawCanvas.addEventListener("contextmenu", this.onContextMenu);
-
-            this.canvas.parentNode.appendChild(this.drawCanvas);
-            //TODO: put the drawConvas in front of the mainCanvas
+            this.canvas.addEventListener("contextmenu", this.onContextMenu);
+            this.canvas.addEventListener("mousedown", this.onMousedown);
+            this.canvas.addEventListener("mousemove", this.onMousemove);
+            this.canvas.addEventListener("mouseup", this.onMouseup);
         }
     }
 
     /*
      * Function to deactivate the draw functionality
-     * TODO: use this functionality somewhere. :')
      */
     deactivate () : void {
         if (this.isActive) {
-            console.log("Draw engine deactivated");
             this.isActive = false;
 
-            delete this.memContext;
-            delete this.memCanvas;
-            delete this.drawContext;
-            delete this.drawCanvas;
-
-            //TODO: remove the draw canvas?
+            this.canvas.removeEventListener("contextmenu", this.onMousedown);
+            this.canvas.removeEventListener("mousedown", this.onMousedown);
+            this.canvas.removeEventListener("mousemove", this.onMousemove);
+            this.canvas.removeEventListener("mouseup", this.onMouseup);
         }
     }
 
@@ -331,9 +302,9 @@ class Draw {
      * Reset the canvas to its original state (the saved state)
      */
     clearCanvas = () : void => {
-        var context = <CanvasRenderingContext2D>this.drawCanvas.getContext('2d');
+        var context = <CanvasRenderingContext2D>this.canvas.getContext('2d');
         context.globalAlpha = 1.0;
-        context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
+        context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         context.drawImage(this.memCanvas, 0, 0);
 
         this.isCleared = true;
@@ -344,17 +315,10 @@ class Draw {
     }
 
     /*
-     * Function to call when the drawing must be saved to the renderengine.
-     */
-    saveDrawing () : void {
-        //TODO: implement this function to save the drawing to a new ImageLayer.
-    }
-
-    /*
      * Draw the given path to the canvas using the selected drawType
      */
     draw (path : Path) : void {
-        var context = <CanvasRenderingContext2D>this.drawCanvas.getContext('2d');
+        var context = <CanvasRenderingContext2D>this.canvas.getContext('2d');
         if (context == null) {
             console.log("Can't draw path, canvas is already rendered in webgl mode.")
             return;

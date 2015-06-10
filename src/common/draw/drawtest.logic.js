@@ -50,10 +50,10 @@ angular.module('ariana').controller('drawtestCtrl', function($scope, $window) {
     
     /* Get the canvas element. */
     var canvas = document.getElementById('main-canvas');
-    //$scope.startEngine(canvas);
+    $scope.startEngine(canvas);
 
     //TODO: nu tekenen we op de canvas, maar we moeten in de renderEngine tekenen o.i.d.
-    $scope.drawEngine = new Draw(canvas); //DUNES);
+    $scope.drawEngine = new Draw(canvas);
     //$scope.drawEngine.activate();
     //$scope.drawEngine.setBrush(brushType.THIN);
     //$scope.drawEngine.loadBrushSVG('assets/draw/thin.svg');

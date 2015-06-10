@@ -6,6 +6,7 @@ var penTool = {
         
         //scope.drawEngine.activate();
         scope.drawEngine.setDrawType(drawType.NORMAL);
+        scope.drawEngine.activate();
         //$scope.drawEngine.setBrush(brushType.THIN);
     },
     

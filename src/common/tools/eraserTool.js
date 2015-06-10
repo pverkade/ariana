@@ -6,6 +6,7 @@ var eraserTool = {
         
         //scope.drawEngine.activate();
         scope.drawEngine.setDrawType(drawType.ERASE);
+        scope.drawEngine.activate();
     },
     
     mouseDown: function($scope, event) {

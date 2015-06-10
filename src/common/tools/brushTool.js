@@ -6,6 +6,7 @@ var brushTool = {
         
         //scope.drawEngine.activate();
         scope.drawEngine.setBrush(brushType.THIN);
+        scope.drawEngine.activate();
         //$scope.drawEngine.setBrush(brushType.THIN);
     },
     
