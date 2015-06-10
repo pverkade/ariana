@@ -9,54 +9,48 @@
 
 #toolbar {    
     @extend .gui-element;
-    position: relative;
-    border-color: transparent;
-    width : 100%;
-    padding: 0;
-    margin: 0;
+    position: absolute;
+    width : 100%; 
+    height: auto;
     
-    .navbar-collapse, .navbar-header, .container-fluid, .navbar-right {
-        margin: 0px;
-        padding: 0px; 
-        width: calc(100% - 2 * $blocksize);
+    ul {
+        height: $blocksize;
+        list-style: none;
+        padding: 0;
+        
+        &:after {
+            content : "";
+            display : block;
+            clear : both;
+            visibility : hidden;
+        }
     }
-
+    
     .seperator {
-        top: 0.1 * $blocksize;
+        margin: 0.1 * $blocksize -1;
         height: 0.8 * $blocksize;
         width: 2px;
-        margin: auto;
         background-color: darken($light, 5%);
-        margin-left: -1px;
-        margin-right: -1px;
         z-index: 3;
     }
 
-    .navbar-brand {
+    .brand {
         width: 2.5 * $blocksize;
         height: $blocksize;
-        margin: 0;
         padding: 0 0.25 * $blocksize;
+        
         font-size: 20pt;
         line-height: $blocksize;
         font-family : $fonts;
         color: $brand-color;
     }
-
-    button.navbar-toggle {
-        border: 0;
-        width: $blocksize;
-        height: $blocksize;
-        border-radius: 0;
-        margin: 0;
-        padding: 0;
     
-        @extend .tool;
-        cursor: context-menu;
-        
-        &:hover, &:active, &:focus {
-            background-color: lighten($light, $hover-lighten);
-        }
+    .float-left {
+        float: left;
+    }
+    
+    .float-right {
+        float: right;
     }
 }
 
