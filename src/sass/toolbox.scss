@@ -15,9 +15,12 @@ div #toolbox {
     top: 1.5 * $blocksize;
     
     //FIXME
-    @media (min-width: #{10.5 * $blocksize}) {
+    @media (max-width: 10.5 * $blocksize) {
+    
+        & {
         top: 2.5 * $blocksize;
-    }
+        background-color: red;
+    }}
     
     @extend .gui-element;
 }
