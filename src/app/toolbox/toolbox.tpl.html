@@ -7,9 +7,11 @@
 
         <i class="mdi {{tool.image}}"></i>
 
-        <div class="toolset fix-top" ng-show="config.tools.activeToolset == '{{name}}'">
-            
-            <div class="tool" id="{{name}}" 
+        <div class="toolset fix-top" 
+            ng-show="config.tools.activeToolset == '{{name}}'">
+	        
+	        <div class="tool" id="{{name}}" 
+
                 ng-repeat="(name, subtool) in tool.tools" 
                 ng-click="selectTool($event, name)"
                 ng-class="{active: config.tools.activeTool == '{{name}}'}">

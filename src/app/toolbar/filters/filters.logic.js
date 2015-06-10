@@ -1,34 +1,68 @@
 app.controller('FilterModalController', ['$scope', '$modalInstance', 
     function ($scope, $modalInstance) {
         
-        $scope.title = "Filters and Effects";
-        $scope.subtitle = "";
-        
         $scope.filters = [
-            {name: "Blur",          image: "/assets/img/arnold2.jpg",},
-            {name: "Gauss",         image: "/assets/img/arnold2.jpg",},
-            {name: "Sepia",         image: "/assets/img/arnold2.jpg",},
-            {name: "Noise",         image: "/assets/img/arnold2.jpg",},
-            {name: "Yolo",          image: "/assets/img/arnold2.jpg",},
-            {name: "Swag",          image: "/assets/img/arnold2.jpg",},
-            {name: "Saturation",    image: "/assets/img/arnold2.jpg",},
-            {name: "Colorize",      image: "/assets/img/arnold2.jpg",},
-            {name: "Arnold",        image: "/assets/img/arnold2.jpg",},
-            {name: "Arnold",        image: "/assets/img/arnold2.jpg",},
-            {name: "Arnold",        image: "/assets/img/arnold2.jpg",},
-            {name: "Arnold",        image: "/assets/img/arnold2.jpg",},
+            
+            {
+                name:  "sepia",
+                image: "/assets/img/arnold2.jpg", 
+            },
+            
+            {
+                name:  "gaussian blur",
+                image: "/assets/img/arnold2.jpg", 
+            },
+            
+            {
+                name:  "arnold",
+                image: "/assets/img/arnold2.jpg", 
+            },
+            
+            {
+                name:  "brightness",
+                image: "/assets/img/arnold2.jpg", 
+            },
+            
+            {
+                name:  "sepia",
+                image: "/assets/img/arnold2.jpg", 
+            },
+            
+            {
+                name:  "gaussian blur",
+                image: "/assets/img/arnold2.jpg", 
+            },
+            
+            {
+                name:  "arnold",
+                image: "/assets/img/arnold2.jpg", 
+            },
+            
+            {
+                name:  "brightness",
+                image: "/assets/img/arnold2.jpg", 
+            },
         ];
         
         $scope.selectFilter = function(name) {
-            // TODO go into preview mode, set parameters
-            // FIXME cannot access $scope of AppController
-            //console.log($scope.renderEngine);
-            //$scope.applyFilter(name);
-            $modalInstance.dismiss();
+            $scope.applyFilter(name);
+            $scope.close();
         };
+        
+        $scope.allLayers = true;
 
-        $scope.close = function () {
+        $scope.toggleLayers = function() {
+            if ($scope.allLayers) $scope.allLayers = false;
+            else $scope.allLayers = true;
+            console.log($scope.allLayers);
+        };
+        
+        $scope.close = function() {
             $modalInstance.dismiss();
         };
+        
+        $scope.titlecase = function(string) {
+            return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+        }
     }
 ])

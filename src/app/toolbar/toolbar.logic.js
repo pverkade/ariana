@@ -28,6 +28,15 @@ app.controller('toolbarCtrl', ['$scope', '$modal',
             document.body.removeChild(myForm) ;
         };
         
+        $scope.openUploadModal = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'app/toolbar/upload/upload.tpl.html',
+                controller:  'UploadModalCtrl',
+                scope: $scope,
+                size: 'lg'
+            });
+        };
+        
         $scope.openTransformationModal = function() {
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/transformations/transformations.tpl.html',
@@ -41,19 +50,10 @@ app.controller('toolbarCtrl', ['$scope', '$modal',
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/filters/filters.tpl.html',
                 controller:  'FilterModalController',
-                size: 'lg'
-            });
-        };    
-
-        
-        $scope.openUploadModal = function() {
-            var modalInstance = $modal.open({
-                templateUrl: 'app/toolbar/upload/upload.tpl.html',
-                controller:  'UploadModalCtrl',
                 scope: $scope,
                 size: 'lg'
             });
-        };
+        };    
 
         /*$scope.loadImages = function() {
             $("img.svg").each(function () {
