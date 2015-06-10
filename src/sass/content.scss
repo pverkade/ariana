@@ -14,6 +14,5 @@
     background-color: #ffffff;
     z-index: 1;
     @extend .box-shadow;
-    
     @include transform(translate(120px, 120px));
 }

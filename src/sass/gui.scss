@@ -64,10 +64,8 @@ body {
         fill: $white;
     }
     
-    > .tool {
-        &:hover {
-            background-color: lighten($light, $hover-lighten);
-        }
+    &:hover {
+        background-color: lighten($light, $hover-lighten);
     }
 }
 
