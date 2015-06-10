@@ -12,6 +12,8 @@
     width : 100%; 
     height: auto;
     
+    border-bottom: $border-thickness solid $brand-color;
+    
     ul {
         height: $blocksize;
         list-style: none;

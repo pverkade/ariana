@@ -99,8 +99,7 @@ app.controller('AppCtrl', ['$scope',
             // TODO render image to file
         };
 
-        $scope.applyFilter = function(name) {
-            console.log("Apply filter " + name);
+        $scope.applyFilter = function(name, allLayers) {
             
             if (name == "brightness") {
                 // TODO start element with parameters, layer button, 

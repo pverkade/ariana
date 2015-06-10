@@ -45,7 +45,7 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
         ];
         
         $scope.selectFilter = function(name) {
-            $scope.applyFilter(name);
+            $scope.applyFilter(name, $scope.allLayers);
             $scope.close();
         };
         
@@ -54,7 +54,6 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
         $scope.toggleLayers = function() {
             if ($scope.allLayers) $scope.allLayers = false;
             else $scope.allLayers = true;
-            console.log($scope.allLayers);
         };
         
         $scope.close = function() {
