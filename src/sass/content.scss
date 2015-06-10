@@ -15,5 +15,5 @@
     z-index: 1;
     @extend .box-shadow;
     
-    transform: translate(120px, 120px);
+    @include transform(translate(120px, 120px));
 }
