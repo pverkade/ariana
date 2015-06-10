@@ -5,7 +5,7 @@
         ng-click="selectToolSet(name)" 
         ng-class="{active: config.tools.activeToolset == '{{name}}'}">
 
-        <img class="svg" ng-src="assets/vectors/{{tool.image}}"></img>
+        <i class="mdi {{tool.image}}"></i>
 
         <div class="toolset fix-top" ng-show="config.tools.activeToolset == '{{name}}'">
             
