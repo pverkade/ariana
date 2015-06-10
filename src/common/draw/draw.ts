@@ -528,7 +528,8 @@ class Draw {
     }
 
     /*
-     *
+     * Function to erase the points in a path.
+     * TODO: rectangle erase from point i to i+1
      */
     erasePath (points, path : Path, context : CanvasRenderingContext2D) {
 
