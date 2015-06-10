@@ -53,6 +53,7 @@ class ImageLayer extends Layer {
         this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
         this.gl.copyTexImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 0, 0, width, height, 0);
 
+        /* Set dimensions triggers notifyPropertyChanged */
         this.setDimensions(width, height);
 	}
 

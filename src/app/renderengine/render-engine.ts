@@ -8,18 +8,22 @@
 /// <reference path="image-layer"/>
 /// <reference path="resource-manager"/>
 
-class RenderEngine {
+class RenderEngine implements MLayer.INotifyPropertyChanged {
     private gl : WebGLRenderingContext;
 
     /* Array of layers in the order that the user sees them */
     private layers : Array<Layer>;
     private drawbuffer1 : DrawBuffer;
     private drawbuffer2 : DrawBuffer;
+    private thumbnailDrawbuffer : DrawBuffer;
 
     /* Width and height of the framebuffer */
     private width : number;
     private height : number;
     private canvas : HTMLCanvasElement;
+
+    private thumbnailWidth = 100;
+    private thumbnailHeight = 60;
 
     public resourceManager;
 
@@ -53,28 +57,31 @@ class RenderEngine {
         this.gl.viewport(0, 0, this.width, this.height);
         this.drawbuffer1 = new DrawBuffer(this.gl, this.width, this.height);
         this.drawbuffer2 = new DrawBuffer(this.gl, this.width, this.height);
+        this.thumbnailDrawbuffer = new DrawBuffer(this.gl, this.thumbnailWidth, this.thumbnailHeight);
         this.resourceManager = new ResourceManager(this.gl);
     }
 
-    addLayer(layer : Layer) {
+    public addLayer(layer : Layer) {
         /* Append layer to user array */
+        layer.registerNotifyPropertyChanged(this);
+        this.createThumbnail(layer);
         this.layers.push(layer);
     }
  
-    removeLayer(index : number) {
+    public removeLayer(index : number) {
         var layer : Layer = this.layers[index];
         this.layers.splice(layer.getID(), 1);
         layer.destroy();
     }
 
-    reorder(i : number, j : number) {
+    public reorder(i : number, j : number) {
         /* Switch places in the user array */
         var temp = this.layers[i];
         this.layers[i] = this.layers[j];
         this.layers[j] = temp;
     }
 
-    render() {
+    public render() {
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
         var oldType = -1;
         var numItems = this.layers.length;
@@ -95,7 +102,7 @@ class RenderEngine {
         }
     }
 
-    filterLayers(layerIndices : number[], filter : Filter) {
+    public filterLayers(layerIndices : number[], filter : Filter) {
         for (var i = 0; i < layerIndices.length; i ++) {
             var layer = this.layers[layerIndices[i]];
             if (layer.getLayerType() !== LayerType.ImageLayer) {
@@ -115,13 +122,12 @@ class RenderEngine {
             imageLayer.copyFramebuffer(this.width, this.height);
             this.drawbuffer2.unbind();
         }
-        this.drawbuffer2.unbind();
 
         imageLayer.setPos(this.canvas.width/2.0, this.canvas.height/2.0);
         imageLayer.setDimensions(this.canvas.width, this.canvas.height);
     }
 
-    renderToImg() {
+    public renderToImg() : String {
         /* Render all layers to a framebuffer and return a 64base encoded image */
         this.drawbuffer1.bind();
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
@@ -132,32 +138,13 @@ class RenderEngine {
         return val;
     }
 
-    getWebGLRenderingContext() : WebGLRenderingContext {
-        return this.gl;
-    }
-
-    getPixelColor(x : number, y : number) : Uint8Array {
+    public getPixelColor(x : number, y : number) : Uint8Array {
         var value = new Uint8Array(4);
         this.gl.readPixels(x, this.height-y-1, 1, 1, this.gl.RGBA, this.gl.UNSIGNED_BYTE, value);
         return value;
     }
 
-    resize(width : number, height : number) {
-        if ((width * height) % 4 != 0) {
-            console.log("Width * height needs to be dividable by 4");
-            return;
-        }
-        this.width = width;
-        this.height = height;
-        this.canvas.width = width;
-        this.canvas.height = height;
-
-        this.drawbuffer1.resize(width, height);
-        this.drawbuffer2.resize(width, height);
-        this.gl.viewport(0, 0, width, height);
-    }
-
-    destroy() {
+    public destroy() {
         for (var i = 0; i < this.layers.length; i++) {
             this.layers[i].destroy();
         }
@@ -166,9 +153,24 @@ class RenderEngine {
         this.drawbuffer2.destroy();
     }
 
+    private createThumbnail(layer : Layer) {
+        this.thumbnailDrawbuffer.bind();
+        this.gl.viewport(0, 0, this.thumbnailWidth, this.thumbnailHeight);
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
+        layer.setupRender();
+        layer.render();
+        layer.setThumbnail(this.thumbnailDrawbuffer.getImage());
+        this.thumbnailDrawbuffer.unbind();
+        this.gl.viewport(0, 0, this.width, this.height);
+    }
+
+    public propertyChanged(layer : Layer) {
+        this.createThumbnail(layer);
+    }
 
 
-    createImageLayer(image : ImageData) {
+
+    public createImageLayer(image : ImageData) {
         return new ImageLayer(
             this.resourceManager,
             this.canvas.width,

@@ -1,6 +1,13 @@
 /// <reference path="gl-matrix"/>
 /// <reference path="resource-manager"/>
+
 enum LayerType {ImageLayer};
+
+module MLayer {
+    export interface INotifyPropertyChanged {
+        propertyChanged(layer : Layer);
+    }
+}
 
 class Layer {
     protected gl;
@@ -13,11 +20,14 @@ class Layer {
     protected height : number;
 	protected posX : number;
 	protected posY : number;
+    private thumbnail : String;
 
 	protected sizeMatrix : Float32Array;
 	protected rotationMatrix : Float32Array;
 	protected translationMatrix : Float32Array;
     protected pixelConversionMatrix : Float32Array;
+
+    private propertyChanged : MLayer.INotifyPropertyChanged;
 
 	constructor(
         resourceManager : ResourceManager,
@@ -64,25 +74,37 @@ class Layer {
         );
 	}
 
-	setRotation(angle : number) {
+    protected notifyPropertyChanged() {
+        if (this.propertyChanged != null) {
+            this.propertyChanged.propertyChanged(this);
+        }
+    }
+
+    public registerNotifyPropertyChanged(propertyChanged : MLayer.INotifyPropertyChanged) {
+        this.propertyChanged = propertyChanged;
+    }
+
+	public setRotation(angle : number) {
 		this.angle = angle;
 		mat3.identity(this.rotationMatrix);
 		mat3.rotate(this.rotationMatrix, this.rotationMatrix, angle);
+
+        this.notifyPropertyChanged();
 	}
 
-	getRotation() : number {
+	public getRotation() : number {
 		return this.angle;
 	}
 
-	setWidth(width : number) {
+	public setWidth(width : number) {
 		this.setDimensions(width, this.height);
 	}
 
-	setHeight(height : number) {
+	public setHeight(height : number) {
         this.setDimensions(this.width, height);
 	}
 
-	setDimensions(width : number, height : number) {
+	public setDimensions(width : number, height : number) {
         this.width = width;
         this.height = height;
 
@@ -92,36 +114,48 @@ class Layer {
             this.sizeMatrix,
             new Float32Array([width/2.0, height/2.0])
         );
+
+        this.notifyPropertyChanged();
 	}
 
-	setPos(x : number, y : number) {
+	public setPos(x : number, y : number) {
 		this.posX = x;
 		this.posY = y;
 
 		mat3.identity(this.translationMatrix);
 		mat3.translate(this.translationMatrix, this.translationMatrix, new Float32Array([x, -y]));
+
+        this.notifyPropertyChanged();
 	}
 
-	getPosX() : number {
+	public getPosX() : number {
 		return this.posX;
 	}
 
-	getPosY() : number {
+	public getPosY() : number {
 		return this.posY;
 	}
 
-	getID() : number {
+	public getID() : number {
 		return this.ID;
 	}
 
-    getLayerType() : LayerType {
+    public getLayerType() : LayerType {
         return this.layerType;
     }
 
-	setupRender() { }
-	render() { }
+    public setThumbnail(thumbnail : String) {
+        this.thumbnail = thumbnail;
+    }
 
-    destroy() {
+    public getThumbnail() : String {
+        return this.thumbnail;
+    }
+
+	public setupRender() { }
+	public render() { }
+
+    public destroy() {
         delete this.rotationMatrix;
         delete this.sizeMatrix;
         delete this.translationMatrix;

@@ -15,6 +15,7 @@
     <script src="render-engine.js"></script>
     <script src="drawbuffer.js"></script>
     <script src="selection-program.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
     <script src="filters/filter.js"></script>
     <script src="filters/contrast-filter.js"></script>
@@ -53,6 +54,7 @@
                     renderEngine.filterLayers([0], filter);
                     renderEngine.render();
 
+                    $("img").attr("src", imageLayer.getThumbnail());
 
                     //renderEngine.addLayer(imageLayer2);
                     //renderEngine.reorder(1, 0);
@@ -190,9 +192,9 @@
     <canvas id="glcanvas" width="800px" height="480px">
         Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
     </canvas>
+    <img width="800px" height="480px" alt="test"/>
 </div>
 <div id="filters"></div>
 <div id="layers"></div>
-<img id="images" />
 </body>
 </html>
