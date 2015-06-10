@@ -76,6 +76,24 @@ app.controller('AppCtrl', ['$scope',
             $scope.renderEngine.render();
         };
 
+        $scope.newLayerFromDrawing = function(image) {
+            var imageLayer = new ImageLayer($scope.renderEngine.getWebGLRenderingContext(), image);
+            $scope.renderEngine.addLayer(imageLayer);
+
+            var width = image.naturalWidth;
+            var height = image.naturalHeight;
+
+            /* set the correct layer info in config. The new layer comes on top
+             * and is immediately selected. */
+            $scope.setSelection([$scope.config.layers.numberOfLayers]);
+            $scope.config.layers.numberOfLayers += 1;
+
+            imageLayer.setPos(0, 0);
+            imageLayer.setScale(1, 1);
+
+            $scope.renderEngine.render();
+        };
+
         $scope.getSelectedLayers = function() {
             return $scope.renderEngine.getLayers($scope.config.layers.selectedLayers);
         };

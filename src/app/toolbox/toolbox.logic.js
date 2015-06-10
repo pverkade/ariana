@@ -96,6 +96,12 @@ angular.module('ariana').controller('toolBoxController', function($scope) {
     $scope.selectTool = function(e, tool) {
         if (e) e.stopPropagation();
 
+        var toolFunctions = $scope.config.tools.activeToolFunctions;
+        console.log(toolFunctions);
+
+        if (toolFunctions && toolFunctions.stop) {
+            toolFunctions.stop();
+        }
         $scope.config.tools.activeTool = tool;
 
         var toolset = $scope.config.tools.activeToolset;

@@ -9,6 +9,16 @@ var brushTool = {
         scope.drawEngine.activate();
         //$scope.drawEngine.setBrush(brushType.THIN);
     },
+
+    stop: function() {
+        var scope = angular.element($("#main-canvas")).scope();
+
+        var image = new Image();
+        image.onload = function() { scope.newLayerFromDrawing(image); }
+        image.src = scope.drawEngine.getCanvasImageData();
+
+        scope.drawEngine.deactivate();
+    },
     
     mouseDown: function($scope, event) {
         //$("#main-canvas").css("cursor", "grabbing");
@@ -19,7 +29,7 @@ var brushTool = {
     mouseDownRight: function($scope, event) {
         //$("#main-canvas").css("cursor", "grabbing");
 
-        $scope.drawEngine.onContextMenu(event);
+        $scope.drawEngine.onContextmenu(event);
     },
     
     mouseUp: function($scope, event) {

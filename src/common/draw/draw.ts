@@ -144,7 +144,7 @@ class Draw {
     /*
      * Function that is called at right mousepress
      */
-    onContextMenu = (e : MouseEvent) : void => {
+    onContextmenu = (e : MouseEvent) : void => {
         e.preventDefault();
 
         this.onMousedown(e);
@@ -219,7 +219,7 @@ class Draw {
             this.drawCanvas.addEventListener("mousedown", this.onMousedown);
             this.drawCanvas.addEventListener("mousemove", this.onMousemove);
             this.drawCanvas.addEventListener("mouseup", this.onMouseup);
-            this.drawCanvas.addEventListener("contextmenu", this.onContextMenu);
+            this.drawCanvas.addEventListener("contextmenu", this.onContextmenu);
 
             this.canvas.parentNode.appendChild(this.drawCanvas);
             //TODO: put the drawConvas in front of the mainCanvas
@@ -235,10 +235,11 @@ class Draw {
             console.log("Draw engine deactivated");
             this.isActive = false;
 
-            delete this.memContext;
-            delete this.memCanvas;
-            delete this.drawContext;
-            delete this.drawCanvas;
+            this.canvas.parentNode.removeChild(this.drawCanvas);
+            this.memContext = null;
+            this.memCanvas = null;
+            this.drawContext = null;
+            this.drawCanvas = null;
 
             //TODO: remove the draw canvas?
         }
@@ -324,7 +325,7 @@ class Draw {
      */
     saveCanvas = () : void => {
         this.memContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.memContext.drawImage(this.canvas, 0, 0);
+        this.memContext.drawImage(this.drawCanvas, 0, 0);
     }
 
     /*
@@ -346,8 +347,11 @@ class Draw {
     /*
      * Function to call when the drawing must be saved to the renderengine.
      */
-    saveDrawing () : void {
-        //TODO: implement this function to save the drawing to a new ImageLayer.
+    getCanvasImageData () : String {
+        if (this.drawCanvas)
+            return this.drawCanvas.toDataURL();
+        
+        return "";
     }
 
     /*

@@ -8,6 +8,17 @@ var eraserTool = {
         scope.drawEngine.setDrawType(drawType.ERASE);
         scope.drawEngine.activate();
     },
+
+    end: function() {
+        //TODO: erasing doesnt work yet
+        var scope = angular.element($("#main-canvas")).scope();
+
+        var image = new Image();
+        image.onload = function() { scope.newLayerFromDrawing(image); }
+        image.src = scope.drawEngine.getCanvasImageData();
+
+        scope.drawEngine.deactivate();
+    },
     
     mouseDown: function($scope, event) {
         //$("#main-canvas").css("cursor", "grabbing");
@@ -18,7 +29,7 @@ var eraserTool = {
     mouseDownRight: function($scope, event) {
         //$("#main-canvas").css("cursor", "grabbing");
 
-        $scope.drawEngine.onContextMenu(event);
+        $scope.drawEngine.onContextmenu(event);
     },
     
     mouseUp: function($scope, event) {
