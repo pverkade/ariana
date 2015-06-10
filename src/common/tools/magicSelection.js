@@ -19,7 +19,7 @@ var magicSelection = {
         if ($scope.magic.isInSelection(xRelative, yRelative)) {
             $scope.magic.removeSelection(xRelative, yRelative)
         } else {
-            $scope.magic.getMaskWand(xRelative, yRelative, tresholdValue);
+            $scope.magic.getMaskWand(xRelative, yRelative, $scope.tresholdValue);
         }
 
         /* Save border and marching ants mask in scope. */
