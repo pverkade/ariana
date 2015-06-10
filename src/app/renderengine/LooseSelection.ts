@@ -1,21 +1,14 @@
-class Point {
-	x : number;
-	y : number;
-
-	constructor(x : number, y : number) {
-		this.x = x;
-		this.y = y;
-	}
-}
-
 class LooseSelection {
-	var points : Point[];
+	points : Point[];
 
 	constructor() {
 		this.points = [];
 	}
 
 	addPoint(point : Point) {
-		
+		if (this.points[this.points.length-1].x != point.x &&
+			this.points[this.points.length-1].y != point.y) {
+			this.points.push(point);
+		}
 	}
 }
