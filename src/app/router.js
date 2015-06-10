@@ -7,7 +7,7 @@ angular.module('ariana').config(function($stateProvider, $locationProvider) {
             views: {
                 "content": {
                     templateUrl: "app/content/content.tpl.html",
-                    controller: 'contentCtrl'
+                    controller: 'ContentCtrl'
                 },
                 "content-menu": {
                     templateUrl: "app/content/menu/menu.content.tpl.html",

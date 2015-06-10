@@ -1,10 +1,23 @@
-<!-- <canvas autosize rendertarget="rendertarget" class="main-canvas" id="main-canvas" 
-    ng-mousemove="mouseMove($event)" 
-    ng-mouseup="mouseUp($event)"
-    ng-mousedown="mouseDown($event)"
-    ng-right-click="rightClick($event)"
-    width="1280px"
-    height="720px">
-    </canvas> -->
+<!-- <canvas autosize rendertarget="rendertarget"
+		class="content" id="main-canvas" 
+    	ng-mousemove="mouseMove($event)" 
+    	ng-mouseup="mouseUp($event)"
+    	ng-mousedown="mouseDown($event)"
+    	ng-right-click="rightClick($event)"
+    	width="720px"
+    	height="480px">
+</canvas> -->
 
-<canvas class="content"> </canvas>
+<div id="background"
+    ng-mousemove="mouseMove($event); $event.stopPropagation();" 
+    ng-mouseup="mouseUp($event); $event.stopPropagation();"
+    ng-mousedown="mouseDown($event); $event.stopPropagation();"
+    ng-right-click="rightClick($event); $event.stopPropagation();">  
+    
+    <canvas rendertarget="rendertarget" 
+        id="main-canvas" 
+        width="800"
+        height="600">
+    </canvas>
+    
+</div>

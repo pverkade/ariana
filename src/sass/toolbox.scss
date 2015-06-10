@@ -35,3 +35,29 @@ accordion {
 .panel-body {
 	padding: 0;
 }
+
+.color-preview {
+    @extend .tool;
+    @extend .gui-element;
+    
+    .color-primary, .color-secondary {
+        position: absolute;
+        height: 0.625 * $blocksize;
+        width: 0.625 * $blocksize;
+        @extend .box-shadow;
+    }
+    
+    .color-primary {
+        left:  0.25 * $blocksize;
+        bottom: 0.25 * $blocksize;
+        background-color: green;
+        z-index: 4;
+    }
+
+    .color-secondary {
+        left: 0.125 * $blocksize;
+        bottom: 0.125 * $blocksize;
+        background-color: red;
+        z-index: 3;
+    }   
+}

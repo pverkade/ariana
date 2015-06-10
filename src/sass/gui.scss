@@ -17,6 +17,8 @@ body {
     font-family: $fonts;
     width : 100%;
     height: 100%;
+    @include user-select(none);
+    overflow: hidden;
 }
 
 /* Style-class for box-shadow. */

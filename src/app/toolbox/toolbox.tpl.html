@@ -7,19 +7,22 @@
                 <i class="pull-right fa " ng-class="{'fa-chevron-up': open, 'fa-chevron-right': !open}"></i>
             </accordion-heading>
             
-            <div class="selectable item" ng-repeat="(name, subtool) in tool.tools"
-                ng-click="selectTool($event, name)">
+            <div class="selectable item" ng-repeat="(name2, subtool) in tool.tools"
+                ng-click="selectTool(name, name2)">
                 <span>
-                    {{name}}
+                    {{name2}}
                     <span class="pull-right fa {{subtool.image}}"></span>
                 </span>
             </div>
         </accordion-group>
 
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="color-preview" ng-click="swapColors()">
+                    <div class="color-primary"   style="background-color: rgb({{config.tools.colors.primary.r}},   {{config.tools.colors.primary.g}},   {{config.tools.colors.primary.b}})"> </div>
+                    <div class="color-secondary" style="background-color: rgb({{config.tools.colors.secondary.r}}, {{config.tools.colors.secondary.g}}, {{config.tools.colors.secondary.b}})"> </div>
+                </div>
+            </div>
+        </div>
     </accordion>
-</div>
-
-<div class="color-preview" ng-click="swapColors()">
-    <div class="color-primary"   style="background-color: rgb({{config.tools.colors.primary.r}},   {{config.tools.colors.primary.g}},   {{config.tools.colors.primary.b}})"> </div>
-    <div class="color-secondary" style="background-color: rgb({{config.tools.colors.secondary.r}}, {{config.tools.colors.secondary.g}}, {{config.tools.colors.secondary.b}})"> </div>
 </div>
