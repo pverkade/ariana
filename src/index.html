@@ -6,8 +6,8 @@
     <meta description="Project Ariana">
     <title> Project Ariana </title>
 
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    
+    <link href="assets/materialdesign/css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css" />
+
     <!-- @ifdef DEV -->
 
     <!-- bower -->
@@ -33,19 +33,9 @@
 </head>
 
 <body>
-    <div class="container container-full">
-        <div class="row">
-            <div ui-view="toolbar"></div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-2" ui-view="toolbox"></div>
-            <div class="col-md-8">
-                <div class="row content-menu" ui-view="content-menu"></div>
-                <div class="row content-main" ui-view="content"></div>
-            </div>
-            <div class="col-md-2" ui-view="layers"></div>
-        </div>
-    </div>
+    <div ui-view="toolbar"></div>
+    <div ui-view="toolbox"></div>
+    <div ui-view="layers"></div>
+    <div ui-view="content"></div>
 </body>
 </html>
