@@ -8,33 +8,24 @@ var translateTool = {
     },
     
     mouseUp: function($scope) {
-        var currentLayer = $scope.config.layers.currentLayer;
-        if (currentLayer == -1) return;
-        
-        var xOffset = $scope.renderEngine.layers[currentLayer].getPosX();
-        var yOffset = $scope.renderEngine.layers[currentLayer].getPosY();
-        $scope.config.layers.layerInfo[currentLayer].x = xOffset;
-        $scope.config.layers.layerInfo[currentLayer].y = yOffset;
     },
     
     mouseMove: function($scope) {
+        if (!($scope.config.mouse.button[1] || $scope.config.mouse.button[3])) return;
 
-        if ($scope.config.mouse.click.down == false) return;
+        var dx = $scope.config.mouse.current.x - $scope.config.mouse.old.x;
+        var dy = $scope.config.mouse.current.y - $scope.config.mouse.old.y;
+        console.log(dx, dy);
+        
+        $scope.config.mouse.old.x += dx;
+        $scope.config.mouse.old.y += dy;
 
         var currentLayer = $scope.config.layers.currentLayer;
         if (currentLayer == -1) return;
-
-        var dx = $scope.config.mouse.current.x - $scope.config.mouse.lastClick.x;
-        var dy = $scope.config.mouse.current.y - $scope.config.mouse.lastClick.y;
         
-        var xOffset = $scope.config.layers.layerInfo[currentLayer].x;
-        var yOffset = $scope.config.layers.layerInfo[currentLayer].y;
+        var currentX = $scope.renderEngine.layers[currentLayer].getPosX();
+        var currentY = $scope.renderEngine.layers[currentLayer].getPosY();
 
-        var width = $scope.renderEngine.width;
-        var height = $scope.renderEngine.height;
-        var aspectRatio = width/ height;
-
-        $scope.renderEngine.layers[currentLayer].setPos(2 * (dx/width) + xOffset, -2 * (dy/height/aspectRatio) + yOffset);
-        $scope.renderEngine.render();
+        $scope.renderEngine.layers[currentLayer].setPos(currentX + dx, currentY + dy);
     },
 }

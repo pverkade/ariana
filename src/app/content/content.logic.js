@@ -1,40 +1,50 @@
 angular.module('ariana').controller('ContentCtrl', function($scope, $window) {
-    $scope.rendertarget = null;
+    //$scope.rendertarget = null;
+    
+    /* Set the cursor for the deafult tool: the pan tool. */
+    $("#background").css("cursor", "grab");
 
-    $scope.mouseMove = function(e) {
-        e.preventDefault();
-        $scope.config.mouse.current.x = e.pageX;
-        $scope.config.mouse.current.y = e.pageY;
+    /* This fucntion is triggered when the mouse is moved. */
+    $scope.mouseMove = function(event) {
+        event.preventDefault();
         
+        $scope.config.mouse.current.x = event.pageX;
+        $scope.config.mouse.current.y = event.pageY;
+        
+        /* Call the appropriate tool functions. */
         var toolFunctions = $scope.config.tools.activeToolFunctions;
-        if (toolFunctions && $scope.config.mouse.click.down) toolFunctions.mouseMove($scope);      
+        if (toolFunctions) toolFunctions.mouseMove($scope);      
     }
 
-    $scope.mouseDown = function(e) {
-        e.preventDefault();
-        /* Set correct position in config. */
-        $scope.config.mouse.click.down = true;
-        $scope.config.mouse.current.x = e.pageX;
-        $scope.config.mouse.current.y = e.pageY;
-        $scope.config.mouse.lastClick.x = e.pageX;
-        $scope.config.mouse.lastClick.y = e.pageY;
+    /* This fucntion is triggered on a click. */
+    $scope.mouseDown = function(event) {
+        event.preventDefault();
+        event.stopPropagation();
         
-        /* Start current toolset. */
+        /* Store the mouse button. */
+        $scope.config.mouse.button[event.which] = true;
+        
+        /* Set correct position in config. */
+        $scope.config.mouse.current.x = event.pageX;
+        $scope.config.mouse.current.y = event.pageY;
+        $scope.config.mouse.old.x = event.pageX;
+        $scope.config.mouse.old.y = event.pageY;
+        
+        /* Call the appropriate tool functions. */
         var toolFunctions = $scope.config.tools.activeToolFunctions;
         if (toolFunctions) toolFunctions.mouseDown($scope);
     }
     
+    /* This function is called when a mouse button is released. */
     $scope.mouseUp = function(event) {
         event.preventDefault();
-        $scope.config.mouse.click.down = false;
         
-        /* End current toolset. */
+        /* Store the mouse button. */
+        $scope.config.mouse.button[event.which] = false;
+        
+        /* Call the appropriate tool functions. */
         var toolFunctions = $scope.config.tools.activeToolFunctions;
         if (toolFunctions) toolFunctions.mouseUp($scope);
-    }
-
-    $scope.rightClick = function(event) {
-        event.preventDefault();
     }
     
     /* Get the canvas element. */
@@ -56,6 +66,4 @@ angular.module('ariana').controller('ContentCtrl', function($scope, $window) {
     image2.onload = function() {
         $scope.newLayerFromImage(image2);
     }
-
-    //console.log($scope.rendertarget);
 });

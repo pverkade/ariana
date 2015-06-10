@@ -111,7 +111,7 @@ angular.module('ariana').controller('toolBoxController', function($scope) {
         }
         else {
             $scope.config.tools.activeToolFunctions = null;
-            $("#main-canvas").css("cursor", "default");
+            $("#background").css("cursor", "default");
         }
     };
     $scope.selectTool(null, "pan");

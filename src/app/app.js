@@ -14,19 +14,22 @@ app.controller('AppCtrl', ['$scope',
             mouse: {
                 old : {
                     x : 0,
-                    y : 0
+                    y : 0,
                 },
                 current: {
                     x: 0,
-                    y: 0
+                    y: 0,
                 },
-                lastClick: {
-                    x: 0,
-                    y: 0
-                },
-                click: {
-                    down: false
+                button: {
+                    1: false, // left button
+                    2: false, // middle button
+                    3: false, // right button
                 }
+            },
+            canvas: {
+                x: 128,
+                y: 128,
+                zoom: 1,
             },
             tools: {
                 activeTool: null,

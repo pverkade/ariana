@@ -10,15 +10,11 @@ var rotateTool = {
     
     mouseUp: function($scope) {
         $("#background").css("cursor", "grab");
-        
-        var currentLayer = $scope.config.layers.currentLayer;
-        if (currentLayer == -1) return;
-        
-        var rotation = $scope.renderEngine.layers[currentLayer].getRotation();
-        $scope.config.layers.layerInfo[currentLayer].rotation = rotation;
     },
 
     mouseMove: function($scope) {
+        if (!($scope.config.mouse.button[1] || $scope.config.mouse.button[3])) return;
+        
         var currentLayer = $scope.config.layers.currentLayer;
         if (currentLayer == -1) return;
 

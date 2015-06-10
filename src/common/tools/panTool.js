@@ -1,6 +1,3 @@
-var canvasLocationX = 128;
-var canvasLocationY = 128;
-
 var panTool = {
     
     start: function() {
@@ -12,20 +9,21 @@ var panTool = {
     },
     
     mouseUp: function($scope) {
-        $("#background").css("cursor", "grab");
+        if (!($scope.config.mouse.button[1] || $scope.config.mouse.button[3])) $("#background").css("cursor", "grab");
     },
     
     mouseMove: function($scope) {
-        var dx = $scope.config.mouse.current.x - $scope.config.mouse.lastClick.x;
-        var dy = $scope.config.mouse.current.y - $scope.config.mouse.lastClick.y;
+        if (!($scope.config.mouse.button[1] || $scope.config.mouse.button[3])) return;
+        
+        var dx = $scope.config.mouse.current.x - $scope.config.mouse.old.x;
+        var dy = $scope.config.mouse.current.y - $scope.config.mouse.old.y;
 
-        // TODO ugly code
-        $scope.config.mouse.lastClick.x += dx;
-        $scope.config.mouse.lastClick.y += dy;
+        $scope.config.mouse.old.x += dx;
+        $scope.config.mouse.old.y += dy;
         
-        canvasLocationX += dx;
-        canvasLocationY += dy;
+        $scope.config.canvas.x += dx;
+        $scope.config.canvas.y += dy;
         
-        $("#main-canvas").css("transform", "translate(" + canvasLocationX + "px, " + canvasLocationY + "px)");
+        $("#main-canvas").css("transform", "translate(" + $scope.config.canvas.x + "px, " + $scope.config.canvas.y + "px)");
     },
 }
