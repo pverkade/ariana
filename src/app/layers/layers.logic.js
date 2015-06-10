@@ -1,11 +1,16 @@
 angular.module('ariana').controller('layersCtrl', function($scope) {
     $scope.addLayer = function() {
         event.stopPropagation();
+        
         $scope.config.layers.layerInfo.push({
+            "name": $scope.config.layers.currentLayer,
             "x": 0,
             "y": 0,
-            "scale": 1
+            "xScale": 1,
+            "yScale": 1,
+            "rotation": 0
         });
+
         $scope.config.layers.numberOfLayers = $scope.config.layers.layerInfo.length;
     };
 
