@@ -1,22 +1,25 @@
 var magicSelection = {
     
     start: function($scope) {
-        var scope = angular.element($("#main-canvas")).scope();
         $("#main-canvas").css("cursor", "crosshair");
+        var scope = angular.element($("#main-canvas")).scope();
 
-        var imgData = new ImgData($scope.renderEngine.getWidth(), $scope.renderEngine.getHeight()); 
-        imgData.data = $scope.renderEngine.renderAsUint8Array();
-        
-        scope.magic = new MagicSelection(imgData);
-        console.log("magic in scope");
-        console.log(scope.magic);
+        scope.imgData = new ImgData($scope.renderEngine.getWidth(), $scope.renderEngine.getHeight()); 
+        scope.imgData.data = $scope.renderEngine.renderAsUint8Array();
+        scope.magic = new MagicSelection(scope.imgData);
 
         // $interval(callAtInterval, 1000);
+        $scope.sizeAnts = 4;
         $scope.offset = 0;
     },
     
     mouseDown: function($scope) {
         var scope = angular.element($("#main-canvas")).scope();
+
+        var c = angular.element($("#main-canvas"));
+        console.log(c);
+        // var context = c.getContext("2d");
+        // console.log(context);
 
         /* x and y coordinates in pixels relative to image. */
         xRelative = $scope.config.mouse.current.x; //- $scope.config.canvas.x;
@@ -35,6 +38,8 @@ var magicSelection = {
         /* Save border and marching ants mask in scope. */
         scope.maskBorder = $scope.magic.getMaskBorder();
         scope.maskAnts = $scope.magic.marchingAnts($scope.sizeAnts * 2, 0);
+
+        // context.putImageData(scope.imgData, 500, 100);
     },
     
     mouseUp: function($scope) {
