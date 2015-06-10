@@ -122,10 +122,16 @@ app.controller('AppCtrl', ['$scope',
             return false;
         };
 
-        /* FIXME cannot be accesed by FilterModalController
         $scope.applyFilter = function(name) {
-            // TODO
             console.log("Apply filter " + name);
-        }; */
+            
+            if (name == "brightness") {
+                // TODO start element with parameters, layer button, 
+                // TODO actually apply filter on current layer/all layers
+                
+                //var brightnessFilter = new BrightnessFilter();
+                //console.log(brightnessFilter);
+            }
+        };
 	}
 ]);
