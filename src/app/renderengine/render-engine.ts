@@ -59,6 +59,20 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         this.resourceManager = new ResourceManager(this.gl);
     }
 
+    getLayer(index : number) {
+        return this.layers[index];
+    }
+
+    getLayers(indices : number[]) : Layer[] {
+        var result : Layer[] = [];
+
+        for (var i = 0; i < indices.length; i++) {
+            result.push(this.layers[indices[i]]);
+        }
+
+        return result;
+    }
+
     public addLayer(layer : Layer) {
         /* Append layer to user array */
         layer.registerNotifyPropertyChanged(this);
@@ -207,8 +221,6 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
 
         return newLayer;
     }
-
-
 
     public createImageLayer(image : ImageData) {
         return new ImageLayer(
