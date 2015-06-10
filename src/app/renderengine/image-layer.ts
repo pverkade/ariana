@@ -15,7 +15,7 @@ class ImageLayer extends Layer {
         canvasWidth : number,
         canvasHeight : number,
         image : ImageData) {
-        super(resourceManager, canvasWidth, canvasHeight, image.width, image.height);
+        super(resourceManager, canvasWidth, canvasHeight, image ? image.width : 0, image ? image.width : 0);
 
         this.program = resourceManager.imageShaderProgramInstance();
 
@@ -53,7 +53,7 @@ class ImageLayer extends Layer {
         this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
         this.gl.copyTexImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 0, 0, width, height, 0);
 
-        /* Set dimensions triggers notifyPropertyChanged */
+        /* SetDimensions already triggers notifyPropertyChanged */
         this.setDimensions(width, height);
 	}
 

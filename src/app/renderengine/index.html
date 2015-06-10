@@ -48,13 +48,13 @@
                     var imageLayer2 = renderEngine.createImageLayer(image2);
                     imageLayer.setPos(400, 240);
                     renderEngine.addLayer(imageLayer);
-                    renderEngine.addLayer(imageLayer2);
+                    //renderEngine.addLayer(imageLayer2);
 
                     var filter = new ColorizeFilter();
                     renderEngine.filterLayers([0], filter);
                     renderEngine.render();
 
-                    $("img").attr("src", imageLayer.thumbnail);
+                    //$("img").attr("src", imageLayer.thumbnail);
 
                     //renderEngine.addLayer(imageLayer2);
                     //renderEngine.reorder(1, 0);

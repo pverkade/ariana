@@ -20,7 +20,6 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
     /* Width and height of the framebuffer */
     private width : number;
     private height : number;
-    private canvas : HTMLCanvasElement;
 
     private thumbnailWidth = 100;
     private thumbnailHeight = 60;
@@ -30,7 +29,6 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
     constructor (canvas : HTMLCanvasElement) {
         this.width = canvas.width;
         this.height = canvas.height;
-        this.canvas = canvas;
 
         this.layers = new Array();
 
@@ -123,8 +121,8 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
             this.drawbuffer2.unbind();
         }
 
-        imageLayer.setPos(this.canvas.width/2.0, this.canvas.height/2.0);
-        imageLayer.setDimensions(this.canvas.width, this.canvas.height);
+        imageLayer.setPos(this.width/2.0, this.height/2.0);
+        imageLayer.setDimensions(this.width, this.height);
     }
 
     public renderToImg() : String {
@@ -168,13 +166,55 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         this.createThumbnail(layer);
     }
 
+    public startSelection() {
+        // ...
+    }
+
+    public rasterize(indices : number[]) : ImageLayer {
+        /* Draw the old layer in drawbuffer1 */
+        this.drawbuffer1.bind();
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
+
+        var oldType = -1;
+        for (var i = 0; i < indices.length; i++) {
+            // Take the old layer (one layer at a time)
+            var layer:Layer = this.layers[indices[i]];
+            if (layer.getLayerType() != oldType) {
+                /*
+                 * We're drawing a different type of layer then our previous one,
+                 * so we need to do some extra stuff.
+                 */
+                layer.setupRender();
+                oldType = layer.getLayerType();
+            }
+            layer.render();
+            layer.destroy();
+        }
+
+        /* Create a new image layer that copies over the framebuffer */
+        var tmpLayer : ImageLayer = this.createImageLayer(null);
+        tmpLayer.copyFramebuffer(this.width, this.height);
+
+        /* Draw in drawbuffer 2 again so we dont flip vertically (fcking OpenGL again) */
+        this.drawbuffer2.bind();
+        tmpLayer.setupRender();
+        tmpLayer.render();
+
+        /* Copy over again from drawbuffer 2 */
+        var newLayer : ImageLayer = this.createImageLayer(null);
+        newLayer.copyFramebuffer(this.width, this.height);
+        this.drawbuffer2.unbind();
+
+        return newLayer;
+    }
+
 
 
     public createImageLayer(image : ImageData) {
         return new ImageLayer(
             this.resourceManager,
-            this.canvas.width,
-            this.canvas.height,
+            this.width,
+            this.height,
             image
         );
     }

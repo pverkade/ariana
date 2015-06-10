@@ -10,7 +10,7 @@ module MLayer {
 }
 
 class Layer {
-    protected gl;
+    protected gl : WebGLRenderingContext;
     protected resourceManager : ResourceManager;
 	protected static MaxID = 0;
 	protected layerType : number;
@@ -22,10 +22,10 @@ class Layer {
 	protected posY : number;
     public thumbnail : String;
 
-	protected sizeMatrix : Float32Array;
-	protected rotationMatrix : Float32Array;
-	protected translationMatrix : Float32Array;
-    protected pixelConversionMatrix : Float32Array;
+	public sizeMatrix : Float32Array;
+	public rotationMatrix : Float32Array;
+	public translationMatrix : Float32Array;
+    public pixelConversionMatrix : Float32Array;
 
     private propertyChanged : MLayer.INotifyPropertyChanged;
     private propertyChangedTimeout;
