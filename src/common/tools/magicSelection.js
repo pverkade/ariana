@@ -2,37 +2,29 @@ var magicSelection = {
     
     start: function() {
         $("#main-canvas").css("cursor", "crosshair");
-        var image = new Image();
-        image.src = $scope.renderEngine.renderToImg();
-
-        image.onload = function() {
-            $scope.context.drawImage(image, x_offset, y_offset);
-            imageData = $scope.context.getImageData(x_offset, y_offset, image.width, image.height);
-            $scope.magic = new MagicSelection(imageData);
-        };
-
-        //imageData = $scope.renderEngine.renderToImg();
-        //$scope.magic = new MagicSelection(imageData);
-
-        // console.log($scope);
-
-        canvas = document.getElementById('main-canvas');
-        $scope.context = canvas.getContext('2d');
+        // var image = new Image();
+        imageData = $scope.renderEngine.renderToImg();
+        $scope.magic = new MagicSelection(imageData);
 
         $interval(callAtInterval, 1000);
         $scope.offset = 0;
     },
     
     mouseDown: function($scope) {
-        var x = $scope.config.mouse.current.x;
-        var y = $scope.config.mouse.current.x;
-        
-        var value = $scope.renderEngine.getPixelColor(x, y);
-        
-        /* Write color to config. */
-        $scope.config.tools.colors.primary.r = value[0];
-        $scope.config.tools.colors.primary.g = value[1];
-        $scope.config.tools.colors.primary.b = value[2];
+        /* x and y coordinates in pixels relative to image. */
+        xRelative = $scope.config.mouse.current.x - $scope.xOffset;
+        yRelative = $scope.config.mouse.current.y - $scope.yOffset;
+
+        /* Check wheter user has clicked inside of a selection. */
+        if ($scope.magic.isInSelection(xRelative, yRelative)) {
+            $scope.magic.removeSelection(xRelative, yRelative)
+        } else {
+            $scope.magic.getMaskWand(xRelative, yRelative, tresholdValue);
+        }
+
+        /* Save border and marching ants mask in scope. */
+        $scope.maskBorder = $scope.magic.getMaskBorder();
+        $scope.maskAnts = $scope.magic.marchingAnts($scope.sizeAnts * 2, 0);
     },
     
     mouseUp: function($scope) {
@@ -41,4 +33,9 @@ var magicSelection = {
     mouseMove: function($scope) {    
         // TODO call mouseDown
     },
+
+    function callAtInterval() {
+        $scope.offset++;
+        $scope.maskAnts = $scope.magic.marchingAnts($scope.sizeAnts * 2, $scope.offset);
+    }
 }

@@ -1,4 +1,3 @@
-
 class Point {
 	x : number;
 	y : number;
@@ -29,7 +28,7 @@ class MagicSelection{
 	maskBorder : number[];
 	maskAnts : number[][];
 
-	constructor(imageData : ImageData) {
+	constructor(imageData : ImgData) {
 		this.maskBorder = [];
 		this.maskAnts = [];
 		this.bmON = 1;
@@ -90,100 +89,6 @@ class MagicSelection{
 		return this.maskBorder;
 	}
 
-	/* Remove bitmask of magic wand that contains point. Do not remove first bitmask
-		but adjust to the missing bitmask. */
-	removeSelection(startX : number, startY : number) {
-		var indexRemove = -1;
-
-		for (var i = 1; i < this.maskWand.length; i++) {
-			if (this.maskWand[i][startY * this.imageData.width + startX] != 0) {
-				indexRemove = i;
-			}
-		}
-
-		if (indexRemove != -1){
-			for (var i = 0; i < this.maskWand[indexRemove].length; i++) {
-				if (this.maskWand[indexRemove][i] == this.bmON) {
-					this.maskWand[0][i] = 0;
-				}
-			}
-
-			this.maskWand.splice(indexRemove, 1);// = [];
-		}
-
-		/* Merge because removed selection could also be part of another selection. Make
-			sure that maskWand[0] contains complete selection. */
-		this.merge();
-
-		return indexRemove;
-	}
-
-	/* Write original image with borders from magic selection in given imageData object. */ 
-	getImageBorders(imageData : ImageData) {
-		/* Copy orignal image. */
-		for (var i = 0; i < this.imageData.data.length; i++) {
-			imageData.data[i] = this.imageData.data[i];
-		}
-
-		this.getMaskBorder();
-		if (this.maskBorder != undefined) {
-			for (var i=0; i < this.maskBorder.length; i++) { // <--- hier
-			 	if (this.maskBorder[i] != 0) {
-			 		imageData.data[4*i] = 255;
-			 		imageData.data[4*i+1] = 255;
-			 		imageData.data[4*i+2] = 255;
-					imageData.data[4*i+3] = 255;
-				}
-			}			
-		}
-	}
-
-	/* Write original image with borders from magic selection in given imageData object. */ 
-	getImageAnts(imageData : ImageData, offset : number) {
-		/* Copy orignal image. */
-		for (var i = 0; i < this.imageData.data.length; i++) {
-			imageData.data[i] = this.imageData.data[i];
-		}
-
-		this.getMaskBorder();
-		var ants = this.marchingAnts(offset);
-		if (this.maskBorder != undefined) {
-			for (var i=0; i < this.maskBorder.length; i++) { // <--- hier
-			 	if (this.maskBorder[i] != 0 && ants[i] == 0) {
-			 		imageData.data[4*i] = 255;
-			 		imageData.data[4*i+1] = 255;
-			 		imageData.data[4*i+2] = 255;
-					imageData.data[4*i+3] = 255;
-				} else if (this.maskBorder[i] != 0 && ants[i] == this.bmON) {
-			 		imageData.data[4*i] = 0;
-			 		imageData.data[4*i+1] = 0;
-			 		imageData.data[4*i+2] = 0;
-					imageData.data[4*i+3] = 255;					
-				}
-			}			
-		}
-	}
-
-
-	/* Return RGB values of point. */
-	getColorPoint(x : number, y : number) {
-		var Red		= this.imageData.data[(x + y * this.imageData.width) * 4];
-		var Green	= this.imageData.data[(x + y * this.imageData.width) * 4 + 1];
-		var Blue	= this.imageData.data[(x + y * this.imageData.width) * 4 + 2];
-		// var Alpha	= this.imageData.data[(x + y * this.imageData.width) * 4 + 3];
-
-		return [Red, Green, Blue];
-	}
-
-	/* Return true when point is within selection. */
-	isInSelection(x : number, y : number) {
-		if (this.maskWand.length > 0 && this.maskWand[0][y * this.imageData.width + x] != 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	/* Given pixel and treshold value (1-100) a bitmask for the borders of the magic wand is returned. 
 		Algorithm checks for lines horizontally and adds line elements above and below to the 
 		stack when they match the color of the given point. */
@@ -229,18 +134,69 @@ class MagicSelection{
 		}
 		
 		/* Merge maskWand[0] with current maskWand. */
-		this.merge();
+		this.mergeMaskWand();
 
 		/* Return current maskWand. */
 		return this.maskWand[this.maskWand.length - 1];
 	}
 
-	merge() {
-		for (var i = 1; i < this.maskWand.length; i++) {
-			for (var j = 0; j < this.maskWand[0].length; j++) {
-				this.maskWand[0][j] = this.maskWand[0][j] || this.maskWand[i][j];
-			}	
+	/* Return true when point is within selection. */
+	isInSelection(x : number, y : number) {
+		if (this.maskWand.length > 0 && this.maskWand[0][y * this.imageData.width + x] != 0) {
+			return true;
+		} else {
+			return false;
 		}
+	}
+
+	marchingAnts(size : number, offset : number) {
+		// this.applyFilter(size, offset);
+		this.maskAnts[offset] = [];
+
+		/* A square of maximum size width/height of image data has to be created. */
+		var max_size = Math.max(this.imageData.width, this.imageData.height);
+
+		for (var i = 0; i < this.imageData.height; i++) {
+			for (var j = 0; j < this.imageData.width; j++) {
+				if (this.maskBorder[i*this.imageData.width + j] == 0) {
+					this.maskAnts[offset][i*this.imageData.width + j] = 0;
+				} else if ((i + j + offset) % size < size / 2) {
+					this.maskAnts[offset][i*this.imageData.width + j] = 1;
+				} else {
+					this.maskAnts[offset][i*this.imageData.width + j] = 0;
+				}
+			}
+		}
+
+		return this.maskAnts[offset];
+	}
+
+	/* Remove bitmask of magic wand that contains point. Do not remove first bitmask
+		but adjust to the missing bitmask. */
+	removeSelection(startX : number, startY : number) {
+		var indexRemove = -1;
+
+		for (var i = 1; i < this.maskWand.length; i++) {
+			if (this.maskWand[i][startY * this.imageData.width + startX] != 0) {
+				indexRemove = i;
+			}
+		}
+
+		if (indexRemove != -1){
+			for (var i = 0; i < this.maskWand[indexRemove].length; i++) {
+				if (this.maskWand[indexRemove][i] == this.bmON) {
+					this.maskWand[0][i] = 0;
+				}
+			}
+
+			this.maskWand.splice(indexRemove, 1);// = [];
+		}
+
+		/* Merge because removed selection could also be part of another selection. Make
+			sure that maskWand[0] contains complete selection. */
+		this.mergeMaskWand();
+
+		return indexRemove;
 	}
 
 	/* Return array of points on same line as given point. */
@@ -295,6 +251,15 @@ class MagicSelection{
 		return line;
 	}
 
+	/* Return RGB values of point. */
+	getColorPoint(x : number, y : number) {
+		var Red		= this.imageData.data[(x + y * this.imageData.width) * 4];
+		var Green	= this.imageData.data[(x + y * this.imageData.width) * 4 + 1];
+		var Blue	= this.imageData.data[(x + y * this.imageData.width) * 4 + 2];
+		// var Alpha	= this.imageData.data[(x + y * this.imageData.width) * 4 + 3];
+
+		return [Red, Green, Blue];
+	}	
 
 	matchPoint(x : number, y : number, treshold : number) {
 		var curColor = this.getColorPoint(x, y);
@@ -313,29 +278,11 @@ class MagicSelection{
 		}
 	}
 
-	applyFilter(size : number, offset : number) {
-		// if (this.maskAnts[offset] == undefined) {
-		this.maskAnts[offset] = [];
-
-		/* A square of maximum size width/height of image data has to be created. */
-		var max_size = Math.max(this.imageData.width, this.imageData.height);
-
-		for (var i = 0; i < this.imageData.height; i++) {
-			for (var j = 0; j < this.imageData.width; j++) {
-				if (this.maskBorder[i*this.imageData.width + j] == 0) {
-					this.maskAnts[offset][i*this.imageData.width + j] = 0;
-				} else if ((i + j + offset) % size < size / 2) {
-					this.maskAnts[offset][i*this.imageData.width + j] = 1;
-				} else {
-					this.maskAnts[offset][i*this.imageData.width + j] = 0;
-				}
-			}
+	mergeMaskWand() {
+		for (var i = 1; i < this.maskWand.length; i++) {
+			for (var j = 0; j < this.maskWand[0].length; j++) {
+				this.maskWand[0][j] = this.maskWand[0][j] || this.maskWand[i][j];
+			}	
 		}
-		// } 
 	}
-
-	marchingAnts(offset : number) {
-		this.applyFilter(8, offset);
-		return this.maskAnts[offset];
-	}	
 }
