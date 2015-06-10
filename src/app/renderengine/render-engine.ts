@@ -159,7 +159,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
         layer.setupRender();
         layer.render();
-        layer.setThumbnail(this.thumbnailDrawbuffer.getImage());
+        layer.thumbnail = this.thumbnailDrawbuffer.getImage();
         this.thumbnailDrawbuffer.unbind();
         this.gl.viewport(0, 0, this.width, this.height);
     }

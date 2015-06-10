@@ -20,7 +20,7 @@ class Layer {
     protected height : number;
 	protected posX : number;
 	protected posY : number;
-    private thumbnail : String;
+    public thumbnail : String;
 
 	protected sizeMatrix : Float32Array;
 	protected rotationMatrix : Float32Array;
@@ -152,14 +152,6 @@ class Layer {
 
     public getLayerType() : LayerType {
         return this.layerType;
-    }
-
-    public setThumbnail(thumbnail : String) {
-        this.thumbnail = thumbnail;
-    }
-
-    public getThumbnail() : String {
-        return this.thumbnail;
     }
 
 	public setupRender() { }
