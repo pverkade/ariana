@@ -140,8 +140,6 @@ class DrawEngine {
      * Function that is called at mousepress
      */
     onMousedown = (e : MouseEvent) : void => {
-        console.log(e);
-        console.log(this.drawCanvas);
         if (!this.currentPath) {
             this.saveCanvas();
             this.currentPath = new Path(this.getMousePos(e));
@@ -205,52 +203,6 @@ class DrawEngine {
 
         this.draw(this.currentPath);
         this.currentPath = null;
-    }
-
-    /*
-     * Function to activate the draw functionality
-     */
-    activate (scope : any) : void {
-        if (!this.isActive) {
-            console.log("Draw Engine activated");
-            this.isActive = true;
-
-            /* Generate a temporarily canvas to store the contents of the draw canvas */
-            this.memCanvas = document.createElement('canvas');
-            this.memCanvas.width = this.canvas.width;
-            this.memCanvas.height = this.canvas.height;
-            this.memContext = <CanvasRenderingContext2D>this.memCanvas.getContext('2d');
-
-            this.drawContext = <CanvasRenderingContext2D>this.drawCanvas.getContext('2d');
-
-            /* Put drawCanvas in front of the other canvas */
-            /*this.drawCanvas.className = "main-canvas";
-            this.drawCanvas.setAttribute("id", "drawcanvas");
-            this.drawCanvas.style.zIndex = '2';
-            this.drawCanvas.style.marginLeft = scope.config.canvas.x + 'px';
-            this.drawCanvas.style.marginTop = scope.config.canvas.y + 'px';
-
-            this.canvas.parentNode.appendChild(this.drawCanvas);*/
-        }
-    }
-
-    /*
-     * Function to deactivate the draw functionality
-     * TODO: use this functionality somewhere. :')
-     */
-    deactivate () : void {
-        if (this.isActive) {
-            console.log("Draw engine deactivated");
-            this.isActive = false;
-
-            //this.canvas.parentNode.removeChild(this.drawCanvas);
-            this.memContext = null;
-            this.memCanvas = null;
-            //this.drawContext = null;
-            //this.drawCanvas = null;
-
-            //TODO: remove the draw canvas?
-        }
     }
 
     /*
@@ -353,8 +305,8 @@ class DrawEngine {
     }
 
     clearCanvases() : void {
-        this.clearCanvas();
         this.memContext.clearRect(0, 0, this.memCanvas.width, this.memCanvas.height);
+        this.clearCanvas();
     }
 
     /*

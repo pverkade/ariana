@@ -6,18 +6,19 @@ var brushTool = {
         
         //scope.drawEngine.activate();
         scope.drawEngine.setBrush(brushType.THIN);
-        scope.drawEngine.activate(scope);
+        //scope.drawEngine.activate(scope);
         //$scope.drawEngine.setBrush(brushType.THIN);
     },
 
     stop: function() {
         var scope = angular.element($("#background")).scope();
 
-        var image = new Image();
+        /*var image = new Image();
         image.onload = function() { scope.newLayerFromDrawing(image); }
         image.src = scope.drawEngine.getCanvasImageData();
 
-        scope.drawEngine.deactivate();
+        scope.drawEngine.deactivate();*/
+        scope.drawEngine.clearCanvases();
     },
     
     mouseDown: function($scope, event) {
