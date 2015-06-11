@@ -1,6 +1,7 @@
 <!-- Template for the toolbar. -->
 
-<div id="toolbar">
+<div id="toolbar"
+    ng-class="{'fade-on inactive': !checkVisible(), 'fade-off': checkVisible()}">
     <div class="brand float-left">
         ARIANA
     </div>
