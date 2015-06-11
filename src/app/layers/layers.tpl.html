@@ -23,7 +23,7 @@
     </div>
 </div> -->
 
-<div class="layer-container">
+<div class="layer-container" ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}">
     <div class="box-shadow" ng-controller="ToolboxAccordionCtrl">
         <accordion close-others="true">
 
