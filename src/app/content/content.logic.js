@@ -14,7 +14,7 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
         /* Call the appropriate tool functions. */
         var toolFunctions = $scope.config.tools.activeToolFunctions;
         if (toolFunctions) toolFunctions.mouseMove($scope);      
-    }
+    };
 
     /* This fucntion is triggered on a click. */
     $scope.mouseDown = function(event) {
@@ -33,7 +33,7 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
         /* Call the appropriate tool functions. */
         var toolFunctions = $scope.config.tools.activeToolFunctions;
         if (toolFunctions) toolFunctions.mouseDown($scope);
-    }
+    };
     
     /* This function is called when a mouse button is released. */
     $scope.mouseUp = function(event) {
@@ -50,4 +50,25 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
     /* Get the canvas element and start the engine. */
     var canvas = document.getElementById('main-canvas');
     $scope.startEngine(canvas);
+    
+    // Add Arnold the First
+    var image1 = new Image();
+    image1.src="/assets/img/arnold2.jpg";
+
+    var image2 = new Image();
+    image2.src="/assets/img/InstaAdolf.png";
+
+    var count = 1;
+    function done() {
+        if (count) {
+            count --;
+            return;
+        }
+
+        $scope.newLayerFromImage(image1);
+        $scope.newLayerFromImage(image2);
+    }
+    
+    image1.onload = done;
+    image2.onload = done;
 });

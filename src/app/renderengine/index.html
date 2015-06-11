@@ -4,6 +4,8 @@
     <meta charset=utf-8 />
     <title></title>
     <script src="gl-matrix.js"></script>
+    <script src="resource-manager.js"></script>
+    <script src="shaders.js"></script>
     <script src="render-helper.js"></script>
     <script src="layer.js"></script>
     <script src="base-program.js"></script>
@@ -12,9 +14,17 @@
     <script src="image-shader-program.js"></script>
     <script src="render-engine.js"></script>
     <script src="drawbuffer.js"></script>
-    <script src="filter.js"></script>
-    <script src="brightness-filter.js"></script>
     <script src="selection-program.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    <script src="filters/filter.js"></script>
+    <script src="filters/contrast-filter.js"></script>
+    <script src="filters/brightness-filter.js"></script>
+    <script src="filters/sepia-filter.js"></script>
+    <script src="filters/invert-colors-filter.js"></script>
+    <script src="filters/saturation-filter.js"></script>
+    <script src="filters/noise-filter.js"></script>
+    <script src="filters/colorize-filter.js"></script>
 
     <script>
         function start() {
@@ -22,12 +32,11 @@
             var image2 = new Image();
             var canvas = document.getElementById("glcanvas");
             var renderEngine = new RenderEngine(canvas);
-            var magicSelection = new MagicSelection();
-            var gl = renderEngine.getWebGLRenderingContext();
-            var selectionProgram = new SelectionProgram(gl);
-            var drawbuffer = renderEngine.drawbuffer1;
+            //var magicSelection = new MagicSelection();
+            //var selectionProgram = new SelectionProgram(gl);
+            //var drawbuffer = renderEngine.drawbuffer1;
 
-            renderEngine.resize(40, 40);
+            //renderEngine.resize(40, 40);
 
             var counter = 1;
             function done() {
@@ -35,18 +44,21 @@
                     counter --;
                 }
                 else {
-                    var imageLayer = new ImageLayer(gl, image);
-                    imageLayer.setScale(.5,.5);
-                    imageLayer.setRotation(1.);
-                    imageLayer.setPos(0,0.5);
-
-                    var imageLayer2 = new ImageLayer(gl, image2);
-                    //imageLayer2.setScale(.3,.3);
-
+                    var imageLayer = renderEngine.createImageLayer(image);
+                    var imageLayer2 = renderEngine.createImageLayer(image2);
+                    imageLayer.setPos(400, 240);
                     renderEngine.addLayer(imageLayer);
                     //renderEngine.addLayer(imageLayer2);
+
+                    var filter = new ColorizeFilter();
+                    renderEngine.filterLayers([0], filter);
+                    renderEngine.render();
+
+                    //$("img").attr("src", imageLayer.thumbnail);
+
+                    //renderEngine.addLayer(imageLayer2);
                     //renderEngine.reorder(1, 0);
-                    drawbuffer.bind();
+                    /*drawbuffer.bind();
                     imageLayer2.setupRender();
                     imageLayer2.render();
                     var data = drawbuffer.getData();
@@ -100,7 +112,7 @@
                         gl.disable(gl.STENCIL_TEST);
 
                         renderEngine.destroy();
-                    }, false);
+                    }, false);*/
                 }
             }
 
@@ -177,12 +189,12 @@
 
 <body onload="start()">
 <div id="canvas">
-    <canvas id="glcanvas" style="width: 640px; height: 640px;" width="64px" height="64px">
+    <canvas id="glcanvas" width="800px" height="480px">
         Your browser doesn't appear to support the HTML5 <code>&lt;canvas&gt;</code> element.
     </canvas>
+    <img width="800px" height="480px" alt="test"/>
 </div>
 <div id="filters"></div>
 <div id="layers"></div>
-<img id="images" />
 </body>
 </html>

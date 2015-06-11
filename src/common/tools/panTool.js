@@ -26,4 +26,5 @@ var panTool = {
         
         $("#main-canvas").css("transform", "translate(" + $scope.config.canvas.x + "px, " + $scope.config.canvas.y + "px)");
     },
-}
+};
+
