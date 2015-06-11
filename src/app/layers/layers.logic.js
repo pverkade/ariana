@@ -1,17 +1,49 @@
 angular.module('ariana').controller('layersCtrl', function($scope) {
-    $scope.getAllLayers = function() {
-        var result = [];
+    $scope.addLayer = function() {
+        event.stopPropagation();
+        
+        $scope.config.layers.layerInfo.push({
+            "name": $scope.config.layers.currentLayer,
+            "x": 0,
+            "y": 0,
+            "xScale": 1,
+            "yScale": 1,
+            "rotation": 0
+        });
 
-        for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) {
-            // add if layer is modifiable by user
-            result.push($scope.renderEngine.getLayer(i));
+        $scope.config.layers.numberOfLayers = $scope.config.layers.layerInfo.length;
+    };
+
+    $scope.removeLayer = function(event, index) {
+        event.stopPropagation();
+        $scope.config.layers.layerInfo.splice(index, 1);
+        $scope.config.layers.numberOfLayers = $scope.config.layers.layerInfo.length;
+    };
+
+    $scope.moveLayerUp = function(event, index) {
+        event.stopPropagation();
+        console.log(index);
+
+        if (index > 0) {
+            $scope.config.layers.layerInfo.swap(index, index - 1);
         }
     };
 
-    $scope.safeLayerReorder = function (i, j) {
-        var num = $scope.config.layers.numberOfLayers;
-        if (0 <= i && i < num && 0 <= j && j < num) {
-            this.renderEngine.reorder(i, j);
+    $scope.moveLayerDown = function(event, index) {
+        event.stopPropagation();
+        console.log(index);
+
+        if (index < $scope.config.layers.numberOfLayers - 1 && $scope.config.layers.numberOfLayers > 1) {
+            $scope.config.layers.layerInfo.swap(index, index + 1);
         }
+    };
+
+    /* This function selects a specific layer if possible. */
+    $scope.selectLayer = function(newIndex) {
+        if (0 <= newIndex && newIndex < $scope.config.layers.numberOfLayers) {
+            $scope.config.layers.currentLayer = newIndex;
+            return true;
+        }
+        return false;
     };
 });

@@ -1,7 +1,39 @@
-.main-canvas {
+/*
+ * Project Arinana
+ * content.scss
+ *
+ * This file contains the style definition for the main content. This includes 
+ * the background and the canvas-element;
+ *
+ */
+
+ /*
+.content {
+	background-color: red;
+	height: 100%;
+}
+
+.content-main {
+    overflow: hidden;
+}
+*/
+
+#background {
     position: absolute;
-    background-color: $dark;
-    left: 0;
     top: 0;
-    cursor: grab;
+    left: 0;
+    z-index: 0;
+    
+    background-color: $dark;
+    width: 100%;
+    height: 100%;
+}
+
+#main-canvas {
+    position: absolute;
+    background-color: #ffffff;
+    z-index: 1;
+    
+    @extend .box-shadow;
+    @include transform(translate(128px, 128px));
 }

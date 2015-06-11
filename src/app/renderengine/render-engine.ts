@@ -157,6 +157,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
     }
 
     public destroy() {
+
         for (var i = 0; i < this.layers.length; i++) {
             this.layers[i].destroy();
         }

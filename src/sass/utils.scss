@@ -1,3 +1,45 @@
+.container-full {
+	margin: 0 auto;
+	padding: 0;
+	width: 100%;
+}
+
 .bg-white {
     background-color: #ffffff;   
+}
+
+.selectable {
+	&:hover {
+        background-color: lighten($light, $hover-lighten);
+        cursor: pointer;
+    }
+}
+
+.col-md-8 {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.col-md-2 {
+	padding-left: 13px;
+}
+
+accordion {
+	.ng-enter {
+		transition: 0.3s ease-in all;
+		opacity: 0;
+	}
+
+	.ng-enter.ng-enter-active {
+		opacity:1;
+	}
+
+	.ng-leave {
+		transition: 0.5s ease-out all;
+		transform: translateX(0px);
+	}
+
+	.ng-leave.ng-leave-active {
+		transform: translateX(400px); 
+	}
 }

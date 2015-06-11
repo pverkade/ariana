@@ -1,20 +1,22 @@
 var rotateTool = {
     
     start: function() {
-        $("#main-canvas").css("cursor", "grab");
+        $("#background").css("cursor", "grab");
     },
     
     mouseDown: function($scope) {
-        $("#main-canvas").css("cursor", "grabbing");
+        $("#background").css("cursor", "grabbing");
     },
     
     mouseUp: function($scope) {
-        $("#main-canvas").css("cursor", "grab");
+        $("#background").css("cursor", "grab");
     },
 
     mouseMove: function($scope) {
-        var selectedLayers = $scope.getSelectedLayers();
-        if (selectedLayers == []) return;
+        if (!($scope.config.mouse.button[1] || $scope.config.mouse.button[3])) return;
+        
+        var currentLayer = $scope.config.layers.currentLayer;
+        if (currentLayer == -1) return;
 
         var mouse = $scope.config.mouse;
         var canvas = document.getElementById("main-canvas");
@@ -35,5 +37,5 @@ var rotateTool = {
 
         $scope.renderEngine.render();
 
-    }
+    },
 };

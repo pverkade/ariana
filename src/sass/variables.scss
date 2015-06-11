@@ -12,22 +12,18 @@ $fonts: Roboto, Noto, Helvetica, Arial, sans-serif;
 /* Colors */
 $dark:      #222;
 $light:     #333;
-$very-light: lighten($light, 10%);
 
 $white:     #bbb;
 $black:     #000;
 $brand-color: #8c4;
 
 /* Layout */
-$blocksize: 60px;
+$blocksize: 64px;
 
 /* Effects */
-$hover-lighten: 10%;
 $box-shadow-size: 4px;
+$border-thickness: 2px;
 
-/* Toolbox */
-$toolbox-animation-time: 400ms;
-
-/* Toolbar */
-$pop-up-animation-time: 400ms;
-$pop-up-options: 5;
+$hover-lighten: 10%;
+$active-lighten: 15%;
+$seperator-darken: 5%;
