@@ -1,9 +1,16 @@
-<canvas autosize rendertarget="rendertarget" class="main-canvas" id="main-canvas" 
+<!-- Template for the background and canvas elements -->
+
+<div id="background"
     ng-mousemove="mouseMove($event)" 
     ng-mouseup="mouseUp($event)"
     ng-mousedown="mouseDown($event)"
-    ng-right-click="rightClick($event)"
-    width="1280px"
-    height="720px">
+    ng-right-click="rightClick($event)">
+    
+    <canvas rendertarget="rendertarget" 
+        id="main-canvas" 
+        width="800"
+        height="600">
     </canvas>
+    
+</div>
 

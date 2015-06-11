@@ -1,11 +1,11 @@
 /**
  * Created by zeta on 6/2/15.
  */
-/// <reference path="shader-program"/>
-/// <reference path="render-helper"/>
-/// <reference path="image-shader-program"/>
+/// <reference path="../shader-program"/>
+/// <reference path="../render-helper"/>
+/// <reference path="../image-shader-program"/>
+/// <reference path="../resource-manager"/>
 /// <reference path="filter"/>
-
 
 class BrightnessProgram extends FilterProgram {
     protected brightnessLocation;
@@ -23,10 +23,10 @@ class BrightnessProgram extends FilterProgram {
 
 class BrightnessFilter extends Filter {
     protected filterType = FilterType.Brightness;
-    protected static program : BrightnessProgram;
+    protected program : BrightnessProgram;
 
-    constructor (gl : WebGLRenderingContext) {
-        super(gl);
+    constructor () {
+        super();
         this.attributes = {
             "brightness" : {
                 "value" : 1,
@@ -36,16 +36,17 @@ class BrightnessFilter extends Filter {
                 "min": 0
             }
         };
-
-        if (!BrightnessFilter.program) {
-            BrightnessFilter.program = new BrightnessProgram(this.gl);
-        }
     }
 
-    render (texture : WebGLTexture) {
-        BrightnessFilter.program.activate();
-        BrightnessFilter.program.bindTexture(texture);
-        BrightnessFilter.program.setUniforms(this.attributes["brightness"]["value"]);
+    render (resourceManager : ResourceManager, texture : WebGLTexture) {
+        super.render(resourceManager, texture);
+        if (!this.program) {
+            this.program = resourceManager.brightnessProgramInstance();
+        }
+
+        this.program.activate();
+        this.program.bindTexture(texture);
+        this.program.setUniforms(this.getAttributeValue("brightness"));
 
         this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
     }

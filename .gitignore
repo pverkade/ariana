@@ -7,6 +7,6 @@ src/.idea/*
 
 *.log
 Thumbs.db
-*/Thumbs.db
+/**/Thumbs.db
 .sass-cache/
 .tscache/*
