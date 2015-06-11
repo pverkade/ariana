@@ -1,4 +1,7 @@
-<div class="toolset" ng-show="checkVisible()">
+<!-- Template for the toolbox elements. -->
+
+<div class="toolset" 
+    ng-show="checkVisible()">
     
     <div class="tool" id="{{name}}" 
         ng-repeat="(name, tool) in toolbox" 
@@ -11,7 +14,6 @@
             ng-show="config.tools.activeToolset == '{{name}}'">
 	        
 	        <div class="tool" id="{{name}}" 
-
                 ng-repeat="(name, subtool) in tool.tools" 
                 ng-click="selectTool($event, name)"
                 ng-class="{active: config.tools.activeTool == '{{name}}'}">
@@ -19,8 +21,9 @@
             </div>
         </div>
     </div>
-
 </div>
+
+<!-- Template for the color-preview elements. -->
 
 <div class="color-preview" ng-click="swapColors()" ng-show="checkVisible()">
     <div class="color-primary"   style="background-color: rgb({{config.tools.colors.primary.r}},   {{config.tools.colors.primary.g}},   {{config.tools.colors.primary.b}})"> </div>

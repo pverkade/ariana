@@ -8,8 +8,12 @@ var app = angular.module('ariana', [
     'ngAnimate'
 ]);
 
+/* The AppController is the main controller of the application. */
 app.controller('AppCtrl', ['$scope',
     function($scope) {
+        
+        /* The config object contains the current state of the layers, tools, 
+         * canvas and the mouse. It is accessed by all kinds of controllers. */
         $scope.config = {
             mouse: {
                 old : {
@@ -51,19 +55,20 @@ app.controller('AppCtrl', ['$scope',
             layers: {
                 numberOfLayers: 0,
                 currentLayer: -1,
-                layerInfo: [
-                
-                ]
+                layerInfo: [],
             }
         };
 
         $scope.renderEngine = null;
 
+        /* This function creates the RenderEngine. It requires the canvas to
+         * render on. */
         $scope.startEngine = function(canvas) {
             $scope.renderEngine = new RenderEngine(canvas);
-            console.log("Broom broom!");
         };
 
+        /* This function creates a new layer from a given Image-object. The new
+         * layer is placed on top. */
         $scope.newLayerFromImage = function(image) {
             var imageLayer = new ImageLayer($scope.renderEngine.getWebGLRenderingContext(), image);
             $scope.renderEngine.addLayer(imageLayer);
@@ -92,14 +97,12 @@ app.controller('AppCtrl', ['$scope',
             $scope.renderEngine.render();
         };
 
-        $scope.getImage = function() {
-            // TODO render image to file
-        };
-
-        $scope.applyFilter = function(name, allLayers) {
+        /* This function will apply a given filter on the current or all
+         * layers. */
+         $scope.applyFilter = function(name, allLayers) {
             
             if (name == "brightness") {
-                // TODO start element with parameters, layer button, 
+                // TODO start that asks for parameters 
                 // TODO actually apply filter on current layer/all layers
                 
                 //var brightnessFilter = new BrightnessFilter();

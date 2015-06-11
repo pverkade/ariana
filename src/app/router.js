@@ -1,3 +1,5 @@
+/* The router displays the correct tamplate in the correct ui-view for every
+ * given state. */
 angular.module('ariana').config(function($stateProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
     
@@ -7,7 +9,7 @@ angular.module('ariana').config(function($stateProvider, $locationProvider) {
             views: {
                 "content": {
                     templateUrl: "app/content/content.tpl.html",
-                    controller: 'ContentCtrl'
+                    controller: 'ContentController'
                 },
                 "content-menu": {
                     templateUrl: "app/content/menu/menu.content.tpl.html",
@@ -15,7 +17,7 @@ angular.module('ariana').config(function($stateProvider, $locationProvider) {
                 },
                 "toolbar": {
                     templateUrl: "app/toolbar/toolbar.tpl.html",
-                    controller: 'toolbarCtrl'
+                    controller: 'ToolbarController'
                 },
                 "layers": {
                     templateUrl: "app/layers/layers.tpl.html",
@@ -23,7 +25,7 @@ angular.module('ariana').config(function($stateProvider, $locationProvider) {
                 },
                 "toolbox": {
                     templateUrl: "app/toolbox/toolbox.tpl.html",
-                    controller: 'toolBoxController'
+                    controller: 'ToolBoxController'
                 }
             }
         })
@@ -40,6 +42,7 @@ angular.module('ariana').config(function($stateProvider, $locationProvider) {
                 }
             }
         })
+        /*
         .state('settings', {
             url: "/settings",
             views: {
@@ -64,5 +67,5 @@ angular.module('ariana').config(function($stateProvider, $locationProvider) {
                     controller: 'toolBoxController'
                 }
             }
-        });
+        });*/
 });

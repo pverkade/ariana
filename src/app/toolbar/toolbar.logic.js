@@ -1,10 +1,11 @@
-app.controller('toolbarCtrl', ['$scope', '$modal',
+/* The ToolbarController contains the behaviour of the toolbar. */
+app.controller('ToolbarController', ['$scope', '$modal',
     function ($scope, $modal) {
       
+        /* This functions saves the canvas to an image-file. */
         $scope.saveImage = function() {
-            // TODO I have no idea if this works :^)
+            /* Receive image data in base64 encoding. */
             var image = $scope.renderEngine.renderToImg();
-            // retrieves the base64 data
             var data = image.substr(image.indexOf(',') + 1).toString();
             var url = "/save-image";
 
@@ -28,6 +29,7 @@ app.controller('toolbarCtrl', ['$scope', '$modal',
             document.body.removeChild(myForm) ;
         };
         
+        /* This function opens the upload modal. */
         $scope.openUploadModal = function() {
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/upload/upload.tpl.html',
@@ -37,6 +39,7 @@ app.controller('toolbarCtrl', ['$scope', '$modal',
             });
         };
         
+        /* This function opens the transformation modal. */
         $scope.openTransformationModal = function() {
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/transformations/transformations.tpl.html',
@@ -46,6 +49,7 @@ app.controller('toolbarCtrl', ['$scope', '$modal',
             });
         };
     
+        /* This function opens the filters modal. */
         $scope.openFilterModal = function() {
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/filters/filters.tpl.html',
@@ -54,34 +58,5 @@ app.controller('toolbarCtrl', ['$scope', '$modal',
                 size: 'lg'
             });
         };    
-
-        /*$scope.loadImages = function() {
-            $("img.svg").each(function () {
-                var img = $(this);
-                var id = img.attr('id');
-                var src = img.attr('data');
-
-                $(this).removeClass("svg");
-
-                $.get(src, function (data) {
-                    // Get the SVG tag, ignore the rest
-                    var svg = $(data).find('svg');
-
-                    // Add replaced image's ID to the new SVG
-                    if (typeof id !== 'undefined') {
-                        svg = svg.attr('id', id);
-                    }
-
-                    // Remove any invalid XML tags as per http://validator.w3.org
-                    svg = svg.removeAttr('xmlns');
-                    svg = svg.removeAttr('xmlns:xlink');
-
-                    // Replace image with new SVG
-                    img.replaceWith(svg);
-
-                }, 'xml');
-            });
-        };
-        $scope.loadImages();*/
     }
 ]);

@@ -1,5 +1,5 @@
-angular.module('ariana').controller('ContentCtrl', function($scope, $window) {
-    //$scope.rendertarget = null;
+/* The ContenController contains the behaviour of the main content. */
+angular.module('ariana').controller('ContentController', function($scope, $window) {
     
     /* Set the cursor for the deafult tool: the pan tool. */
     $("#background").css("cursor", "grab");
@@ -47,23 +47,7 @@ angular.module('ariana').controller('ContentCtrl', function($scope, $window) {
         if (toolFunctions) toolFunctions.mouseUp($scope);
     }
     
-    /* Get the canvas element. */
+    /* Get the canvas element and start the engine. */
     var canvas = document.getElementById('main-canvas');
     $scope.startEngine(canvas);
-    
-    // Add Arnold the First
-    var image1 = new Image();
-    image1.src="/assets/img/arnold2.jpg";
-    
-    image1.onload = function() {
-        $scope.newLayerFromImage(image1);
-    }
-    
-    // Add the moustache
-    var image2 = new Image();
-    image2.src="/assets/img/InstaAdolf.png";
-    
-    image2.onload = function() {
-        $scope.newLayerFromImage(image2);
-    }
 });
