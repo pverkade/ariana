@@ -123,6 +123,13 @@ class Draw {
         //this.mainCanvas = canvas;
     }
 
+    getMousePos = (e : MouseEvent) : Position2D => {
+        var bbox = this.drawCanvas.getBoundingClientRect(); //top en left
+        var x : number = e.pageX - bbox.left;
+        var y : number = e.pageY - bbox.top;
+        return new Position2D(x, y);
+    }
+
     /*
      * Function that is called at mousepress
      */
@@ -131,14 +138,14 @@ class Draw {
         console.log(this.drawCanvas);
         if (!this.currentPath) {
             this.saveCanvas();
-            this.currentPath = new Path(new Position2D(e.offsetX, e.offsetY));
+            this.currentPath = new Path(this.getMousePos(e));
             if (this.drawType == drawType.RECTANGLE || this.drawType == drawType.CIRCLE) {
-                this.currentPath.addPosition(new Position2D(e.offsetX, e.offsetY));
+                this.currentPath.addPosition(this.getMousePos(e));
             }
         }
 
         if (this.drawType == drawType.LINE) {
-            this.currentPath.addPosition(new Position2D(e.offsetX, e.offsetY));
+            this.currentPath.addPosition(this.getMousePos(e));
         }
     }
 
@@ -164,10 +171,10 @@ class Draw {
 
             if (this.drawType == drawType.LINE || this.drawType == drawType.RECTANGLE
                  || this.drawType == drawType.CIRCLE) {
-                this.currentPath.setLastPosition(new Position2D(e.offsetX, e.offsetY));
+                this.currentPath.setLastPosition(this.getMousePos(e));
             }
             else {
-                this.currentPath.addPosition(new Position2D(e.offsetX, e.offsetY));
+                this.currentPath.addPosition(this.getMousePos(e));
             }
             this.draw(this.currentPath);
         }
@@ -178,16 +185,16 @@ class Draw {
      */
     onMouseup = (e : MouseEvent) : void => {
         if (this.drawType == drawType.RECTANGLE || this.drawType == drawType.CIRCLE) {
-            this.currentPath.setLastPosition(new Position2D(e.offsetX, e.offsetY));
+            this.currentPath.setLastPosition(this.getMousePos(e));
         }
         else if (this.drawType == drawType.LINE) {
             if (e.buttons > 0) {
                 return;
             }
-            this.currentPath.setLastPosition(new Position2D(e.offsetX, e.offsetY));
+            this.currentPath.setLastPosition(this.getMousePos(e));
         }
         else {
-            this.currentPath.addPosition(new Position2D(e.offsetX, e.offsetY));
+            this.currentPath.addPosition(this.getMousePos(e));
         }
 
         this.draw(this.currentPath);
