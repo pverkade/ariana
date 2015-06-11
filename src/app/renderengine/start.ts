@@ -22,15 +22,16 @@ function start() {
         var topLayers : String = renderEngine.renderIndicesToImg(upperIndices);
         var topLayersImage = new Image();
         topLayersImage.src = topLayers.toString();
-        console.log(topLayers);
-        $("img").attr("src", topLayers);
+        //console.log(topLayers);
 
-        topContext.save();
-        topContext.scale(-1, 1);
-        topContext.drawImage(topLayersImage, 0, 0, canvas.width, canvas.height);
-        topContext.restore();
+        topLayersImage.onload = function() {
+            topContext.save();
+            topContext.scale(-1.0, 1.0);
+            topContext.drawImage(topLayersImage, -canvas.width, 0, canvas.width, canvas.height);
+            topContext.restore();
 
-        renderEngine.render();
+            renderEngine.render();
+        }
     }
 
     function closeDrawMode() {
@@ -63,7 +64,7 @@ function start() {
 
             enterDrawMode(1);
 
-            {
+            /*{
                 overlayContext.save();
                 overlayContext.strokeStyle = "#FF0000";
                 overlayContext.translate(imageLayer.getPosX(), imageLayer.getPosY());
@@ -75,7 +76,7 @@ function start() {
                     imageLayer.getHeight()
                 );
                 overlayContext.restore();
-            }
+            }*/
         }
     }
 

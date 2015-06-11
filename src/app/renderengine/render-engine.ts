@@ -12,7 +12,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
     private gl : WebGLRenderingContext;
 
     /* Array of layers in the order that the user sees them */
-    private layers : Array<Layer>;
+    public layers : Array<Layer>;
     private drawbuffer1 : DrawBuffer;
     private drawbuffer2 : DrawBuffer;
     private thumbnailDrawbuffer : DrawBuffer;
@@ -75,9 +75,13 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
 
     public addLayer(layer : Layer) {
         /* Append layer to user array */
+        this.insertLayer(layer, 0);
+    }
+
+    public insertLayer(layer : Layer, index : number) {
         layer.registerNotifyPropertyChanged(this);
         this.createThumbnail(layer);
-        this.layers.push(layer);
+        this.layers.splice(index, 0, layer);
     }
  
     public removeLayer(index : number) {
@@ -101,6 +105,10 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         /* Draw all layers to the currently bound framebuffer */
         for (var i = 0; i < numItems; i++) {
             var layer = this.layers[i];
+            if (layer.isHidden()) {
+                continue;
+            }
+
             if (layer.getLayerType() != oldType) {
                 /*
                  * We're drawing a different type of layer then our previous one,
@@ -139,17 +147,6 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         imageLayer.setDimensions(this.width, this.height);
     }
 
-    public renderToImg() : String {
-        /* Render all layers to a framebuffer and return a 64base encoded image */
-        this.drawbuffer1.bind();
-        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
-        this.render();
-        var val = this.drawbuffer1.getImage();
-        this.drawbuffer1.unbind();
-
-        return val;
-    }
-
     public getPixelColor(x : number, y : number) : Uint8Array {
         var value = new Uint8Array(4);
         this.gl.readPixels(x, this.height-y-1, 1, 1, this.gl.RGBA, this.gl.UNSIGNED_BYTE, value);
@@ -180,15 +177,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         this.createThumbnail(layer);
     }
 
-    public startSelection() {
-        // ...
-    }
-
-    public rasterize(indices : number[]) : ImageLayer {
-        /* Draw the old layer in drawbuffer1 */
-        this.drawbuffer1.bind();
-        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
-
+    private renderIndices(indices : number[]) {
         var oldType = -1;
         for (var i = 0; i < indices.length; i++) {
             // Take the old layer (one layer at a time)
@@ -204,6 +193,34 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
             layer.render();
             layer.destroy();
         }
+    }
+
+    public renderIndicesToImg(indices : number[]) : String {
+        this.drawbuffer1.bind();
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
+
+        this.renderIndices(indices);
+
+        var data : String = this.drawbuffer1.getImage();
+        this.drawbuffer1.unbind();
+
+        return data;
+    }
+
+    public renderToImg() : String {
+        var indices : number[] = [];
+        for (var i = 0; i < this.layers.length; i++) {
+            indices.push(i);
+        }
+        return this.renderIndicesToImg(indices);
+    }
+
+    public rasterize(indices : number[]) : ImageLayer {
+        /* Draw the old layer in drawbuffer1 */
+        this.drawbuffer1.bind();
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
+
+        this.renderIndices(indices);
 
         /* Create a new image layer that copies over the framebuffer */
         var tmpLayer : ImageLayer = this.createImageLayer(null);
