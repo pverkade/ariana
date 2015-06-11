@@ -1,71 +1,46 @@
-<nav id="toolbar" class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-                <!-- collaped menu icon --> 
-                <img class="svg" alt="new" data="/assets/vectors/menu.svg">
-            </button>
-            <a class="navbar-brand m-r-xl" href="/">
-                <!--<img src="/assets/image.png" width="60px" height="60px">-->
-                ARIANA
-            </a>
-        </div>
-        <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li class="inactive tool">
-                    <a> 
-                        <!-- new file -->
-                        <img class="svg" alt="new" data="/assets/vectors/file.svg">
-                    </a>
-                </li>
-                <li class="tool">
-                    <a ng-click="openUploadModal()"> 
-                        <!-- load file -->
-                        <!--<img class="svg" alt="upload" data="/assets/vectors/upload.svg">-->
-                        <img class="svg" data="/assets/vectors/upload.svg"/>
-                    </a>
-                </li>
-                <li class="tool">
-                    <a ng-click="saveImage()">
-                        <!-- export file --> 
-                        <img class="svg" alt="save" data="/assets/vectors/download.svg">
-                    </a>
-                </li>
-                <li class="seperator"></li>
-                <li class="inactive tool">
-                    <a ng-click="openTransformationModal()">
-                        <!-- standard transformations -->
-                        <img class="svg" alt="transform" data="/assets/vectors/rotate-right-variant.svg">
-                    </a>
-                </li>
-                <li class="inactive tool">
-                    <a ng-click="openFilterModal()"> 
-                        <!-- filters and effects -->
-                        <img class="svg" alt="filters" data="/assets/vectors/star-outline.svg">
-                    </a>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="inactive tool">
-                    <a> 
-                        <!-- undo button -->
-                        <img class="svg" alt="undo" data="/assets/vectors/undo-variant.svg">
-                    </a>
-                </li>
-                <li class="inactive tool">
-                    <a> 
-                        <!-- redo button -->
-                        <img class="svg" alt="redo" data="/assets/vectors/redo-variant.svg">
-                    </a>
-                </li>
-                <li class="seperator"></li>
-                <li class="inactive tool">
-                    <a> 
-                        <!-- help button -->
-                        <img class="svg" alt="help" data="/assets/vectors/school.svg">
-                    </a>
-                </li>
-            </ul>
-        </div>
+<!-- Template for the toolbar. -->
+
+<div id="toolbar">
+    <div class="brand float-left">
+        ARIANA
     </div>
-</nav>
+    
+    <ul>
+        <li class="inactive tool float-left">
+            <!-- new canvas -->
+            <i class="mdi mdi-file"></i>
+        </li>
+        <li class="tool float-left" ng-click="openUploadModal()">
+            <!-- import file -->
+            <i class="mdi mdi-upload"></i>
+        </li>
+        <li class="tool float-left" ng-click="saveImage()">
+            <!-- export file --> 
+            <i class="mdi mdi-download"></i>
+        </li>
+        <li class="seperator float-left"></li>
+        <li class="inactive tool float-left" ng-click="openTransformationModal()">
+            <!-- standard transformations -->
+            <i class="mdi mdi-rotate-right-variant"></i>
+        </li>
+        <li class="inactive tool float-left" ng-click="openFilterModal()">
+            <!-- filters and effects -->
+            <i class="mdi mdi-star-outline"></i>
+        </li>
+ 
+        <!-- Float-right elements are in reverse order. -->
+        <li class="inactive tool float-right">
+            <!-- help button -->
+            <i class="mdi mdi-school"></i>
+        </li>
+        <li class="seperator float-right"></li>
+        <li class="inactive tool float-right">
+            <!-- redo button -->
+            <i class="mdi mdi-redo-variant"></i>
+        </li>
+        <li class="inactive tool float-right">
+            <!-- undo button -->
+            <i class="mdi mdi-undo-variant"></i>
+        </li>
+    </ul>
+</div>

@@ -1,7 +1,7 @@
 var translateTool = {
 
     start: function() {
-        $("#main-canvas").css("cursor", "move");
+        $("#background").css("cursor", "move");
     },
 
     mouseDown: function($scope) {
@@ -11,33 +11,21 @@ var translateTool = {
     },
 
     mouseMove: function($scope) {
+        if (!($scope.config.mouse.button[1] || $scope.config.mouse.button[3])) return;
 
-        if ($scope.config.mouse.click.down == false) return;
+        var dx = $scope.config.mouse.current.x - $scope.config.mouse.old.x;
+        var dy = $scope.config.mouse.current.y - $scope.config.mouse.old.y;
+        console.log(dx, dy);
+        
+        $scope.config.mouse.old.x += dx;
+        $scope.config.mouse.old.y += dy;
 
-        var selectedLayers = $scope.getSelectedLayers();
-        if (selectedLayers == []) return;
+        var currentLayer = $scope.config.layers.currentLayer;
+        if (currentLayer == -1) return;
+        
+        var currentX = $scope.renderEngine.layers[currentLayer].getPosX();
+        var currentY = $scope.renderEngine.layers[currentLayer].getPosY();
 
-        console.log("selected", selectedLayers);
-
-        var width = $scope.renderEngine.width;
-        var height = $scope.renderEngine.height;
-
-        function normalize(x) {
-            return 2 * (x / width) - 1;
-        }
-
-        selectedLayers.forEach(function (layer) {
-            var mouse = $scope.config.mouse;
-
-            var dx = normalize(mouse.current.x) - normalize(mouse.old.x);
-            var dy = normalize(mouse.current.y) - normalize(mouse.old.y);
-
-            var xOffset = layer.getPosX();
-            var yOffset = layer.getPosY();
-
-            layer.setPos(xOffset + dx, yOffset - dy);
-        });
-
-        $scope.renderEngine.render();
-    }
+        $scope.renderEngine.layers[currentLayer].setPos(currentX + dx, currentY + dy);
+    },
 };

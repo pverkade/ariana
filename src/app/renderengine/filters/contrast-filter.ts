@@ -1,18 +1,17 @@
 /**
  * Created by zeta on 6/4/15.
  */
- 
-/*
-/// <reference path="shader-program"/>
-/// <reference path="render-helper"/>
-/// <reference path="image-shader-program"/>
+
+/// <reference path="../shader-program"/>
+/// <reference path="../render-helper"/>
+/// <reference path="../image-shader-program"/>
 /// <reference path="filter"/>
 
 class ContrastProgram extends FilterProgram {
     private contrastValueLocation;
 
     constructor(gl : WebGLRenderingContext) {
-        super.setShaderSource("filter-vs", "contrast-fs");
+        super.setShaderSource("filter.vert", "contrast.frag");
         super(gl);
         this.contrastValueLocation = this.gl.getUniformLocation(this.program, "u_contrastValue");
     }
@@ -24,30 +23,32 @@ class ContrastProgram extends FilterProgram {
 
 class ContrastFilter extends Filter {
     protected filterType = FilterType.Contrast;
-    protected static program : ContrastProgram;
+    protected  program : ContrastProgram;
 
-    constructor (gl : WebGLRenderingContext) {
-        super(gl);
+    constructor () {
+        super();
         this.attributes = {
             "contrastValue" : {
                 "value" : 1,
                 "type" : FilterValueType.Slider,
-                "setter" : (x) => clamp(x, 0, 2.5),
-                "max": 2.5,
-                "min": 0
+                "setter" : (x) => clamp(x, 0.75, 3),
+                "max": 0.75,
+                "min": 3
             }
         };
 
-        if (!ContrastFilter.program) {
-            ContrastFilter.program = new ContrastProgram(this.gl);
-        }
     }
 
-    render (texture : WebGLTexture) {
-        ContrastFilter.program.activate();
-        ContrastFilter.program.bindTexture(texture);
-        ContrastFilter.program.setUniforms(this.attributes["contrastValue"]["value"]);
+    render (resourceManager : ResourceManager, texture : WebGLTexture) {
+        super.render(resourceManager, texture);
+        if (!this.program) {
+            this.program = resourceManager.contrastProgramInstance();
+        }
+
+        this.program.activate();
+        this.program.bindTexture(texture);
+        this.program.setUniforms(this.attributes["contrastValue"]["value"]);
 
         this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
     }
-}*/
+}
