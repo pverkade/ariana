@@ -30,7 +30,8 @@ angular.module('ariana').controller('ToolboxController', function($scope) {
                     toolFunctions: translateTool,
                 },
                 scale: {
-                    image: 'mdi-arrow-expand'
+                    image: 'mdi-arrow-expand',
+                    toolFunctions: scaleTool,
                 },
                 rotate: {
                     image: 'mdi-rotate-left',
