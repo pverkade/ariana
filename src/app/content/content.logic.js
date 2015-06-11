@@ -54,21 +54,5 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
     // Add Arnold the First
     var image1 = new Image();
     image1.src="/assets/img/arnold2.jpg";
-
-    var image2 = new Image();
-    image2.src="/assets/img/InstaAdolf.png";
-
-    var count = 1;
-    function done() {
-        if (count) {
-            count --;
-            return;
-        }
-
-        $scope.newLayerFromImage(image1);
-        $scope.newLayerFromImage(image2);
-    }
-    
-    image1.onload = done;
-    image2.onload = done;
+    image1.onload = function(){$scope.newLayerFromImage(image1)};
 });

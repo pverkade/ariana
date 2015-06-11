@@ -88,6 +88,10 @@ app.controller('AppCtrl', ['$scope',
                 "name": $scope.config.layers.currentLayer,
                 "x": layer.getPosX(),
                 "y": layer.getPosY(),
+                "originalWidth": width,
+                "originalHeight": height,
+                "width": width,
+                "height": height,
                 "rotation": layer.getRotation()
             }
 
