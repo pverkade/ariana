@@ -17,6 +17,8 @@ body {
     font-family: $fonts;
     width : 100%;
     height: 100%;
+    @include user-select(none);
+    overflow: hidden;
 }
 
 /* Style-class for box-shadow. */
@@ -39,39 +41,30 @@ body {
     margin: 0 !important;
     
     cursor: pointer;
-    @include user-select(none);
     
-    a {
-        width: $blocksize;
-        height: $blocksize;
-        padding: 0 !important;       
-        margin: 0 !important;   
-    }
-    
-    svg, img {
+    svg, i, img {
         margin: 0.2 * $blocksize;
         padding: 0 !important; 
         height: 0.6 * $blocksize;
-        width: 0.6 * $blocksize;      
+        width: 0.6 * $blocksize; 
+        font-size: 0.6 * $blocksize;
     }
     
     svg path {
         fill: $white;
     }
     
-    > .tool {
-        &:hover {
-            background-color: lighten($light, $hover-lighten);
-        }
+    &:hover {
+        background-color: lighten($light, $hover-lighten);
     }
 }
 
-canvas {
-    resize: none;
-}
-
 .active {
-    background-color: lighten($light, $hover-lighten);
+    background-color: lighten($light, $active-lighten);
+    
+    &:hover {
+        background-color: lighten($light, $active-lighten);
+    }
 }
 
 .inactive {
@@ -89,44 +82,5 @@ canvas {
         cursor: default !important;
     }
 
-    svg path, img path {
-        fill: darken($white, 50%) !important;
-    }
-    
-    img {
-        opacity: 0.25;
-    }
-}
-
-/* Upload modal */
-.modal-body {
-    .drop-box {
-        background: #F8F8F8;
-        border: 5px dashed #DDD;
-        min-height: 300px;
-        line-height: 300px;
-        text-align: center;
-        margin: 10px;
-        overflow: hidden;
-    }
-    
-    .dragover {
-        border: 5px dashed blue;
-    }
-
-    span {
-        display: inline-block;
-        vertical-align: middle;
-    }
-
-    img {
-        float: left;
-        margin: 14px;
-        height: 110px;
-        width: 110px
-    }
-
-    .btn-file-picker {
-        margin: 10px;
-    }
+    opacity: 0.25;
 }

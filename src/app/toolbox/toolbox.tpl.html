@@ -1,27 +1,31 @@
-<div id="toolbox">
+<!-- Template for the toolbox elements. -->
+
+<div class="toolset" 
+    ng-show="checkVisible()">
     
-    <div class="tool" id="{{name}}" ng-repeat="(name, tool) in toolbox" 
-        ng-click="selectToolSet(name)" ng-class="{active: config.tools.activeToolset == '{{name}}'}">
+    <div class="tool" id="{{name}}" 
+        ng-repeat="(name, tool) in toolbox" 
+        ng-click="selectToolSet(name)" 
+        ng-class="{active: config.tools.activeToolset == '{{name}}'}">
 
-        <img class="svg" alt="{{tool.image}}" data="assets/vectors/{{tool.image}}"></img>
+        <i class="mdi {{tool.image}}"></i>
 
-        <div class="toolset fix-top" ng-show="config.tools.activeToolset == '{{name}}'">
+        <div class="toolbox" 
+            ng-show="config.tools.activeToolset == '{{name}}'">
 	        
 	        <div class="tool" id="{{name}}" 
                 ng-repeat="(name, subtool) in tool.tools" 
-	            ng-click="selectTool($event, name)">
-
-	            <img class="svg" alt="{{subtool.image}}" data="assets/vectors/{{subtool.image}}">
-
-	        </div>
-
-	    </div>
-
+                ng-click="selectTool($event, name)"
+                ng-class="{active: config.tools.activeTool == '{{name}}'}">
+                <i class="mdi {{subtool.image}}"></i>
+            </div>
+        </div>
     </div>
-
 </div>
 
-<div class="color-preview" ng-click="swapColors()">
+<!-- Template for the color-preview elements. -->
+
+<div class="color-preview" ng-click="swapColors()" ng-show="checkVisible()">
     <div class="color-primary"   style="background-color: rgb({{config.tools.colors.primary.r}},   {{config.tools.colors.primary.g}},   {{config.tools.colors.primary.b}})"> </div>
-    <div class="color-secondary" style="background-color: rgb({{config.tools.colors.secondary.r}}, {{config.tools.colors.secondary.g}}, {{config.tools.colors.secondary.b}})""> </div>
+    <div class="color-secondary" style="background-color: rgb({{config.tools.colors.secondary.r}}, {{config.tools.colors.secondary.g}}, {{config.tools.colors.secondary.b}})"> </div>
 </div>

@@ -4,28 +4,36 @@ var app = angular.module('ariana', [
     'ui.router',
     'ui.bootstrap',
     'templates-ariana',
-    'ngFileUpload'
+    'ngFileUpload',
+    'ngAnimate'
 ]);
 
+/* The AppController is the main controller of the application. */
 app.controller('AppCtrl', ['$scope',
     function($scope) {
+        
+        /* The config object contains the current state of the layers, tools, 
+         * canvas and the mouse. It is accessed by all kinds of controllers. */
         $scope.config = {
             mouse: {
                 old : {
                     x : 0,
-                    y : 0
+                    y : 0,
                 },
                 current: {
                     x: 0,
-                    y: 0
+                    y: 0,
                 },
-                lastClick: {
-                    x: 0,
-                    y: 0
-                },
-                click: {
-                    down: false
+                button: {
+                    1: false, // left button
+                    2: false, // middle button
+                    3: false, // right button
                 }
+            },
+            canvas: {
+                x: 128,
+                y: 128,
+                zoom: 1,
             },
             tools: {
                 activeTool: null,
@@ -45,36 +53,64 @@ app.controller('AppCtrl', ['$scope',
                 }
             },
             layers: {
-                selectedLayers: [],
-                numberOfLayers: 0
+                numberOfLayers: 0,
+                currentLayer: -1,
+                layerInfo: [],
             }
         };
 
         $scope.renderEngine = null;
 
+        /* This function creates the RenderEngine. It requires the canvas to
+         * render on. */
         $scope.startEngine = function(canvas) {
             $scope.renderEngine = new RenderEngine(canvas);
-            console.log("Broom broom!");
         };
 
+        /* This function creates a new layer from a given Image-object. The new
+         * layer is placed on top. */
         $scope.newLayerFromImage = function(image) {
-            var imageLayer = new ImageLayer($scope.renderEngine.getWebGLRenderingContext(), image);
-            $scope.renderEngine.addLayer(imageLayer);
-
-            var width = image.naturalWidth;
-            var height = image.naturalHeight;
+            var layer = $scope.renderEngine.createImageLayer(image);
+            
+            var height = layer.getHeight();
+            var width = layer.getWidth();
+            
+            layer.setPos(0.5 * width, 0.5 * height);
+            
+            $scope.renderEngine.addLayer(layer)
 
             /* set the correct layer info in config. The new layer comes on top
              * and is immediately selected. */
             $scope.setSelection([$scope.config.layers.numberOfLayers]);
             $scope.config.layers.numberOfLayers += 1;
-
-            imageLayer.setPos(-0.25, -0.25);
-            imageLayer.setScale(.2, .2);
+            
+            $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {
+                "name": $scope.config.layers.currentLayer,
+                "x": layer.getPosX(),
+                "y": layer.getPosY(),
+                "originalWidth": width,
+                "originalHeight": height,
+                "width": width,
+                "height": height,
+                "rotation": layer.getRotation()
+            }
 
             $scope.renderEngine.render();
         };
 
+
+        /* This function will apply a given filter on the current or all
+         * layers. */
+         $scope.applyFilter = function(name, allLayers) {
+            
+            if (name == "brightness") {
+                // TODO start that asks for parameters 
+                // TODO actually apply filter on current layer/all layers
+                
+                //var brightnessFilter = new BrightnessFilter();
+                //console.log(brightnessFilter);
+            }
+        };
         $scope.getSelectedLayers = function() {
             return $scope.renderEngine.getLayers($scope.config.layers.selectedLayers);
         };
@@ -82,11 +118,5 @@ app.controller('AppCtrl', ['$scope',
         $scope.setSelection = function(indices) {
             $scope.config.layers.selectedLayers = indices;
         };
-
-        /* FIXME cannot be accesed by FilterModalController
-        $scope.applyFilter = function(name) {
-            // TODO
-            console.log("Apply filter " + name);
-        }; */
 	}
 ]);
