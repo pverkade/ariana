@@ -1,5 +1,5 @@
 /* This contoller defines the behaviour of the toolbox and the color-preview. */
-angular.module('ariana').controller('ToolBoxController', function($scope) {
+angular.module('ariana').controller('ToolboxController', function($scope) {
     
     /* This function swaps the primary and secondary color. */
     $scope.swapColors = function() {
