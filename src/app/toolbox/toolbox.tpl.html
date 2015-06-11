@@ -12,8 +12,10 @@
 	            ng-click="selectTool($event, name)">
 
 	            <img class="svg" alt="{{subtool.image}}" data="assets/vectors/{{subtool.image}}">
-
 	        </div>
+            <div class="selectionSlider" ng-show="config.tools.activeTool == 'wand'">
+                <input type="text" class="slider" value="" data-slider-min="-20" data-slider-max="20" data-slider-step="1" data-slider-value="-14" data-slider-orientation="vertical" data-slider-selection="after" data-slider-tooltip="hide">
+            </div>
 
 	    </div>
 

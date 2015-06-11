@@ -65,6 +65,4 @@ angular.module('ariana').controller('contentCtrl', function($scope, $window) {
     
     image1.onload = done;
     image2.onload = done;
-
-    console.log($scope.rendertarget);
 });

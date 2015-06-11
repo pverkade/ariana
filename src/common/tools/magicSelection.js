@@ -1,7 +1,10 @@
+
+
 var magicSelection = {
     
     start: function($scope) {
         $("#main-canvas").css("cursor", "crosshair");
+
         var scope = angular.element($("#main-canvas")).scope();
 
         scope.imgData = new ImgData($scope.renderEngine.getWidth(), $scope.renderEngine.getHeight()); 
