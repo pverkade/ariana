@@ -107,7 +107,6 @@ angular.module('ariana').controller('ToolboxController', function($scope) {
         if (event) event.stopPropagation();
 
         var toolFunctions = $scope.config.tools.activeToolFunctions;
-        console.log(toolFunctions);
 
         if (toolFunctions && toolFunctions.stop) {
             toolFunctions.stop();

@@ -64,8 +64,9 @@ app.controller('AppCtrl', ['$scope',
 
         /* This function creates the RenderEngine. It requires the canvas to
          * render on. */
-        $scope.startEngine = function(canvas) {
-            $scope.renderEngine = new RenderEngine(canvas);
+        $scope.startEngines = function(renderCanvas, drawCanvas) {
+            $scope.renderEngine = new RenderEngine(renderCanvas);
+            $scope.drawEngine = new DrawEngine(drawCanvas);
         };
 
         /* This function creates a new layer from a given Image-object. The new

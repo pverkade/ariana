@@ -96,7 +96,7 @@ enum brushType { NORMAL, THIN, PEPPER, DUNES }
  *
  *       Gum / eraser
  */
-class Draw {
+class DrawEngine {
 
     isActive : boolean;
     isCleared : boolean = true; /* Boolean that tells the drawer if the canvas is cleared */
@@ -119,8 +119,14 @@ class Draw {
     drawContext : CanvasRenderingContext2D;
 
     constructor(public canvas : HTMLCanvasElement) {
-        console.log("Drawengine initialized.");
-        //this.mainCanvas = canvas;
+        this.drawCanvas = canvas;
+
+        this.memCanvas = document.createElement('canvas');
+        this.memCanvas.width = this.canvas.width;
+        this.memCanvas.height = this.canvas.height;
+        this.memContext = <CanvasRenderingContext2D>this.memCanvas.getContext('2d');
+
+        this.drawContext = <CanvasRenderingContext2D>this.drawCanvas.getContext('2d');
     }
 
     getMousePos = (e : MouseEvent) : Position2D => {
@@ -209,26 +215,22 @@ class Draw {
             console.log("Draw Engine activated");
             this.isActive = true;
 
-            /* Generate a temporarily canvas to store the contents of the main canvas */
+            /* Generate a temporarily canvas to store the contents of the draw canvas */
             this.memCanvas = document.createElement('canvas');
             this.memCanvas.width = this.canvas.width;
             this.memCanvas.height = this.canvas.height;
             this.memContext = <CanvasRenderingContext2D>this.memCanvas.getContext('2d');
 
-            /* Generate a temporarily canvas to draw on.. */
-            this.drawCanvas = document.createElement('canvas');
-            this.drawCanvas.width = this.canvas.width;
-            this.drawCanvas.height = this.canvas.height;
             this.drawContext = <CanvasRenderingContext2D>this.drawCanvas.getContext('2d');
 
             /* Put drawCanvas in front of the other canvas */
-            this.drawCanvas.className = "main-canvas";
+            /*this.drawCanvas.className = "main-canvas";
             this.drawCanvas.setAttribute("id", "drawcanvas");
             this.drawCanvas.style.zIndex = '2';
             this.drawCanvas.style.marginLeft = scope.config.canvas.x + 'px';
             this.drawCanvas.style.marginTop = scope.config.canvas.y + 'px';
 
-            this.canvas.parentNode.appendChild(this.drawCanvas);
+            this.canvas.parentNode.appendChild(this.drawCanvas);*/
         }
     }
 
@@ -241,11 +243,11 @@ class Draw {
             console.log("Draw engine deactivated");
             this.isActive = false;
 
-            this.canvas.parentNode.removeChild(this.drawCanvas);
+            //this.canvas.parentNode.removeChild(this.drawCanvas);
             this.memContext = null;
             this.memCanvas = null;
-            this.drawContext = null;
-            this.drawCanvas = null;
+            //this.drawContext = null;
+            //this.drawCanvas = null;
 
             //TODO: remove the draw canvas?
         }
@@ -338,7 +340,7 @@ class Draw {
      * Reset the canvas to its original state (the saved state)
      */
     clearCanvas = () : void => {
-        var context = <CanvasRenderingContext2D>this.drawCanvas.getContext('2d');
+        var context =  this.drawContext;
         context.globalAlpha = 1.0;
         context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
         context.drawImage(this.memCanvas, 0, 0);
@@ -348,6 +350,11 @@ class Draw {
         if (this.currentPath) {
             this.currentPath.lastDrawnItem = 0;
         }
+    }
+
+    clearCanvases() : void {
+        this.clearCanvas();
+        this.memContext.clearRect(0, 0, this.memCanvas.width, this.memCanvas.height);
     }
 
     /*
