@@ -48,8 +48,8 @@ class Layer {
         /* Apperently calling a function on this object from within the constructor crashes it */
         this.posX = 0.0;
         this.posY = 0.0;
-        this.width = 1.0;
-        this.height = 1.0;
+        this.width = width;
+        this.height = height;
         this.angle = 0.0;
 
         mat3.identity(this.sizeMatrix);
@@ -145,6 +145,14 @@ class Layer {
 	public getPosY() : number {
 		return this.posY;
 	}
+
+    public getWidth() : number {
+        return this.width;
+    }
+
+    public getHeight() : number {
+        return this.height;
+    }
 
 	public getID() : number {
 		return this.ID;
