@@ -35,7 +35,6 @@ var scaleTool = {
             var ratio = Math.abs(differenceY) / Math.abs(differenceX);
             var layerRatio = layer.getHeight() / layer.getWidth(); 
             
-            
             scaleToolIndex = Math.round(8 * (angle / (2 * Math.PI)));
             
             if (scaleToolIndex == 0) {$("#background").css("cursor", "e-resize"); };
@@ -49,8 +48,6 @@ var scaleTool = {
             if (scaleToolIndex == 8) { $("#background").css("cursor", "e-resize"); scaleToolIndex = 0; };
             return;
         }
-        
-        console.log(scaleToolIndex);
         
         var mouseOldX = $scope.config.mouse.old.x - $scope.config.canvas.x;
         var mouseOldY = $scope.config.mouse.old.y - $scope.config.canvas.y; 
