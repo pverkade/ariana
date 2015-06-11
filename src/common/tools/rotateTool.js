@@ -18,24 +18,29 @@ var rotateTool = {
         var currentLayer = $scope.config.layers.currentLayer;
         if (currentLayer == -1) return;
 
-        var mouse = $scope.config.mouse;
-        var canvas = document.getElementById("main-canvas");
-        var width = canvas.width;
-        var height = canvas.height;
-        var ratio = width / height;
-
-        selectedLayers.forEach(function(layer) {
-            var x = (layer.getPosX()+1)/2 * canvas.width;
-            var y = (-1.*layer.getPosY()+1)/2. * canvas.height;
-
-            var dx = x-mouse.current.x;
-            var dy = y+50-mouse.current.y;
-
-            var angle = Math.atan2(dx, dy);
-            layer.setRotation(angle);
-        });
-
-        $scope.renderEngine.render();
+        var layer = $scope.renderEngine.layers[currentLayer]
+        
+        var x = layer.getPosX();
+        var y = layer.getPosY();
+        
+        var dx = $scope.config.mouse.current.x - $scope.config.mouse.old.x;
+        var dy = $scope.config.mouse.current.y - $scope.config.mouse.old.y;
+        
+        $scope.config.mouse.old.x += dx;
+        $scope.config.mouse.old.y += dy;
+        
+        var currentX = $scope.config.mouse.current.x;
+        var currentY = $scope.config.mouse.current.y;
+        
+        var angleOld = Math.atan2(currentY - dy - y, currentX - dx - x);
+        var angleCurrent = Math.atan2(currentY - y, currentX - x);
+        var rotation = layer.getRotation();
+        
+        console.log(angleOld, angleCurrent);
+        
+        $scope.renderEngine.layers[currentLayer].setRotation(rotation + (angleOld - angleCurrent));
+        
+        window.requestAnimationFrame(function() {$scope.renderEngine.render();});    
 
     },
 };
