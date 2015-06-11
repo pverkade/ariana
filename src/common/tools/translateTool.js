@@ -15,7 +15,6 @@ var translateTool = {
 
         var dx = $scope.config.mouse.current.x - $scope.config.mouse.old.x;
         var dy = $scope.config.mouse.current.y - $scope.config.mouse.old.y;
-        console.log(dx, dy);
         
         $scope.config.mouse.old.x += dx;
         $scope.config.mouse.old.y += dy;
@@ -27,5 +26,7 @@ var translateTool = {
         var currentY = $scope.renderEngine.layers[currentLayer].getPosY();
 
         $scope.renderEngine.layers[currentLayer].setPos(currentX + dx, currentY + dy);
+        
+        window.requestAnimationFrame(function() {$scope.renderEngine.render();});    
     },
 };

@@ -83,6 +83,7 @@ app.controller('AppCtrl', ['$scope',
              * and is immediately selected. */
             $scope.setSelection([$scope.config.layers.numberOfLayers]);
             $scope.config.layers.numberOfLayers += 1;
+            $scope.config.layers.currentLayer = $scope.config.layers.numberOfLayers - 1;
             
             $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {
                 "name": $scope.config.layers.currentLayer,
@@ -92,7 +93,7 @@ app.controller('AppCtrl', ['$scope',
                 "originalHeight": height,
                 "width": width,
                 "height": height,
-                "rotation": layer.getRotation()
+                "rotation": layer.getRotation(),
             }
 
             $scope.renderEngine.render();
