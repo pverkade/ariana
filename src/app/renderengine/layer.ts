@@ -21,6 +21,7 @@ class Layer {
 	protected posX : number;
 	protected posY : number;
     public thumbnail : String;
+    private hidden : boolean;
 
 	public sizeMatrix : Float32Array;
 	public rotationMatrix : Float32Array;
@@ -51,6 +52,7 @@ class Layer {
         this.width = width;
         this.height = height;
         this.angle = 0.0;
+        this.hidden = false;
 
         mat3.identity(this.sizeMatrix);
         mat3.identity(this.rotationMatrix);
@@ -138,6 +140,10 @@ class Layer {
         this.notifyPropertyChanged();
 	}
 
+    public setHidden(hidden : boolean) {
+        this.hidden = hidden;
+    }
+
 	public getPosX() : number {
 		return this.posX;
 	}
@@ -160,6 +166,10 @@ class Layer {
 
     public getLayerType() : LayerType {
         return this.layerType;
+    }
+
+    public isHidden() : boolean {
+        return this.hidden;
     }
 
 	public setupRender() { }
