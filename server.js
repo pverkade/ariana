@@ -31,6 +31,7 @@ process.on('SIGHUP', function() {
 // Serve static file
 app.use(serveStatic('build', {index: false}));
 
+
 function readIndex(next) {
     // Read index.html and listen
     fs.readFile('build/index.html', "utf-8", next);
@@ -42,6 +43,8 @@ function startServer() {
         process.stdout.write("Listening on " + (host ? 'http://' + host + ':' : 'port ') + port + "\n");
     });
 }
+
+
 
 /* This function resends an image received from a post back, if
  * a correct post was made to /save-image.
@@ -59,7 +62,7 @@ function saveImageRouter(req, res) {
             // kill connection if too much data (100mb).
             if (body.length > 100 * 1e6) {
                 console.log("message is to long:", body.length);
-                request.connection.destroy();
+                req.connection.destroy();
             }
         });
 
@@ -111,6 +114,12 @@ function staticServe() {
                 return;
             }
 
+            if (req.url != "/" && req.url != "/index.html") {
+                res.writeHead(404, { "Content-Type": "text/plain" });
+                res.end("File not Found.");
+                return;
+            }
+
             res.writeHead(200, { "Content-Type": "text/html" });
             res.end(content);
         });
@@ -125,6 +134,12 @@ function staticServe() {
 function dynamicServe() {
     app.use(function(req, res) {
         if (saveImageRouter(req, res)) {
+            return;
+        }
+
+        if (req.url != "/" && req.url != "/index.html") {
+            res.writeHead(404, { "Content-Type": "text/plain" });
+            res.end("File not Found.");
             return;
         }
 
