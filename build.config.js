@@ -3,7 +3,7 @@ module.exports = {
 
     src_files: {
         tpl: 'src/**/*.tpl.html',
-        js: ['src/**/*.js', '!src/app/renderengine/*.js'],
+        js: ['src/**/*.js', '!src/app/renderengine/**/*.js'],
         ts: ['src/**/*.ts'],
         sass: 'src/**/*.scss',
         html: 'src/index.html',
@@ -22,7 +22,7 @@ module.exports = {
             'bower_components/ng-file-upload/ng-file-upload-all.js'
         ],
         css: [
-            'bower_components/bootstrap/dist/css/bootstrap.css.map',
+            'bower_components/bootstrap/dist/css/bootstrap.css.map'
         ]
     }
-}
+};
