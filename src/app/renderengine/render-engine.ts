@@ -73,6 +73,13 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         return result;
     }
 
+    getWidth() {
+        return this.width;
+    }
+
+    getHeight() {
+        return this.height;
+    }
     public addLayer(layer : Layer) {
         /* Append layer to user array */
         layer.registerNotifyPropertyChanged(this);
@@ -231,4 +238,18 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
             image
         );
     }
+
+    renderAsUint8Array() : Uint8Array {
+        var result;
+
+        this.drawbuffer1.bind() ;
+        {
+            this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
+            this.render();
+            result =  this.drawbuffer1.getData();
+        }
+        this.drawbuffer1.unbind();
+
+        return result;
+    }    
 }

@@ -5,6 +5,7 @@ var magicSelection = {
     start: function($scope) {
         $("#main-canvas").css("cursor", "crosshair");
 
+        /* working with $scope to share variables between functions in this file does not seem to work. */
         var scope = angular.element($("#main-canvas")).scope();
 
         scope.imgData = new ImgData($scope.renderEngine.getWidth(), $scope.renderEngine.getHeight()); 
@@ -12,24 +13,16 @@ var magicSelection = {
         scope.magic = new MagicSelection(scope.imgData);
 
         // $interval(callAtInterval, 1000);
-        $scope.sizeAnts = 4;
-        $scope.offset = 0;
+        scope.sizeAnts = 4;
+        scope.offset = 0;
     },
     
     mouseDown: function($scope) {
         var scope = angular.element($("#main-canvas")).scope();
 
-        var c = angular.element($("#main-canvas"));
-        console.log(c);
-        // var context = c.getContext("2d");
-        // console.log(context);
-
         /* x and y coordinates in pixels relative to image. */
-        xRelative = $scope.config.mouse.current.x; //- $scope.config.canvas.x;
-        yRelative = $scope.config.mouse.current.y; //- $scope.config.canvas.y;
-
-        console.log("xRelative, yRelative");
-        console.log(xRelative, yRelative);
+        xRelative = $scope.config.mouse.current.x - $scope.config.canvas.x;
+        yRelative = $scope.config.mouse.current.y - $scope.config.canvas.y;
 
         /* Check wheter user has clicked inside of a selection. */
         if (scope.magic.isInSelection(xRelative, yRelative)) {
@@ -39,10 +32,8 @@ var magicSelection = {
         }
 
         /* Save border and marching ants mask in scope. */
-        scope.maskBorder = $scope.magic.getMaskBorder();
-        scope.maskAnts = $scope.magic.marchingAnts($scope.sizeAnts * 2, 0);
-
-        // context.putImageData(scope.imgData, 500, 100);
+        $scope.maskBorder = $scope.magic.getMaskBorder();
+        $scope.maskAnts = $scope.magic.marchingAnts(scope.sizeAnts * 2, scope.offset);
     },
     
     mouseUp: function($scope) {
@@ -54,7 +45,7 @@ var magicSelection = {
 
     callAtInterval: function($scope) {
         console.log("test");
-        $scope.offset++;
-        $scope.maskAnts = $scope.magic.marchingAnts($scope.sizeAnts * 2, $scope.offset);
+        scope.offset++;
+        $scope.maskAnts = $scope.magic.marchingAnts(scope.sizeAnts * 2, scope.offset);
     }
 }

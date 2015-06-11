@@ -78,7 +78,8 @@ angular.module('ariana').controller('ToolboxController', function($scope) {
                     image: 'mdi-vector-curve'
                 },
                 magic: {
-                    image: 'mdi-auto-fix' 
+                    image: 'mdi-auto-fix',
+                    toolFunctions: magicSelection,
                 }
             }
         },
@@ -113,7 +114,7 @@ angular.module('ariana').controller('ToolboxController', function($scope) {
         
         if (toolFunctions) {
             $scope.config.tools.activeToolFunctions = toolFunctions;
-            toolFunctions.start();
+            toolFunctions.start($scope);
         }
         else {
             $scope.config.tools.activeToolFunctions = null;
