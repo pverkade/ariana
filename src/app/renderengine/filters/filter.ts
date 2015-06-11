@@ -1,8 +1,8 @@
 /**
  * Created by zeta on 6/3/15.
  */
-/// <reference path="base-program"/>
-
+/// <reference path="../base-program"/>
+/// <reference path="../resource-manager"/>
 
 function clamp(x : number, low: number, high: number) {
     return Math.max(low, Math.min(x, high));
@@ -12,8 +12,8 @@ function normalize100(x, low, high) {
     return clamp(x, 0, 100) / 100 * (high - low) + low;
 }
 
-enum FilterType {Brightness, Contrast};
-enum FilterValueType {Slider};
+enum FilterType {Brightness, Contrast, Sepia, InvertColors, Saturation, Noise, Colorize}
+enum FilterValueType {Slider}
 
 class FilterProgram extends BaseProgram {
     protected program : WebGLRenderingContext;
@@ -45,8 +45,7 @@ class Filter {
     protected attributes:Object;
     protected filterType:FilterType;
 
-    constructor(gl : WebGLRenderingContext) {
-        this.gl = gl;
+    constructor() {
         this.attributes = {};
     }
 
@@ -63,9 +62,17 @@ class Filter {
         return Object.keys(this.attributes);
     }
 
+    getAttributeValue(name : string) {
+        return this.attributes[name]["value"];
+    }
+
     getFilterType() : FilterType {
         return this.filterType;
     }
 
-    render(texture:WebGLTexture) { }
+    render(resourceManager : ResourceManager, texture:WebGLTexture) {
+        if (!this.gl) {
+            this.gl = resourceManager.getWebGLContext();
+        }
+    }
 }

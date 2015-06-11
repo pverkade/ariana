@@ -5,14 +5,14 @@ float rand(vec2 co){
 }
 
 uniform vec3 u_seed;
-uniform float u_noiseValue;
+uniform float u_intensity;
 uniform sampler2D u_texture;
 varying vec2 v_texCoord;
 
 void main() {
     vec4 texColor = texture2D(u_texture, v_texCoord);
     float randF = rand(v_texCoord.xy + u_seed.xy);
-	vec3 result = u_noiseValue * 2.0 * (vec3(randF) - 0.5);
+	vec3 result = u_intensity * 2.0 * (vec3(randF) - 0.5);
 
     gl_FragColor = vec4(texColor.rgb + result, texColor.a);
 }

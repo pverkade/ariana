@@ -49,7 +49,7 @@ app.controller('AppCtrl', ['$scope',
                         r: 0,
                         g: 0,
                         b: 0
-                    },
+                    }
                 }
             },
             layers: {
@@ -70,32 +70,34 @@ app.controller('AppCtrl', ['$scope',
         /* This function creates a new layer from a given Image-object. The new
          * layer is placed on top. */
         $scope.newLayerFromImage = function(image) {
-            var imageLayer = new ImageLayer($scope.renderEngine.getWebGLRenderingContext(), image);
-            $scope.renderEngine.addLayer(imageLayer);
-
-            var width = image.naturalWidth;
-            var height = image.naturalHeight;
+            var layer = $scope.renderEngine.createImageLayer(image);
+            
+            var height = layer.getHeight();
+            var width = layer.getWidth();
+            
+            layer.setPos(0.5 * width, 0.5 * height);
+            
+            $scope.renderEngine.addLayer(layer)
 
             /* set the correct layer info in config. The new layer comes on top
              * and is immediately selected. */
+            $scope.setSelection([$scope.config.layers.numberOfLayers]);
             $scope.config.layers.numberOfLayers += 1;
-            $scope.config.layers.currentLayer = $scope.config.layers.numberOfLayers - 1;
-
-            var layer = $scope.renderEngine.layers[$scope.config.layers.currentLayer];
-            layer.setPos(-0.25, -0.25);
-            layer.setScale(.2, .2);
-
+            
             $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {
                 "name": $scope.config.layers.currentLayer,
                 "x": layer.getPosX(),
                 "y": layer.getPosY(),
-                "xScale": layer.getScaleX(),
-                "yScale": layer.getScaleY(),
+                "originalWidth": width,
+                "originalHeight": height,
+                "width": width,
+                "height": height,
                 "rotation": layer.getRotation()
             }
 
             $scope.renderEngine.render();
         };
+
 
         /* This function will apply a given filter on the current or all
          * layers. */
@@ -108,6 +110,13 @@ app.controller('AppCtrl', ['$scope',
                 //var brightnessFilter = new BrightnessFilter();
                 //console.log(brightnessFilter);
             }
+        };
+        $scope.getSelectedLayers = function() {
+            return $scope.renderEngine.getLayers($scope.config.layers.selectedLayers);
+        };
+
+        $scope.setSelection = function(indices) {
+            $scope.config.layers.selectedLayers = indices;
         };
 	}
 ]);

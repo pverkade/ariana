@@ -1,15 +1,15 @@
 var translateTool = {
-    
+
     start: function() {
         $("#background").css("cursor", "move");
     },
-    
+
     mouseDown: function($scope) {
     },
-    
+
     mouseUp: function($scope) {
     },
-    
+
     mouseMove: function($scope) {
         if (!($scope.config.mouse.button[1] || $scope.config.mouse.button[3])) return;
 
@@ -28,4 +28,4 @@ var translateTool = {
 
         $scope.renderEngine.layers[currentLayer].setPos(currentX + dx, currentY + dy);
     },
-}
+};

@@ -58,5 +58,6 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 size: 'lg'
             });
         };    
+
     }
 ]);

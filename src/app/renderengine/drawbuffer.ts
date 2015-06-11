@@ -44,7 +44,7 @@ class DrawBuffer {
      *
      * The image is flipped upside down.
      */
-    getImage() {
+    getImage() : String {
         /* Read the contents of the framebuffer */
         var data = this.getData();
 
