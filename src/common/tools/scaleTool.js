@@ -3,15 +3,12 @@ var scaleToolIndex = 0;
 var scaleTool = {
     
     start: function() {
-        //$("#background").css("cursor", "grab");
     },
     
     mouseDown: function($scope) {
-        //$("#background").css("cursor", "grabbing");
     },
     
     mouseUp: function($scope) {
-        //$("#background").css("cursor", "grab");
     },
     
     mouseMove: function($scope) {
@@ -76,7 +73,7 @@ var scaleTool = {
             var height = layer.getHeight();
             $scope.renderEngine.layers[currentLayer].setHeight(height * scale);
         }
-        
+
         if (scaleToolIndex == 7 || scaleToolIndex == 0 || scaleToolIndex == 1) 
             x += 0.5 * ((scale * width) - width);
         
