@@ -1,5 +1,4 @@
 angular.module('ariana').controller('toolBoxController', function($scope) {
-
     
     $scope.swapColors = function() {
         var temp = $scope.config.tools.colors.primary;
@@ -7,6 +6,10 @@ angular.module('ariana').controller('toolBoxController', function($scope) {
         $scope.config.tools.colors.secondary = temp;
         console.log($scope.config.tools.colors.primary);
     };
+    
+    $scope.checkVisible = function() {
+        return (!($scope.config.mouse.button[1] || $scope.config.mouse.button[2] || $scope.config.mouse.button[3]));
+    }
 
     $scope.toolbox = {
         basic: {

@@ -1,4 +1,4 @@
-<div class="toolset">
+<div class="toolset" ng-show="checkVisible()">
     
     <div class="tool" id="{{name}}" 
         ng-repeat="(name, tool) in toolbox" 
@@ -22,7 +22,7 @@
 
 </div>
 
-<div class="color-preview" ng-click="swapColors()">
+<div class="color-preview" ng-click="swapColors()" ng-show="checkVisible()">
     <div class="color-primary"   style="background-color: rgb({{config.tools.colors.primary.r}},   {{config.tools.colors.primary.g}},   {{config.tools.colors.primary.b}})"> </div>
     <div class="color-secondary" style="background-color: rgb({{config.tools.colors.secondary.r}}, {{config.tools.colors.secondary.g}}, {{config.tools.colors.secondary.b}})"> </div>
 </div>
