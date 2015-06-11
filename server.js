@@ -137,7 +137,7 @@ function dynamicServe() {
             return;
         }
 
-        if (req.url != "/" && req.url != "/index.html") {
+        if (req.url != "/" && req.url != "/index.html" && req.url != "/landing" && req.url != "/drawtest") {
             res.writeHead(404, { "Content-Type": "text/plain" });
             res.end("File not Found.");
             return;

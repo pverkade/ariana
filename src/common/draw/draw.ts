@@ -105,8 +105,8 @@ class Draw {
     /* Information about the drawstyle */
     drawType : drawType = drawType.NORMAL;
     color : Color = new Color(255, 255, 255, 0.8);
-    opacity : number = 0.6;
-    lineWidth : number = 10;
+    opacity : number = 1.0;
+    lineWidth : number = 5;
 
     brush : brushType;
     brushImage : HTMLImageElement;
@@ -127,17 +127,18 @@ class Draw {
      * Function that is called at mousepress
      */
     onMousedown = (e : MouseEvent) : void => {
-
+        console.log(e);
+        console.log(this.drawCanvas);
         if (!this.currentPath) {
             this.saveCanvas();
-            this.currentPath = new Path(new Position2D(e.layerX, e.layerY));
+            this.currentPath = new Path(new Position2D(e.offsetX, e.offsetY));
             if (this.drawType == drawType.RECTANGLE || this.drawType == drawType.CIRCLE) {
-                this.currentPath.addPosition(new Position2D(e.layerX, e.layerY));
+                this.currentPath.addPosition(new Position2D(e.offsetX, e.offsetY));
             }
         }
 
         if (this.drawType == drawType.LINE) {
-            this.currentPath.addPosition(new Position2D(e.layerX, e.layerY));
+            this.currentPath.addPosition(new Position2D(e.offsetX, e.offsetY));
         }
     }
 
@@ -163,10 +164,10 @@ class Draw {
 
             if (this.drawType == drawType.LINE || this.drawType == drawType.RECTANGLE
                  || this.drawType == drawType.CIRCLE) {
-                this.currentPath.setLastPosition(new Position2D(e.layerX, e.layerY));
+                this.currentPath.setLastPosition(new Position2D(e.offsetX, e.offsetY));
             }
             else {
-                this.currentPath.addPosition(new Position2D(e.layerX, e.layerY));
+                this.currentPath.addPosition(new Position2D(e.offsetX, e.offsetY));
             }
             this.draw(this.currentPath);
         }
@@ -177,16 +178,16 @@ class Draw {
      */
     onMouseup = (e : MouseEvent) : void => {
         if (this.drawType == drawType.RECTANGLE || this.drawType == drawType.CIRCLE) {
-            this.currentPath.setLastPosition(new Position2D(e.layerX, e.layerY));
+            this.currentPath.setLastPosition(new Position2D(e.offsetX, e.offsetY));
         }
         else if (this.drawType == drawType.LINE) {
             if (e.buttons > 0) {
                 return;
             }
-            this.currentPath.setLastPosition(new Position2D(e.layerX, e.layerY));
+            this.currentPath.setLastPosition(new Position2D(e.offsetX, e.offsetY));
         }
         else {
-            this.currentPath.addPosition(new Position2D(e.layerX, e.layerY));
+            this.currentPath.addPosition(new Position2D(e.offsetX, e.offsetY));
         }
 
         this.draw(this.currentPath);
@@ -196,7 +197,7 @@ class Draw {
     /*
      * Function to activate the draw functionality
      */
-    activate () : void {
+    activate (scope : any) : void {
         if (!this.isActive) {
             console.log("Draw Engine activated");
             this.isActive = true;
@@ -211,18 +212,16 @@ class Draw {
             this.drawCanvas = document.createElement('canvas');
             this.drawCanvas.width = this.canvas.width;
             this.drawCanvas.height = this.canvas.height;
-            this.drawCanvas.style.width = this.canvas.style.width;
-            this.drawCanvas.style.height = this.canvas.style.height;
             this.drawContext = <CanvasRenderingContext2D>this.drawCanvas.getContext('2d');
-            this.drawCanvas.className = "main-canvas";
 
-            this.drawCanvas.addEventListener("mousedown", this.onMousedown);
-            this.drawCanvas.addEventListener("mousemove", this.onMousemove);
-            this.drawCanvas.addEventListener("mouseup", this.onMouseup);
-            this.drawCanvas.addEventListener("contextmenu", this.onContextmenu);
+            /* Put drawCanvas in front of the other canvas */
+            this.drawCanvas.className = "main-canvas";
+            this.drawCanvas.setAttribute("id", "drawcanvas");
+            this.drawCanvas.style.zIndex = '2';
+            this.drawCanvas.style.marginLeft = scope.config.canvas.x + 'px';
+            this.drawCanvas.style.marginTop = scope.config.canvas.y + 'px';
 
             this.canvas.parentNode.appendChild(this.drawCanvas);
-            //TODO: put the drawConvas in front of the mainCanvas
         }
     }
 

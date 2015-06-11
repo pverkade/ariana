@@ -38,7 +38,7 @@ angular.module('ariana').config(function($stateProvider, $locationProvider) {
                 },
                 "toolbar": {
                     templateUrl: "app/toolbar/toolbar.tpl.html",
-                    controller: 'toolbarCtrl'
+                    controller: 'ToolbarController'
                 },
                 "layers": {
                     templateUrl: "app/layers/layers.tpl.html",
@@ -46,7 +46,7 @@ angular.module('ariana').config(function($stateProvider, $locationProvider) {
                 },
                 "toolbox": {
                     templateUrl: "app/toolbox/toolbox.tpl.html",
-                    controller: 'toolBoxController'
+                    controller: 'ToolboxController'
                 }
             }
         })
@@ -85,7 +85,7 @@ angular.module('ariana').config(function($stateProvider, $locationProvider) {
                 },
                 "toolbox": {
                     templateUrl: "app/toolbox/toolbox.tpl.html",
-                    controller: 'toolBoxController'
+                    controller: 'ToolboxController'
                 }
             }
         });*/

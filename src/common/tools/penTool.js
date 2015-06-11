@@ -1,17 +1,17 @@
 var penTool = {
     
     start: function() {
-        var scope = angular.element($("#main-canvas")).scope();
-        $("#main-canvas").css("cursor", "url(/assets/vectors/pen.svg), auto");
+        var scope = angular.element($("#background")).scope();
+        $("#background").css("cursor", "url(/assets/vectors/pen.svg), auto");
         
         //scope.drawEngine.activate();
         scope.drawEngine.setDrawType(drawType.NORMAL);
-        scope.drawEngine.activate();
+        scope.drawEngine.activate(scope);
         //$scope.drawEngine.setBrush(brushType.THIN);
     },
 
     stop: function() {
-        var scope = angular.element($("#main-canvas")).scope();
+        var scope = angular.element($("#background")).scope();
 
         var image = new Image();
         image.onload = function() { scope.newLayerFromDrawing(image); }
@@ -33,7 +33,7 @@ var penTool = {
     },
     
     mouseUp: function($scope, event) {
-        $("#main-canvas").css("cursor", "url(/assets/vectors/pen.svg), auto");
+        $("#background").css("cursor", "url(/assets/vectors/pen.svg), auto");
         $scope.drawEngine.onMouseup(event);
     },
     

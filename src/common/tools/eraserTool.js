@@ -1,17 +1,17 @@
 var eraserTool = {
     
     start: function() {
-        var scope = angular.element($("#main-canvas")).scope();
-        $("#main-canvas").css("cursor", "url(/assets/vectors/eraser.svg), auto");
+        var scope = angular.element($("#background")).scope();
+        $("#background").css("cursor", "url(/assets/vectors/eraser.svg), auto");
         
         //scope.drawEngine.activate();
         scope.drawEngine.setDrawType(drawType.ERASE);
-        scope.drawEngine.activate();
+        scope.drawEngine.activate(scope);
     },
 
     end: function() {
         //TODO: erasing doesnt work yet
-        var scope = angular.element($("#main-canvas")).scope();
+        var scope = angular.element($("#background")).scope();
 
         var image = new Image();
         image.onload = function() { scope.newLayerFromDrawing(image); }
@@ -33,7 +33,9 @@ var eraserTool = {
     },
     
     mouseUp: function($scope, event) {
-        $("#main-canvas").css("cursor", "url(/assets/vectors/eraser.svg), auto");
+        console.log("mouseUP");
+        console.log(event);
+        $("#background").css("cursor", "url(/assets/vectors/eraser.svg), auto");
         $scope.drawEngine.onMouseup(event);
     },
     
