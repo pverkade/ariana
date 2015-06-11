@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * layers.logic.js
+ * 
+ * This file contains the LayersController, which controls the Layer Selector
+ * element.
+ *
+ */
+ 
 angular.module('ariana').controller('layersCtrl', function($scope) {
     
     /* This functions returns whether the toolbox should be visible. It is 

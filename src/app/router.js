@@ -1,5 +1,12 @@
-/* The router displays the correct tamplate in the correct ui-view for every
- * given state. */
+/* 
+ * Project Ariana
+ * router.js
+ * 
+ * This file contains the router, which displays the correct template in the 
+ * correct ui-view for every given state.
+ *
+ */
+
 angular.module('ariana').config(function($stateProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
     

@@ -1,3 +1,11 @@
+/* 
+ * Project Ariana
+ * server.js
+ *
+ * This file contains all code to run the node server to host Ariana.
+ *
+ */
+
 var connect = require('connect');
 var serveStatic = require('serve-static');
 var fs = require('fs');

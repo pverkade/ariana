@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * content.logic.js
+ * 
+ * This file contains the ContenController, which controls the canvas in the
+ * center of the screen.
+ *
+ */
+
 /* The ContenController contains the behaviour of the main content. */
 angular.module('ariana').controller('ContentController', function($scope, $window) {
     

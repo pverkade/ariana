@@ -1,3 +1,11 @@
+/* 
+ * Project Ariana
+ * toolbar.logic.js
+ * 
+ * This file contains the ToolbarController, which controls the toolbar.
+ *
+ */
+ 
 /* The ToolbarController contains the behaviour of the toolbar. */
 app.controller('ToolbarController', ['$scope', '$modal',
     function ($scope, $modal) {
