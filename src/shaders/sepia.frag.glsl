@@ -11,5 +11,5 @@ void main() {
 	vec4 texColor = texture2D(u_texture, v_texCoord);
 	vec3 luma = vec3(dot(texColor.xyz, gMonoMult));
 
-	gl_FragColor = vec4(luma + vec3(u_depth * 2, u_depth, - u_intensity), 1.0);
+	gl_FragColor = vec4(luma + vec3(u_depth * 2.0, u_depth, - u_intensity), texColor.a);
 }
