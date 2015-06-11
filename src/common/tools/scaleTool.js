@@ -39,33 +39,7 @@ var scaleTool = {
             var layerRatio = layer.getHeight() / layer.getWidth(); 
             
             
-            index = Math.floor(4 * (angle / (2 * Math.PI)));
-            
-            if (differenceX > 0) {
-                if (differenceY > 0) {
-                    // quadrant I
-                    if (ratio < layerRatio) scaleToolIndex = 0;
-                    else scaleToolIndex = 1;
-                }
-                else {
-                    // quadrant IV
-                    if (ratio < layerRatio) scaleToolIndex = 7;
-                    else scaleToolIndex = 6;
-                }
-                
-            }
-            else {
-                if (differenceY > 0) {
-                    // quadrant II
-                    if (ratio < layerRatio) scaleToolIndex = 3;
-                    else scaleToolIndex = 2;
-                }
-                else {
-                    // quadrant III
-                    if (ratio < layerRatio) scaleToolIndex = 4;
-                    else scaleToolIndex = 5;
-                } 
-            }
+            scaleToolIndex = Math.round(8 * (angle / (2 * Math.PI)));
             
             if (scaleToolIndex == 0) {$("#background").css("cursor", "e-resize"); };
             if (scaleToolIndex == 1) { $("#background").css("cursor", "ne-resize"); };
