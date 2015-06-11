@@ -56,10 +56,10 @@ accordion {
 
 .scale-on {
     @include transition(all 0.1s ease-in);
-    transform: scale(2,2) translate(0.25 * $blocksize, -0.25 * $blocksize);
+    @include transform(scale(2,2) translate(0.25 * $blocksize, -0.25 * $blocksize));
 }
 
 .scale-off {
     @include transition(all 0.1s ease-in);
-    transform: scale(1,1) translate(0px, 0px);
+    @include transform(scale(1,1) translate(0px, 0px));
 }
