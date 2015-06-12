@@ -58,13 +58,16 @@ angular.module('ariana').controller('ToolboxController', function($scope) {
                     image: 'mdi-palette'
                 },
                 pencil: {
-                    image: 'mdi-pen'
+                    image: 'mdi-pen',
+                    toolFunctions: penTool
                 },
                 brush: {
-                    image: 'mdi-brush'
+                    image: 'mdi-brush',
+                    toolFunctions: brushTool
                 },
                 eraser: {
-                    image: 'mdi-eraser'
+                    image: 'mdi-eraser',
+                    toolFunctions: eraserTool
                 },
                 picker: {
                     image: 'mdi-eyedropper',
@@ -113,6 +116,11 @@ angular.module('ariana').controller('ToolboxController', function($scope) {
     $scope.selectTool = function(event, tool) {
         if (event) event.stopPropagation();
 
+        var toolFunctions = $scope.config.tools.activeToolFunctions;
+
+        if (toolFunctions && toolFunctions.stop) {
+            toolFunctions.stop();
+        }
         $scope.config.tools.activeTool = tool;
         
         /* Find the required tool-functions in the toolbox object. The 

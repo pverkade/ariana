@@ -1,12 +1,14 @@
 bower_components/
 node_modules/
+*.tmp.txt
 build/
 src/app/renderengine/shaders.ts
 .idea/*
 src/.idea/*
-
+*.js.map
 *.log
 Thumbs.db
 /**/Thumbs.db
 .sass-cache/
 .tscache/*
+src/app/drawengine/*.js

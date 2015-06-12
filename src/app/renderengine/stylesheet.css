@@ -1,0 +1,9 @@
+#glcanvas, #overlaycanvas, #topcanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+img {
+    margin-top: 500px;
+}
