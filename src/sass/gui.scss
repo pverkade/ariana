@@ -74,13 +74,8 @@ body {
         background-color: $light !important;
     }
     
-    a {
+    svg, img, i {
         cursor: default !important;
+        opacity: 0.25;
     }
-    
-    svg, img {
-        cursor: default !important;
-    }
-
-    opacity: 0.25;
 }
