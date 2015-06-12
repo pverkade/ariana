@@ -3,10 +3,14 @@
 </div>
 
 <div class="modal-body">
-    <div ngf-drop ng-model="files" class="drop-box clearfix" ngf-drag-over-class="dragover" ngf-multiple="true" ngf-accept="'image/*'" ngf-select="">
-        
-    </div>
+    <form class="input-form">
+        <label for="inputWidth">Width: </label>
+        <input type="number" id="inputWidth" ng-model="inputWidth" /><br>
+        <label for="inputHeight">Height: </label>
+        <input type="number" id="inputHeight" ng-model="inputHeight" />
+    </form>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default btn-lg" ng-click="close()"> Cancel </button>
+    <button type="button" class="btn btn-primary btn-lg" ng-click="create()"> Create Canvas </button>
 </div>

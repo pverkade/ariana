@@ -13,26 +13,31 @@ app.controller('NewCanvasModalController', ['$scope', '$modalInstance',
         $scope.close = function () {
             $modalInstance.dismiss();
         };
+
+        //TODO: check if the value is accepted (if not, change to number..)
+        $scope.$watch('inputWidth', function () {
+            if (!$scope.inputWidth)
+            return;
+
+            console.log('Width: ' + $scope.inputWidth);
+
+            if ($scope.inputWidth < 1) $scope.inputWidth = 1;
+        });
+
+        //TODO: check if the value is accepted (if not, change to number..)
+        $scope.$watch('inputHeight', function () {
+            if (!$scope.inputHeight)
+            return;
+
+            console.log('Height: ' + $scope.inputHeight);
+
+            if ($scope.inputHeight < 1) $scope.inputHeight = 1;
+        });
  
-        /*$scope.upload = function () {
-            $scope.imageUrls.forEach(function(url) {
-                var image = new Image();
-                image.src = url;
-                image.onload = function() {
-                    $scope.newLayerFromImage(image);
-                };
-            });
+        $scope.create = function () {
+            console.log("Create canvas ("+ $scope.inputWidth + ", " + $scope.inputHeight + ")");
 
             $scope.close();
         };
-
-        $scope.$watch('files', function () {
-            if (!$scope.files)
-            return;
-
-            $scope.files.forEach(function (file) {
-                $scope.imageUrls.push(URL.createObjectURL(file));
-            })
-        })*/
     }
 ]);
