@@ -141,6 +141,8 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
             filter.render(this.resourceManager, this.drawbuffer1.getWebGlTexture());
             imageLayer.copyFramebuffer(this.width, this.height);
             this.drawbuffer2.unbind();
+            
+            layer.setRotation(0);
         }
 
         imageLayer.setPos(this.width/2.0, this.height/2.0);
