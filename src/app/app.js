@@ -31,6 +31,7 @@ app.controller('AppCtrl', ['$scope',
                 }
             },
             canvas: {
+                cursor: 'default',
                 x: 128,
                 y: 128,
                 zoom: 1,

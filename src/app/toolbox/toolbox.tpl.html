@@ -2,23 +2,89 @@
 
 <div class="toolset" 
     ng-class="{'fade-on inactive': !checkVisible(), 'fade-off': checkVisible()}">
-    
-    <div class="tool" id="{{name}}" 
-        ng-repeat="(name, tool) in toolbox" 
-        ng-click="selectToolSet(name)" 
-        ng-class="{active: config.tools.activeToolset == '{{name}}'}">
 
-        <i class="mdi {{tool.image}}"></i>
+    <div class="tool" id="basic" 
+         ng-click="selectToolSet('basic')" 
+         ng-class="{active: isActive('basic')}">
 
-        <div class="toolbox" 
+        <i class="mdi mdi-arrow-all"></i>
+
+        <div class="toolbox" ng-show="isActiveToolset($event, 'basic')">
+            <pan tool></pan>
+            <translate tool></translate>
+            <scale tool></scale>
+            <rotate tool></rotate>
+            <crop tool></crop>
+        </div>
+
+    </div>
+
+    <div class="tool" id="painting" 
+         ng-click="selectToolSet('painting')" 
+         ng-class="{active: isActive('painting')}">
+
+        <i class="mdi mdi-brush"></i>
+
+        <div class="toolbox" ng-show="isActiveToolset('painting')">
+            <palette tool></palette>
+            <pencil tool></pencil>
+            <brush tool></brush>
+            <eraser tool></eraser>
+            <picker tool></picker>
+            <fill tool></fill>
+        </div>
+
+    </div>
+
+    <div class="tool" id="select" 
+         ng-click="selectToolSet('select')" 
+         ng-class="{active: isActive('select')}">
+
+        <i class="mdi mdi-select"></i>
+
+        <div class="toolbox" ng-show="isActiveToolset('select')">
+            <rectangle tool></rectangle>
+            <elipse tool></elipse>
+            <curve tool></curve>
+            <magic tool></magic>
+        </div>
+        
+    </div>
+
+    <div class="tool" id="text" 
+         ng-click="selectToolSet('text')" 
+         ng-class="{active: isActive('text')}">
+
+        <i class="mdi mdi-format-size"></i>
+        
+        <div class="toolbox" ng-show="isActiveToolset('text')">
+        </div>
+        
+    </div>
+
+        <!-- <i class="mdi {{tool.image}}"></i> -->
+<!-- 
+        <div class="toolbox"
             ng-show="config.tools.activeToolset == '{{name}}'">
-	        
-	        <div class="tool" id="{{name}}" 
+	           
+            <tool id="{{name}}"
+                  ng-repeat="(name, subtool) in tool.tools"
+                  ng-class="{active: config.tools.activeTool == '{{name}}'}"
+                  ng-click="selectTool($event, name)"
+                  class="tool" 
+                  tool-name="{{name}}"
+                  image="{{subtool.image}}"> -->
+
+	        <!-- <div class="tool" id="{{name}}" 
                 ng-repeat="(name, subtool) in tool.tools" 
                 ng-click="selectTool($event, name)"
-                ng-class="{active: config.tools.activeTool == '{{name}}'}">
-                <i class="mdi {{subtool.image}}"></i>
-            </div>
+                ng-class="{active: config.tools.activeTool == '{{name}}'}"> -->
+                <!-- <i class="mdi {{subtool.image}}"></i>
+                
+                <div class="tool-settings" ng-show="hasSettings('{{name}}')">
+                
+                <div> -->
+            </tool>
         </div>
     </div>
 </div>

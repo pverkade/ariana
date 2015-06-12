@@ -2,7 +2,7 @@
 angular.module('ariana').controller('ContentController', function($scope, $window) {
     
     /* Set the cursor for the deafult tool: the pan tool. */
-    $("#background").css("cursor", "grab");
+    // $("#background").css("cursor", "grab");
 
     /* This fucntion is triggered when the mouse is moved. */
     $scope.mouseMove = function(event) {
