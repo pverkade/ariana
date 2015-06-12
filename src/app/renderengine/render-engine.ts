@@ -75,7 +75,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
 
     public addLayer(layer : Layer) {
         /* Append layer to user array */
-        this.insertLayer(layer, 0);
+        this.insertLayer(layer, this.layers.length);
     }
 
     public insertLayer(layer : Layer, index : number) {
