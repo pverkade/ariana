@@ -7,15 +7,14 @@
  *
  */
  
-app.controller('UploadModalController', ['$scope', '$modalInstance', 'Upload', 
-    function ($scope, $modalInstance, Upload) {
-        $scope.imageUrls = [];
+app.controller('NewCanvasModalController', ['$scope', '$modalInstance',  
+    function ($scope, $modalInstance) {
 
         $scope.close = function () {
             $modalInstance.dismiss();
         };
  
-        $scope.upload = function () {
+        /*$scope.upload = function () {
             $scope.imageUrls.forEach(function(url) {
                 var image = new Image();
                 image.src = url;
@@ -34,6 +33,6 @@ app.controller('UploadModalController', ['$scope', '$modalInstance', 'Upload',
             $scope.files.forEach(function (file) {
                 $scope.imageUrls.push(URL.createObjectURL(file));
             })
-        })
+        })*/
     }
 ]);

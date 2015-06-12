@@ -50,11 +50,21 @@ app.controller('ToolbarController', ['$scope', '$modal',
             document.body.removeChild(myForm) ;
         };
         
+        /* This function opens the newcanvas modal. */
+        $scope.openNewCanvasModal = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'app/toolbar/newcanvas/newcanvas.tpl.html',
+                controller:  'NewCanvasModalController',
+                scope: $scope,
+                size: 'lg'
+            });
+        };
+        
         /* This function opens the upload modal. */
         $scope.openUploadModal = function() {
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/upload/upload.tpl.html',
-                controller:  'UploadModalCtrl',
+                controller:  'UploadModalController',
                 scope: $scope,
                 size: 'lg'
             });
