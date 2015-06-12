@@ -45,23 +45,23 @@ accordion {
 }
 
 .fade-on {
-    @include transition(opacity $fade-speed ease);
+    @include transition(opacity $fade-speed ease-in);
     z-index: 1;
     opacity: $fade-amount;
     pointer-events: none;
 }
 
 .fade-off {
-    @include transition(all $fade-speed ease);
+    @include transition(all $fade-speed ease-in);
     opacity: 1;
 }
 
 .scale-on {
-    @include transition(transform $scale-speed ease);
+    @include transition(transform $scale-speed ease-in);
     @include transform(scale($scale-amount, $scale-amount) translate(0.25 * $blocksize, -0.25 * $blocksize));
 }
 
 .scale-off {
-    @include transition(transform $scale-speed ease);
+    @include transition(transform $scale-speed ease-in);
     @include transform(scale(1,1) translate(0px, 0px));
 }
