@@ -38,6 +38,11 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
             },
             
             {
+                name: "sepia",
+                image: "/assets/img/arnold2.jpg",
+            },
+            
+            {
                 name: "colorize",
                 image: "/assets/img/arnold2.jpg",
             },
