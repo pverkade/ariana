@@ -46,6 +46,14 @@
             background-color: lighten($light, 2 * $active-lighten);
         }
     }
+    
+    .inactive {
+        background-color: lighten($light, $active-lighten) !important;
+        
+        &:hover {
+            background-color: lighten($light, $active-lighten) !important;
+        }
+    }
 }
 
 .color-preview {
