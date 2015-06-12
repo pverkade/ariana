@@ -556,41 +556,21 @@ class DrawEngine {
      * Load svg to xml
      */
     loadBrushSVG (url : string) : void {
-        var req : any;
-        req = new XMLHttpRequest() || false;
-        if(!req) {
-            req = new ActiveXObject('Microsoft.XMLHTTP');
-        }
-        if (!req) return;
+        var thisPointer = this;
+        $.get(
+            url,
+            function(data) {
+                var paths = data.getElementsByTagName("path");
+                for (var i = 0; i < paths.length; i++) {
+                    paths[i].style.fill = thisPointer.getColorString();
+                }
 
-       req.open('GET', url, false);
-       req.onreadystatechange = this.onSVGLoadReadyStateChange;
-       req.send(null);
-    }
-
-    /*
-     * If the svg is loaded, change its color to our color and assign it to the brush..
-     * TODO: implement the brushSize / brushWidht / lineWidth in the svg
-     *      (currently it supports only one size)
-     */
-    onSVGLoadReadyStateChange = (e : Event) : void => {
-        var req : XMLHttpRequest = <XMLHttpRequest>e.target;
-        if (req.readyState == 4 && req.status == 200)
-        {
-            var svg = req.responseXML;
-            var paths = svg.getElementsByTagName('path');
-            for (var i : number = 0; i < paths.length; i++) {
-                paths[i].style.fill = this.getColorString();
+                var dataString = new XMLSerializer().serializeToString(data);
+                var src = 'data:image/svg+xml;base64,' + window.btoa(dataString);
+                thisPointer.brushImage = new Image();
+                thisPointer.brushImage.src = src;
+                thisPointer.brushLoaded();
             }
-
-            var svgAsString = new XMLSerializer().serializeToString(svg);
-
-            var svgBlob = new Blob([svgAsString], {type: "image/svg+xml;charset=utf-8"});
-            var url = URL.createObjectURL(svgBlob);
-
-            this.brushImage = new Image();
-            this.brushImage.src = url;
-            this.brushImage.addEventListener('load', this.brushLoaded);
-        }
+        );
     }
 }
