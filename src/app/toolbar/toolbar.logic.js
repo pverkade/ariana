@@ -19,6 +19,12 @@ app.controller('ToolbarController', ['$scope', '$modal',
       
         /* This functions saves the canvas to an image-file. */
         $scope.saveImage = function() {
+            var toolFunctions = $scope.config.tools.activeToolFunctions;
+
+            if (toolFunctions && toolFunctions.stop) {
+                toolFunctions.stop();
+            }
+
             /* Receive image data in base64 encoding. */
             var image = $scope.renderEngine.renderToImg();
             var data = image.substr(image.indexOf(',') + 1).toString();
