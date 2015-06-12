@@ -500,7 +500,9 @@ class DrawEngine {
         if (path.path.length < 3)
         {
             context.drawImage(this.brushImage, points[0].x - halfBrushW,
-                                               points[0].y - halfBrushH);
+                                               points[0].y - halfBrushH,
+                                               this.lineWidth,
+                                               this.lineWidth);
         }
         if (i < 1) {
             i = 1;
@@ -526,7 +528,9 @@ class DrawEngine {
             {
                 x = start.x + (Math.sin(angle) * z) - halfBrushW;
                 y = start.y + (Math.cos(angle) * z) - halfBrushH;
-                context.drawImage(this.brushImage, x, y);
+                context.drawImage(this.brushImage, x, y,
+                                  this.lineWidth,
+                                  this.lineWidth);
             }
         }
         path.lastDrawnItem = i;
