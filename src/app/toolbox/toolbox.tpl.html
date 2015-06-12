@@ -17,7 +17,7 @@
                 ng-repeat="(name, subtool) in tool.tools" 
                 ng-click="selectTool($event, name)"
                 ng-class="{
-                    active: config.tools.activeTool == name,
+                    active:   config.tools.activeTool == name,
                     inactive: !(subtool.toolFunctions)
                 }">
                 <i class="mdi {{subtool.image}}"></i>

@@ -83,6 +83,8 @@ app.controller('AppCtrl', ['$scope',
             
             var height = layer.getHeight();
             var width = layer.getWidth();
+            console.log(width, height);
+
             
             layer.setPos(0.5 * width, 0.5 * height);
             
