@@ -187,6 +187,8 @@ class DrawEngine {
      * Function being called when the mouse is no longer being pressed
      */
     onMouseup = (e : MouseEvent) : void => {
+        if (!this.currentPath) return;
+        
         if (this.drawType == drawType.RECTANGLE || this.drawType == drawType.CIRCLE) {
             this.currentPath.setLastPosition(this.getMousePos(e));
         }
