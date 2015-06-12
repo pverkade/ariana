@@ -3,9 +3,9 @@
 </div>
 
 <div class="modal-body">
-    <div ngf-drop ng-model="files" class="drop-box" ngf-drag-over-class="dragover" ngf-multiple="true" ngf-accept="'image/*'" ngf-select="">
-        <span ng-if="files==undefined">Drag images here</span>
-        <img ng-repeat="previewImg in imageUrls track by $index" src="{{previewImg}}">
+    <div ngf-drop ng-model="files" class="drop-box clearfix" ngf-drag-over-class="dragover" ngf-multiple="true" ngf-accept="'image/*'" ngf-select="">
+        <span ng-if="files==undefined"> Drag images here </span>
+        <img ng-repeat="previewImg in imageUrls track by $index" ng-src="{{previewImg}}">
     </div>
 </div>
 <div class="modal-footer">
