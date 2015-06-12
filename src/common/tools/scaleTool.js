@@ -61,27 +61,39 @@ var scaleTool = {
         /* Scale width and height */
         var scale = 0.5 + 0.5 * (distance / distanceOld);
         
+        var width  = layer.getWidth();
+        var height = layer.getHeight();
+        var rotation = layer.getRotation();
+        
+        var originalWidth = width;
+        var originalHeight = height;
+        
         if (scaleToolIndex != 2 && scaleToolIndex != 6) {
-            var width  = layer.getWidth();
-            $scope.renderEngine.layers[currentLayer].setWidth(width * scale);
+            width *= scale;
         }
         
         if (scaleToolIndex != 0 && scaleToolIndex != 4) {
-            var height = layer.getHeight();
-            $scope.renderEngine.layers[currentLayer].setHeight(height * scale);
+            height *= scale;      
         }
-
+        
+        /* Compensate for rotation. */
+        //var width  = originalWidth  + (width - originalWidth) * Math.cos(rotation) + (height - originalHeight) * Math.sin(rotation);
+        //var height = originalHeight + (width - originalWidth) * Math.cos(rotation) + (height - originalHeight) * Math.sin(rotation);
+        
+        $scope.renderEngine.layers[currentLayer].setWidth(width);
+        $scope.renderEngine.layers[currentLayer].setHeight(height);
+         
         if (scaleToolIndex == 7 || scaleToolIndex == 0 || scaleToolIndex == 1) 
-            x += 0.5 * ((scale * width) - width);
+            x += 0.5 * (width - originalWidth);
         
         if (scaleToolIndex == 3 || scaleToolIndex == 4 || scaleToolIndex == 5) 
-            x -= 0.5 * ((scale * width) - width);
+            x -= 0.5 * (width - originalWidth);
         
         if (scaleToolIndex == 5 || scaleToolIndex == 6 || scaleToolIndex == 7) 
-            y += 0.5 * ((scale * height) - height);
+            y += 0.5 * (height - originalHeight);
         
         if (scaleToolIndex == 1 || scaleToolIndex == 2 || scaleToolIndex == 3) 
-            y -= 0.5 * ((scale * height) - height);
+            y -= 0.5 * (height - originalHeight);
         
         layer.setPos(x, y);
         
