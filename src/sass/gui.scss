@@ -1,7 +1,7 @@
 /*
- * Project Arinana
+ * Project Ariana
  * gui.scss
- *
+ * 
  * This file contains the style definition for generic GUI elements.
  *
  */
@@ -74,13 +74,8 @@ body {
         background-color: $light !important;
     }
     
-    a {
+    svg, img, i {
         cursor: default !important;
+        opacity: 0.25;
     }
-    
-    svg, img {
-        cursor: default !important;
-    }
-
-    opacity: 0.25;
 }

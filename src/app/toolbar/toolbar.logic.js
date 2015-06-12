@@ -1,6 +1,21 @@
+/* 
+ * Project Ariana
+ * toolbar.logic.js
+ * 
+ * This file contains the ToolbarController, which controls the toolbar.
+ *
+ */
+ 
 /* The ToolbarController contains the behaviour of the toolbar. */
 app.controller('ToolbarController', ['$scope', '$modal',
     function ($scope, $modal) {
+      
+        /* This functions returns whether the toolbox should be visible. It is 
+         * hidden when the user is clicking on the canvas/background. */
+        $scope.checkVisible = function() {
+            return (!($scope.config.mouse.button[1] || $scope.config.mouse.button[2] || $scope.config.mouse.button[3]));
+        }
+      
       
         /* This functions saves the canvas to an image-file. */
         $scope.saveImage = function() {
