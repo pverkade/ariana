@@ -63,6 +63,9 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 size: 'lg'
             });
         };
+        
+        $scope.filtername = null;
+        $scope.parameters = null;
     
         /* This function opens the filters modal. */
         $scope.openFilterModal = function() {
@@ -72,7 +75,18 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 scope: $scope,
                 size: 'lg'
             });
-        };    
+        };
+
+        $scope.cancelFilter = function() {
+            $scope.filtername = null;
+        };
+        
+        $scope.cancelFilter = function() {
+            // read parameters
+            // apply filter in render engine
+            
+            $scope.filtername = null;
+        };
 
     }
 ]);
