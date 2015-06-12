@@ -80,6 +80,9 @@ var scaleTool = {
         //var width  = originalWidth  + (width - originalWidth) * Math.cos(rotation) + (height - originalHeight) * Math.sin(rotation);
         //var height = originalHeight + (width - originalWidth) * Math.cos(rotation) + (height - originalHeight) * Math.sin(rotation);
         
+        // apply rotation to layer texture 
+        // reset layer rotation matrix
+        
         $scope.renderEngine.layers[currentLayer].setWidth(width);
         $scope.renderEngine.layers[currentLayer].setHeight(height);
          
