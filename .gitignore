@@ -1,5 +1,6 @@
 bower_components/
 node_modules/
+*.tmp.txt
 build/
 src/app/renderengine/shaders.ts
 .idea/*
