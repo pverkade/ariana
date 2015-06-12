@@ -71,6 +71,7 @@ ariana runs on a [Node.js](https://nodejs.org/) server. Installing ariana takes 
 #### Requirements
 - Node.js
 - git
+- GraphicsMagick
 
 #### Node.js
 First of all, install [Node.js](https://nodejs.org/).
