@@ -1,12 +1,12 @@
 <!-- Template for the toolbar. -->
 
-<div id="toolbar"
-    ng-class="{'fade-on inactive': !checkVisible(), 'fade-off': checkVisible()}">
+<div class="toolbar"
+    ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}">
     <div class="brand float-left">
         ARIANA
     </div>
     
-    <ul>
+    <ul class="clearfix">
         <li class="inactive tool float-left">
             <!-- new canvas -->
             <i class="mdi mdi-file"></i>

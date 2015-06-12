@@ -1,17 +1,17 @@
 <!-- Template for the toolbox elements. -->
 
 <div class="toolset" 
-    ng-class="{'fade-on inactive': !checkVisible(), 'fade-off': checkVisible()}">
+    ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}">
     
     <div class="tool" id="{{name}}" 
         ng-repeat="(name, tool) in toolbox" 
         ng-click="selectToolSet(name)" 
-        ng-class="{active: config.tools.activeToolset == '{{name}}'}">
+        ng-class="{active: config.tools.activeToolset == name}">
 
         <i class="mdi {{tool.image}}"></i>
 
         <div class="toolbox" 
-            ng-show="config.tools.activeToolset == '{{name}}'">
+            ng-show="config.tools.activeToolset == name">
 	        
 	        <div class="tool" id="{{name}}" 
                 ng-repeat="(name, subtool) in tool.tools" 

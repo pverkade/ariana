@@ -6,7 +6,7 @@
  *
  */
  
-#toolbar {    
+.toolbar {    
     @extend .gui-element;
     position: absolute;
     width : 100%; 
@@ -19,20 +19,13 @@
         list-style: none;
         margin: 0;
         padding: 0;
-        
-        &:after {
-            content : "";
-            display : block;
-            clear : both;
-            visibility : hidden;
-        }
     }
     
     .seperator {
-        margin-top: 0.1 * $blocksize;
+        margin-top:    0.1 * $blocksize;
         margin-bottom: 0.1 * $blocksize;
-        margin-left: 0;
-        margin-right: 0;
+        margin-left:  -1;
+        margin-right: -1;
         padding: 0;
         height: 0.8 * $blocksize;
         width: 2px;
