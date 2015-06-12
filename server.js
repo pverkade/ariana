@@ -11,7 +11,6 @@ var serveStatic = require('serve-static');
 var fs = require('fs');
 var request = require('request');
 var qs = require('querystring');
-//var gm = require('gm');
 var gm = require('gm').subClass({ imageMagick: true });
 
 // Init
@@ -122,7 +121,7 @@ function staticServe(host, port) {
                 return;
             }
 
-            if (req.url != "/" && req.url != "/index.html") {
+            if (req.url != "/" && req.url != "/index.html" && req.url != "/landing" && req.url != "/drawtest") {
                 res.writeHead(404, { "Content-Type": "text/plain" });
                 res.end("File not Found.");
                 return;
