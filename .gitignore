@@ -11,4 +11,4 @@ Thumbs.db
 /**/Thumbs.db
 .sass-cache/
 .tscache/*
-src/common/draw/*.js
+src/app/drawengine/draw-engine.js
