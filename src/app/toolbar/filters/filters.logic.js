@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * filters.logic.js
+ * 
+ * This file contains the FilterModalController, which controls the 
+ * 'filters and effects' modal.
+ *
+ */
+ 
 app.controller('FilterModalController', ['$scope', '$modalInstance', 
     function ($scope, $modalInstance) {
         

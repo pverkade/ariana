@@ -1,7 +1,7 @@
 /*
- * Project Arinana
+ * Project Ariana
  * variables.scss
- *
+ * 
  * This file contains variables used by other .scss files.
  *
  */
@@ -26,4 +26,7 @@ $border-thickness: 2px;
 
 $hover-lighten: 10%;
 $active-lighten: 15%;
-$seperator-darken: 5%;
+$seperator-darken: 2%;
+
+$fade-amount: 0.25;
+$preview-scale: 2;

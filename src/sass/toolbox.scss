@@ -1,9 +1,9 @@
 /*
- * Project Arinana
+ * Project Ariana
  * toolbox.scss
  *
- * This file contains the style definition for the Toolbox and the Color Preview
- * elements.
+ * This file contains the style definition for the Toolbox and the Color 
+ * Preview elements.
  *
  */
 
@@ -44,6 +44,14 @@
         
         &:hover {
             background-color: lighten($light, 2 * $active-lighten);
+        }
+    }
+    
+    .inactive {
+        background-color: lighten($light, $active-lighten) !important;
+        
+        &:hover {
+            background-color: lighten($light, $active-lighten) !important;
         }
     }
 }

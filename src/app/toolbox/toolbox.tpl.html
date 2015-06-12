@@ -1,22 +1,25 @@
 <!-- Template for the toolbox elements. -->
 
 <div class="toolset" 
-    ng-show="checkVisible()">
+    ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}">
     
     <div class="tool" id="{{name}}" 
         ng-repeat="(name, tool) in toolbox" 
         ng-click="selectToolSet(name)" 
-        ng-class="{active: config.tools.activeToolset == '{{name}}'}">
+        ng-class="{active: config.tools.activeToolset == name}">
 
         <i class="mdi {{tool.image}}"></i>
 
         <div class="toolbox" 
-            ng-show="config.tools.activeToolset == '{{name}}'">
+            ng-show="config.tools.activeToolset == name">
 	        
 	        <div class="tool" id="{{name}}" 
                 ng-repeat="(name, subtool) in tool.tools" 
                 ng-click="selectTool($event, name)"
-                ng-class="{active: config.tools.activeTool == '{{name}}'}">
+                ng-class="{
+                    active:   config.tools.activeTool == name,
+                    inactive: !(subtool.toolFunctions)
+                }">
                 <i class="mdi {{subtool.image}}"></i>
             </div>
         </div>
@@ -25,7 +28,7 @@
 
 <!-- Template for the color-preview elements. -->
 
-<div class="color-preview" ng-click="swapColors()" ng-show="checkVisible()">
+<div class="color-preview" ng-click="swapColors()" ng-class="{'fade-on': !checkVisible() && config.tools.activeTool != 'picker', 'scale-on': !checkVisible() && config.tools.activeTool == 'picker', 'fade-off scale-off': checkVisible()}">
     <div class="color-primary"   style="background-color: rgb({{config.tools.colors.primary.r}},   {{config.tools.colors.primary.g}},   {{config.tools.colors.primary.b}})"> </div>
     <div class="color-secondary" style="background-color: rgb({{config.tools.colors.secondary.r}}, {{config.tools.colors.secondary.g}}, {{config.tools.colors.secondary.b}})"> </div>
-</div>
+</div> 

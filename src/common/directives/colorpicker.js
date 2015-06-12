@@ -7,7 +7,7 @@ angular.module('ariana').directive('colorpicker', function() {
         restrict: "EA",
         
         // HTML template, TODO use templateURL
-        template: "<h2> Hello </h2>",
+        template: "<h2> Hello kaas </h2>",
         
         // dont overwrite <colorpicker> element with HTML
         replace: false,

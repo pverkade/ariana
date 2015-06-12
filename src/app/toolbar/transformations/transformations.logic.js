@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * transformations.logic.js
+ * 
+ * This file contains the TransformationModalController, which controls the 
+ * basic transformations modal.
+ *
+ */
+ 
 app.controller('TransformationModalController', ['$scope', '$modalInstance',
     function ($scope, $modalInstance) {
         
