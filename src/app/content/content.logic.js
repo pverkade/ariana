@@ -80,6 +80,6 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
     
     // Add Arnold the First
     var image1 = new Image();
-    image1.src="/assets/img/arnold2.jpg";
+    image1.src="/assets/img/logo.png";
     image1.onload = function(){$scope.newLayerFromImage(image1)};
 });
