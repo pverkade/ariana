@@ -20,8 +20,13 @@ var brushTool = {
     },
 
     mouseDown: function($scope, event) {
+        var buttons = $scope.config.mouse.button;
+        if (buttons[1] && buttons[3]) {
+            return;
+        }
+
         var color;
-        if ($scope.config.mouse.button[1]) {
+        if (buttons[1]) {
             color = $scope.config.tools.colors.primary;
         } else {
             color = $scope.config.tools.colors.secondary;
