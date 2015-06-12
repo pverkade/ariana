@@ -1,3 +1,12 @@
+/*
+ * Project Ariana
+ * toolbox.logic.js
+ *
+ * This file contains the ToolboxController, which controls the behaviour of
+ * the toolbox and the color preview. 
+ *
+ */
+
 /* This contoller defines the behaviour of the toolbox and the color-preview. */
 angular.module('ariana').controller('ToolboxController', function($scope) {
     

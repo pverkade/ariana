@@ -48,6 +48,7 @@ accordion {
     @include transition(all 0.1s ease-in);
     z-index: 1;
     opacity: $fade-amount;
+    pointer-events: none;
 }
 
 .fade-off {

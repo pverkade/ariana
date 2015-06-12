@@ -37,15 +37,16 @@ angular.module('ariana').controller('translateCtrl', function($scope) {
         var dx = $scope.config.mouse.current.x - $scope.config.mouse.old.x;
         var dy = $scope.config.mouse.current.y - $scope.config.mouse.old.y;
         
+        /* Update th old mouse position. */
         $scope.config.mouse.old.x += dx;
         $scope.config.mouse.old.y += dy;
         
-        var currentX = $scope.renderEngine.layers[currentLayer].getPosX();
-        var currentY = $scope.renderEngine.layers[currentLayer].getPosY();
+        /* Get the layer position. */
+        var x = $scope.renderEngine.layers[currentLayer].getPosX();
+        var y = $scope.renderEngine.layers[currentLayer].getPosY();
 
-        $scope.renderEngine.layers[currentLayer].setPos(currentX + dx, currentY + dy);
-        
-        window.requestAnimationFrame(function() {$scope.renderEngine.render();});
+        $scope.renderEngine.layers[currentLayer].setPos(x + dx, y + dy);
+        window.requestAnimationFrame(function() {$scope.renderEngine.render();});  
     };
 -
     /*

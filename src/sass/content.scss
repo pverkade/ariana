@@ -1,7 +1,7 @@
 /*
- * Project Arinana
+ * Project Ariana
  * content.scss
- *
+ * 
  * This file contains the style definition for the main content. This includes 
  * the background and the canvas-element;
  *
@@ -35,5 +35,4 @@
     z-index: 1;
     
     @extend .box-shadow;
-    @include transform(translate(128px, 128px));
 }
