@@ -12,8 +12,7 @@ angular.module('ariana').controller('ScaleCtrl', function($scope) {
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
 	/* init */
-	$scope.init = function() {
-	};
+	$scope.init = function() { };
 
 	/* onMouseDown */
 	$scope.mouseDown = function() {
@@ -127,7 +126,7 @@ angular.module('ariana').controller('ScaleCtrl', function($scope) {
 			y -= 0.5 * (height - originalHeight);
 
 		layer.setPos(x, y);
-
+		$scope.editEngine.drawScaleTool(layer);
 		window.requestAnimationFrame(function() {
 			$scope.renderEngine.render();
 		});
@@ -150,6 +149,8 @@ angular.module('ariana').controller('ScaleCtrl', function($scope) {
 				mouseUp: $scope.mouseUp,
 				mouseMove: $scope.mouseMove
 			};
+		} else {
+			$scope.editEngine.clear();
 		}
 	}, true);
 });

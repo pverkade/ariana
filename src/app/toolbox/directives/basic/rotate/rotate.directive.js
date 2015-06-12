@@ -54,7 +54,7 @@ angular.module('ariana').controller('RotateCtrl', function($scope) {
         $scope.config.mouse.old.x += dx;
         $scope.config.mouse.old.y += dy;
         
-        /* Caluclate the angle from the center to both points and add the 
+        /* Calculate the angle from the center to both points and add the
          * difference to the rotation. */
         var angleOld     = Math.atan2(mouseOldY     - y, mouseOldX     - x);
         var angleCurrent = Math.atan2(mouseCurrentY - y, mouseCurrentX - x);
@@ -62,7 +62,8 @@ angular.module('ariana').controller('RotateCtrl', function($scope) {
         var difference = (angleOld - angleCurrent);
         var rotation = layer.getRotation();
         
-        $scope.renderEngine.layers[currentLayer].setRotation(rotation + difference);
+        layer.setRotation(rotation + difference);
+		$scope.editEngine.drawRotateTool(layer);
         window.requestAnimationFrame(function() {$scope.renderEngine.render();});
 	};
 -
@@ -84,6 +85,8 @@ angular.module('ariana').controller('RotateCtrl', function($scope) {
 				mouseUp: $scope.mouseUp,
 				mouseMove: $scope.mouseMove
 			};
+		} else {
+			$scope.editEngine.clear();
 		}
 	}, true);
 });
