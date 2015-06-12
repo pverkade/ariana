@@ -11,6 +11,11 @@ var EditEngine = (function () {
     EditEngine.prototype.clear = function () {
         this.context.clearRect(0, 0, this.width, this.height);
     };
+    EditEngine.prototype.setColors = function (context) {
+        context.lineWidth = 1;
+        context.fillStyle = "#000000";
+        context.strokeStyle = "#000000";
+    };
     EditEngine.prototype.drawTranslateTool = function (layer) {
         var context = this.context;
         var x = layer.getPosX();
@@ -20,6 +25,7 @@ var EditEngine = (function () {
         var rotation = layer.getRotation();
         this.clear();
         context.save();
+        this.setColors(context);
         context.translate(x, y);
         context.rotate(-rotation);
         context.strokeRect(-width / 2.0, -height / 2.0, width, height);
@@ -35,6 +41,7 @@ var EditEngine = (function () {
         var rotation = layer.getRotation();
         this.clear();
         context.save();
+        this.setColors(context);
         context.translate(x, y);
         context.rotate(-rotation);
         context.strokeRect(-width / 2.0, -height / 2.0, width, height);
@@ -51,6 +58,7 @@ var EditEngine = (function () {
         var rotation = layer.getRotation();
         this.clear();
         context.save();
+        this.setColors(context);
         context.translate(x, y);
         context.rotate(-rotation);
         context.strokeRect(-width / 2.0, -height / 2.0, width, height);

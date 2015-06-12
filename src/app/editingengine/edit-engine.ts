@@ -19,6 +19,12 @@ class EditEngine {
         this.context.clearRect(0, 0, this.width, this.height);
     }
 
+    private setColors(context : CanvasRenderingContext2D) {
+        context.lineWidth = 1;
+        context.fillStyle = "#000000";
+        context.strokeStyle = "#000000";
+    }
+
     drawTranslateTool(layer : Layer) {
         var context = this.context;
         var x = layer.getPosX();
@@ -30,6 +36,7 @@ class EditEngine {
         this.clear();
 
         context.save();
+        this.setColors(context);
         context.translate(x, y);
         context.rotate(-rotation);
         context.strokeRect(-width/2.0, -height/2.0, width, height);
@@ -53,6 +60,7 @@ class EditEngine {
         this.clear();
 
         context.save();
+        this.setColors(context);
         context.translate(x, y);
         context.rotate(-rotation);
         context.strokeRect(-width/2.0, -height/2.0, width, height);
@@ -77,6 +85,7 @@ class EditEngine {
         this.clear();
 
         context.save();
+        this.setColors(context);
         context.translate(x, y);
         context.rotate(-rotation);
         context.strokeRect(-width/2.0, -height/2.0, width, height);

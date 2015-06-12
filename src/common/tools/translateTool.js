@@ -30,6 +30,7 @@ var translateTool = {
         var y = layer.getPosY();
 
         layer.setPos(x + dx, y + dy);
+        console.log("Edit engine draw translate tool");
         $scope.editEngine.drawTranslateTool(layer);
         window.requestAnimationFrame(function() {$scope.renderEngine.render();});    
     },
