@@ -72,7 +72,8 @@ angular.module('ariana').controller('ToolboxController', function($scope) {
                     image: 'mdi-select'
                 },
                 elipse: {
-                    image: 'mdi-checkbox-blank-circle-outline'
+                    image: 'mdi-checkbox-blank-circle-outline',
+                    toolFunctions: looseSelection,
                 },
                 curve: {
                     image: 'mdi-vector-curve'

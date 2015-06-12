@@ -6,6 +6,10 @@ class Point {
 		this.x = x;
 		this.y = y;
 	}
+
+	// lng() {
+	// 	return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+	// }
 }
 
 class ImgData {
