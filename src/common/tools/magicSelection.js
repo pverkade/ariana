@@ -23,6 +23,7 @@ var magicSelection = {
         /* x and y coordinates in pixels relative to image. */
         xRelative = $scope.config.mouse.current.x - $scope.config.canvas.x;
         yRelative = $scope.config.mouse.current.y - $scope.config.canvas.y;
+        console.log(xRelative, yRelative);
 
         /* Check wheter user has clicked inside of a selection. */
         if (scope.magic.isInSelection(xRelative, yRelative)) {
