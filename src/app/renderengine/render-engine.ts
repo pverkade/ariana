@@ -192,7 +192,6 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
                 oldType = layer.getLayerType();
             }
             layer.render();
-            layer.destroy();
         }
     }
 
