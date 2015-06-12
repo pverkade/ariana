@@ -54,7 +54,7 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
     /* Get the canvas element and start the engine. */
     $scope.startEngines(
         document.getElementById("main-canvas"),
-        document.getElementById("draw-canvas")
+        document.getElementById("editing-canvas")
     );
 
     // Add Arnold the First

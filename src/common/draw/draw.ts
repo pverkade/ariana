@@ -104,7 +104,7 @@ class DrawEngine {
 
     /* Information about the drawstyle */
     drawType : drawType = drawType.NORMAL;
-    color : Color = new Color(255, 255, 255, 0.8);
+    color : Color = new Color(255, 255, 255, 1.0);
     opacity : number = 1.0;
     lineWidth : number = 5;
 
@@ -125,7 +125,6 @@ class DrawEngine {
         this.memCanvas.width = this.canvas.width;
         this.memCanvas.height = this.canvas.height;
         this.memContext = <CanvasRenderingContext2D>this.memCanvas.getContext('2d');
-
         this.drawContext = <CanvasRenderingContext2D>this.drawCanvas.getContext('2d');
     }
 
@@ -222,8 +221,8 @@ class DrawEngine {
     /*
      * Set the color of the line
      */
-    setColor (color : Color) : void {
-        this.color = color;
+    setColor (r : number, g : number, b : number, a : number) : void {
+        this.color = new Color(r, g, b, a);
         if (this.drawType == drawType.BRUSH) {
             this.setBrush(this.brush);
         }
@@ -312,11 +311,11 @@ class DrawEngine {
     /*
      * Function to call when the drawing must be saved to the renderengine.
      */
-    getCanvasImageData () : String {
+    getCanvasImageData () : ImageData {
         if (this.drawCanvas)
-            return this.drawCanvas.toDataURL();
+            return this.drawContext.getImageData(0, 0, this.drawCanvas.width, this.drawCanvas.height);
         
-        return "";
+        return null;
     }
 
     /*
