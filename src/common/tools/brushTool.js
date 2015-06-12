@@ -20,10 +20,16 @@ var brushTool = {
     },
 
     mouseDown: function($scope, event) {
+        var color;
+        if ($scope.config.mouse.button[1]) {
+            color = $scope.config.tools.colors.primary;
+        } else {
+            color = $scope.config.tools.colors.secondary;
+        }
         $scope.drawEngine.setColor(
-            $scope.config.tools.colors.primary.r,
-            $scope.config.tools.colors.primary.g,
-            $scope.config.tools.colors.primary.b,
+            color.r,
+            color.g,
+            color.b,
             1.0
         );
         $scope.drawEngine.onMousedown(event);
