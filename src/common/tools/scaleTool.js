@@ -2,7 +2,12 @@ var scaleToolIndex = 0;
 
 var scaleTool = {
     
-    start: function() {
+    start: function($scope) {
+        //TODO: editEngine.drawScaleTool(currentLayer);
+    },
+
+    stop: function() {
+        //TODO: editEngine.clear();
     },
     
     mouseDown: function($scope) {
@@ -96,7 +101,9 @@ var scaleTool = {
             y -= 0.5 * (height - originalHeight);
         
         layer.setPos(x, y);
-        
-        window.requestAnimationFrame(function() {$scope.renderEngine.render();});  
+
+        $scope.editEngine.drawScaleTool(layer);
+
+        window.requestAnimationFrame(function() {$scope.renderEngine.render();});
     },
 };
