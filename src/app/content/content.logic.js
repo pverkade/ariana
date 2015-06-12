@@ -66,7 +66,7 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
         } else {
             $scope.config.canvas.zoom *= 1.1;
         }
-        console.log($scope.config.canvas.zoom);
+        //console.log($scope.config.canvas.zoom);
     }
 
     $scope.mwheelDown = function() {
@@ -75,7 +75,7 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
         } else {
             $scope.config.canvas.zoom *= 0.9;
         }
-        console.log($scope.config.canvas.zoom);
+        //console.log($scope.config.canvas.zoom);
     }
 
     /* Get the canvas element and start the engine. */
