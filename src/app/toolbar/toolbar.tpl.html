@@ -46,7 +46,9 @@
     </ul>
 </div>
 
-<div class="filter-options" ng-show="filter.filterObject"> 
+<div class="filter-options" 
+    ng-show="filter.filterObject"
+    ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}"> 
     <div class="tool float-left" ng-click="cancel()"> <i class="mdi mdi-close"></i> </div>
     <div class="center-box float-left">
     

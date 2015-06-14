@@ -28,7 +28,7 @@ class ContrastFilter extends Filter {
     constructor () {
         super();
         this.attributes = {
-            "intensity" : {
+            "contrastValue" : {
                 "value" : 1,
                 "type" : FilterValueType.Slider,
                 "setter" : (x) => clamp(x, 0.5, 3),

@@ -94,7 +94,6 @@ app.controller('ToolbarController', ['$scope', '$modal',
             /* Set all filter parameters into the filter object. */
             for (var key in $scope.filter.filterParameters) {
                 var value = $scope.filter.filterParameters[key].value;
-                console.log(key, value);
                 filter.setAttribute(key, value);
             }
             
