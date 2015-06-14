@@ -73,9 +73,20 @@
         width: 100%;
         height: 0.5 * $blocksize;
         
-        .doublelength {
+        .filter-name {
             min-width: 2 * $blocksize;
             width: 50%;
+            @media (max-width: 10 * $blocksize) {
+                display: none;
+            }
+        }
+        
+        .filter-checkbox {
+            min-width: 2 * $blocksize;
+            width: 50%;
+            @media (max-width: 10 * $blocksize) {
+                width: 100%;
+            }
         }
         
         .input-group-addon {
