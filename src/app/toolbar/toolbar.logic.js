@@ -65,8 +65,10 @@ app.controller('ToolbarController', ['$scope', '$modal',
         };
         
         $scope.filter = {
+            filterName: "",
             filterObject: null,
             filterParameters: null,
+            currentlayerOnly: false,
         };
     
         /* This function opens the filters modal. */
@@ -80,14 +82,14 @@ app.controller('ToolbarController', ['$scope', '$modal',
         };
 
         $scope.cancel = function() {
-            $scope.filter = null;
+            $scope.filter.filterObject = null;
+            $scope.filter.currentlayerOnly = false;
         };
         
         $scope.allLayers = true;
         
         $scope.apply = function() {
             var filter = $scope.filter.filterObject;
-            $scope.filter.filterObject = null;
             
             /* Set all filter parameters into the filter object. */
             for (var key in $scope.filter.filterParameters) {
@@ -97,18 +99,24 @@ app.controller('ToolbarController', ['$scope', '$modal',
             }
             
             if (filter) {
-                if ($scope.allLayers) {
+                if (filter.currentlayerOnly) {
+                    $scope.renderEngine.filterLayers([$scope.config.layers.currentLayer], filter);
+                }
+                else {
                     var list = [];
                     for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) list.push(i);
                     $scope.renderEngine.filterLayers(list, filter);
                 }   
-                else {
-                    $scope.renderEngine.filterLayers([$scope.config.layers.currentLayer], filter);
-                }
                 
                 /* Show the result. */
                 $scope.renderEngine.render();
             } 
+            
+            $scope.cancel();
+        };
+        
+        $scope.titlecase = function(string) {
+            return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
         };
 
     }

@@ -29,7 +29,7 @@ class ColorizeFilter extends Filter {
         super();
         this.attributes = {
             "red" : {
-                "value" : 0.7,
+                "value" : 0.0,
                 "type" : FilterValueType.Slider,
                 "setter" : (x) => clamp(x, 0, 1),
                 "max": 1,
@@ -37,7 +37,7 @@ class ColorizeFilter extends Filter {
                 "step": 0.05,
             },
             "green" : {
-                "value" : 0.3,
+                "value" : 0.0,
                 "type" : FilterValueType.Slider,
                 "setter" : (x) => clamp(x, 0, 1),
                 "max": 1,
@@ -45,7 +45,7 @@ class ColorizeFilter extends Filter {
                 "step": 0.05,
             },
             "blue" : {
-                "value" : 0.2,
+                "value" : 0.0,
                 "type" : FilterValueType.Slider,
                 "setter" : (x) => clamp(x, 0, 1),
                 "max": 1,

@@ -50,11 +50,16 @@
     <div class="tool float-left" ng-click="cancel()"> <i class="mdi mdi-close"></i> </div>
     <div class="center-box float-left">
     
+        <div class="input-group">
+            <span class="input-group-addon doublelength"> {{titlecase(filter.filterName)}} Filter </span> 
+            <span class="input-group-addon doublelength"> <input type="checkbox" ng-model="filter.currentlayerOnly"> </input> apply to current layer only </span>
+        </div>
+    
         <div class="input-group" ng-repeat="(name, parameter) in filter.filterParameters">
             <span class="input-group-addon"> {{name}} </span>
             <input type="range"  class="form-control slider" ng-model="parameter.value"
                 min="{{parameter.min}}" max="{{parameter.max}}" step="{{parameter.step}}"> </input>
-            <input type="number" class="form-control number" ng-model="parameter.value"
+            <input type="text" number class="form-control number" ng-model="parameter.value"
                 min="{{parameter.min}}" max="{{parameter.max}}" step="{{parameter.step}}"> </input>
         </div>
     

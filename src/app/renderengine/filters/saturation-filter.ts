@@ -29,7 +29,7 @@ class SaturationFilter extends Filter {
         super();
         this.attributes = {
             "intensity" : {
-                "value" : 0.8,
+                "value" : 1.0,
                 "type" : FilterValueType.Slider,
                 "setter" : (x) => clamp(x, 0, 2),
                 "max": 2,
