@@ -64,8 +64,37 @@ app.controller('ToolbarController', ['$scope', '$modal',
             });
         };
         
-        $scope.filtername = null;
-        $scope.parameters = null;
+        $scope.filterName = "arnold";
+        $scope.filterParameters = {
+            "brightness" : {
+                "value" : 1,
+                "type" : FilterValueType.Slider,
+                "setter" : (x) => clamp(x, 0, 2.5),
+                "max": 2.5,
+                "min": 0
+            },
+            "something else" : {
+                "value" : 1,
+                "type" : FilterValueType.Slider,
+                "setter" : (x) => clamp(x, 0, 2.5),
+                "max": 2.5,
+                "min": 0
+            },
+            "number III" : {
+                "value" : 1,
+                "type" : FilterValueType.Slider,
+                "setter" : (x) => clamp(x, 0, 2.5),
+                "max": 2.5,
+                "min": 0
+            },
+            "even more" : {
+                "value" : 1,
+                "type" : FilterValueType.Slider,
+                "setter" : (x) => clamp(x, 0, 2.5),
+                "max": 2.5,
+                "min": 0
+            }
+        };
     
         /* This function opens the filters modal. */
         $scope.openFilterModal = function() {

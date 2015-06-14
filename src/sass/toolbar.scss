@@ -59,6 +59,25 @@
     bottom: 0;
 
     @extend .gui-element;
-    height: $blocksize;
-    width:  8 * $blocksize;
+    min-height: $blocksize;
+    height: auto;
+    width: 10 * $blocksize;
+    
+    div {
+        float: left;
+    }
+    
+    .center-box {
+        width: 8 * $blocksize;
+        
+        .input-group {  
+            height: 0.5 * $blocksize;
+            width: 8 * $blocksize;
+            
+            .input-group-addon {
+                width: 2 * $blocksize;
+            }
+        }
+    
+    }
 }

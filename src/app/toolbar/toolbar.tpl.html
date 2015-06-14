@@ -46,8 +46,15 @@
     </ul>
 </div>
 
-<div class="filter-options" ng-show="filtername"> 
-    <div class="tool" ng-click="cancel()"> <i class="mdi mdi-undo-variant"></i> </div>
-    <input type="range" ng-repeat="(name, parameter) in parameters" id="{{name}}" value="{{parameter.value}}" min="{{parameter.min}}" max="{{parameter.max}}" onchange=""></input>
-    <div class="tool" ng-click="apply()">  <i class="mdi mdi-undo-variant"></i> </div>
+<div class="filter-options" ng-show="filterName"> 
+    <div class="tool" ng-click="cancel()"> <i class="mdi mdi-close"></i> </div>
+    <div class="center-box">
+    
+        <div class="input-group" ng-repeat="(name, parameter) in filterParameters">
+            <span class="input-group-addon"> {{name}} </span>
+            <input type="range" class="form-control" value="{{parameter.value}}" min="{{parameter.min}}" max="{{parameter.max}}" step="0.1"> </input>
+        </div>
+    
+    </div>
+    <div class="tool" ng-click="apply()">  <i class="mdi mdi-check"></i> </div>
 </div>
