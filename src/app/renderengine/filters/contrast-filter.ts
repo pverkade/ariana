@@ -32,8 +32,9 @@ class ContrastFilter extends Filter {
                 "value" : 1,
                 "type" : FilterValueType.Slider,
                 "setter" : (x) => clamp(x, 0.75, 3),
-                "max": 0.75,
-                "min": 3
+                "max": 3,
+                "min": 0.5,
+                "step": 0.1,
             }
         };
 

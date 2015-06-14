@@ -33,21 +33,24 @@ class ColorizeFilter extends Filter {
                 "type" : FilterValueType.Slider,
                 "setter" : (x) => clamp(x, 0, 1),
                 "max": 1,
-                "min": 0
+                "min": 0,
+                "step": 0.05,
             },
             "green" : {
                 "value" : 0.3,
                 "type" : FilterValueType.Slider,
                 "setter" : (x) => clamp(x, 0, 1),
                 "max": 1,
-                "min": 0
+                "min": 0,
+                "step": 0.05,
             },
             "blue" : {
                 "value" : 0.2,
                 "type" : FilterValueType.Slider,
                 "setter" : (x) => clamp(x, 0, 1),
                 "max": 1,
-                "min": 0
+                "min": 0,
+                "step": 0.05,
             }
         };
     }

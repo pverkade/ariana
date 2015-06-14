@@ -46,15 +46,18 @@
     </ul>
 </div>
 
-<div class="filter-options" ng-show="filterName"> 
-    <div class="tool" ng-click="cancel()"> <i class="mdi mdi-close"></i> </div>
-    <div class="center-box">
+<div class="filter-options" ng-show="filter.filterObject"> 
+    <div class="tool float-left" ng-click="cancel()"> <i class="mdi mdi-close"></i> </div>
+    <div class="center-box float-left">
     
-        <div class="input-group" ng-repeat="(name, parameter) in filterParameters">
+        <div class="input-group" ng-repeat="(name, parameter) in filter.filterParameters">
             <span class="input-group-addon"> {{name}} </span>
-            <input type="range" class="form-control" value="{{parameter.value}}" min="{{parameter.min}}" max="{{parameter.max}}" step="0.1"> </input>
+            <input type="range"  class="form-control slider" ng-model="parameter.value"
+                min="{{parameter.min}}" max="{{parameter.max}}" step="{{parameter.step}}"> </input>
+            <input type="number" class="form-control number" ng-model="parameter.value"
+                min="{{parameter.min}}" max="{{parameter.max}}" step="{{parameter.step}}"> </input>
         </div>
     
     </div>
-    <div class="tool" ng-click="apply()">  <i class="mdi mdi-check"></i> </div>
+    <div class="tool float-right" ng-click="apply()">  <i class="mdi mdi-check"></i> </div>
 </div>

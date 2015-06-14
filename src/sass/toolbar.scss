@@ -55,29 +55,56 @@
 
 .filter-options {
     position: absolute;
-    left: 2.5 * $blocksize;
+    left: 1.5 * $blocksize;
     bottom: 0;
 
     @extend .gui-element;
     min-height: $blocksize;
-    height: auto;
-    width: 10 * $blocksize;
     
-    div {
+    .float-left {
         float: left;
     }
     
-    .center-box {
-        width: 8 * $blocksize;
+    .float-right {
+        float: right;
+    }
         
-        .input-group {  
-            height: 0.5 * $blocksize;
-            width: 8 * $blocksize;
+    .input-group {  
+        height: 0.5 * $blocksize;
+        
+        .input-group-addon {
+            width: 2 * $blocksize;
+        }
+        
+        .slider {
+            width: 6 * $blocksize;
             
-            .input-group-addon {
+            @media (max-width: 15 * $blocksize) {
+                width: 5 * $blocksize;
+            }
+            
+            @media (max-width: 14 * $blocksize) {
+                width: 4 * $blocksize;
+            }
+            
+            @media (max-width: 13 * $blocksize) {
+                width: 3 * $blocksize;
+            }
+            
+            @media (max-width: 12 * $blocksize) {
                 width: 2 * $blocksize;
             }
+            
+            @media (max-width: 10 * $blocksize) {
+                display: none;
+            }
         }
-    
-    }
+        
+        .number{
+            width: 2 * $blocksize;
+            @media (max-width: 8 * $blocksize) {
+                width: 1.5 * $blocksize;
+            }
+        }
+    }   
 }

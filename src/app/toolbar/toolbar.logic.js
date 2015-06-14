@@ -64,36 +64,9 @@ app.controller('ToolbarController', ['$scope', '$modal',
             });
         };
         
-        $scope.filterName = "arnold";
-        $scope.filterParameters = {
-            "brightness" : {
-                "value" : 1,
-                "type" : FilterValueType.Slider,
-                "setter" : (x) => clamp(x, 0, 2.5),
-                "max": 2.5,
-                "min": 0
-            },
-            "something else" : {
-                "value" : 1,
-                "type" : FilterValueType.Slider,
-                "setter" : (x) => clamp(x, 0, 2.5),
-                "max": 2.5,
-                "min": 0
-            },
-            "number III" : {
-                "value" : 1,
-                "type" : FilterValueType.Slider,
-                "setter" : (x) => clamp(x, 0, 2.5),
-                "max": 2.5,
-                "min": 0
-            },
-            "even more" : {
-                "value" : 1,
-                "type" : FilterValueType.Slider,
-                "setter" : (x) => clamp(x, 0, 2.5),
-                "max": 2.5,
-                "min": 0
-            }
+        $scope.filter = {
+            filterObject: null,
+            filterParameters: null,
         };
     
         /* This function opens the filters modal. */
@@ -106,15 +79,36 @@ app.controller('ToolbarController', ['$scope', '$modal',
             });
         };
 
-        $scope.cancelFilter = function() {
-            $scope.filtername = null;
+        $scope.cancel = function() {
+            $scope.filter = null;
         };
         
-        $scope.cancelFilter = function() {
-            // read parameters
-            // apply filter in render engine
+        $scope.allLayers = true;
+        
+        $scope.apply = function() {
+            var filter = $scope.filter.filterObject;
+            $scope.filter.filterObject = null;
             
-            $scope.filtername = null;
+            /* Set all filter parameters into the filter object. */
+            for (var key in $scope.filter.filterParameters) {
+                var value = $scope.filter.filterParameters[key].value;
+                console.log(key, value);
+                filter.setAttribute(key, value);
+            }
+            
+            if (filter) {
+                if ($scope.allLayers) {
+                    var list = [];
+                    for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) list.push(i);
+                    $scope.renderEngine.filterLayers(list, filter);
+                }   
+                else {
+                    $scope.renderEngine.filterLayers([$scope.config.layers.currentLayer], filter);
+                }
+                
+                /* Show the result. */
+                $scope.renderEngine.render();
+            } 
         };
 
     }

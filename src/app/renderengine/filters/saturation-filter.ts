@@ -32,8 +32,9 @@ class SaturationFilter extends Filter {
                 "value" : 0.8,
                 "type" : FilterValueType.Slider,
                 "setter" : (x) => clamp(x, 0, 2),
-                "max": 0.05,
-                "min": 2
+                "max": 2,
+                "min": 0.05,
+                "step": 0.05,
             }
         };
     }

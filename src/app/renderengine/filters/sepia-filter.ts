@@ -38,15 +38,17 @@ class SepiaFilter extends Filter {
                 "value" : 0.1,
                 "type" : FilterValueType.Slider,
                 "setter" : (x) => clamp(x, 0, 0.5),
-                "max": 0,
-                "min": 0.5
+                "max": 0.5,
+                "min": 0.0,
+                "step": 0.05,
             },
             "intensity" : {
                 "value" : 0.2,
                 "type" : FilterValueType.Slider,
                 "setter" : (x) => clamp(x, 0.05, 0.4),
-                "max": 0.05,
-                "min": 0.4
+                "max": 0.5,
+                "min": 0.05,
+                "step": 0.05,
             }
         };
     }

@@ -33,7 +33,8 @@ class BrightnessFilter extends Filter {
                 "type" : FilterValueType.Slider,
                 "setter" : (x) => clamp(x, 0, 2.5),
                 "max": 2.5,
-                "min": 0
+                "min": 0,
+                "step": 0.1,
             }
         };
     }

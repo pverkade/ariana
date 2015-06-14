@@ -10,112 +10,61 @@
 app.controller('FilterModalController', ['$scope', '$modalInstance', 
     function ($scope, $modalInstance) {
         
-        $scope.filters = [
+        $scope.filters = {
             
-            {
-                name:  "noise",
+            "noise": {
                 image: "/assets/img/arnold2.jpg", 
+                constructor: NoiseFilter,
             },
             
-            {
-                name:  "contrast",
-                image: "/assets/img/arnold2.jpg", 
-            },
-            
-            {
-                name:  "brightness",
-                image: "/assets/img/arnold2.jpg", 
-            },
-            
-            {
-                name: "invert colors",
+            "contrast": {
                 image: "/assets/img/arnold2.jpg",
+                constructor: ContrastFilter,
             },
             
-            {
-                name: "saturation",
+            "brightness": {
                 image: "/assets/img/arnold2.jpg",
+                constructor: BrightnessFilter,
             },
             
-            {
-                name: "sepia",
+            "invert colors": {
                 image: "/assets/img/arnold2.jpg",
+                constructor: InvertColorsFilter,
             },
             
-            {
-                name: "colorize",
+            "saturation": {
                 image: "/assets/img/arnold2.jpg",
+                constructor: SaturationFilter,
             },
-        ];
+            
+            "sepia": {
+                image: "/assets/img/arnold2.jpg",
+                constructor: SepiaFilter,
+            },
+            
+            "colorize": {
+                image: "/assets/img/arnold2.jpg",
+                constructor: ColorizeFilter,
+            },
+        };
         
         $scope.selectFilter = function(name) {
-            $scope.applyFilter(name);
+            var constructor = $scope.filters[name].constructor
+            
+            if (constructor) {
+                var filterObject = new constructor();
+                $scope.filter.filterObject = filterObject;
+                $scope.filter.filterParameters = filterObject.getAttributesObject();
+            }
             $scope.close();
         };
-        
-        $scope.allLayers = true;
 
-        $scope.toggleLayers = function() {
-            if ($scope.allLayers) $scope.allLayers = false;
-            else $scope.allLayers = true;
-        };
-        
         $scope.close = function() {
             $modalInstance.dismiss();
         };
         
         $scope.titlecase = function(string) {
             return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-        };
-        
-        $scope.applyFilter = function(name) {
-            var filter = null;
-            
-            // TODO use dictionary
-            
-            if (name == "brightness") {
-                filter = new BrightnessFilter();
-                filter.setAttribute("brightness", 2);
-            }
-            
-            if (name == "contrast") {
-                filter = new ContrastFilter();
-                filter.setAttribute("contrastValue", 2);
-            }
-            
-            if (name == "noise") {
-                filter = new NoiseFilter();
-            }
-            
-            if (name == "sepia") {
-                filter = new SepiaFilter();
-            }
-            
-            if (name == "invert colors") {
-                filter = new InvertColorsFilter();
-            }
-            
-            if (name == "saturation") {
-                filter = new SaturationFilter();
-            }
-            
-            if (name == "colorize") {
-                filter = new ColorizeFilter();
-            }
-            
-            if (filter) {
-                if ($scope.allLayers) {
-                    var list = [];
-                    for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) list.push(i);
-                    $scope.renderEngine.filterLayers(list, filter);
-                }
-                    
-                else $scope.renderEngine.filterLayers([$scope.config.layers.currentLayer], filter);
-                
-                /* Show the result. */
-                $scope.renderEngine.render();
-            }
-            
         };
     }
 ])
