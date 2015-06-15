@@ -84,7 +84,9 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
         document.getElementById("editing-canvas")
     );
 
-    // Add Arnold the First
+    $scope.resizeCanvases($scope.config.canvas.width, $scope.config.canvas.height);
+
+    /* Add Arnold the First */
     var image1 = new Image();
     image1.src="/assets/img/logo.png";
     image1.onload = function(){$scope.newLayerFromImage(image1)};

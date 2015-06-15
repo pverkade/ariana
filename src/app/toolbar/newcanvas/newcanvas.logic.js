@@ -1,8 +1,8 @@
 /* 
  * Project Ariana
- * upload.logic.js
+ * newcanvas.logic.js
  * 
- * This file contains the UploadModalController, which controls the file import
+ * This file contains the NewCanvasModalController, which controls the creation of a new screen
  * modal.
  *
  */
@@ -54,7 +54,8 @@ app.controller('NewCanvasModalController', ['$scope', '$modalInstance',
         });
  
         $scope.create = function () {
-            console.log("Create canvas ("+ $scope.inputWidth + ", " + $scope.inputHeight + ")");
+            //TODO: notice about the canvas being cleared
+            $scope.resizeCanvases($scope.inputWidth, $scope.inputHeight);
 
             $scope.close();
         };

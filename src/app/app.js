@@ -44,8 +44,8 @@ app.controller('AppCtrl', ['$scope',
                 x: 128,
                 y: 128,
                 zoom: 1,
-                width: 800,
-                height: 600
+                width: 0,
+                height: 0
             },
             tools: {
                 activeTool: null,
@@ -142,5 +142,16 @@ app.controller('AppCtrl', ['$scope',
 
             $scope.renderEngine.render();
         };
+
+        $scope.resizeCanvases = function(width, height) {
+            $scope.config.canvas.width = width;
+            $scope.config.canvas.height = height;
+            $scope.renderEngine.resize($scope.config.canvas.width, $scope.config.canvas.height);
+            $scope.drawEngine.resize($scope.config.canvas.width, $scope.config.canvas.height);
+
+            $scope.config.layers.numberOfLayers = 0;
+            $scope.config.layers.currentLayer = -1;
+            $scope.config.layers.layerInfo = [];
+        }
 	}
 ]);

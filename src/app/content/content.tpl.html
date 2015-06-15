@@ -9,21 +9,24 @@
     ng-mouse-wheel-down="mwheelDown($event)">
     
     <canvas rendertarget="rendertarget" 
-        id="main-canvas" 
+        id="main-canvas"
         width="{{config.canvas.width}}"
         height="{{config.canvas.height}}"
         style="width: {{config.canvas.zoom}}"
-        canvas-Events>
+        canvas-Events
+        ng-show="renderEngine !== null">
     </canvas>
     <canvas id="editing-canvas"
         width="{{config.canvas.width}}"
         height="{{config.canvas.height}}"
-        canvas-Events>
+        canvas-Events
+        ng-show="renderEngine !== null">
     </canvas>
     <canvas id="top-canvas"
         width="{{config.canvas.width}}"
         height="{{config.canvas.height}}"
-        canvas-Events>
+        canvas-Events
+        ng-show="renderEngine !== null">
     </canvas>
 </div>
 
