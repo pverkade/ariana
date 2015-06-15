@@ -1,4 +1,4 @@
-angular.module('ariana').directive('autosize', function($window) {
+app.directive('autosize', function($window) {
     return function($scope, $elem) {
         $scope.initializeWindowSize = function() {
             $elem.css("width",  $(window).outerWidth());

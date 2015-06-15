@@ -1,3 +1,3 @@
-angular.module('ariana').controller('LandingToolbarCtrl', function($scope) {
+app.controller('LandingToolbarCtrl', function($scope) {
 
 });

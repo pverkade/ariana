@@ -7,7 +7,7 @@
  *
  */
  
-angular.module('ariana').controller('layersCtrl', function($scope) {
+app.controller('layersCtrl', function($scope) {
     
     /* This functions returns whether the toolbox should be visible. It is 
      * hidden when the user is clicking on the canvas/background. */
@@ -15,7 +15,7 @@ angular.module('ariana').controller('layersCtrl', function($scope) {
         return (!($scope.config.mouse.button[1] || $scope.config.mouse.button[2] || $scope.config.mouse.button[3]));
     };
     
-    $scope.addLayer = function() {
+    $scope.addLayer = function(event) {
         event.stopPropagation();
         
         $scope.config.layers.layerInfo.push({
@@ -34,6 +34,9 @@ angular.module('ariana').controller('layersCtrl', function($scope) {
         event.stopPropagation();
         $scope.config.layers.layerInfo.splice(index, 1);
         $scope.config.layers.numberOfLayers = $scope.config.layers.layerInfo.length;
+        $scope.renderEngine.removeLayer(index);
+
+        $scope.renderEngine.render();
     };
 
     $scope.moveLayerUp = function(event, index) {
@@ -42,6 +45,9 @@ angular.module('ariana').controller('layersCtrl', function($scope) {
 
         if (index > 0) {
             $scope.config.layers.layerInfo.swap(index, index - 1);
+            $scope.renderEngine.reorder(index, index - 1);
+
+            $scope.renderEngine.render();
         }
     };
 
@@ -51,6 +57,9 @@ angular.module('ariana').controller('layersCtrl', function($scope) {
 
         if (index < $scope.config.layers.numberOfLayers - 1 && $scope.config.layers.numberOfLayers > 1) {
             $scope.config.layers.layerInfo.swap(index, index + 1);
+            $scope.renderEngine.reorder(index, index + 1);
+
+            $scope.renderEngine.render();
         }
     };
 

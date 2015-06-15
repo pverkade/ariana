@@ -25,13 +25,21 @@ app.controller('AppCtrl', ['$scope',
          * canvas and the mouse. It is accessed by all kinds of controllers. */
         $scope.config = {
             mouse: {
-                old : {
+                old: {
                     x : 0,
                     y : 0,
+                    global: {
+                        x : 0,
+                        y : 0,
+                    },
                 },
                 current: {
                     x: 0,
                     y: 0,
+                    global: {
+                        x : 0,
+                        y : 0,
+                    },
                 },
                 button: {
                     1: false, // left button
@@ -40,24 +48,27 @@ app.controller('AppCtrl', ['$scope',
                 }
             },
             canvas: {
+                cursor: 'default',
                 x: 128,
                 y: 128,
+                xr: 1,
+                yr: 1,
                 zoom: 1,
             },
             tools: {
-                activeTool: null,
+                activeTool: 'pan',
                 activeToolFunctions: null,
                 activeToolset: null,
                 colors: {
                     primary: {
-                        r: 255,
-                        g: 255,
-                        b: 255
-                    },
-                    secondary: {
                         r: 0,
                         g: 0,
                         b: 0
+                    },
+                    secondary: {
+                        r: 255,
+                        g: 255,
+                        b: 255
                     }
                 }
             },
@@ -84,7 +95,7 @@ app.controller('AppCtrl', ['$scope',
             var layer = $scope.renderEngine.createImageLayer(image);
             
             var height = layer.getHeight();
-            var width = layer.getWidth();
+            var width  = layer.getWidth();
             
             layer.setPos(0.5 * width, 0.5 * height);
             

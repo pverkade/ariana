@@ -127,57 +127,35 @@ class DrawEngine {
         this.memContext = <CanvasRenderingContext2D>this.memCanvas.getContext('2d');
         this.drawContext = <CanvasRenderingContext2D>this.drawCanvas.getContext('2d');
     }
-
-    getMousePos = (e : MouseEvent) : Position2D => {
-        var bbox = this.drawCanvas.getBoundingClientRect(); //top en left
-        var x : number = e.pageX - bbox.left;
-        var y : number = e.pageY - bbox.top;
-        return new Position2D(x, y);
-    }
-
     /*
      * Function that is called at mousepress
      */
-    onMousedown = (e : MouseEvent) : void => {
+    onMousedown = (x : number, y : number) : void => {
         if (!this.currentPath) {
             this.saveCanvas();
-            this.currentPath = new Path(this.getMousePos(e));
+            this.currentPath = new Path(new Position2D(x, y));
             if (this.drawType == drawType.RECTANGLE || this.drawType == drawType.CIRCLE) {
-                this.currentPath.addPosition(this.getMousePos(e));
+                this.currentPath.addPosition(new Position2D(x, y));
             }
         }
 
         if (this.drawType == drawType.LINE) {
-            this.currentPath.addPosition(this.getMousePos(e));
+            this.currentPath.addPosition(new Position2D(x, y));
         }
-    }
-
-    /*
-     * Function that is called at right mousepress
-     */
-    onContextmenu = (e : MouseEvent) : void => {
-        e.preventDefault();
-
-        this.onMousedown(e);
     }
 
     /*
      * Funtion that is called when the mouse is moved
      */
-    onMousemove = (e : MouseEvent) : void => {
+    onMousemove = (x : number, y : number) : void => {
         if (this.currentPath) {
-            /* If mouse button is upped outside of the canvas screen, stop drawing */
-            if (e.buttons == 0) {
-                this.currentPath = null;
-                return;
-            }
 
             if (this.drawType == drawType.LINE || this.drawType == drawType.RECTANGLE
                  || this.drawType == drawType.CIRCLE) {
-                this.currentPath.setLastPosition(this.getMousePos(e));
+                this.currentPath.setLastPosition(new Position2D(x, y));
             }
             else {
-                this.currentPath.addPosition(this.getMousePos(e));
+                this.currentPath.addPosition(new Position2D(x, y));
             }
             this.draw(this.currentPath);
         }
@@ -186,20 +164,17 @@ class DrawEngine {
     /*
      * Function being called when the mouse is no longer being pressed
      */
-    onMouseup = (e : MouseEvent) : void => {
+    onMouseup =  (x : number, y : number) : void => {
         if (!this.currentPath) return;
         
         if (this.drawType == drawType.RECTANGLE || this.drawType == drawType.CIRCLE) {
-            this.currentPath.setLastPosition(this.getMousePos(e));
+            this.currentPath.setLastPosition(new Position2D(x, y));
         }
         else if (this.drawType == drawType.LINE) {
-            if (e.buttons > 0) {
-                return;
-            }
-            this.currentPath.setLastPosition(this.getMousePos(e));
+            this.currentPath.setLastPosition(new Position2D(x, y));
         }
         else {
-            this.currentPath.addPosition(this.getMousePos(e));
+            this.currentPath.addPosition(new Position2D(x, y));
         }
 
         this.draw(this.currentPath);

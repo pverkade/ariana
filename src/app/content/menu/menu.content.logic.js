@@ -1,4 +1,4 @@
-angular.module('ariana').controller('MenuContentCtrl', function($scope, $state) {
+app.controller('MenuContentCtrl', function($scope, $state) {
     $scope.tabs = [{
         title: 'Project 1',
     }];
