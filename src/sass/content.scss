@@ -33,13 +33,10 @@
 #main-canvas, #editing-canvas, #top-canvas {
     position: absolute;
     z-index: 1;
-
-    @include transform(translate(128px, 128px));
 }
 
 #main-canvas {
     /* background-color: #ffffff; */
     background: url(/assets/img/canvas_background.svg) repeat;
-
     @extend .box-shadow;
 }
