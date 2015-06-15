@@ -1,4 +1,4 @@
-angular.module('ariana').directive('pan', function() {
+app.directive('pan', function() {
     return {
         restrict: 'E',
         scope: true,
@@ -7,7 +7,7 @@ angular.module('ariana').directive('pan', function() {
     };
 });
 
-angular.module('ariana').controller('PanCtrl', function($scope) {
+app.controller('PanCtrl', function($scope) {
 	$scope.toolname = 'pan'
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
@@ -32,12 +32,13 @@ angular.module('ariana').controller('PanCtrl', function($scope) {
 	/* onMouseMove */
 	$scope.mouseMove = function() {
 		if (!$scope.panning) return;
+		var z = $scope.config.canvas.zoom;
 		 
-		var dx = $scope.config.mouse.current.x - $scope.config.mouse.old.x,
-        	dy = $scope.config.mouse.current.y - $scope.config.mouse.old.y;
+		var dx = $scope.config.mouse.current.global.x - $scope.config.mouse.old.global.x;
+        var dy = $scope.config.mouse.current.global.y - $scope.config.mouse.old.global.y;
 
-        $scope.config.mouse.old.x += dx;
-        $scope.config.mouse.old.y += dy;
+        $scope.config.mouse.old.global.x = $scope.config.mouse.current.global.x;
+        $scope.config.mouse.old.global.y = $scope.config.mouse.current.global.y;
         
         $scope.config.canvas.x += dx;
         $scope.config.canvas.y += dy;

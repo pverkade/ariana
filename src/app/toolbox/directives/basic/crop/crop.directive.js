@@ -1,4 +1,4 @@
-angular.module('ariana').directive('crop', function() {
+app.directive('crop', function() {
     return {
         restrict: 'E',
         scope: true,
@@ -7,7 +7,7 @@ angular.module('ariana').directive('crop', function() {
     };
 });
 
-angular.module('ariana').controller('CropCtrl', function($scope) {
+app.controller('CropCtrl', function($scope) {
 	$scope.toolname = 'crop'
 	$scope.active = ($scope.config.tools.activeTool == $scope.toolname);
 	

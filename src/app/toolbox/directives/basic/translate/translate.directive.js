@@ -1,4 +1,4 @@
-angular.module('ariana').directive('translate', function() {
+app.directive('translate', function() {
     return {
         restrict: 'E',
         scope: true,
@@ -7,7 +7,7 @@ angular.module('ariana').directive('translate', function() {
     };
 });
 
-angular.module('ariana').controller('translateCtrl', function($scope) {
+app.controller('translateCtrl', function($scope) {
     $scope.toolname = 'translate';
     $scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
@@ -33,9 +33,9 @@ angular.module('ariana').controller('translateCtrl', function($scope) {
          
         var currentLayer = $scope.config.layers.currentLayer;
         if (currentLayer == -1) return;
-        
-        var dx = $scope.config.mouse.current.x - $scope.config.mouse.old.x;
-        var dy = $scope.config.mouse.current.y - $scope.config.mouse.old.y;
+
+        var dx = ($scope.config.mouse.current.x - $scope.config.mouse.old.x);
+        var dy = ($scope.config.mouse.current.y - $scope.config.mouse.old.y);
         
         /* Update th old mouse position. */
         $scope.config.mouse.old.x += dx;
@@ -46,9 +46,9 @@ angular.module('ariana').controller('translateCtrl', function($scope) {
         var y = $scope.renderEngine.layers[currentLayer].getPosY();
 
         $scope.renderEngine.layers[currentLayer].setPos(x + dx, y + dy);
-        window.requestAnimationFrame(function() {$scope.renderEngine.render();});  
+        window.requestAnimationFrame(function() { $scope.renderEngine.render(); });
     };
--
+
     /*
      * This will watch for this tools' "active" variable changes.
      * When "active" changes to "true", this tools functions need to

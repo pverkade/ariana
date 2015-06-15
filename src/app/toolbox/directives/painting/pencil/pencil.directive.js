@@ -1,4 +1,4 @@
-angular.module('ariana').directive('pencil', function() {
+app.directive('pencil', function() {
     return {
         restrict: 'E',
         scope: true,
@@ -7,15 +7,15 @@ angular.module('ariana').directive('pencil', function() {
     };
 });
 
-angular.module('ariana').controller('PencilCtrl', function($scope) {
+app.controller('PencilCtrl', function($scope) {
 	$scope.toolname = 'pencil';
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
 	/* init */
 	$scope.init = function() {
+        $scope.drawing = false;
 		$scope.setCursor('default');
         $scope.drawEngine.setDrawType(drawType.NORMAL);
-
         $scope.setColor($scope.config.tools.colors.primary);
 	};
     
@@ -39,7 +39,9 @@ angular.module('ariana').controller('PencilCtrl', function($scope) {
     }
 
 	/* onMouseDown */
-	$scope.mouseDown = function(event) {
+	$scope.mouseDown = function() {
+        $scope.drawing = true;
+        
         var buttons = $scope.config.mouse.button;
         if (buttons[1] && buttons[3]) return;
 
@@ -48,17 +50,19 @@ angular.module('ariana').controller('PencilCtrl', function($scope) {
         else 
             $scope.setColor($scope.config.tools.colors.secondary);
         
-        $scope.drawEngine.onMousedown(event);
+        $scope.drawEngine.onMousedown($scope.config.mouse.current.x, $scope.config.mouse.current.y);
 	};
 
 	/* onMouseUp */
-	$scope.mouseUp = function(event) {
-        $scope.drawEngine.onMouseup(event);
+	$scope.mouseUp = function() {
+        $scope.drawing = false;
+        $scope.drawEngine.onMouseup($scope.config.mouse.current.x, $scope.config.mouse.current.y);
 	};
 
 	/* onMouseMove */
-	$scope.mouseMove = function(event) {
-		$scope.drawEngine.onMousemove(event);
+	$scope.mouseMove = function() {
+        if (!$scope.drawing) return;
+		$scope.drawEngine.onMousemove($scope.config.mouse.current.x, $scope.config.mouse.current.y);
 	};
 	/*
 	 * This will watch for this tools' "active" variable changes.

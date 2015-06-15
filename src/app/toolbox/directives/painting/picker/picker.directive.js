@@ -1,4 +1,4 @@
-angular.module('ariana').directive('picker', function() {
+app.directive('picker', function() {
     return {
         restrict: 'E',
         scope: true,
@@ -7,7 +7,7 @@ angular.module('ariana').directive('picker', function() {
     };
 });
 
-angular.module('ariana').controller('PickerCtrl', function($scope) {
+app.controller('PickerCtrl', function($scope) {
     $scope.toolname = 'picker';
     $scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
@@ -31,8 +31,8 @@ angular.module('ariana').controller('PickerCtrl', function($scope) {
     $scope.mouseMove = function() {
         if (!$scope.picking) return;
          
-        var x = $scope.config.mouse.current.x - $scope.config.canvas.x;
-        var y = $scope.config.mouse.current.y - $scope.config.canvas.y;
+        var x = Math.round($scope.config.mouse.current.x);
+        var y = Math.round($scope.config.mouse.current.y);
         
         var value = $scope.renderEngine.getPixelColor(x, y);
         

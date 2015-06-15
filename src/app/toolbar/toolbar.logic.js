@@ -16,7 +16,6 @@ app.controller('ToolbarController', ['$scope', '$modal',
             return (!($scope.config.mouse.button[1] || $scope.config.mouse.button[2] || $scope.config.mouse.button[3]));
         }
       
-      
         /* This functions saves the canvas to an image-file. */
         $scope.saveImage = function() {
             var toolFunctions = $scope.config.tools.activeToolFunctions;

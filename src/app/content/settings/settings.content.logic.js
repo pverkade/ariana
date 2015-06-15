@@ -1,3 +1,3 @@
-angular.module('ariana').controller('SettingsContentCtrl', function($scope) {
+app.controller('SettingsContentCtrl', function($scope) {
 	
 });
