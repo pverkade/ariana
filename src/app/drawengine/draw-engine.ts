@@ -128,6 +128,12 @@ class DrawEngine {
         this.drawContext = <CanvasRenderingContext2D>this.drawCanvas.getContext('2d');
     }
 
+    resize (width : number, height : number) : void {
+        this.memCanvas.width = width;
+        this.memCanvas.height = height;
+        this.clearCanvases();
+    }
+
     getMousePos = (e : MouseEvent) : Position2D => {
         var bbox = this.drawCanvas.getBoundingClientRect(); //top en left
         var x : number = e.pageX - bbox.left;
