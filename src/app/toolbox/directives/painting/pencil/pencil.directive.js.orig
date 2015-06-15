@@ -1,33 +1,28 @@
-app.directive('brush', function() {
+app.directive('pencil', function() {
     return {
         restrict: 'E',
         scope: true,
-        templateUrl: 'app/toolbox/directives/painting/brush/brush.tpl.html',
-        controller: 'BrushCtrl'
+        templateUrl: 'app/toolbox/directives/painting/pencil/pencil.tpl.html',
+        controller: 'PencilCtrl'
     };
 });
 
-app.controller('BrushCtrl', function($scope) {
-	$scope.toolname = 'brush';
-	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
+app.controller('PencilCtrl', function($scope) {
+	$scope.toolname = 'pencil';
+	$scope.active = ($scope.config.tools.activeTool == $scope.toolname);
     $scope.thickness = 2;
     $scope.opacity = 1;
-        
+    
 	/* init */
 	$scope.init = function() {
         $scope.drawing = false;
-        $scope.hasDrawn = false;
+        $scope.toggledOn = true;
 		$scope.setCursor('default');
-        $scope.drawEngine.setBrush(brushType.THIN);
+        $scope.drawEngine.setDrawType(drawType.NORMAL);
         $scope.setColor($scope.config.tools.colors.primary);
         $scope.thickness = 2;
         $scope.opacity = 1;
 	};
-    
-    $scope.updateDrawEngine = function() {
-        $scope.drawEngine.setLineWidth($scope.thickness);
-        $scope.drawEngine.setOpacity($scope.opacity);
-    }
     
     $scope.setColor = function(color) {
         $scope.drawEngine.setColor(
@@ -39,12 +34,13 @@ app.controller('BrushCtrl', function($scope) {
     };
     
     $scope.stop = function() {
-        if ($scope.hasDrawn) {
-            var image = $scope.drawEngine.getCanvasImageData();
-            $scope.newLayerFromImage(image); 
+        var image = $scope.drawEngine.getCanvasImageData();
+        var imageLayer = $scope.renderEngine.createImageLayer(image);
+        imageLayer.setPos(0.5 * image.width, 0.5 * image.height);
+        $scope.renderEngine.addLayer(imageLayer);
+        $scope.renderEngine.render();
 
-            $scope.drawEngine.clearCanvases();
-        }
+        $scope.drawEngine.clearCanvases();
     }
 
 	/* onMouseDown */
@@ -53,7 +49,7 @@ app.controller('BrushCtrl', function($scope) {
         
         var buttons = $scope.config.mouse.button;
         if (buttons[1] && buttons[3]) return;
-        
+
         if (buttons[1]) 
             $scope.setColor($scope.config.tools.colors.primary);
         else 
@@ -71,7 +67,6 @@ app.controller('BrushCtrl', function($scope) {
 	/* onMouseMove */
 	$scope.mouseMove = function() {
         if (!$scope.drawing) return;
-        $scope.hasDrawn = true;
 		$scope.drawEngine.onMousemove($scope.config.mouse.current.x, $scope.config.mouse.current.y);
 	};
 	/*

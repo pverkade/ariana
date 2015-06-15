@@ -16,7 +16,7 @@ app.controller('PencilCtrl', function($scope) {
 	/* init */
 	$scope.init = function() {
         $scope.drawing = false;
-        $scope.toggledOn = true;
+        $scope.hasDrawn = false;
 		$scope.setCursor('default');
         $scope.drawEngine.setDrawType(drawType.NORMAL);
         $scope.setColor($scope.config.tools.colors.primary);
@@ -34,13 +34,12 @@ app.controller('PencilCtrl', function($scope) {
     };
     
     $scope.stop = function() {
-        var image = $scope.drawEngine.getCanvasImageData();
-        var imageLayer = $scope.renderEngine.createImageLayer(image);
-        imageLayer.setPos(0.5 * image.width, 0.5 * image.height);
-        $scope.renderEngine.addLayer(imageLayer);
-        $scope.renderEngine.render();
-
-        $scope.drawEngine.clearCanvases();
+        if ($scope.hasDrawn) {
+            var image = $scope.drawEngine.getCanvasImageData();
+            $scope.newLayerFromImage(image); 
+            
+            $scope.drawEngine.clearCanvases();
+        }
     }
 
 	/* onMouseDown */
@@ -67,6 +66,7 @@ app.controller('PencilCtrl', function($scope) {
 	/* onMouseMove */
 	$scope.mouseMove = function() {
         if (!$scope.drawing) return;
+        $scope.hasDrawn = true;
 		$scope.drawEngine.onMousemove($scope.config.mouse.current.x, $scope.config.mouse.current.y);
 	};
 	/*

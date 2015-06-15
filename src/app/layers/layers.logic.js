@@ -34,6 +34,10 @@ app.controller('layersCtrl', function($scope) {
         event.stopPropagation();
         $scope.config.layers.layerInfo.splice(index, 1);
         $scope.config.layers.numberOfLayers = $scope.config.layers.layerInfo.length;
+        
+        if ($scope.config.layers.currentLayer == $scope.config.layers.numberOfLayers)
+            $scope.config.layers.currentLayer -= 1;
+        
         $scope.renderEngine.removeLayer(index);
 
         $scope.renderEngine.render();
