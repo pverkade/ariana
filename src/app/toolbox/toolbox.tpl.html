@@ -9,16 +9,16 @@
 
         <div class="toolset fix-top" 
             ng-show="config.tools.activeToolset == '{{name}}'">
-	        
-	        <div class="tool" id="{{name}}" 
+            
+            <div class="tool" id="{{name}}" 
                 ng-repeat="(name, subtool) in tool.tools" 
-	            ng-click="selectTool($event, name)">
+                ng-click="selectTool($event, name)">
 
-	            <img class="svg" alt="{{subtool.image}}" data="assets/vectors/{{subtool.image}}">
+                <img class="svg" alt="{{subtool.image}}" data="assets/vectors/{{subtool.image}}">
 
-	        </div>
+            </div>
 
-	    </div>
+        </div>
 
     </div>
 

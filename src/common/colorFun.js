@@ -1,15 +1,18 @@
 /* input:
  * H = [0,360] 
- * S,V = [0,1]
+ * S,V = [0,100]
  * output:
  * R,G,B = [0,255]
  */
-function HSVtoRGB() {
+function HSVtoRGB(H, S, V) {
     var c, h_a, x;
-    c = V * S;
+    s = S/100
+    v = V/100
+
+    c = v * s;
     h_a = H/60;
     x = c * (1 - Math.abs(h_a%2 - 1));
-    m = V - c;
+    m = v - c;
     c += m;
     x += m;
 
@@ -22,18 +25,22 @@ function HSVtoRGB() {
         case 4: r = x, g = m, b = c; break;
         case 5: r = c, g = m, b = x; break;
     }
-    R = Math.floor(r * 255);
-    G = Math.floor(g * 255);
-    B = Math.floor(b * 255);
+    //console.log("hi hsvtorgb", r, g, b);
+    return {
+        R: Math.round(r * 255),
+        G: Math.round(g * 255),
+        B: Math.round(b * 255)
+    };
 }
 
 /* input:
  * R,G,B = [0,255] 
  * output:
  * H = [0,360]
- * S,V = [0,1]
+ * S,V = [0,100]
  */
-function RGBtoHSV() {
+function RGBtoHSV(R, G, B) {
+    var r, g, b, max, min, H, S, V
     r = R/255;
     g = G/255;
     b = B/255;
@@ -59,11 +66,15 @@ function RGBtoHSV() {
     if (isNaN(S)) {
         S = 0;
     }
+    //console.log("hi rgbtohsv", H, S, V);
+    return {
+        H: H, S: Math.round(S*100), V: Math.round(V*100)
+    };
 }
 
 /* input: RGB = [0,255] */
 /* output: #H3XC0D E */
-function RGBtoHEX() {
+function RGBtoHEX(R, G, B) {
     return "#" + ((1 << 24) + (R << 16) + (G << 8) + B).toString(16).slice(1).toUpperCase();
 }
 
@@ -74,7 +85,9 @@ function HEXtoRGB(hex) {
     if (hex.charAt(0)=="#") {
         hex = hex.substring(1,7)
     }
-    R = parseInt(hex.substring(0,2), 16);
-    G = parseInt(hex.substring(2,4), 16);
-    B = parseInt(hex.substring(4,6), 16);
+    return {
+        R: parseInt(hex.substring(0,2), 16),
+        G: parseInt(hex.substring(2,4), 16),
+        B: parseInt(hex.substring(4,6), 16)
+    }
 }
