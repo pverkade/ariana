@@ -90,7 +90,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         this.createThumbnail(layer);
         this.layers.splice(index, 0, layer);
     }
- 
+
     public removeLayer(index : number) {
         var layer : Layer = this.layers[index];
         this.layers.splice(layer.getID(), 1);
@@ -148,7 +148,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
             filter.render(this.resourceManager, this.drawbuffer1.getWebGlTexture());
             imageLayer.copyFramebuffer(this.width, this.height);
             this.drawbuffer2.unbind();
-            
+
             layer.setRotation(0);
         }
 
@@ -248,7 +248,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         return newLayer;
     }
 
-    public createImageLayer(image : HTMLImageElement) {
+    public createImageLayer(image : HTMLImageElement) : ImageLayer {
         return new ImageLayer(
             this.resourceManager,
             this.width,
@@ -257,17 +257,52 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         );
     }
 
-    renderAsUint8Array() : Uint8Array {
-        var result;
+    public createSelectionImageLayer(bitmask : HTMLImageElement, layerIndex : number) {
+        var gl = this.gl;
 
-        this.drawbuffer1.bind() ;
-        {
-            this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
-            this.render();
-            result =  this.drawbuffer1.getData();
+        if (this.layers[layerIndex].getLayerType() != LayerType.ImageLayer) {
+            return;
         }
-        this.drawbuffer1.unbind();
+        var layer = <ImageLayer>this.layers[layerIndex];
 
-        return result;
-    }    
+        var bitmaskProgram = this.resourceManager.bitmaskProgramInstance();
+        var texture = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, bitmask);
+
+        var drawbuffer = new DrawBuffer(gl, bitmask.width, bitmask.height);
+        drawbuffer.bind();
+        gl.viewport(0, 0, bitmask.width, bitmask.width);
+
+        gl.enable(this.gl.STENCIL_TEST);
+        gl.clear(gl.STENCIL_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
+        gl.stencilFunc(gl.ALWAYS, 1, 0xFF);
+        gl.stencilOp(gl.REPLACE, gl.REPLACE, gl.REPLACE);
+
+        /* Draw bitmask stencil */
+        bitmaskProgram.activate();
+        bitmaskProgram.setUniforms(texture);
+        gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
+
+        /* Draw the image with the bitmask */
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.stencilFunc(gl.EQUAL, 1, 0xFF);
+        gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP);
+        layer.setupRender();
+        layer.renderFullscreen();
+
+        this.gl.disable(this.gl.STENCIL_TEST);
+        layer.copyFramebuffer(bitmask.width, bitmask.height);
+        drawbuffer.unbind();
+        gl.viewport(0, 0, this.width, this.height);
+
+        layer.setPos(bitmask.width/2.0, bitmask.height/2.0);
+        this.render();
+    }
 }

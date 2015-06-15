@@ -14,11 +14,11 @@ app.controller('TransformationModalController', ['$scope', '$modalInstance',
         $scope.subtitle = "";
         
         $scope.transformations = [
-            {name: "mirror horizontally", image: "/assets/img/arnold2.jpg",},
-            {name: "mirror vertically", image: "/assets/img/arnold2.jpg",},
-            {name: "rotate 90 degrees", image: "/assets/img/arnold2.jpg",},
-            {name: "rotate 180 degrees", image: "/assets/img/arnold2.jpg",},
-            {name: "rotate 270 degrees", image: "/assets/img/arnold2.jpg",},
+            {name: "mirror horizontally", image: "/assets/img/arnold2.jpg"},
+            {name: "mirror vertically", image: "/assets/img/arnold2.jpg"},
+            {name: "rotate 90 degrees", image: "/assets/img/arnold2.jpg"},
+            {name: "rotate 180 degrees", image: "/assets/img/arnold2.jpg"},
+            {name: "rotate 270 degrees", image: "/assets/img/arnold2.jpg"}
         ];
         
         $scope.selectTransformation = function(name) {
@@ -42,4 +42,4 @@ app.controller('TransformationModalController', ['$scope', '$modalInstance',
             return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
         }
     }
-])
+]);

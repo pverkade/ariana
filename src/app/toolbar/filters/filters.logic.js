@@ -14,38 +14,38 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
             
             "noise": {
                 image: "/assets/img/arnold.jpg", 
-                constructor: NoiseFilter,
+                constructor: NoiseFilter
             },
             
             "contrast": {
                 image: "/assets/img/arnold.jpg",
-                constructor: ContrastFilter,
+                constructor: ContrastFilter
             },
             
             "brightness": {
                 image: "/assets/img/arnold.jpg",
-                constructor: BrightnessFilter,
+                constructor: BrightnessFilter
             },
             
             "invert colors": {
                 image: "/assets/img/arnold.jpg",
-                constructor: InvertColorsFilter,
+                constructor: InvertColorsFilter
             },
             
             "saturation": {
                 image: "/assets/img/arnold.jpg",
-                constructor: SaturationFilter,
+                constructor: SaturationFilter
             },
             
             "sepia": {
                 image: "/assets/img/arnold.jpg",
-                constructor: SepiaFilter,
+                constructor: SepiaFilter
             },
             
             "colorize": {
                 image: "/assets/img/arnold.jpg",
-                constructor: ColorizeFilter,
-            },
+                constructor: ColorizeFilter
+            }
         };
         
         $scope.selectFilter = function(name) {
@@ -64,4 +64,4 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
             $modalInstance.dismiss();
         };
     }
-])
+]);

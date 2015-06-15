@@ -38,37 +38,48 @@ var magicSelection = {
         /* x and y coordinates in pixels relative to image. */
         var xRelative = $scope.config.mouse.current.x - $scope.config.canvas.x;
         var yRelative = $scope.config.mouse.current.y - $scope.config.canvas.y;
-        console.log(xRelative, yRelative);
 
         /* Check wheter user has clicked inside of a selection. */
         if (scope.magic.isInSelection(xRelative, yRelative)) {
             scope.magic.removeSelection(xRelative, yRelative)
         } else {
-            scope.magic.getMaskWand(xRelative, yRelative, 10);
+            var bitmask = scope.magic.getMaskWand(xRelative, yRelative, 10);
         }
 
         scope.magic.getMaskBorder();
+        //var bitmask = scope.magic.maskWand;
+        var width = scope.magic.imageData.width;
+        var height = scope.magic.imageData.height;
 
         var canvas = document.getElementById("editing-canvas");
         var context = canvas.getContext("2d");
+        var imgData = context.createImageData(width, height);
+        for (var i=0; i < bitmask.length; i++) {
+            if (bitmask[i]) {
+                imgData.data[4*i] = 255;//*bitmask[i];
+                imgData.data[4*i+1] = 0;
+                imgData.data[4*i+2] = 0;
+                imgData.data[4*i+3] = 255;
+            }/* else {
+                imgData.data[4*i] = scope.magic.imageData.data[4*i];
+                imgData.data[4*i+1] = scope.magic.imageData.data[4*i+1];
+                imgData.data[4*i+2] = scope.magic.imageData.data[4*i+2];
+                imgData.data[4*i+3] = 255;
+            }*/
+
+        }
+
+        var layer = scope.renderEngine.createSelectionImageLayer(imgData, 0);
+        //scope.renderEngine.addLayer(layer);
+
+        /*var canvas = document.getElementById("editing-canvas");
+        var context = canvas.getContext("2d");
 
         var bitmask = scope.magic.maskBorder;
-        var width = scope.magic.imageData.width; // bitmask[0].length;
-        console.log("width is " + width);
-        var height = scope.magic.imageData.height; //bitmask.length;
-        console.log("height is " + height);
+        var width = scope.magic.imageData.width;
+        var height = scope.magic.imageData.height;
 
-
-
-        var notZero = 0;
-        for (var i = 0; i < bitmask.length; i++) {
-            if (bitmask[i]) {
-                notZero++;
-            }
-        }
-        console.log("Not zero: " + notZero);
-        var imgData = context.createImageData(width, height);
-
+        //var imgData = context.createImageData(width, height);
 
         for (var i=0; i < bitmask.length; i++) {
 
@@ -88,7 +99,7 @@ var magicSelection = {
         console.log(imgData);
 
 
-        context.putImageData(imgData, 0, 0);
+        context.putImageData(imgData, 0, 0);*/
 
         /* Save border and marching ants mask in scope. */
         //$scope.maskBorder = $scope.magic.getMaskBorder();
