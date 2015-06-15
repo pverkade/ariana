@@ -69,45 +69,39 @@ app.controller('ContentController', function($scope, $window) {
         if (toolFunctions) toolFunctions.mouseUp();
     }
     
-    $scope.mwheelUp = function(event) {
+    $scope.mwheelUp = function() {
         $scope.config.canvas.zoom += 0.05;
-        if ($scope.config.canvas.zoom > 3.0) {
+        if ($scope.config.canvas.zoom >= 3.0) {
             $scope.config.canvas.zoom = 3.0;
+            return;
         } 
         
         /* Zoom on the current mouse location. */
         var cx = $scope.config.canvas.x,
             cy = $scope.config.canvas.y,
             z  = $scope.config.canvas.zoom;
-        
-        var currentX = (event.pageX - cx) / z;
-        var currentY = (event.pageY - cy) / z;
-        console.log(currentX, currentY);
                
-        var widthDifference  = currentX * 0.05;
-        var heightDifference = currentY * 0.05;
-        console.log(widthDifference, heightDifference);
+        var widthDifference  = $scope.config.mouse.current.x * 0.05;
+        var heightDifference = $scope.config.mouse.current.y * 0.05;
         
         $scope.config.canvas.x -= widthDifference;
         $scope.config.canvas.y -= heightDifference;
     };
 
-    $scope.mwheelDown = function(event) {
+    $scope.mwheelDown = function() {
         $scope.config.canvas.zoom -= 0.05;
-        if ($scope.config.canvas.zoom < 0.1) {
+        if ($scope.config.canvas.zoom <= 0.1) {
             $scope.config.canvas.zoom = 0.1;
+            return;
         }
         
         /* Zoom on the current mouse location. */
         var cx = $scope.config.canvas.x,
             cy = $scope.config.canvas.y,
             z  = $scope.config.canvas.zoom;
-        
-        var currentX = (event.pageX - cx) / z;
-        var currentY = (event.pageY - cy) / z;
                
-        var widthDifference  = currentX * 0.05;
-        var heightDifference = currentY * 0.05;
+        var widthDifference  = $scope.config.mouse.current.x * 0.05;
+        var heightDifference = $scope.config.mouse.current.y * 0.05;
         
         $scope.config.canvas.x += widthDifference;
         $scope.config.canvas.y += heightDifference;
