@@ -69,18 +69,48 @@ app.controller('ContentController', function($scope, $window) {
         if (toolFunctions) toolFunctions.mouseUp();
     }
     
-    $scope.mwheelUp = function() {
+    $scope.mwheelUp = function(event) {
         $scope.config.canvas.zoom += 0.05;
         if ($scope.config.canvas.zoom > 3.0) {
             $scope.config.canvas.zoom = 3.0;
         } 
+        
+        /* Zoom on the current mouse location. */
+        var cx = $scope.config.canvas.x,
+            cy = $scope.config.canvas.y,
+            z  = $scope.config.canvas.zoom;
+        
+        var currentX = (event.pageX - cx) / z;
+        var currentY = (event.pageY - cy) / z;
+        console.log(currentX, currentY);
+               
+        var widthDifference  = currentX * 0.05;
+        var heightDifference = currentY * 0.05;
+        console.log(widthDifference, heightDifference);
+        
+        $scope.config.canvas.x -= widthDifference;
+        $scope.config.canvas.y -= heightDifference;
     };
 
-    $scope.mwheelDown = function() {
+    $scope.mwheelDown = function(event) {
         $scope.config.canvas.zoom -= 0.05;
         if ($scope.config.canvas.zoom < 0.1) {
             $scope.config.canvas.zoom = 0.1;
         }
+        
+        /* Zoom on the current mouse location. */
+        var cx = $scope.config.canvas.x,
+            cy = $scope.config.canvas.y,
+            z  = $scope.config.canvas.zoom;
+        
+        var currentX = (event.pageX - cx) / z;
+        var currentY = (event.pageY - cy) / z;
+               
+        var widthDifference  = currentX * 0.05;
+        var heightDifference = currentY * 0.05;
+        
+        $scope.config.canvas.x += widthDifference;
+        $scope.config.canvas.y += heightDifference;
     };
 
     /* Get the canvas element and start the engine. */
@@ -88,16 +118,4 @@ app.controller('ContentController', function($scope, $window) {
         document.getElementById("main-canvas"),
         document.getElementById("editing-canvas")
     );
-
-    // Add Arnold the First
-    // var image1 = new Image();
-    // image1.src="/assets/img/logo.png";
-    // image1.onload = function(){$scope.newLayerFromImage(image1)};
-
-    //TODO: nu tekenen we op de canvas, maar we moeten in de renderEngine tekenen o.i.d.
-    //$scope.drawEngine = new Draw(canvas, $scope.renderEngine);
-    //$scope.drawEngine.activate();
-    //$scope.drawEngine.setBrush(brushType.THIN);
-    //$scope.drawEngine.loadBrushSVG('assets/draw/thin.svg');
-    //$scope.drawEngine.setDrawType(drawType.CIRCLE);
 });
