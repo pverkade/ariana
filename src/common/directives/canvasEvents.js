@@ -2,10 +2,7 @@ app.directive('canvasEvents', function() {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
-            scope.$watch('config.canvas.cursor', function(nval, oval) {
-                element.css('cursor', scope.config.canvas.cursor);
-            }, true);
-
+            
             /* Watches canvas zoom changes  */
             scope.$watch('config.canvas.zoom', function(nval, oval) {
                 var cw = parseInt(element.attr('width')),

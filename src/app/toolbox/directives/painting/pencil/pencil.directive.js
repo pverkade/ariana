@@ -12,13 +12,6 @@ app.controller('PencilCtrl', function($scope) {
 	$scope.active = ($scope.config.tools.activeTool == $scope.toolname);
     $scope.thickness = 2;
     $scope.opacity = 1;
-    $scope.toggledOn = true;
-    
-    $scope.toggle = function() {
-        if ($scope.toggledOn) $scope.toggledOn = false;
-        else $scope.toggledOn = true;
-        console.log("toggle", $scope.toggledOn);
-    }
     
 	/* init */
 	$scope.init = function() {

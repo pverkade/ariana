@@ -73,7 +73,7 @@ app.controller('ContentController', function($scope, $window) {
         $scope.config.canvas.zoom += 0.05;
         if ($scope.config.canvas.zoom > 3.0) {
             $scope.config.canvas.zoom = 3.0;
-        } 
+        }
     };
 
     $scope.mwheelDown = function() {
