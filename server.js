@@ -11,7 +11,6 @@ var serveStatic = require('serve-static');
 var fs = require('fs');
 var request = require('request');
 var qs = require('querystring');
-//var gm = require('gm');
 var gm = require('gm').subClass({ imageMagick: true });
 
 // Init
@@ -45,7 +44,7 @@ function readIndex(next) {
     fs.readFile('build/index.html', "utf-8", next);
 }
 
-function startServer() {
+function startServer(host, port) {
 
     server = app.listen(port, host, function() {
         process.stdout.write("Listening on " + (host ? 'http://' + host + ':' : 'port ') + port + "\n");
@@ -113,7 +112,7 @@ function saveImageRouter(req, res) {
 /*
  * Starts the servers and index.html is only loaded once at startup.
  */
-function staticServe() {
+function staticServe(host, port) {
     readIndex(function(err, content) {
         if (err) throw err;
 
@@ -122,7 +121,7 @@ function staticServe() {
                 return;
             }
 
-            if (req.url != "/" && req.url != "/index.html") {
+            if (req.url != "/" && req.url != "/index.html" && req.url != "/landing" && req.url != "/drawtest") {
                 res.writeHead(404, { "Content-Type": "text/plain" });
                 res.end("File not Found.");
                 return;
@@ -132,14 +131,14 @@ function staticServe() {
             res.end(content);
         });
 
-        startServer();
+        startServer(host, port);
     });
 }
 
 /*
  * Starts the server. Every request for index.html receives an updated version.
  */
-function dynamicServe() {
+function dynamicServe(host, port) {
     app.use(function(req, res) {
         if (saveImageRouter(req, res)) {
             return;
@@ -163,14 +162,14 @@ function dynamicServe() {
         });
     });
 
-    startServer();
+    startServer(host, port);
 }
 
 if (process.argv.indexOf("--production") !== -1) {
     console.log("Starting server in production mode...");
-    staticServe();
+    staticServe("0.0.0.0", 80);
 }
 else {
     console.log("Starting server in development mode...");
-    dynamicServe();
+    dynamicServe(host, port);
 }

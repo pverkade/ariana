@@ -8,7 +8,10 @@ src/.idea/*
 *.js.map
 *.log
 Thumbs.db
+*/Thumbs.db
+src/*/Thumbs.db
 /**/Thumbs.db
 .sass-cache/
 .tscache/*
 src/app/drawengine/*.js
+*.tmp.txt
