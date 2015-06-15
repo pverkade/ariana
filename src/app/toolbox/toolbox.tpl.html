@@ -1,35 +1,76 @@
-<div id="toolbox">
-    
-    <div class="tool" id="{{name}}" 
-        ng-repeat="(name, tool) in toolbox" 
-        ng-click="selectToolSet(name)" 
-        ng-class="{active: config.tools.activeToolset == '{{name}}'}">
+<!-- Template for the toolbox elements. -->
 
-        <img class="svg" alt="{{tool.image}}" data="assets/vectors/{{tool.image}}"></img>
+<div class="toolset" 
+    ng-class="{'fade-on inactive': !checkVisible(), 'fade-off': checkVisible()}">
+    <div class="tool" id="basic" 
+         ng-click="selectToolSet('basic')" 
+         ng-class="{active: isActiveToolset('basic')}">
 
-        <div class="toolset fix-top" 
-            ng-show="config.tools.activeToolset == '{{name}}'">
-            
-            <div class="tool" id="{{name}}" 
-                ng-repeat="(name, subtool) in tool.tools" 
-                ng-click="selectTool($event, name)">
+        <i class="mdi mdi-arrow-all"></i>
 
-                <img class="svg" alt="{{subtool.image}}" data="assets/vectors/{{subtool.image}}">
-
-            </div>
-
+        <div class="toolbox" ng-show="isActiveToolset('basic')">
+            <pan tool></pan>
+            <translate tool></translate>
+            <scale tool></scale>
+            <rotate tool></rotate>
+            <!-- <crop tool></crop> -->
         </div>
 
     </div>
 
+    <div class="tool" id="painting" 
+         ng-click="selectToolSet('painting')" 
+         ng-class="{active: isActiveToolset('painting')}">
+
+        <i class="mdi mdi-brush"></i>
+
+        <div class="toolbox" ng-show="isActiveToolset('painting')">
+            <palette tool></palette>
+            <pencil tool></pencil>
+            <brush tool></brush>
+            <eraser tool></eraser>
+            <picker tool></picker>
+            <fill tool></fill>
+        </div>
+
+    </div>
+
+    <div class="tool" id="select" 
+         ng-click="selectToolSet('select')" 
+         ng-class="{active: isActiveToolset('select')}">
+
+        <i class="mdi mdi-select"></i>
+
+        <div class="toolbox" ng-show="isActiveToolset('select')">
+            <rectangle tool></rectangle>
+            <elipse tool></elipse>
+            <curve tool></curve>
+            <magic tool></magic>
+        </div>
+        
+    </div>
+
+    <div class="tool" id="text" 
+         ng-click="selectToolSet('text')" 
+         ng-class="{active: isActiveToolset('text')}">
+
+        <i class="mdi mdi-format-size"></i>
+        
+        <div class="toolbox" ng-show="isActiveToolset('text')">
+        </div>
+        
+    </div>
 </div>
 
-<div class="color-preview" ng-click="swapColors()">
+<!-- Template for the color-preview elements. -->
+
+<div class="color-preview" 
+    ng-click="swapColors()" 
+    ng-class="{'fade-on': !checkVisible() && config.tools.activeTool != 'picker', 'scale-on': !checkVisible() && config.tools.activeTool == 'picker', 'fade-off scale-off': checkVisible()}">
     <div class="color-primary"   style="background-color: rgb({{config.tools.colors.primary.r}},   {{config.tools.colors.primary.g}},   {{config.tools.colors.primary.b}})"> </div>
     <div class="color-secondary" style="background-color: rgb({{config.tools.colors.secondary.r}}, {{config.tools.colors.secondary.g}}, {{config.tools.colors.secondary.b}})"> </div>
+
 </div>
-    <colorselector style="position:absolute; bottom: 0; left: 100px; height:100px; width:100px; background-color:green;">
+<colorselector style="position:absolute; bottom: 0; left: 100px; height:100px; width:100px; background-color:green;">
     </colorselector>
 </div>
-
-

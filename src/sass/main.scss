@@ -1,7 +1,7 @@
 /*
- * Project Arinana
+ * Project Ariana
  * main.scss
- *
+ * 
  * This file aggregates all style definitions.
  *
  */
@@ -10,10 +10,10 @@
 @import "variables.scss";
 @import "gui.scss";
 
-@import "toolbar.scss";
 @import "content.scss";
 @import "toolbox.scss";
+@import "toolbar.scss";
 @import "layers.scss";
-
+@import "modals.scss";
 @import "landing.scss";
 @import "utils.scss";

@@ -1,4 +1,13 @@
-angular.module('ariana').config(function($stateProvider, $locationProvider) {
+/* 
+ * Project Ariana
+ * router.js
+ * 
+ * This file contains the router, which displays the correct template in the 
+ * correct ui-view for every given state.
+ *
+ */
+
+app.config(function($stateProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
     
     $stateProvider
@@ -7,11 +16,15 @@ angular.module('ariana').config(function($stateProvider, $locationProvider) {
             views: {
                 "content": {
                     templateUrl: "app/content/content.tpl.html",
-                    controller: 'contentCtrl'
+                    controller: 'ContentController'
+                },
+                "content-menu": {
+                    templateUrl: "app/content/menu/menu.content.tpl.html",
+                    controller: 'MenuContentCtrl'
                 },
                 "toolbar": {
                     templateUrl: "app/toolbar/toolbar.tpl.html",
-                    controller: 'toolbarCtrl'
+                    controller: 'ToolbarController'
                 },
                 "layers": {
                     templateUrl: "app/layers/layers.tpl.html",
@@ -19,7 +32,28 @@ angular.module('ariana').config(function($stateProvider, $locationProvider) {
                 },
                 "toolbox": {
                     templateUrl: "app/toolbox/toolbox.tpl.html",
-                    controller: 'toolBoxController'
+                    controller: 'ToolboxController'
+                }
+            }
+        })
+        .state('drawtest', {
+            url: "/drawtest",
+            views: {
+                "content": {
+                    templateUrl: "common/draw/drawtest.tpl.html",
+                    controller: 'drawtestCtrl'
+                },
+                "toolbar": {
+                    templateUrl: "app/toolbar/toolbar.tpl.html",
+                    controller: 'ToolbarController'
+                },
+                "layers": {
+                    templateUrl: "app/layers/layers.tpl.html",
+                    controller: 'layersCtrl'
+                },
+                "toolbox": {
+                    templateUrl: "app/toolbox/toolbox.tpl.html",
+                    controller: 'ToolboxController'
                 }
             }
         })
@@ -35,5 +69,31 @@ angular.module('ariana').config(function($stateProvider, $locationProvider) {
                     controller: 'LandingToolbarCtrl'
                 }
             }
-        });
+        })
+        /*
+        .state('settings', {
+            url: "/settings",
+            views: {
+                "content": {
+                    templateUrl: "app/content/settings/settings.content.tpl.html",
+                    controller: 'SettingsContentCtrl'
+                },
+                "content-menu": {
+                    templateUrl: "app/content/menu/menu.content.tpl.html",
+                    controller: 'MenuContentCtrl'
+                },
+                "toolbar": {
+                    templateUrl: "app/toolbar/toolbar.tpl.html",
+                    controller: 'toolbarCtrl'
+                },
+                "layers": {
+                    templateUrl: "app/layers/layers.tpl.html",
+                    controller: 'layersCtrl'
+                },
+                "toolbox": {
+                    templateUrl: "app/toolbox/toolbox.tpl.html",
+                    controller: 'ToolboxController'
+                }
+            }
+        });*/
 });

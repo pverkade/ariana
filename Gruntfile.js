@@ -278,6 +278,7 @@ module.exports = function(grunt) {
         'copy:build_vendorjs', // Copy all javascript -> build/js/
         'copy:build_html', // Copy index.html -> build/index.html
         'copy:build_assets', // Copy assets -> build/assets/
+        'copy:build_vendorcss', // Copy bower css -> build/css/
         'includeSource', // Link all js and css files to index.html
         'preprocess:dev' // Add some links to index.html
     ]);

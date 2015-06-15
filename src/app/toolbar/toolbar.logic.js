@@ -1,10 +1,31 @@
-app.controller('toolbarCtrl', ['$scope', '$modal',
+/* 
+ * Project Ariana
+ * toolbar.logic.js
+ * 
+ * This file contains the ToolbarController, which controls the toolbar.
+ *
+ */
+ 
+/* The ToolbarController contains the behaviour of the toolbar. */
+app.controller('ToolbarController', ['$scope', '$modal',
     function ($scope, $modal) {
       
+        /* This functions returns whether the toolbox should be visible. It is 
+         * hidden when the user is clicking on the canvas/background. */
+        $scope.checkVisible = function() {
+            return (!($scope.config.mouse.button[1] || $scope.config.mouse.button[2] || $scope.config.mouse.button[3]));
+        }
+      
+        /* This functions saves the canvas to an image-file. */
         $scope.saveImage = function() {
-            // TODO I have no idea if this works :^)
+            var toolFunctions = $scope.config.tools.activeToolFunctions;
+
+            if (toolFunctions && toolFunctions.stop) {
+                toolFunctions.stop();
+            }
+
+            /* Receive image data in base64 encoding. */
             var image = $scope.renderEngine.renderToImg();
-            // retrieves the base64 data
             var data = image.substr(image.indexOf(',') + 1).toString();
             var url = "/save-image";
 
@@ -28,24 +49,7 @@ app.controller('toolbarCtrl', ['$scope', '$modal',
             document.body.removeChild(myForm) ;
         };
         
-        $scope.openTransformationModal = function() {
-            var modalInstance = $modal.open({
-                templateUrl: 'app/toolbar/transformations/transformations.tpl.html',
-                controller:  'TransformationModalController',
-                scope: $scope,
-                size: 'lg'
-            });
-        };
-    
-        $scope.openFilterModal = function() {
-            var modalInstance = $modal.open({
-                templateUrl: 'app/toolbar/filters/filters.tpl.html',
-                controller:  'FilterModalController',
-                size: 'lg'
-            });
-        };    
-
-        
+        /* This function opens the upload modal. */
         $scope.openUploadModal = function() {
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/upload/upload.tpl.html',
@@ -54,34 +58,65 @@ app.controller('toolbarCtrl', ['$scope', '$modal',
                 size: 'lg'
             });
         };
-
-        /*$scope.loadImages = function() {
-            $("img.svg").each(function () {
-                var img = $(this);
-                var id = img.attr('id');
-                var src = img.attr('data');
-
-                $(this).removeClass("svg");
-
-                $.get(src, function (data) {
-                    // Get the SVG tag, ignore the rest
-                    var svg = $(data).find('svg');
-
-                    // Add replaced image's ID to the new SVG
-                    if (typeof id !== 'undefined') {
-                        svg = svg.attr('id', id);
-                    }
-
-                    // Remove any invalid XML tags as per http://validator.w3.org
-                    svg = svg.removeAttr('xmlns');
-                    svg = svg.removeAttr('xmlns:xlink');
-
-                    // Replace image with new SVG
-                    img.replaceWith(svg);
-
-                }, 'xml');
+        
+        /* This function opens the transformation modal. */
+        $scope.openTransformationModal = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'app/toolbar/transformations/transformations.tpl.html',
+                controller:  'TransformationModalController',
+                scope: $scope,
+                size: 'lg'
             });
         };
-        $scope.loadImages();*/
+        
+        $scope.filter = {
+            filterName: "",
+            filterObject: null,
+            filterParameters: null,
+            currentlayerOnly: false,
+        };
+    
+        /* This function opens the filters modal. */
+        $scope.openFilterModal = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'app/toolbar/filters/filters.tpl.html',
+                controller:  'FilterModalController',
+                scope: $scope,
+                size: 'lg'
+            });
+        };
+
+        $scope.cancel = function() {
+            $scope.filter.filterObject = null;
+            $scope.filter.currentlayerOnly = false;
+        };
+        
+        $scope.allLayers = true;
+        
+        $scope.apply = function() {
+            var filter = $scope.filter.filterObject;
+            
+            /* Set all filter parameters into the filter object. */
+            for (var key in $scope.filter.filterParameters) {
+                var value = $scope.filter.filterParameters[key].value;
+                filter.setAttribute(key, value);
+            }
+            
+            if (filter) {
+                if (filter.currentlayerOnly) {
+                    $scope.renderEngine.filterLayers([$scope.config.layers.currentLayer], filter);
+                }
+                else {
+                    var list = [];
+                    for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) list.push(i);
+                    $scope.renderEngine.filterLayers(list, filter);
+                }   
+                
+                /* Show the result. */
+                $scope.renderEngine.render();
+            } 
+            
+            $scope.cancel();
+        };
     }
 ]);

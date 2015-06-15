@@ -1,3 +1,3 @@
-angular.module('ariana').controller('LandingContentCtrl', function($scope, $window) {
+app.controller('LandingContentCtrl', function($scope, $window) {
 	
 });

@@ -1,53 +1,83 @@
 /*
- * Project Arinana
+ * Project Ariana
  * layers.scss
  *
  * This file contains the style definition for the Layer Selector.
  *
  */
- 
+
 .layer-container {
     position: absolute;
     top: 1.5 * $blocksize;
     right: 0;
-
-    @extend .gui-item;
+    z-index: 2;
 
     width: 3 * $blocksize;
-    max-height: calc(100% - 2 * $blocksize);
+//     max-height: calc(100% - 2 * $blocksize);
 
-    .row {
-        &.layers {
-            margin-bottom: 0.25 * $blocksize;
-            @extend .box-shadow;
-        }
-    }
+//     .row {
+//         &.layers {
+//             margin-bottom: 0.25 * $blocksize;
+//             @extend .box-shadow;
+//         }
+//     }
     
-    .layer {
-        height: 1 * $blocksize;
-        padding: 0;
+//     .layer {
+//         height: 1 * $blocksize;
+//         padding: 0;
 
-        background-color: lighten($light, 10%);
+//         background-color: lighten($light, 10%);
         
-        &.options {
-            color: $brand-color;
-            text-align: center;
-        }
+//         &.options {
+//             color: $brand-color;
+//             text-align: center;
+//         }
 
-        &.content {
+//         &.content {
 
-        }
-    }
-    
-    // .layer-content {
-    //     margin-left: 0.25 * $blocksize;
-    //     margin-top: 0.25 * $blocksize;
-    //     width: calc(100% - 0.5 * $blocksize);
-    //     height: 1 * $blocksize;
-    //     background-color: lighten($light, 10%);
-    //     @extend .box-shadow;
-    // }
+//         }
+//     }
 
-    padding-bottom: 0.25 * $blocksize;
+//     padding-bottom: 0.25 * $blocksize;
 }
 
+accordion {
+	span {
+		text-transform: uppercase;
+	}
+}
+
+.item {
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+
+.panel-group .panel {
+	border-radius: 0;
+}
+
+.panel-group .panel + .panel {
+	margin-top: 0;
+}
+
+.panel-body {
+	padding: 0;
+}
+
+.panel-heading {
+	&:hover {
+        background-color: lighten($light, 4 * $active-lighten);
+    }
+}
+
+.layer-active {
+	.panel-heading {
+		background-color: lighten($light, 3 * $active-lighten);
+	    
+	    &:hover {
+	        background-color: lighten($light, 2 * $active-lighten);
+	    }
+	}
+}

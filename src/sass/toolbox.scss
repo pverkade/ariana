@@ -1,38 +1,71 @@
 /*
- * Project Arinana
+ * Project Ariana
  * toolbox.scss
  *
- * This file contains the style definition for the Toolbox and the Color Preview
- * elements.
+ * This file contains the style definition for the Toolbox and the Color 
+ * Preview elements.
  *
  */
 
-div #toolbox {
+.toolset {
     position : absolute;
     width: $blocksize;
     left: 0;
+    
     top: 1.5 * $blocksize;
+    
+    @media (max-width: 10.5 * $blocksize) {
+        top: 2.5 * $blocksize;
+    }
     
     @extend .gui-element;
 }
 
-div .toolset {
+.toolbox {
     position: absolute;
     top: 0;
     margin-left: $blocksize;
     width: $blocksize;
 
     z-index: 1;
-    background-color: $very-light;   
+    background-color: $light;   
 
-    .tool {
-        
-        background-color: $very-light;
+    .tool {      
+    
+        background-color: lighten($light, $active-lighten);
         
         &:hover {
-            background-color: lighten($very-light, $hover-lighten);
+            background-color: lighten($light, $active-lighten + $hover-lighten);
         }
     }
+    
+    .active {
+        background-color: lighten($light, 2 * $active-lighten);
+        
+        &:hover {
+            background-color: lighten($light, 2 * $active-lighten);
+        }
+    }
+    
+    .inactive {
+        background-color: lighten($light, $active-lighten) !important;
+        
+        &:hover {
+            background-color: lighten($light, $active-lighten) !important;
+        }
+    }
+}
+
+.tool-settings {
+    position: absolute;
+    top: 0;
+    margin-left: $blocksize;
+    width: 4 * $blocksize;
+    height: 4 * $blocksize;
+
+    z-index: 1;
+    background-color: lighten($light, 2 * $active-lighten);
+
 }
 
 .color-preview {
@@ -41,7 +74,7 @@ div .toolset {
     left: 0;
     
     @extend .tool;
-    @extend .gui-element;
+    @extend .gui-element;   
     
     .color-primary, .color-secondary {
         position: absolute;

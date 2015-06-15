@@ -1,33 +1,66 @@
+/* 
+ * Project Ariana
+ * filters.logic.js
+ * 
+ * This file contains the FilterModalController, which controls the 
+ * 'filters and effects' modal.
+ *
+ */
+ 
 app.controller('FilterModalController', ['$scope', '$modalInstance', 
     function ($scope, $modalInstance) {
         
-        $scope.title = "Filters and Effects";
-        $scope.subtitle = "";
-        
-        $scope.filters = [
-            {name: "Blur",          image: "/assets/img/arnold2.jpg",},
-            {name: "Gauss",         image: "/assets/img/arnold2.jpg",},
-            {name: "Sepia",         image: "/assets/img/arnold2.jpg",},
-            {name: "Noise",         image: "/assets/img/arnold2.jpg",},
-            {name: "Yolo",          image: "/assets/img/arnold2.jpg",},
-            {name: "Swag",          image: "/assets/img/arnold2.jpg",},
-            {name: "Saturation",    image: "/assets/img/arnold2.jpg",},
-            {name: "Colorize",      image: "/assets/img/arnold2.jpg",},
-            {name: "Arnold",        image: "/assets/img/arnold2.jpg",},
-            {name: "Arnold",        image: "/assets/img/arnold2.jpg",},
-            {name: "Arnold",        image: "/assets/img/arnold2.jpg",},
-            {name: "Arnold",        image: "/assets/img/arnold2.jpg",},
-        ];
+        $scope.filters = {
+            
+            "noise": {
+                image: "/assets/img/arnold.jpg", 
+                constructor: NoiseFilter,
+            },
+            
+            "contrast": {
+                image: "/assets/img/arnold.jpg",
+                constructor: ContrastFilter,
+            },
+            
+            "brightness": {
+                image: "/assets/img/arnold.jpg",
+                constructor: BrightnessFilter,
+            },
+            
+            "invert colors": {
+                image: "/assets/img/arnold.jpg",
+                constructor: InvertColorsFilter,
+            },
+            
+            "saturation": {
+                image: "/assets/img/arnold.jpg",
+                constructor: SaturationFilter,
+            },
+            
+            "sepia": {
+                image: "/assets/img/arnold.jpg",
+                constructor: SepiaFilter,
+            },
+            
+            "colorize": {
+                image: "/assets/img/arnold.jpg",
+                constructor: ColorizeFilter,
+            },
+        };
         
         $scope.selectFilter = function(name) {
-            // TODO go into preview mode, set parameters
-            // FIXME cannot access $scope of AppController
-            //console.log($scope.renderEngine);
-            //$scope.applyFilter(name);
-            $modalInstance.dismiss();
+            var constructor = $scope.filters[name].constructor
+            
+            if (constructor) {
+                var filterObject = new constructor();
+                $scope.filter.filterName = name;
+                $scope.filter.filterObject = filterObject;
+                $scope.filter.filterParameters = filterObject.getAttributesObject();
+            }
+            $scope.close();
         };
 
-        $scope.close = function () {
+        $scope.close = function() {
             $modalInstance.dismiss();
         };
     }

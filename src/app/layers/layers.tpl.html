@@ -1,24 +1,69 @@
-<div class="layer-container">
-	<div class="container-fluid">
+<!-- <div class="layer-container">
+    <div class="container-fluid">
 
-    	<div class="row layers" ng-repeat="layer in config.layers.layerInfo">
-    		<div class="col-md-2 layer options">
-    			<div class="row">
-	    			<div>{{$index}}</div>
-	    			<div ng-click="toggleVisible($index)">
-    	    			<img src="assets/vectors/eye.svg"></img>
-	    			</div>
-    			</div>
-    		</div>
-    		<div class="col-md-7 layer content">
-    		  <!--div>{{content}}</div-->
-              <div class="btn btn-default" ng-click="layerSelect($index)">Select layer</div>
-    		</div>
-            <div class="col-md-3 layer content">
-                <div class="btn btn-default btn-sm" ng-click="layerUp($index)">Up</div>
-                <div class="btn btn-default btn-sm" ng-click="layerDown($index)">Down</div>
+        <div class="row layers" ng-repeat="layer in config.layers.layerInfo">
+            <div class="col-md-2 layer options">
+                <div class="row">
+                    <div>{{$index}}</div>
+                    <div ng-click="toggleVisible($index)">
+                        <img src="assets/vectors/eye.svg"></img>
+                    </div>
+                </div>
             </div>
-    	</div>
+            <div class="col-md-7 layer content"> -->
+              <!--div>{{content}}</div-->
+<!--               <div class="btn btn-default" ng-click="layerSelect($index)">Select layer</div>
+            </div>
 
+            <div class="col-md-3 layer content">
+                <div class="btn btn-default btn-sm" ng-click="safeLayerReorder($index, $index + 1)">Up</div>
+                <div class="btn btn-default btn-sm" ng-click="safeLayerReorder($index, $index - 1)">Down</div>
+            </div>
+        </div>
+
+    </div>
+</div> -->
+
+<div class="layer-container" ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}">
+    <div class="box-shadow" ng-controller="ToolboxAccordionCtrl">
+        <accordion close-others="true">
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <span>
+                            <a class="btn btn-sm" ng-click="addLayer($event)">
+                                <i class="mdi mdi-plus"></i>
+                            </a>
+
+                            <span class="pull-right">
+                                Zoom: {{config.canvas.zoom * 100 | int}}%
+                            </span>
+                        </span>
+                    </h4>
+                </div>
+            </div>
+            
+            <accordion-group ng-repeat="layer in config.layers.layerInfo" is-open="open" ng-click="selectLayer($index)" ng-class="{'layer-active': $index == config.layers.currentLayer}">
+                <accordion-heading>
+                    {{$index}}
+
+                    <i class="pull-left mdi " ng-class="{'mdi-chevron-up': open, 'mdi-chevron-left': !open}"></i>
+
+                    <input type="text" value="{{layer.name}}" style="width: 80px;">
+
+                    <i class="pull-right mdi mdi-delete" ng-click="removeLayer($event, $index)"></i>
+                    <i class="pull-right mdi mdi-chevron-double-down" ng-click="moveLayerDown($event, $index)" ng-class="{'inactive': $index == config.layers.numberOfLayers - 1}"></i>
+                    <i class="pull-right mdi mdi-chevron-double-up" ng-click="moveLayerUp($event, $index)" ng-class="{'inactive': $index <= 0}"></i>
+                </accordion-heading>
+                
+                <div class="selectable item" ng-repeat="(key, value) in layer">
+                    <span>
+                        <b>{{key}}</b>: {{value}}
+                    </span>
+                </div>
+            </accordion-group>
+
+        </accordion>
     </div>
 </div>

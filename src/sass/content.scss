@@ -1,7 +1,30 @@
-.main-canvas {
+/*
+ * Project Ariana
+ * content.scss
+ * 
+ * This file contains the style definition for the main content. This includes 
+ * the background and the canvas-element;
+ *
+ */
+
+#background {
     position: absolute;
-    background-color: $dark;
-    left: 0;
     top: 0;
-    cursor: grab;
+    left: 0;
+    z-index: 0;
+
+    background-color: $dark;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#main-canvas, #editing-canvas, #top-canvas {
+    position: absolute;
+    z-index: 1;
+}
+
+#main-canvas {
+    background-color: #ffffff;
+    @extend .box-shadow;
 }

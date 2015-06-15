@@ -1,9 +1,16 @@
+/* 
+ * Project Ariana
+ * server.js
+ *
+ * This file contains all code to run the node server to host Ariana.
+ *
+ */
+
 var connect = require('connect');
 var serveStatic = require('serve-static');
 var fs = require('fs');
 var request = require('request');
 var qs = require('querystring');
-//var gm = require('gm');
 var gm = require('gm').subClass({ imageMagick: true });
 
 // Init
@@ -31,17 +38,20 @@ process.on('SIGHUP', function() {
 // Serve static file
 app.use(serveStatic('build', {index: false}));
 
+
 function readIndex(next) {
     // Read index.html and listen
     fs.readFile('build/index.html', "utf-8", next);
 }
 
-function startServer() {
+function startServer(host, port) {
 
     server = app.listen(port, host, function() {
         process.stdout.write("Listening on " + (host ? 'http://' + host + ':' : 'port ') + port + "\n");
     });
 }
+
+
 
 /* This function resends an image received from a post back, if
  * a correct post was made to /save-image.
@@ -59,7 +69,7 @@ function saveImageRouter(req, res) {
             // kill connection if too much data (100mb).
             if (body.length > 100 * 1e6) {
                 console.log("message is to long:", body.length);
-                request.connection.destroy();
+                req.connection.destroy();
             }
         });
 
@@ -102,7 +112,7 @@ function saveImageRouter(req, res) {
 /*
  * Starts the servers and index.html is only loaded once at startup.
  */
-function staticServe() {
+function staticServe(host, port) {
     readIndex(function(err, content) {
         if (err) throw err;
 
@@ -111,20 +121,32 @@ function staticServe() {
                 return;
             }
 
+            if (req.url != "/" && req.url != "/index.html" && req.url != "/landing" && req.url != "/drawtest") {
+                res.writeHead(404, { "Content-Type": "text/plain" });
+                res.end("File not Found.");
+                return;
+            }
+
             res.writeHead(200, { "Content-Type": "text/html" });
             res.end(content);
         });
 
-        startServer();
+        startServer(host, port);
     });
 }
 
 /*
  * Starts the server. Every request for index.html receives an updated version.
  */
-function dynamicServe() {
+function dynamicServe(host, port) {
     app.use(function(req, res) {
         if (saveImageRouter(req, res)) {
+            return;
+        }
+
+        if (req.url != "/" && req.url != "/index.html" && req.url != "/landing" && req.url != "/drawtest") {
+            res.writeHead(404, { "Content-Type": "text/plain" });
+            res.end("File not Found.");
             return;
         }
 
@@ -140,14 +162,14 @@ function dynamicServe() {
         });
     });
 
-    startServer();
+    startServer(host, port);
 }
 
 if (process.argv.indexOf("--production") !== -1) {
     console.log("Starting server in production mode...");
-    staticServe();
+    staticServe("0.0.0.0", 80);
 }
 else {
     console.log("Starting server in development mode...");
-    dynamicServe();
+    dynamicServe(host, port);
 }

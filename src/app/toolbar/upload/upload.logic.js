@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * upload.logic.js
+ * 
+ * This file contains the UploadModalController, which controls the file import
+ * modal.
+ *
+ */
+ 
 app.controller('UploadModalCtrl', ['$scope', '$modalInstance', 'Upload', 
     function ($scope, $modalInstance, Upload) {
         $scope.imageUrls = [];
@@ -27,4 +36,4 @@ app.controller('UploadModalCtrl', ['$scope', '$modalInstance', 'Upload',
             })
         })
     }
-])
+]);
