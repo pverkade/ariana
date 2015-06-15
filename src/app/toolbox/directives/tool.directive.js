@@ -1,4 +1,4 @@
-angular.module('ariana').directive('tool', function() {
+app.directive('tool', function() {
 	return {
 		restrict: 'A',
 		scope: true,

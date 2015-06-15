@@ -7,7 +7,7 @@
  *
  */
  
-angular.module('ariana').controller('layersCtrl', function($scope) {
+app.controller('layersCtrl', function($scope) {
     
     /* This functions returns whether the toolbox should be visible. It is 
      * hidden when the user is clicking on the canvas/background. */

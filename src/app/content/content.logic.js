@@ -8,7 +8,7 @@
  */
 
 /* The ContenController contains the behaviour of the main content. */
-angular.module('ariana').controller('ContentController', function($scope, $window) {
+app.controller('ContentController', function($scope, $window) {
 
     /* This function is triggered when the mouse is moved. */
     $scope.mouseMove = function(event) {

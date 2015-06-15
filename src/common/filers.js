@@ -1,4 +1,4 @@
-angular.module('ariana').filter('titlecase', function () {
+app.filter('titlecase', function () {
     return function (text) {
         return text.replace(/\w\S*/g, function(text) {
             return text.charAt(0).toUpperCase() + text.substr(1);
@@ -6,13 +6,13 @@ angular.module('ariana').filter('titlecase', function () {
     };
 });
 
-angular.module('ariana').filter('float', function () {
+app.filter('float', function () {
     return function (text) {
         return parseFloat(text);
     };
 });
 
-angular.module('ariana').filter('int', function () {
+app.filter('int', function () {
     return function (text) {
         return parseInt(text);
     };

@@ -1,3 +1,3 @@
-angular.module('ariana').controller('ToolboxAccordionCtrl', function($scope) {
+app.controller('ToolboxAccordionCtrl', function($scope) {
     $scope.open = false;
 });

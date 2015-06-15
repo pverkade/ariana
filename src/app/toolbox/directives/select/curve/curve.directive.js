@@ -1,4 +1,4 @@
-angular.module('ariana').directive('curve', function() {
+app.directive('curve', function() {
     return {
         restrict: 'E',
         scope: true,
@@ -7,7 +7,7 @@ angular.module('ariana').directive('curve', function() {
     };
 });
 
-angular.module('ariana').controller('CurveCtrl', function($scope) {
+app.controller('CurveCtrl', function($scope) {
 	$scope.toolname = 'curve';
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 

@@ -1,4 +1,4 @@
-angular.module('ariana').directive('eraser', function() {
+app.directive('eraser', function() {
     return {
         restrict: 'E',
         scope: true,
@@ -7,7 +7,7 @@ angular.module('ariana').directive('eraser', function() {
     };
 });
 
-angular.module('ariana').controller('EraserCtrl', function($scope) {
+app.controller('EraserCtrl', function($scope) {
 	$scope.toolname = 'eraser';
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 

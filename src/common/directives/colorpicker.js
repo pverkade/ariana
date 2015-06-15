@@ -1,4 +1,4 @@
-angular.module('ariana').directive('colorpicker', function() {
+app.directive('colorpicker', function() {
 
     console.log("YOLO DIRECTIVE");
 

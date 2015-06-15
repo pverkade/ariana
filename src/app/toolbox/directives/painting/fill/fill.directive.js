@@ -1,4 +1,4 @@
-angular.module('ariana').directive('fill', function() {
+app.directive('fill', function() {
     return {
         restrict: 'E',
         scope: true,
@@ -7,7 +7,7 @@ angular.module('ariana').directive('fill', function() {
     };
 });
 
-angular.module('ariana').controller('FillCtrl', function($scope) {
+app.controller('FillCtrl', function($scope) {
 	$scope.toolname = 'fill';
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 

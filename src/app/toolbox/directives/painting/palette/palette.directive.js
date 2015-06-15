@@ -1,4 +1,4 @@
-angular.module('ariana').directive('palette', function() {
+app.directive('palette', function() {
     return {
         restrict: 'E',
         scope: true,
@@ -7,7 +7,7 @@ angular.module('ariana').directive('palette', function() {
     };
 });
 
-angular.module('ariana').controller('PaletteCtrl', function($scope) {
+app.controller('PaletteCtrl', function($scope) {
 	$scope.toolname = 'palette'
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 

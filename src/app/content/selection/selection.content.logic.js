@@ -3,7 +3,7 @@ var y_offset = 100;
 // var offset = 0;
 var tresholdValue = 30; /* Treshold value wordt geschaald, geef waarde tussen 1 en 100. */
 
-angular.module('ariana').controller('SelectionContentCtrl', function($scope, $interval) {
+app.controller('SelectionContentCtrl', function($scope, $interval) {
 
 
  	image.onload = function() {

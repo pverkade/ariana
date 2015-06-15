@@ -1,4 +1,4 @@
-angular.module('ariana').directive('Elipse', function() {
+app.directive('Elipse', function() {
     return {
         restrict: 'E',
         scope: true,
@@ -7,7 +7,7 @@ angular.module('ariana').directive('Elipse', function() {
     };
 });
 
-angular.module('ariana').controller('ElipseCtrl', function($scope) {
+app.controller('ElipseCtrl', function($scope) {
 	$scope.toolname = 'elipse';
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 

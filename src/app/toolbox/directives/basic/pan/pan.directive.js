@@ -1,4 +1,4 @@
-angular.module('ariana').directive('pan', function() {
+app.directive('pan', function() {
     return {
         restrict: 'E',
         scope: true,
@@ -7,7 +7,7 @@ angular.module('ariana').directive('pan', function() {
     };
 });
 
-angular.module('ariana').controller('PanCtrl', function($scope) {
+app.controller('PanCtrl', function($scope) {
 	$scope.toolname = 'pan'
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 

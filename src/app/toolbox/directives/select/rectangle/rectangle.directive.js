@@ -1,4 +1,4 @@
-angular.module('ariana').directive('rectangle', function() {
+app.directive('rectangle', function() {
     return {
         restrict: 'E',
         scope: true,
@@ -7,7 +7,7 @@ angular.module('ariana').directive('rectangle', function() {
     };
 });
 
-angular.module('ariana').controller('RectangleCtrl', function($scope) {
+app.controller('RectangleCtrl', function($scope) {
 	$scope.toolname = 'rectangle';
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
