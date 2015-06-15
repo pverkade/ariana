@@ -9,14 +9,26 @@ app.directive('pencil', function() {
 
 app.controller('PencilCtrl', function($scope) {
 	$scope.toolname = 'pencil';
-	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
-
+	$scope.active = ($scope.config.tools.activeTool == $scope.toolname);
+    $scope.thickness = 2;
+    $scope.opacity = 1;
+    $scope.toggledOn = true;
+    
+    $scope.toggle = function() {
+        if ($scope.toggledOn) $scope.toggledOn = false;
+        else $scope.toggledOn = true;
+        console.log("toggle", $scope.toggledOn);
+    }
+    
 	/* init */
 	$scope.init = function() {
         $scope.drawing = false;
+        $scope.toggledOn = true;
 		$scope.setCursor('default');
         $scope.drawEngine.setDrawType(drawType.NORMAL);
         $scope.setColor($scope.config.tools.colors.primary);
+        $scope.thickness = 2;
+        $scope.opacity = 1;
 	};
     
     $scope.setColor = function(color) {

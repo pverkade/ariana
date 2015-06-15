@@ -10,14 +10,23 @@ app.directive('brush', function() {
 app.controller('BrushCtrl', function($scope) {
 	$scope.toolname = 'brush';
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
-
+    $scope.thickness = 2;
+    $scope.opacity = 1;
+        
 	/* init */
 	$scope.init = function() {
         $scope.drawing = false;
 		$scope.setCursor('default');
         $scope.drawEngine.setBrush(brushType.THIN);
         $scope.setColor($scope.config.tools.colors.primary);
+        $scope.thickness = 2;
+        $scope.opacity = 1;
 	};
+    
+    $scope.updateDrawEngine = function() {
+        $scope.drawEngine.setLineWidth($scope.thickness);
+        $scope.drawEngine.setOpacity($scope.opacity);
+    }
     
     $scope.setColor = function(color) {
         $scope.drawEngine.setColor(
