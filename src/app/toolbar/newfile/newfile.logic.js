@@ -55,8 +55,11 @@ app.controller('NewFileModalController', ['$scope', '$modalInstance',
  
         $scope.create = function () {
             //TODO: notice about the canvas being cleared
-            $scope.resizeCanvases($scope.inputWidth, $scope.inputHeight);
+            if ($scope.config.canvas.width > 0) {
 
+            }
+            
+            $scope.resizeCanvases($scope.inputWidth, $scope.inputHeight);
             $scope.close();
         };
     }
