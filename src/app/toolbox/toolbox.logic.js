@@ -8,7 +8,7 @@
  */
 
 /* This contoller defines the behaviour of the toolbox and the color-preview. */
-angular.module('ariana').controller('ToolboxController', function($scope) {
+app.controller('ToolboxController', function($scope) {
     
     $scope.setCursor = function(cursor) {
         $scope.config.canvas.cursor = cursor;

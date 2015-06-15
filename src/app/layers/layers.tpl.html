@@ -35,12 +35,16 @@
                             <a class="btn btn-sm" ng-click="addLayer($event)">
                                 <i class="mdi mdi-plus"></i>
                             </a>
+
+                            <span class="pull-right">
+                                Zoom: {{config.canvas.zoom * 100 | int}}%
+                            </span>
                         </span>
                     </h4>
                 </div>
             </div>
             
-            <accordion-group ng-repeat="layer in config.layers.layerInfo" is-open="open">
+            <accordion-group ng-repeat="layer in config.layers.layerInfo" is-open="open" ng-click="selectLayer($index)" ng-class="{'layer-active': $index == config.layers.currentLayer}">
                 <accordion-heading>
                     {{$index}}
 

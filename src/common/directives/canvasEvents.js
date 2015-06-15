@@ -1,4 +1,4 @@
-angular.module('ariana').directive('canvasEvents', function() {
+app.directive('canvasEvents', function() {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {

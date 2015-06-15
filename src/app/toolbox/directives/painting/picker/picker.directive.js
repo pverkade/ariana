@@ -1,4 +1,4 @@
-angular.module('ariana').directive('picker', function() {
+app.directive('picker', function() {
     return {
         restrict: 'E',
         scope: true,
@@ -7,7 +7,7 @@ angular.module('ariana').directive('picker', function() {
     };
 });
 
-angular.module('ariana').controller('PickerCtrl', function($scope) {
+app.controller('PickerCtrl', function($scope) {
     $scope.toolname = 'picker';
     $scope.active = $scope.config.tools.activeTool == $scope.toolname;
 

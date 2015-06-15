@@ -1,4 +1,4 @@
-angular.module('ariana').directive('ngMouseWheelDown', function() {
+app.directive('ngMouseWheelDown', function() {
     return function(scope, element, attrs) {
         element.bind("DOMMouseScroll mousewheel onmousewheel", function(event) {
 

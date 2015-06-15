@@ -7,7 +7,7 @@
  *
  */
 
-angular.module('ariana').config(function($stateProvider, $locationProvider) {
+app.config(function($stateProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
     
     $stateProvider

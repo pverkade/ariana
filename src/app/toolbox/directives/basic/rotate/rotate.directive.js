@@ -1,4 +1,4 @@
-angular.module('ariana').directive('rotate', function() {
+app.directive('rotate', function() {
     return {
         restrict: 'E',
         scope: true,
@@ -7,7 +7,7 @@ angular.module('ariana').directive('rotate', function() {
     };
 });
 
-angular.module('ariana').controller('RotateCtrl', function($scope) {
+app.controller('RotateCtrl', function($scope) {
 	$scope.toolname = 'rotate';
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 

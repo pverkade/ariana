@@ -1,4 +1,4 @@
-angular.module('ariana').directive('brush', function() {
+app.directive('brush', function() {
     return {
         restrict: 'E',
         scope: true,
@@ -7,7 +7,7 @@ angular.module('ariana').directive('brush', function() {
     };
 });
 
-angular.module('ariana').controller('BrushCtrl', function($scope) {
+app.controller('BrushCtrl', function($scope) {
 	$scope.toolname = 'brush';
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
