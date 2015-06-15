@@ -12,42 +12,42 @@ app.controller('PaletteCtrl', function($scope) {
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
 	$scope.color = {
-            H: 100,
-            S: 70,
-            V: 80,
-            hex: "#000000",
-        }
+        H: 100,
+        S: 70,
+        V: 80,
+        hex: "#000000",
+    }
 
-        var palmousedown = false;
-		var huemousedown = false;
+    var palmousedown = false;
+	var huemousedown = false;
 
-        var palette = document.getElementById("palette");
-        var hue = document.getElementById("hue");
+    var palette = document.getElementById("palette");
+    var hue = document.getElementById("hue");
 
-        var palContext = palette.getContext('2d');
-        var hueContext = hue.getContext('2d');
+    var palContext = palette.getContext('2d');
+    var hueContext = hue.getContext('2d');
 
-        var palBox = palette.getBoundingClientRect();
-        var hueBox = hue.getBoundingClientRect();
+    var palBox = palette.getBoundingClientRect();
+    var hueBox = hue.getBoundingClientRect();
 
-        var palImg = new Image();
-        palImg.src = "assets/img/bgGradient.png";
+    var palImg = new Image();
+    palImg.src = "assets/img/bgGradient.png";
 
-        var hueImg = new Image();
-        hueImg.src = "assets/img/hueBar.png";
+    var hueImg = new Image();
+    hueImg.src = "assets/img/hueBar.png";
 
-        hueImg.onload = function() {
-            $scope.$watch('color', function(newVal, oldVal) {
-                rgb = HSVtoRGB(newVal.H, newVal.S, newVal.V);
-                $scope.config.tools.colors.primary.r = rgb.R;
-                $scope.config.tools.colors.primary.g = rgb.G;
-                $scope.config.tools.colors.primary.b = rgb.B;
-                $scope.color.hex = RGBtoHEX(rgb.R, rgb.G, rgb.B);
+    hueImg.onload = function() {
+        $scope.$watch('color', function(newVal, oldVal) {
+            rgb = HSVtoRGB(newVal.H, newVal.S, newVal.V);
+            $scope.config.tools.colors.primary.r = rgb.R;
+            $scope.config.tools.colors.primary.g = rgb.G;
+            $scope.config.tools.colors.primary.b = rgb.B;
+            $scope.color.hex = RGBtoHEX(rgb.R, rgb.G, rgb.B);
 
-                drawMarker(palette, palBox, palContext, palImg);
-                drawBar(hue, hueBox, hueContext, hueImg);
-            }, true);
-        };
+            drawMarker(palette, palBox, palContext, palImg);
+            drawBar(hue, hueBox, hueContext, hueImg);
+        }, true);
+    };
 
 	/* init */
 	$scope.init = function() {
