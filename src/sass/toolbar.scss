@@ -56,6 +56,9 @@
 .filter-options {
     position: absolute;
     left: 1.5 * $blocksize;
+    width: calc(100% - #{2 * $blocksize});
+    max-width: 12 * $blocksize;
+    min-width: 5.5 * $blocksize;
     bottom: 0;
 
     @extend .gui-element;
@@ -67,6 +70,10 @@
     
     .float-right {
         float: right;
+    }
+    
+    .center-box {
+        width: calc(100% - #{2 * $blocksize});
     }
         
     .input-group {  
@@ -89,38 +96,28 @@
             }
         }
         
-        .input-group-addon {
+        .input-group-addon, .number {
             width: 2 * $blocksize;
+            @media (max-width: 10 * $blocksize) {
+                width: 50%;
+            }
         }
         
         .slider {
-            width: 6 * $blocksize;
-            
-            @media (max-width: 15 * $blocksize) {
-                width: 5 * $blocksize;
-            }
-            
-            @media (max-width: 14 * $blocksize) {
-                width: 4 * $blocksize;
-            }
-            
-            @media (max-width: 13 * $blocksize) {
-                width: 3 * $blocksize;
-            }
-            
-            @media (max-width: 12 * $blocksize) {
-                width: 2 * $blocksize;
-            }
+            width: calc(100% - #{2 * $blocksize});
             
             @media (max-width: 10 * $blocksize) {
-                display: none;
+                width: 100%;
             }
+            
+           
         }
         
-        .number{
+        .number {
             width: 2 * $blocksize;
-            @media (max-width: 8 * $blocksize) {
-                width: 1.5 * $blocksize;
+           
+            @media (max-width: 10 * $blocksize) {
+                display: none;
             }
         }
     }   

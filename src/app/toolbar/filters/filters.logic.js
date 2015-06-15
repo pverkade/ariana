@@ -13,37 +13,37 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
         $scope.filters = {
             
             "noise": {
-                image: "/assets/img/arnold2.jpg", 
+                image: "/assets/img/arnold.jpg", 
                 constructor: NoiseFilter,
             },
             
             "contrast": {
-                image: "/assets/img/arnold2.jpg",
+                image: "/assets/img/arnold.jpg",
                 constructor: ContrastFilter,
             },
             
             "brightness": {
-                image: "/assets/img/arnold2.jpg",
+                image: "/assets/img/arnold.jpg",
                 constructor: BrightnessFilter,
             },
             
             "invert colors": {
-                image: "/assets/img/arnold2.jpg",
+                image: "/assets/img/arnold.jpg",
                 constructor: InvertColorsFilter,
             },
             
             "saturation": {
-                image: "/assets/img/arnold2.jpg",
+                image: "/assets/img/arnold.jpg",
                 constructor: SaturationFilter,
             },
             
             "sepia": {
-                image: "/assets/img/arnold2.jpg",
+                image: "/assets/img/arnold.jpg",
                 constructor: SepiaFilter,
             },
             
             "colorize": {
-                image: "/assets/img/arnold2.jpg",
+                image: "/assets/img/arnold.jpg",
                 constructor: ColorizeFilter,
             },
         };
@@ -62,10 +62,6 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
 
         $scope.close = function() {
             $modalInstance.dismiss();
-        };
-        
-        $scope.titlecase = function(string) {
-            return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
         };
     }
 ])
