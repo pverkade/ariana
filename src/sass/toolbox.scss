@@ -56,18 +56,6 @@
     }
 }
 
-.tool-settings {
-    position: absolute;
-    top: 0;
-    margin-left: $blocksize;
-    width: 4 * $blocksize;
-    height: 4 * $blocksize;
-
-    z-index: 1;
-    background-color: lighten($light, 2 * $active-lighten);
-
-}
-
 .color-preview {
     position: absolute;
     bottom: 0;

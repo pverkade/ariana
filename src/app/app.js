@@ -40,7 +40,6 @@ app.controller('AppCtrl', ['$scope',
                 }
             },
             canvas: {
-                cursor: 'default',
                 x: 128,
                 y: 128,
                 zoom: 1,
@@ -85,7 +84,7 @@ app.controller('AppCtrl', ['$scope',
             var layer = $scope.renderEngine.createImageLayer(image);
             
             var height = layer.getHeight();
-            var width  = layer.getWidth();
+            var width = layer.getWidth();
             
             layer.setPos(0.5 * width, 0.5 * height);
             
