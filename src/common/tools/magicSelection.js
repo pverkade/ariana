@@ -47,6 +47,7 @@ var magicSelection = {
         }
 
         scope.magic.getMaskBorder();
+
         //var bitmask = scope.magic.maskWand;
         var width = scope.magic.imageData.width;
         var height = scope.magic.imageData.height;
@@ -70,40 +71,6 @@ var magicSelection = {
         }
 
         var layer = scope.renderEngine.createSelectionImageLayer(imgData, 0);
-        //scope.renderEngine.addLayer(layer);
-
-        /*var canvas = document.getElementById("editing-canvas");
-        var context = canvas.getContext("2d");
-
-        var bitmask = scope.magic.maskBorder;
-        var width = scope.magic.imageData.width;
-        var height = scope.magic.imageData.height;
-
-        //var imgData = context.createImageData(width, height);
-
-        for (var i=0; i < bitmask.length; i++) {
-
-        	if (bitmask[i]) {
-	         	imgData.data[4*i] = 255*bitmask[i];
-	        	imgData.data[4*i+1] = 0; //255*bitmask[i];
-	        	imgData.data[4*i+2] = 0; //255*bitmask[i];
-	        	imgData.data[4*i+3] = 255;       		
-        	} else {
-	         	imgData.data[4*i] = scope.magic.imageData.data[4*i];
-	        	imgData.data[4*i+1] = scope.magic.imageData.data[4*i+1];
-	        	imgData.data[4*i+2] = scope.magic.imageData.data[4*i+2];
-	        	imgData.data[4*i+3] = 255; 
-        	}
-
-        }
-        console.log(imgData);
-
-
-        context.putImageData(imgData, 0, 0);*/
-
-        /* Save border and marching ants mask in scope. */
-        //$scope.maskBorder = $scope.magic.getMaskBorder();
-        //$scope.maskAnts = $scope.magic.marchingAnts(scope.sizeAnts * 2, scope.offset);
     },
     
     mouseUp: function($scope) {
