@@ -50,11 +50,11 @@ app.controller('ToolbarController', ['$scope', '$modal',
             document.body.removeChild(myForm) ;
         };
         
-        /* This function opens the newcanvas modal. */
-        $scope.openNewCanvasModal = function() {
+        /* This function opens the newfile modal. */
+        $scope.openNewFileModal = function() {
             var modalInstance = $modal.open({
-                templateUrl: 'app/toolbar/newcanvas/newcanvas.tpl.html',
-                controller:  'NewCanvasModalController',
+                templateUrl: 'app/toolbar/newfile/newfile.tpl.html',
+                controller:  'NewFileModalController',
                 scope: $scope,
                 size: 'sm'
             });

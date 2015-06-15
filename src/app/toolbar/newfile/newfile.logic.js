@@ -1,13 +1,13 @@
 /* 
  * Project Ariana
- * newcanvas.logic.js
+ * newfile.logic.js
  * 
- * This file contains the NewCanvasModalController, which controls the creation of a new screen
+ * This file contains the NewFileModalController, which controls the creation of a new screen
  * modal.
  *
  */
  
-app.controller('NewCanvasModalController', ['$scope', '$modalInstance',  
+app.controller('NewFileModalController', ['$scope', '$modalInstance',  
     function ($scope, $modalInstance) {
 
         $scope.inputWidth = 800;
