@@ -47,30 +47,47 @@ var magicSelection = {
             scope.magic.getMaskWand(xRelative, yRelative, 10);
         }
 
+        scope.magic.getMaskBorder();
+
         var canvas = document.getElementById("editing-canvas");
         var context = canvas.getContext("2d");
 
-        var bitmask = scope.magic.maskWand;
-        var width = bitmask[0].length;
-        var height = bitmask.length;
+        var bitmask = scope.magic.maskBorder;
+        var width = scope.magic.imageData.width; // bitmask[0].length;
+        console.log("width is " + width);
+        var height = scope.magic.imageData.height; //bitmask.length;
+        console.log("height is " + height);
 
-        var bitmaskArray = new Uint8Array(width * height);
-        for (var y = 0; y < height; y++) {
-            var row = bitmask[y];
-            for (var x = 0; x < width; x++) {
-                //console.log(row[x]);
-                bitmaskArray[y * width + x] = row[x];
-            }
-        }
+
 
         var notZero = 0;
-        for (var i = 0; i < bitmaskArray.length; i++) {
-            if (bitmaskArray[i]) {
+        for (var i = 0; i < bitmask.length; i++) {
+            if (bitmask[i]) {
                 notZero++;
             }
         }
         console.log("Not zero: " + notZero);
         var imgData = context.createImageData(width, height);
+
+
+        for (var i=0; i < bitmask.length; i++) {
+
+        	if (bitmask[i]) {
+	         	imgData.data[4*i] = 255*bitmask[i];
+	        	imgData.data[4*i+1] = 0; //255*bitmask[i];
+	        	imgData.data[4*i+2] = 0; //255*bitmask[i];
+	        	imgData.data[4*i+3] = 255;       		
+        	} else {
+	         	imgData.data[4*i] = scope.magic.imageData.data[4*i];
+	        	imgData.data[4*i+1] = scope.magic.imageData.data[4*i+1];
+	        	imgData.data[4*i+2] = scope.magic.imageData.data[4*i+2];
+	        	imgData.data[4*i+3] = 255; 
+        	}
+
+        }
+        console.log(imgData);
+
+
         context.putImageData(imgData, 0, 0);
 
         /* Save border and marching ants mask in scope. */
