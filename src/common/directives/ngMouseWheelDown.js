@@ -4,9 +4,9 @@ angular.module('ariana').directive('ngMouseWheelDown', function() {
 
             // cross-browser wheel delta
             var event = window.event || event; // old IE support
-            var delta = Math.max(-1, Math.min(1, (event.wheelDelta || -event.detail)));
+            var delta = Math.max(-1, Math.min(1, (event.originalEvent.wheelDelta || -event.originalEvent.detail)));
 
-            if (delta < 0) {
+            if (delta < 0) { 
                 scope.$apply(function() {
                     scope.$eval(attrs.ngMouseWheelDown);
                 });

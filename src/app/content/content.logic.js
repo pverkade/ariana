@@ -16,9 +16,13 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
     /* This fucntion is triggered when the mouse is moved. */
     $scope.mouseMove = function(event) {
         event.preventDefault();
-        
-        $scope.config.mouse.current.x = event.pageX;
-        $scope.config.mouse.current.y = event.pageY;
+
+        var cx = $scope.config.canvas.x,
+            cy = $scope.config.canvas.y,
+            z  = $scope.config.canvas.zoom;
+
+        $scope.config.mouse.current.x = (event.pageX - cx) / z;
+        $scope.config.mouse.current.y = (event.pageY - cy) / z;
         
         /* Call the appropriate tool functions. */
         var toolFunctions = $scope.config.tools.activeToolFunctions;
@@ -29,15 +33,19 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
     $scope.mouseDown = function(event) {
         event.preventDefault();
         event.stopPropagation();
+
+        var cx = $scope.config.canvas.x,
+            cy = $scope.config.canvas.y,
+            z  = $scope.config.canvas.zoom;
         
         /* Store the mouse button. */
         $scope.config.mouse.button[event.which] = true;
         
         /* Set correct position in config. */
-        $scope.config.mouse.current.x = event.pageX;
-        $scope.config.mouse.current.y = event.pageY;
-        $scope.config.mouse.old.x = event.pageX;
-        $scope.config.mouse.old.y = event.pageY;
+        $scope.config.mouse.current.x = (event.pageX - cx) / z;
+        $scope.config.mouse.current.y = (event.pageY - cy) / z;
+        $scope.config.mouse.old.x = (event.pageX - cx) / z;
+        $scope.config.mouse.old.y = (event.pageY - cy) / z;
         
         /* Call the appropriate tool functions. */
         var toolFunctions = $scope.config.tools.activeToolFunctions;
@@ -54,25 +62,23 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
         /* Call the appropriate tool functions. */
         var toolFunctions = $scope.config.tools.activeToolFunctions;
         if (toolFunctions) toolFunctions.mouseUp($scope);
-    }
+    };
     
     $scope.mwheelUp = function() {
-        if ($scope.config.canvas.zoom < 0.1) {
-            $scope.config.canvas.zoom = 0.1;
+        if ($scope.config.canvas.zoom > 3.0) {
+            $scope.config.canvas.zoom = 3.0;
         } else {
-            $scope.config.canvas.zoom *= 1.1;
+            $scope.config.canvas.zoom += 0.05;
         }
-        console.log($scope.config.canvas.zoom);
-    }
+    };
 
     $scope.mwheelDown = function() {
         if ($scope.config.canvas.zoom < 0.1) {
             $scope.config.canvas.zoom = 0.1;
         } else {
-            $scope.config.canvas.zoom *= 0.9;
+            $scope.config.canvas.zoom -= 0.05;
         }
-        console.log($scope.config.canvas.zoom);
-    }
+    };
 
     /* Get the canvas element and start the engine. */
     var canvas = document.getElementById('main-canvas');

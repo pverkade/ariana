@@ -15,7 +15,7 @@ angular.module('ariana').controller('layersCtrl', function($scope) {
         return (!($scope.config.mouse.button[1] || $scope.config.mouse.button[2] || $scope.config.mouse.button[3]));
     };
     
-    $scope.addLayer = function() {
+    $scope.addLayer = function(event) {
         event.stopPropagation();
         
         $scope.config.layers.layerInfo.push({

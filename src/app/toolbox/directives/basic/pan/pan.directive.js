@@ -32,9 +32,10 @@ angular.module('ariana').controller('PanCtrl', function($scope) {
 	/* onMouseMove */
 	$scope.mouseMove = function() {
 		if (!$scope.panning) return;
+		var z = $scope.config.canvas.zoom;
 		 
-		var dx = $scope.config.mouse.current.x - $scope.config.mouse.old.x,
-        	dy = $scope.config.mouse.current.y - $scope.config.mouse.old.y;
+		var dx = ($scope.config.mouse.current.x - $scope.config.mouse.old.x) * z,
+        	dy = ($scope.config.mouse.current.y - $scope.config.mouse.old.y) * z;
 
         $scope.config.mouse.old.x += dx;
         $scope.config.mouse.old.y += dy;

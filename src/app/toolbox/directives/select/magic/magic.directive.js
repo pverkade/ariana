@@ -11,7 +11,7 @@ angular.module('ariana').controller('MagicCtrl', function($scope) {
 	$scope.toolname = 'magic';
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
-	$scope.threshold = 10;
+	$scope.threshold = 0.3;
 
 	/* init */
 	$scope.init = function() {

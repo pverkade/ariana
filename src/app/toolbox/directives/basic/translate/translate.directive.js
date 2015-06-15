@@ -33,9 +33,9 @@ angular.module('ariana').controller('translateCtrl', function($scope) {
          
         var currentLayer = $scope.config.layers.currentLayer;
         if (currentLayer == -1) return;
-        
-        var dx = $scope.config.mouse.current.x - $scope.config.mouse.old.x;
-        var dy = $scope.config.mouse.current.y - $scope.config.mouse.old.y;
+
+        var dx = ($scope.config.mouse.current.x - $scope.config.mouse.old.x);
+        var dy = ($scope.config.mouse.current.y - $scope.config.mouse.old.y);
         
         /* Update th old mouse position. */
         $scope.config.mouse.old.x += dx;

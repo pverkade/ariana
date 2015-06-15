@@ -43,6 +43,8 @@ app.controller('AppCtrl', ['$scope',
                 cursor: 'default',
                 x: 128,
                 y: 128,
+                xr: 1,
+                yr: 1,
                 zoom: 1,
             },
             tools: {
