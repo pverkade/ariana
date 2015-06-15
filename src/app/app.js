@@ -25,13 +25,21 @@ app.controller('AppCtrl', ['$scope',
          * canvas and the mouse. It is accessed by all kinds of controllers. */
         $scope.config = {
             mouse: {
-                old : {
+                old: {
                     x : 0,
                     y : 0,
+                    global: {
+                        x : 0,
+                        y : 0,
+                    },
                 },
                 current: {
                     x: 0,
                     y: 0,
+                    global: {
+                        x : 0,
+                        y : 0,
+                    },
                 },
                 button: {
                     1: false, // left button

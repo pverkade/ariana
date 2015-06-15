@@ -24,10 +24,12 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
         $scope.config.mouse.current.x = (event.pageX - cx) / z;
         $scope.config.mouse.current.y = (event.pageY - cy) / z;
         
+        $scope.config.mouse.current.global.x = event.pageX;
+        $scope.config.mouse.current.global.y = event.pageY;
+        
         /* Call the appropriate tool functions. */
         var toolFunctions = $scope.config.tools.activeToolFunctions;
-        //if (toolFunctions && $scope.config.mouse.click.down) toolFunctions.mouseMove($scope, event);
-        if (toolFunctions) toolFunctions.mouseMove(event);
+        if (toolFunctions) toolFunctions.mouseMove();
     };
 
     /* This function is triggered on a click. */
@@ -45,12 +47,17 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
         /* Set correct position in config. */
         $scope.config.mouse.current.x = (event.pageX - cx) / z;
         $scope.config.mouse.current.y = (event.pageY - cy) / z;
-        $scope.config.mouse.old.x = (event.pageX - cx) / z;
-        $scope.config.mouse.old.y = (event.pageY - cy) / z;
+        $scope.config.mouse.old.x     = (event.pageX - cx) / z;
+        $scope.config.mouse.old.y     = (event.pageY - cy) / z;
+        
+        $scope.config.mouse.current.global.x = event.pageX;
+        $scope.config.mouse.current.global.y = event.pageY;
+        $scope.config.mouse.old.global.x = event.pageX;
+        $scope.config.mouse.old.global.y = event.pageY;
         
         /* Call the appropriate tool functions. */
         var toolFunctions = $scope.config.tools.activeToolFunctions;
-        if (toolFunctions) toolFunctions.mouseDown(event);
+        if (toolFunctions) toolFunctions.mouseDown();
     };
 
     /* This function is called when a mouse button is released. */
@@ -62,22 +69,20 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
 
         /* Call the appropriate tool functions. */
         var toolFunctions = $scope.config.tools.activeToolFunctions;
-        if (toolFunctions) toolFunctions.mouseUp(event);
+        if (toolFunctions) toolFunctions.mouseUp();
     }
     
     $scope.mwheelUp = function() {
+        $scope.config.canvas.zoom += 0.05;
         if ($scope.config.canvas.zoom > 3.0) {
             $scope.config.canvas.zoom = 3.0;
-        } else {
-            $scope.config.canvas.zoom += 0.05;
-        }
+        } 
     };
 
     $scope.mwheelDown = function() {
+        $scope.config.canvas.zoom -= 0.05;
         if ($scope.config.canvas.zoom < 0.1) {
             $scope.config.canvas.zoom = 0.1;
-        } else {
-            $scope.config.canvas.zoom -= 0.05;
         }
     };
 
