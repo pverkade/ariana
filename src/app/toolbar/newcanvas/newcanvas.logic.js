@@ -10,28 +10,47 @@
 app.controller('NewCanvasModalController', ['$scope', '$modalInstance',  
     function ($scope, $modalInstance) {
 
+        $scope.inputWidth = 800;
+        $scope.inputHeight = 600;
+
         $scope.close = function () {
             $modalInstance.dismiss();
         };
 
         //TODO: check if the value is accepted (if not, change to number..)
-        $scope.$watch('inputWidth', function () {
-            if (!$scope.inputWidth)
-            return;
+        $scope.$watch('inputWidth', function (newValue, oldValue) {
+            if (newValue.length === 0) return;
+            if (isNaN(newValue)) {
+                $scope.inputWidth = oldValue;
+                return;
+            }
 
-            console.log('Width: ' + $scope.inputWidth);
+            if (newValue < 1) {
+                $scope.inputWidth = oldValue;
+                return;
+            }
 
-            if ($scope.inputWidth < 1) $scope.inputWidth = 1;
+            if (newValue % 1 !== 0) {
+                $scope.inputWidth = newValue - (newValue % 1);
+            }
         });
 
         //TODO: check if the value is accepted (if not, change to number..)
-        $scope.$watch('inputHeight', function () {
-            if (!$scope.inputHeight)
-            return;
+        $scope.$watch('inputHeight', function (newValue, oldValue) {
+            if (newValue.length === 0) return;
+            if (isNaN(newValue)) {
+                $scope.inputHeight = oldValue;
+                return;
+            }
 
-            console.log('Height: ' + $scope.inputHeight);
+            if (newValue < 1) {
+                $scope.inputHeight = oldValue;
+                return;
+            }
 
-            if ($scope.inputHeight < 1) $scope.inputHeight = 1;
+            if (newValue % 1 !== 0) {
+                $scope.inputHeight = newValue - (newValue % 1);
+            }
         });
  
         $scope.create = function () {

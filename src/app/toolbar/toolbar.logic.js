@@ -56,7 +56,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 templateUrl: 'app/toolbar/newcanvas/newcanvas.tpl.html',
                 controller:  'NewCanvasModalController',
                 scope: $scope,
-                size: 'lg'
+                size: 'sm'
             });
         };
         

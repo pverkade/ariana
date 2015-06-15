@@ -73,7 +73,7 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
         if ($scope.config.canvas.zoom < 0.1) {
             $scope.config.canvas.zoom = 0.1;
         } else {
-            $scope.config.canvas.zoom *= 0.9;
+            $scope.config.canvas.zoom /= 1.1;
         }
         //console.log($scope.config.canvas.zoom);
     }
@@ -88,11 +88,4 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
     var image1 = new Image();
     image1.src="/assets/img/logo.png";
     image1.onload = function(){$scope.newLayerFromImage(image1)};
-
-    //TODO: nu tekenen we op de canvas, maar we moeten in de renderEngine tekenen o.i.d.
-    //$scope.drawEngine = new Draw(canvas, $scope.renderEngine);
-    //$scope.drawEngine.activate();
-    //$scope.drawEngine.setBrush(brushType.THIN);
-    //$scope.drawEngine.loadBrushSVG('assets/draw/thin.svg');
-    //$scope.drawEngine.setDrawType(drawType.CIRCLE);
 });
