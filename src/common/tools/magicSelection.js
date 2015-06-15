@@ -48,17 +48,17 @@ var magicSelection = {
         }
 
         scope.magic.getMaskBorder();
+        maskAnts = scope.magic.marchingAnts(scope.sizeAnts * 2, scope.offset);
+        maskAnts = scope.magic.maskAnts[0];
 
         var canvas = document.getElementById("editing-canvas");
         var context = canvas.getContext("2d");
 
-        var bitmask = scope.magic.maskBorder;
+        var bitmask = scope.magic.maskBorder; //Wand[0];
         var width = scope.magic.imageData.width; // bitmask[0].length;
         console.log("width is " + width);
         var height = scope.magic.imageData.height; //bitmask.length;
         console.log("height is " + height);
-
-
 
         var notZero = 0;
         for (var i = 0; i < bitmask.length; i++) {
@@ -69,14 +69,18 @@ var magicSelection = {
         console.log("Not zero: " + notZero);
         var imgData = context.createImageData(width, height);
 
-
         for (var i=0; i < bitmask.length; i++) {
 
-        	if (bitmask[i]) {
+        	if (bitmask[i] && maskAnts[i]) {
 	         	imgData.data[4*i] = 255*bitmask[i];
-	        	imgData.data[4*i+1] = 0; //255*bitmask[i];
-	        	imgData.data[4*i+2] = 0; //255*bitmask[i];
-	        	imgData.data[4*i+3] = 255;       		
+	        	imgData.data[4*i+1] = 255*bitmask[i];
+	        	imgData.data[4*i+2] = 255*bitmask[i];
+	        	imgData.data[4*i+3] = 255; 
+	        } else if (bitmask[i] && maskAnts[i] == 0) {
+	         	imgData.data[4*i] = 0;	//255*bitmask[i];
+	        	imgData.data[4*i+1] = 0;	//255*bitmask[i];
+	        	imgData.data[4*i+2] = 0;	//255*bitmask[i];
+	        	imgData.data[4*i+3] = 255;
         	} else {
 	         	imgData.data[4*i] = scope.magic.imageData.data[4*i];
 	        	imgData.data[4*i+1] = scope.magic.imageData.data[4*i+1];
