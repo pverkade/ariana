@@ -61,14 +61,14 @@ app.controller('AppCtrl', ['$scope',
                 activeToolset: null,
                 colors: {
                     primary: {
-                        r: 255,
-                        g: 255,
-                        b: 255
-                    },
-                    secondary: {
                         r: 0,
                         g: 0,
                         b: 0
+                    },
+                    secondary: {
+                        r: 255,
+                        g: 255,
+                        b: 255
                     }
                 }
             },
