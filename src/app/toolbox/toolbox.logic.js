@@ -63,12 +63,6 @@ angular.module('ariana').controller('ToolboxController', function($scope) {
         $scope.config.tools.activeTool = name;
         return true;
     }
-    
-    /* This function selects a certain tool. */
-    // $scope.selectTool = function(event, tool) {
-    //     if (event) event.stopPropagation();
-
-    //     $scope.config.tools.activeTool = tool;
         
     //     /* Find the required tool-functions in the toolbox object. The 
     //      * currrently selected toolset is used. */
@@ -178,5 +172,5 @@ angular.module('ariana').controller('ToolboxController', function($scope) {
 
     /* The pan tool is selected by default. */
     // $scope.selectTool(null, 'pan');
-    $scope.config.tools.activeToolset = 'basic';
+    //$scope.config.tools.activeToolset = 'basic';
 });

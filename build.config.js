@@ -4,7 +4,7 @@ module.exports = {
     src_files: {
         tpl: 'src/**/*.tpl.html',
         js: ['src/**/*.js', '!src/app/renderengine/**/*.js'],
-        ts: ['src/**/*.ts'],
+        ts: ['src/**/*.ts', '!src/app/renderengine/start.ts'],
         sass: 'src/**/*.scss',
         html: 'src/index.html',
         scss: 'src/sass/main.scss',

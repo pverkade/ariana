@@ -35,18 +35,20 @@ class SepiaFilter extends Filter {
         super();
         this.attributes = {
             "depth" : {
-                "value" : 0.1,
+                "value" : 0.0,
                 "type" : FilterValueType.Slider,
                 "setter" : (x) => clamp(x, 0, 0.5),
-                "max": 0,
-                "min": 0.5
+                "max": 0.5,
+                "min": 0.0,
+                "step": 0.05,
             },
             "intensity" : {
-                "value" : 0.2,
+                "value" : 0.05,
                 "type" : FilterValueType.Slider,
-                "setter" : (x) => clamp(x, 0.05, 0.4),
-                "max": 0.05,
-                "min": 0.4
+                "setter" : (x) => clamp(x, 0.05, 0.5),
+                "max": 0.5,
+                "min": 0.05,
+                "step": 0.05,
             }
         };
     }

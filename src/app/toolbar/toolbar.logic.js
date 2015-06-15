@@ -19,6 +19,12 @@ app.controller('ToolbarController', ['$scope', '$modal',
       
         /* This functions saves the canvas to an image-file. */
         $scope.saveImage = function() {
+            var toolFunctions = $scope.config.tools.activeToolFunctions;
+
+            if (toolFunctions && toolFunctions.stop) {
+                toolFunctions.stop();
+            }
+
             /* Receive image data in base64 encoding. */
             var image = $scope.renderEngine.renderToImg();
             var data = image.substr(image.indexOf(',') + 1).toString();
@@ -63,6 +69,13 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 size: 'lg'
             });
         };
+        
+        $scope.filter = {
+            filterName: "",
+            filterObject: null,
+            filterParameters: null,
+            currentlayerOnly: false,
+        };
     
         /* This function opens the filters modal. */
         $scope.openFilterModal = function() {
@@ -72,7 +85,39 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 scope: $scope,
                 size: 'lg'
             });
-        };    
+        };
 
+        $scope.cancel = function() {
+            $scope.filter.filterObject = null;
+            $scope.filter.currentlayerOnly = false;
+        };
+        
+        $scope.allLayers = true;
+        
+        $scope.apply = function() {
+            var filter = $scope.filter.filterObject;
+            
+            /* Set all filter parameters into the filter object. */
+            for (var key in $scope.filter.filterParameters) {
+                var value = $scope.filter.filterParameters[key].value;
+                filter.setAttribute(key, value);
+            }
+            
+            if (filter) {
+                if (filter.currentlayerOnly) {
+                    $scope.renderEngine.filterLayers([$scope.config.layers.currentLayer], filter);
+                }
+                else {
+                    var list = [];
+                    for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) list.push(i);
+                    $scope.renderEngine.filterLayers(list, filter);
+                }   
+                
+                /* Show the result. */
+                $scope.renderEngine.render();
+            } 
+            
+            $scope.cancel();
+        };
     }
 ]);
