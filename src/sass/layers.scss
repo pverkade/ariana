@@ -65,3 +65,19 @@ accordion {
 .panel-body {
 	padding: 0;
 }
+
+.panel-heading {
+	&:hover {
+        background-color: lighten($light, 4 * $active-lighten);
+    }
+}
+
+.layer-active {
+	.panel-heading {
+		background-color: lighten($light, 3 * $active-lighten);
+	    
+	    &:hover {
+	        background-color: lighten($light, 2 * $active-lighten);
+	    }
+	}
+}

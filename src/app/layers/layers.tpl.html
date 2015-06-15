@@ -40,7 +40,7 @@
                 </div>
             </div>
             
-            <accordion-group ng-repeat="layer in config.layers.layerInfo" is-open="open">
+            <accordion-group ng-repeat="layer in config.layers.layerInfo" is-open="open" ng-click="selectLayer($index)" ng-class="{'layer-active': $index == config.layers.currentLayer}">
                 <accordion-heading>
                     {{$index}}
 

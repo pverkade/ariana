@@ -10,9 +10,6 @@
 /* The ContenController contains the behaviour of the main content. */
 angular.module('ariana').controller('ContentController', function($scope, $window) {
 
-    /* Set the cursor for the deafult tool: the pan tool. */
-    // $("#background").css("cursor", "grab");
-
     /* This function is triggered when the mouse is moved. */
     $scope.mouseMove = function(event) {
         event.preventDefault();
@@ -88,9 +85,9 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
     );
 
     // Add Arnold the First
-    var image1 = new Image();
-    image1.src="/assets/img/logo.png";
-    image1.onload = function(){$scope.newLayerFromImage(image1)};
+    // var image1 = new Image();
+    // image1.src="/assets/img/logo.png";
+    // image1.onload = function(){$scope.newLayerFromImage(image1)};
 
     //TODO: nu tekenen we op de canvas, maar we moeten in de renderEngine tekenen o.i.d.
     //$scope.drawEngine = new Draw(canvas, $scope.renderEngine);
