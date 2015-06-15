@@ -11,3 +11,9 @@ angular.module('ariana').filter('float', function () {
         return parseFloat(text);
     };
 });
+
+angular.module('ariana').filter('int', function () {
+    return function (text) {
+        return parseInt(text);
+    };
+});

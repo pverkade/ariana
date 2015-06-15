@@ -35,6 +35,10 @@
                             <a class="btn btn-sm" ng-click="addLayer($event)">
                                 <i class="mdi mdi-plus"></i>
                             </a>
+
+                            <span class="pull-right">
+                                Zoom: {{config.canvas.zoom * 100 | int}}%
+                            </span>
                         </span>
                     </h4>
                 </div>
