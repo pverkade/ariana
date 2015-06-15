@@ -44,6 +44,8 @@ app.controller('AppCtrl', ['$scope',
                 x: 128,
                 y: 128,
                 zoom: 1,
+                width: 800,
+                height: 600
             },
             tools: {
                 activeTool: null,
