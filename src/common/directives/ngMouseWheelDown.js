@@ -27,6 +27,13 @@ app.directive('ngMouseWheelDown', function() {
                     event.preventDefault();
                 }
             }
+            
+            scope.$apply(function() {
+				event.preventDefault();
+				fn(scope, {
+					$event: event
+				});
+			});
         });
     };
 });
