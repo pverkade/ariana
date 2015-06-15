@@ -11,7 +11,7 @@
 angular.module('ariana').controller('ContentController', function($scope, $window) {
 
     /* Set the cursor for the deafult tool: the pan tool. */
-    $("#background").css("cursor", "grab");
+    // $("#background").css("cursor", "grab");
 
     /* This function is triggered when the mouse is moved. */
     $scope.mouseMove = function(event) {
@@ -26,7 +26,7 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
         /* Call the appropriate tool functions. */
         var toolFunctions = $scope.config.tools.activeToolFunctions;
         //if (toolFunctions && $scope.config.mouse.click.down) toolFunctions.mouseMove($scope, event);
-        if (toolFunctions) toolFunctions.mouseMove($scope, event);
+        if (toolFunctions) toolFunctions.mouseMove(event);
     };
 
     /* This function is triggered on a click. */
@@ -45,7 +45,7 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
 
         /* Call the appropriate tool functions. */
         var toolFunctions = $scope.config.tools.activeToolFunctions;
-        if (toolFunctions) toolFunctions.mouseDown($scope, event);
+        if (toolFunctions) toolFunctions.mouseDown(event);
     };
 
     /* This function is called when a mouse button is released. */
@@ -57,7 +57,7 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
 
         /* Call the appropriate tool functions. */
         var toolFunctions = $scope.config.tools.activeToolFunctions;
-        if (toolFunctions) toolFunctions.mouseUp($scope, event);
+        if (toolFunctions) toolFunctions.mouseUp(event);
     }
     
     $scope.mwheelUp = function() {
