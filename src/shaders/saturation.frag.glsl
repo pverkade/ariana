@@ -11,5 +11,5 @@ void main() {
 	vec3 result = vec3(dot(texColor.xyz, gMonoMult));
 
 	result = mix(result, texColor.xyz, u_saturationValue);
-	gl_FragColor = vec4(result, 1.0);
+	gl_FragColor = vec4(result, texColor.a);
 }

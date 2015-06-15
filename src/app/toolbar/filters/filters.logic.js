@@ -32,11 +32,10 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
                 constructor: InvertColorsFilter,
             },
             
-            /* FIXME saturation affects 0-opactity areas, creating a black canvas 
             "saturation": {
                 image: "/assets/img/arnold.jpg",
                 constructor: SaturationFilter,
-            },*/
+            },
             
             "sepia": {
                 image: "/assets/img/arnold.jpg",
