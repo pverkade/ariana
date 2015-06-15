@@ -104,6 +104,12 @@ app.controller('ToolbarController', ['$scope', '$modal',
         $scope.allLayers = true;
         
         $scope.apply = function() {
+            
+            if ($scope.config.layers.numberOfLayers == 0) {
+                $scope.cancel();
+                return;
+            }
+            
             var filter = $scope.filter.filterObject;
             
             /* Set all filter parameters into the filter object. */
@@ -113,7 +119,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
             }
             
             if (filter) {
-                if (filter.currentlayerOnly) {
+                if ($scope.filter.currentlayerOnly) {
                     $scope.renderEngine.filterLayers([$scope.config.layers.currentLayer], filter);
                 }
                 else {

@@ -58,7 +58,7 @@ app.controller('AppCtrl', ['$scope',
                 height: 0
             },
             tools: {
-                activeTool: null,
+                activeTool: 'pan',
                 activeToolFunctions: null,
                 activeToolset: null,
                 colors: {
@@ -124,35 +124,6 @@ app.controller('AppCtrl', ['$scope',
             $scope.renderEngine.render();
         };
 
-        $scope.newLayerFromDrawing = function(image) {
-            var layer = $scope.renderEngine.createImageLayer(image);
-            
-            var height = layer.getHeight();
-            var width = layer.getWidth();
-            
-            layer.setPos(0.3 * width, 0.3 * height);
-            
-            $scope.renderEngine.addLayer(layer)
-
-            /* set the correct layer info in config. The new layer comes on top
-             * and is immediately selected. */
-            $scope.setSelection([$scope.config.layers.numberOfLayers]);
-            $scope.config.layers.numberOfLayers += 1;
-            
-            $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {
-                "name": $scope.config.layers.currentLayer,
-                "x": layer.getPosX(),
-                "y": layer.getPosY(),
-                "originalWidth": width,
-                "originalHeight": height,
-                "width": width,
-                "height": height,
-                "rotation": layer.getRotation()
-            }
-
-            $scope.renderEngine.render();
-        };
-
         $scope.resizeCanvases = function(width, height) {
             $scope.config.canvas.width = width;
             $scope.config.canvas.height = height;
@@ -162,6 +133,6 @@ app.controller('AppCtrl', ['$scope',
             $scope.config.layers.numberOfLayers = 0;
             $scope.config.layers.currentLayer = -1;
             $scope.config.layers.layerInfo = [];
-        }
+        };
 	}
 ]);

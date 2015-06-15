@@ -32,10 +32,11 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
                 constructor: InvertColorsFilter,
             },
             
+            /* FIXME saturation affects 0-opactity areas, creating a black canvas 
             "saturation": {
                 image: "/assets/img/arnold.jpg",
                 constructor: SaturationFilter,
-            },
+            },*/
             
             "sepia": {
                 image: "/assets/img/arnold.jpg",
@@ -49,7 +50,7 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
         };
         
         $scope.selectFilter = function(name) {
-            var constructor = $scope.filters[name].constructor
+            var constructor = $scope.filters[name].constructor;
             
             if (constructor) {
                 var filterObject = new constructor();
@@ -57,6 +58,8 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
                 $scope.filter.filterObject = filterObject;
                 $scope.filter.filterParameters = filterObject.getAttributesObject();
             }
+            
+            $scope.config.tools.activeTool = 'pan';
             $scope.close();
         };
 

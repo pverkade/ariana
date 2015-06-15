@@ -6,25 +6,26 @@
     ng-mousedown="mouseDown($event)"
     ng-right-click="rightClick($event)"
     ng-mouse-wheel-up="mwheelUp($event)"
-    ng-mouse-wheel-down="mwheelDown($event)">
+    ng-mouse-wheel-down="mwheelDown($event)"
+    background-events>
     
     <canvas rendertarget="rendertarget" 
         id="main-canvas"
         width="{{config.canvas.width}}"
         height="{{config.canvas.height}}"
-        canvas-Events
+        canvas-events
         ng-show="renderEngine !== null">
     </canvas>
     <canvas id="editing-canvas"
         width="{{config.canvas.width}}"
         height="{{config.canvas.height}}"
-        canvas-Events
+        canvas-events
         ng-show="renderEngine !== null">
     </canvas>
     <canvas id="top-canvas"
         width="{{config.canvas.width}}"
         height="{{config.canvas.height}}"
-        canvas-Events
+        canvas-events
         ng-show="renderEngine !== null">
     </canvas>
 </div>
