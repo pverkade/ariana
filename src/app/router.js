@@ -11,8 +11,17 @@ angular.module('ariana').config(function($stateProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
     
     $stateProvider
-        .state('index', {
+        .state('landing', {
             url: "/",
+            views: {
+                "content": {
+                    templateUrl: "app/landing/landing.tpl.html",
+                    controller: 'LandingCtrl'
+                }
+            }
+        })
+        .state('ariana', {
+            url: "",
             views: {
                 "content": {
                     templateUrl: "app/content/content.tpl.html",
@@ -33,19 +42,6 @@ angular.module('ariana').config(function($stateProvider, $locationProvider) {
                 "toolbox": {
                     templateUrl: "app/toolbox/toolbox.tpl.html",
                     controller: 'ToolboxController'
-                }
-            }
-        })
-        .state('landing', {
-            url: "/landing",
-            views: {
-                "content": {
-                    templateUrl: "app/content/landing/landing.content.tpl.html",
-                    controller: 'LandingContentCtrl'
-                },
-                "toolbar": {
-                    templateUrl: "app/toolbar/landing/landing.toolbar.tpl.html",
-                    controller: 'LandingToolbarCtrl'
                 }
             }
         })
