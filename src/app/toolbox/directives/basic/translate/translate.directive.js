@@ -46,7 +46,7 @@ angular.module('ariana').controller('translateCtrl', function($scope) {
         var y = $scope.renderEngine.layers[currentLayer].getPosY();
 
         $scope.renderEngine.layers[currentLayer].setPos(x + dx, y + dy);
-        window.requestAnimationFrame(function() {$scope.renderEngine.render();});  
+        window.requestAnimationFrame(function() { $scope.renderEngine.render(); });
     };
 -
     /*

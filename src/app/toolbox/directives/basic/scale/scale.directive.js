@@ -31,7 +31,6 @@ angular.module('ariana').controller('ScaleCtrl', function($scope) {
 
 	/* onMouseMove */
 	$scope.mouseMove = function() {
-        console.log("new scale");
         
 		var mouseCurrentX = $scope.config.mouse.current.x - $scope.config.canvas.x;
         var mouseCurrentY = $scope.config.mouse.current.y - $scope.config.canvas.y; 
