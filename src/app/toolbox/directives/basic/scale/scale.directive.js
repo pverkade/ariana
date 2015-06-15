@@ -56,19 +56,30 @@ app.controller('ScaleCtrl', function($scope) {
 	        
 	        var originalWidth = width;
 	        var originalHeight = height;
+            
+            var newWidth = width;
+            var newHeight = height;
 
 	        if ($scope.scaleToolIndex != 2 && $scope.scaleToolIndex != 6) {
-	            width += (mouseCurrentX - mouseOldX) * $scope.sign(Math.cos(angle));
-	            x += 0.5 * (mouseCurrentX - mouseOldX);
+	            newWidth += (mouseCurrentX - mouseOldX)   * $scope.sign(Math.cos($scope.scaleToolIndex * 0.25 * Math.PI));
 	        }
 	        
 	        if ($scope.scaleToolIndex != 0 && $scope.scaleToolIndex != 4) {
-	            height += (mouseCurrentY - mouseOldY) * - $scope.sign(Math.sin(angle));  
-	            y += 0.5 * (mouseCurrentY - mouseOldY);    
+	            newHeight += (mouseCurrentY - mouseOldY)  * -1 * $scope.sign(Math.sin($scope.scaleToolIndex * 0.25 * Math.PI));
 	        }
+            
+            if ($scope.scaleToolIndex >= 3 && $scope.scaleToolIndex <= 5)
+                x -= 0.5 * (newWidth - width);
+            else if ($scope.scaleToolIndex >= 7 || $scope.scaleToolIndex == 0 || $scope.scaleToolIndex == 1)
+                x += 0.5 * (newWidth - width);
+            
+            if ($scope.scaleToolIndex >= 1 && $scope.scaleToolIndex <= 3)
+                y -= 0.5 * (newHeight - height);
+            else if ($scope.scaleToolIndex >= 5 && $scope.scaleToolIndex <= 7)
+                y += 0.5 * (newHeight - height);
 	        
-	        $scope.renderEngine.layers[currentLayer].setWidth(width);
-	        $scope.renderEngine.layers[currentLayer].setHeight(height);
+	        $scope.renderEngine.layers[currentLayer].setWidth(newWidth);
+	        $scope.renderEngine.layers[currentLayer].setHeight(newHeight);
 	        
 	        layer.setPos(x, y);
             
@@ -79,7 +90,7 @@ app.controller('ScaleCtrl', function($scope) {
         } else {              
 	        var differenceX = mouseCurrentX - x;
 	        var differenceY = y - mouseCurrentY;
-	              
+                  
 	        /* Update the index and the cursor. */
 	        if (!($scope.config.mouse.button[1] || $scope.config.mouse.button[3])) {
 	            

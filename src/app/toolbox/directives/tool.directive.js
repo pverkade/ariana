@@ -8,7 +8,6 @@ app.directive('tool', function() {
 
 			element.bind('click', function(event) {
 				event.stopPropagation();
-				console.log(event);
 				scope.config.tools.activeTool = scope.toolname;
 
 				if (event.target.className.indexOf('mdi') > -1) {
