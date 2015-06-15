@@ -34,7 +34,7 @@ var magicSelection = {
         // TODO call mouseDown
     },
 
-    function callAtInterval() {
+    callAtInterval: function($scope) {
         $scope.offset++;
         $scope.maskAnts = $scope.magic.marchingAnts($scope.sizeAnts * 2, $scope.offset);
     }

@@ -2,6 +2,7 @@
 Project ariana - is a web-based image editing solution. We focus on a clean interface usable for both mouse and touchscreens. Our official website is fazeclan.xxx.
 
 [Project voortgang](https://docs.google.com/document/d/12oiV5l1bo-w7UL8XrIKF9Y2DEm7g-BXc2GsCOzvmjbw/edit?usp=sharing)
+[User stories](https://docs.google.com/document/d/1qySwIDR8abtethyeTkNcCvziDz7zHKml942X5S-pPow/edit)
 
 ## Index
 - [Project structure](https://github.com/ArnoldSwaggernegger/ariana#project-structure)
@@ -70,6 +71,7 @@ ariana runs on a [Node.js](https://nodejs.org/) server. Installing ariana takes 
 #### Requirements
 - Node.js
 - git
+- GraphicsMagick
 
 #### Node.js
 First of all, install [Node.js](https://nodejs.org/).

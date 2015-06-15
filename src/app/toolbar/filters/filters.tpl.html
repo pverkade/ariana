@@ -5,13 +5,13 @@
 <div class="modal-body">
     <div class="row">
         <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3" 
-            ng-repeat="filter in filters">
+            ng-repeat="(name, data) in filters">
             <div class="thumbnail" 
-                ng-click="selectFilter(filter.name)"> 
+                ng-click="selectFilter(name)"> 
                 <img 
-                    ng-src="{{filter.image}}"> </img>
+                    ng-src="{{data.image}}"> </img>
                 <div class="caption">
-                    <h3> {{titlecase(filter.name)}} </h3> 
+                    <h3> {{name | titlecase}} </h3> 
                 </div>
             </div>
         </div>
@@ -19,14 +19,5 @@
 </div>
 
 <div class="modal-footer">
-    
-    <input 
-        type="checkbox"
-        class="pull-left"
-        ng-checked="allLayers"
-        ng-click="toggleLayers()"> 
-        <span class="pull-left"> Apply to all layers </span> 
-    </input>
-
     <button type="button" class="btn btn-default btn-lg" ng-click="close()"> Close </button>
 </div>

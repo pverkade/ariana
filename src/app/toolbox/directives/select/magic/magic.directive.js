@@ -11,11 +11,12 @@ angular.module('ariana').controller('MagicCtrl', function($scope) {
 	$scope.toolname = 'magic';
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
-	$scope.threshold = 0.3;
+	$scope.threshold = 0.5;
 
 	/* init */
 	$scope.init = function() {
 		$scope.setCursor('default');
+        $scope.threshold = 0.5;
 	};
 
 	/* onMouseDown */
@@ -32,6 +33,7 @@ angular.module('ariana').controller('MagicCtrl', function($scope) {
 	$scope.mouseMove = function() {
 		
 	};
+    
 	/*
 	 * This will watch for this tools' "active" variable changes.
 	 * When "active" changes to "true", this tools functions need to

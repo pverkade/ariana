@@ -35,11 +35,12 @@ class NoiseFilter extends Filter {
         super();
         this.attributes = {
             "intensity" : {
-                "value" : 0.1,
+                "value" : 0.0,
                 "type" : FilterValueType.Slider,
                 "setter" : (x) => clamp(x, 0, 0.25),
-                "max": 0,
-                "min": 0.25
+                "max": 0.25,
+                "min": 0.0,
+                "step": 0.05,
             }
         };
     }
