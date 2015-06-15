@@ -79,7 +79,7 @@ angular.module('ariana').controller('BrushCtrl', function($scope) {
 				mouseMove: $scope.mouseMove
 			};
 		}
-        else {
+        else if (oval) {
             $scope.stop();
         }
 	}, true);
