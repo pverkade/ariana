@@ -9,12 +9,12 @@
 
         <i class="mdi mdi-arrow-all"></i>
 
-        <div class="toolbox" ng-show="isActiveToolset($event, 'basic')">
+        <div class="toolbox" ng-show="isActiveToolset('basic')">
             <pan tool></pan>
             <translate tool></translate>
             <scale tool></scale>
             <rotate tool></rotate>
-            <crop tool></crop>
+            <!-- <crop tool></crop> -->
         </div>
 
     </div>
@@ -60,32 +60,6 @@
         <div class="toolbox" ng-show="isActiveToolset('text')">
         </div>
         
-    </div>
-
-        <!-- <i class="mdi {{tool.image}}"></i> -->
-<!-- 
-        <div class="toolbox"
-            ng-show="config.tools.activeToolset == '{{name}}'">
-	           
-            <tool id="{{name}}"
-                  ng-repeat="(name, subtool) in tool.tools"
-                  ng-class="{active: config.tools.activeTool == '{{name}}'}"
-                  ng-click="selectTool($event, name)"
-                  class="tool" 
-                  tool-name="{{name}}"
-                  image="{{subtool.image}}"> -->
-
-	        <!-- <div class="tool" id="{{name}}" 
-                ng-repeat="(name, subtool) in tool.tools" 
-                ng-click="selectTool($event, name)"
-                ng-class="{active: config.tools.activeTool == '{{name}}'}"> -->
-                <!-- <i class="mdi {{subtool.image}}"></i>
-                
-                <div class="tool-settings" ng-show="hasSettings('{{name}}')">
-                
-                <div> -->
-            </tool>
-        </div>
     </div>
 </div>
 
