@@ -26,6 +26,7 @@ var magicSelection = {
         var image = layer.getImage();
         scope.magic = magicSelection = new MagicSelection(image);
 
+
         // $interval(callAtInterval, 1000);
         scope.sizeAnts = 4;
         scope.offset = 0;
@@ -35,19 +36,42 @@ var magicSelection = {
         var scope = angular.element($("#main-canvas")).scope();
 
         /* x and y coordinates in pixels relative to image. */
-        xRelative = $scope.config.mouse.current.x - $scope.config.canvas.x;
-        yRelative = $scope.config.mouse.current.y - $scope.config.canvas.y;
+        var xRelative = $scope.config.mouse.current.x - $scope.config.canvas.x;
+        var yRelative = $scope.config.mouse.current.y - $scope.config.canvas.y;
         console.log(xRelative, yRelative);
 
         /* Check wheter user has clicked inside of a selection. */
         if (scope.magic.isInSelection(xRelative, yRelative)) {
             scope.magic.removeSelection(xRelative, yRelative)
         } else {
-            scope.magic.getMaskWand(xRelative, yRelative, $scope.tresholdValue);
+            scope.magic.getMaskWand(xRelative, yRelative, 10);
         }
 
-        $("#draw-canvas")
-        //scope.magic.maskWand
+        var canvas = document.getElementById("editing-canvas");
+        var context = canvas.getContext("2d");
+
+        var bitmask = scope.magic.maskWand;
+        var width = bitmask[0].length;
+        var height = bitmask.length;
+
+        var bitmaskArray = new Uint8Array(width * height);
+        for (var y = 0; y < height; y++) {
+            var row = bitmask[y];
+            for (var x = 0; x < width; x++) {
+                //console.log(row[x]);
+                bitmaskArray[y * width + x] = row[x];
+            }
+        }
+
+        var notZero = 0;
+        for (var i = 0; i < bitmaskArray.length; i++) {
+            if (bitmaskArray[i]) {
+                notZero++;
+            }
+        }
+        console.log("Not zero: " + notZero);
+        var imgData = context.createImageData(width, height);
+        context.putImageData(imgData, 0, 0);
 
         /* Save border and marching ants mask in scope. */
         //$scope.maskBorder = $scope.magic.getMaskBorder();
@@ -62,8 +86,7 @@ var magicSelection = {
     },
 
     callAtInterval: function($scope) {
-        console.log("test");
-        scope.offset++;
-        $scope.maskAnts = $scope.magic.marchingAnts(scope.sizeAnts * 2, scope.offset);
+        $scope.offset++;
+        $scope.maskAnts = $scope.magic.marchingAnts($scope.sizeAnts * 2, $scope.offset);
     }
 }

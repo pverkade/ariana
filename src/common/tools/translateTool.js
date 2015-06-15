@@ -13,19 +13,21 @@ var translateTool = {
     mouseMove: function($scope) {
         if (!($scope.config.mouse.button[1] || $scope.config.mouse.button[3])) return;
 
-        var dx = $scope.config.mouse.current.x - $scope.config.mouse.old.x;
-        var dy = $scope.config.mouse.current.y - $scope.config.mouse.old.y;
-        console.log(dx, dy);
-        
-        $scope.config.mouse.old.x += dx;
-        $scope.config.mouse.old.y += dy;
-
         var currentLayer = $scope.config.layers.currentLayer;
         if (currentLayer == -1) return;
         
-        var currentX = $scope.renderEngine.layers[currentLayer].getPosX();
-        var currentY = $scope.renderEngine.layers[currentLayer].getPosY();
+        var dx = $scope.config.mouse.current.x - $scope.config.mouse.old.x;
+        var dy = $scope.config.mouse.current.y - $scope.config.mouse.old.y;
+        
+        /* Update th old mouse position. */
+        $scope.config.mouse.old.x += dx;
+        $scope.config.mouse.old.y += dy;
+        
+        /* Get the layer position. */
+        var x = $scope.renderEngine.layers[currentLayer].getPosX();
+        var y = $scope.renderEngine.layers[currentLayer].getPosY();
 
-        $scope.renderEngine.layers[currentLayer].setPos(currentX + dx, currentY + dy);
+        $scope.renderEngine.layers[currentLayer].setPos(x + dx, y + dy);
+        window.requestAnimationFrame(function() {$scope.renderEngine.render();});    
     },
 };

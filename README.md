@@ -71,6 +71,7 @@ ariana runs on a [Node.js](https://nodejs.org/) server. Installing ariana takes 
 #### Requirements
 - Node.js
 - git
+- GraphicsMagick
 
 #### Node.js
 First of all, install [Node.js](https://nodejs.org/).
@@ -168,22 +169,21 @@ element {
 - please write `/* comment */` for single row comments
 - please write
 ```
-/*
- * comments
+/* comments
  * are
- * great
- */
+ * great */
 ```
   for multirow comments
 - don't overdo comments, only write them if necessary to understand a section
 - begin each file with a header
 ```
 /*
- * Project ariana
- * File: filename
- * Author: your name
- * Date: date created
- * Description: small description of file
+ * Project Ariana
+ * filename
+ * 
+ * small description of file
+ * another line
+ *
  */
 ```
 - statements
@@ -204,8 +204,6 @@ angular.module('moduleName').run(['resource',
         statement
     }
 ]);
-
-
 ```
 #### Angular.js styleguide
 - Todo

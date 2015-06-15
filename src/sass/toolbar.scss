@@ -1,12 +1,12 @@
 /*
- * Project Arinana
+ * Project Ariana
  * toolbar.scss
- *
+ * 
  * This file contains the style definition for the Toolbar element.
  *
  */
  
-#toolbar {    
+.toolbar {    
     @extend .gui-element;
     position: absolute;
     width : 100%; 
@@ -19,20 +19,13 @@
         list-style: none;
         margin: 0;
         padding: 0;
-        
-        &:after {
-            content : "";
-            display : block;
-            clear : both;
-            visibility : hidden;
-        }
     }
     
     .seperator {
-        margin-top: 0.1 * $blocksize;
+        margin-top:    0.1 * $blocksize;
         margin-bottom: 0.1 * $blocksize;
-        margin-left: 0;
-        margin-right: 0;
+        margin-left:  -1;
+        margin-right: -1;
         padding: 0;
         height: 0.8 * $blocksize;
         width: 2px;
@@ -58,4 +51,74 @@
     .float-right {
         float: right;
     }
+}
+
+.filter-options {
+    position: absolute;
+    left: 1.5 * $blocksize;
+    width: calc(100% - #{2 * $blocksize});
+    max-width: 12 * $blocksize;
+    min-width: 5.5 * $blocksize;
+    bottom: 0;
+
+    @extend .gui-element;
+    min-height: $blocksize;
+    
+    .float-left {
+        float: left;
+    }
+    
+    .float-right {
+        float: right;
+    }
+    
+    .center-box {
+        width: calc(100% - #{2 * $blocksize});
+    }
+        
+    .input-group {  
+        width: 100%;
+        height: 0.5 * $blocksize;
+        
+        .filter-name {
+            min-width: 2 * $blocksize;
+            width: 50%;
+            @media (max-width: 10 * $blocksize) {
+                display: none;
+            }
+        }
+        
+        .filter-checkbox {
+            min-width: 2 * $blocksize;
+            width: 50%;
+            @media (max-width: 10 * $blocksize) {
+                width: 100%;
+            }
+        }
+        
+        .input-group-addon, .number {
+            width: 2 * $blocksize;
+            @media (max-width: 10 * $blocksize) {
+                width: 50%;
+            }
+        }
+        
+        .slider {
+            width: calc(100% - #{2 * $blocksize});
+            
+            @media (max-width: 10 * $blocksize) {
+                width: 100%;
+            }
+            
+           
+        }
+        
+        .number {
+            width: 2 * $blocksize;
+           
+            @media (max-width: 10 * $blocksize) {
+                display: none;
+            }
+        }
+    }   
 }

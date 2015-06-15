@@ -1,67 +1,67 @@
+/* 
+ * Project Ariana
+ * filters.logic.js
+ * 
+ * This file contains the FilterModalController, which controls the 
+ * 'filters and effects' modal.
+ *
+ */
+ 
 app.controller('FilterModalController', ['$scope', '$modalInstance', 
     function ($scope, $modalInstance) {
         
-        $scope.filters = [
+        $scope.filters = {
             
-            {
-                name:  "sepia",
-                image: "/assets/img/arnold2.jpg", 
+            "noise": {
+                image: "/assets/img/arnold.jpg", 
+                constructor: NoiseFilter,
             },
             
-            {
-                name:  "gaussian blur",
-                image: "/assets/img/arnold2.jpg", 
+            "contrast": {
+                image: "/assets/img/arnold.jpg",
+                constructor: ContrastFilter,
             },
             
-            {
-                name:  "arnold",
-                image: "/assets/img/arnold2.jpg", 
+            "brightness": {
+                image: "/assets/img/arnold.jpg",
+                constructor: BrightnessFilter,
             },
             
-            {
-                name:  "brightness",
-                image: "/assets/img/arnold2.jpg", 
+            "invert colors": {
+                image: "/assets/img/arnold.jpg",
+                constructor: InvertColorsFilter,
             },
             
-            {
-                name:  "sepia",
-                image: "/assets/img/arnold2.jpg", 
+            "saturation": {
+                image: "/assets/img/arnold.jpg",
+                constructor: SaturationFilter,
             },
             
-            {
-                name:  "gaussian blur",
-                image: "/assets/img/arnold2.jpg", 
+            "sepia": {
+                image: "/assets/img/arnold.jpg",
+                constructor: SepiaFilter,
             },
             
-            {
-                name:  "arnold",
-                image: "/assets/img/arnold2.jpg", 
+            "colorize": {
+                image: "/assets/img/arnold.jpg",
+                constructor: ColorizeFilter,
             },
-            
-            {
-                name:  "brightness",
-                image: "/assets/img/arnold2.jpg", 
-            },
-        ];
+        };
         
         $scope.selectFilter = function(name) {
-            $scope.applyFilter(name, $scope.allLayers);
+            var constructor = $scope.filters[name].constructor
+            
+            if (constructor) {
+                var filterObject = new constructor();
+                $scope.filter.filterName = name;
+                $scope.filter.filterObject = filterObject;
+                $scope.filter.filterParameters = filterObject.getAttributesObject();
+            }
             $scope.close();
         };
-        
-        $scope.allLayers = true;
 
-        $scope.toggleLayers = function() {
-            if ($scope.allLayers) $scope.allLayers = false;
-            else $scope.allLayers = true;
-        };
-        
         $scope.close = function() {
             $modalInstance.dismiss();
         };
-        
-        $scope.titlecase = function(string) {
-            return string.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-        }
     }
 ])

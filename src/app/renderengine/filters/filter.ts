@@ -57,6 +57,10 @@ class Filter {
     getAttribute(name : string) : Object {
         return this.attributes[name];
     }
+    
+    getAttributesObject() : Object {
+        return this.attributes;
+    }
 
     getAttributeNames() : Array<string> {
         return Object.keys(this.attributes);

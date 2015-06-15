@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * app.js
+ * 
+ * This file contains the AppController, which controls the entire application.
+ * It also contain the global configuration settings.
+ *
+ */
+
 "use strict";
 
 var app = angular.module('ariana', [
@@ -60,11 +69,13 @@ app.controller('AppCtrl', ['$scope',
         };
 
         $scope.renderEngine = null;
+        $scope.drawEngine = null;
 
         /* This function creates the RenderEngine. It requires the canvas to
          * render on. */
-        $scope.startEngine = function(canvas) {
-            $scope.renderEngine = new RenderEngine(canvas);
+        $scope.startEngines = function(renderCanvas, drawCanvas) {
+            $scope.renderEngine = new RenderEngine(renderCanvas);
+            $scope.drawEngine = new DrawEngine(drawCanvas);
         };
 
         /* This function creates a new layer from a given Image-object. The new
@@ -76,6 +87,37 @@ app.controller('AppCtrl', ['$scope',
             var width = layer.getWidth();
             
             layer.setPos(0.5 * width, 0.5 * height);
+            
+            $scope.renderEngine.addLayer(layer)
+
+            /* set the correct layer info in config. The new layer comes on top
+             * and is immediately selected. */
+            //$scope.setSelection([$scope.config.layers.numberOfLayers]);
+            $scope.config.layers.numberOfLayers += 1;
+            $scope.config.layers.currentLayer = $scope.config.layers.numberOfLayers - 1;
+            
+            /* Store information about the layers in the config object. */
+            $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {
+                "name": $scope.config.layers.currentLayer,
+                "x": layer.getPosX(),
+                "y": layer.getPosY(),
+                "originalWidth": width,
+                "originalHeight": height,
+                "width": width,
+                "height": height,
+                "rotation": layer.getRotation(),
+            }
+
+            $scope.renderEngine.render();
+        };
+
+        $scope.newLayerFromDrawing = function(image) {
+            var layer = $scope.renderEngine.createImageLayer(image);
+            
+            var height = layer.getHeight();
+            var width = layer.getWidth();
+            
+            layer.setPos(0.3 * width, 0.3 * height);
             
             $scope.renderEngine.addLayer(layer)
 
@@ -96,27 +138,6 @@ app.controller('AppCtrl', ['$scope',
             }
 
             $scope.renderEngine.render();
-        };
-
-
-        /* This function will apply a given filter on the current or all
-         * layers. */
-         $scope.applyFilter = function(name, allLayers) {
-            
-            if (name == "brightness") {
-                // TODO start that asks for parameters 
-                // TODO actually apply filter on current layer/all layers
-                
-                //var brightnessFilter = new BrightnessFilter();
-                //console.log(brightnessFilter);
-            }
-        };
-        $scope.getSelectedLayers = function() {
-            return $scope.renderEngine.getLayers($scope.config.layers.selectedLayers);
-        };
-
-        $scope.setSelection = function(indices) {
-            $scope.config.layers.selectedLayers = indices;
         };
 	}
 ]);

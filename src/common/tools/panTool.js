@@ -25,6 +25,8 @@ var panTool = {
         $scope.config.canvas.y += dy;
         
         $("#main-canvas").css("transform", "translate(" + $scope.config.canvas.x + "px, " + $scope.config.canvas.y + "px)");
-    },
+        $("#editing-canvas").css("transform", "translate(" + $scope.config.canvas.x + "px, " + $scope.config.canvas.y + "px)");
+        $("#top-canvas").css("transform", "translate(" + $scope.config.canvas.x + "px, " + $scope.config.canvas.y + "px)");
+    }
 };
 

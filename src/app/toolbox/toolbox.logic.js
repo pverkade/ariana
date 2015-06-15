@@ -1,3 +1,12 @@
+/*
+ * Project Ariana
+ * toolbox.logic.js
+ *
+ * This file contains the ToolboxController, which controls the behaviour of
+ * the toolbox and the color preview. 
+ *
+ */
+
 /* This contoller defines the behaviour of the toolbox and the color-preview. */
 angular.module('ariana').controller('ToolboxController', function($scope) {
     
@@ -30,7 +39,8 @@ angular.module('ariana').controller('ToolboxController', function($scope) {
                     toolFunctions: translateTool,
                 },
                 scale: {
-                    image: 'mdi-arrow-expand'
+                    image: 'mdi-arrow-expand',
+                    toolFunctions: scaleTool,
                 },
                 rotate: {
                     image: 'mdi-rotate-left',
@@ -48,13 +58,16 @@ angular.module('ariana').controller('ToolboxController', function($scope) {
                     image: 'mdi-palette'
                 },
                 pencil: {
-                    image: 'mdi-pen'
+                    image: 'mdi-pen',
+                    toolFunctions: penTool
                 },
                 brush: {
-                    image: 'mdi-brush'
+                    image: 'mdi-brush',
+                    toolFunctions: brushTool
                 },
                 eraser: {
-                    image: 'mdi-eraser'
+                    image: 'mdi-eraser',
+                    toolFunctions: eraserTool
                 },
                 picker: {
                     image: 'mdi-eyedropper',
@@ -105,6 +118,11 @@ angular.module('ariana').controller('ToolboxController', function($scope) {
     $scope.selectTool = function(event, tool) {
         if (event) event.stopPropagation();
 
+        var toolFunctions = $scope.config.tools.activeToolFunctions;
+
+        if (toolFunctions && toolFunctions.stop) {
+            toolFunctions.stop();
+        }
         $scope.config.tools.activeTool = tool;
         
         /* Find the required tool-functions in the toolbox object. The 

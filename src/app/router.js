@@ -1,5 +1,12 @@
-/* The router displays the correct tamplate in the correct ui-view for every
- * given state. */
+/* 
+ * Project Ariana
+ * router.js
+ * 
+ * This file contains the router, which displays the correct template in the 
+ * correct ui-view for every given state.
+ *
+ */
+
 angular.module('ariana').config(function($stateProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
     
@@ -14,6 +21,27 @@ angular.module('ariana').config(function($stateProvider, $locationProvider) {
                 "content-menu": {
                     templateUrl: "app/content/menu/menu.content.tpl.html",
                     controller: 'MenuContentCtrl'
+                },
+                "toolbar": {
+                    templateUrl: "app/toolbar/toolbar.tpl.html",
+                    controller: 'ToolbarController'
+                },
+                "layers": {
+                    templateUrl: "app/layers/layers.tpl.html",
+                    controller: 'layersCtrl'
+                },
+                "toolbox": {
+                    templateUrl: "app/toolbox/toolbox.tpl.html",
+                    controller: 'ToolboxController'
+                }
+            }
+        })
+        .state('drawtest', {
+            url: "/drawtest",
+            views: {
+                "content": {
+                    templateUrl: "common/draw/drawtest.tpl.html",
+                    controller: 'drawtestCtrl'
                 },
                 "toolbar": {
                     templateUrl: "app/toolbar/toolbar.tpl.html",
@@ -64,7 +92,7 @@ angular.module('ariana').config(function($stateProvider, $locationProvider) {
                 },
                 "toolbox": {
                     templateUrl: "app/toolbox/toolbox.tpl.html",
-                    controller: 'toolBoxController'
+                    controller: 'ToolboxController'
                 }
             }
         });*/

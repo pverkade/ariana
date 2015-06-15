@@ -1,7 +1,7 @@
 .container-full {
-	margin: 0 auto;
-	padding: 0;
-	width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    width: 100%;
 }
 
 .bg-white {
@@ -9,37 +9,59 @@
 }
 
 .selectable {
-	&:hover {
+    &:hover {
         background-color: lighten($light, $hover-lighten);
         cursor: pointer;
     }
 }
 
 .col-md-8 {
-	padding-left: 0;
-	padding-right: 0;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .col-md-2 {
-	padding-left: 13px;
+    padding-left: 13px;
 }
 
 accordion {
-	.ng-enter {
-		transition: 0.3s ease-in all;
-		opacity: 0;
-	}
+    .ng-enter {
+        transition: 0.3s ease-in all;
+        opacity: 0;
+    }
 
-	.ng-enter.ng-enter-active {
-		opacity:1;
-	}
+    .ng-enter.ng-enter-active {
+        opacity:1;
+    }
 
-	.ng-leave {
-		transition: 0.5s ease-out all;
-		transform: translateX(0px);
-	}
+    .ng-leave {
+        transition: 0.5s ease-out all;
+        transform: translateX(0px);
+    }
 
-	.ng-leave.ng-leave-active {
-		transform: translateX(400px); 
-	}
+    .ng-leave.ng-leave-active {
+        transform: translateX(400px); 
+    }
+}
+
+.fade-on {
+    @include transition(opacity $fade-speed ease-in);
+    z-index: 1;
+    opacity: $fade-amount;
+    pointer-events: none;
+}
+
+.fade-off {
+    @include transition(all $fade-speed ease-in);
+    opacity: 1;
+}
+
+.scale-on {
+    @include transition(transform $scale-speed ease-in);
+    @include transform(scale($scale-amount, $scale-amount) translate(0.25 * $blocksize, -0.25 * $blocksize));
+}
+
+.scale-off {
+    @include transition(transform $scale-speed ease-in);
+    @include transform(scale(1,1) translate(0px, 0px));
 }
