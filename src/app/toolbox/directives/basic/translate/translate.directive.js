@@ -48,7 +48,7 @@ angular.module('ariana').controller('translateCtrl', function($scope) {
         $scope.renderEngine.layers[currentLayer].setPos(x + dx, y + dy);
         window.requestAnimationFrame(function() { $scope.renderEngine.render(); });
     };
--
+
     /*
      * This will watch for this tools' "active" variable changes.
      * When "active" changes to "true", this tools functions need to
