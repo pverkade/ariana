@@ -13,9 +13,9 @@ app.controller('BrushCtrl', function($scope) {
 
 	/* init */
 	$scope.init = function() {
+        $scope.drawing = false;
 		$scope.setCursor('default');
         $scope.drawEngine.setBrush(brushType.THIN);
-        
         $scope.setColor($scope.config.tools.colors.primary);
 	};
     
@@ -40,6 +40,8 @@ app.controller('BrushCtrl', function($scope) {
 
 	/* onMouseDown */
 	$scope.mouseDown = function() {
+        $scope.drawing = true;
+        
         var buttons = $scope.config.mouse.button;
         if (buttons[1] && buttons[3]) return;
         
@@ -53,11 +55,13 @@ app.controller('BrushCtrl', function($scope) {
 
 	/* onMouseUp */
 	$scope.mouseUp = function() {
+        $scope.drawing = false;
         $scope.drawEngine.onMouseup($scope.config.mouse.current.x, $scope.config.mouse.current.y);
 	};
 
 	/* onMouseMove */
 	$scope.mouseMove = function() {
+        if (!$scope.drawing) return;
 		$scope.drawEngine.onMousemove($scope.config.mouse.current.x, $scope.config.mouse.current.y);
 	};
 	/*
