@@ -26,17 +26,25 @@ class ImgData {
 
 class MagicSelection{
 	magicWandColor : number[];
-	imageData : ImgData;
+	imageData : ImageData;
 	bmON : number;
 	maskWand : number[][];
 	maskBorder : number[];
 	maskAnts : number[][];
 
-	constructor(imageData : ImgData) {
+	constructor(image : HTMLImageElement) {
 		this.maskBorder = [];
 		this.maskAnts = [];
 		this.bmON = 1;
 		this.magicWandColor = null;
+
+        var canvas = document.createElement("canvas");
+        canvas.width = image.width;
+        canvas.height = image.height;
+
+        var context = canvas.getContext("2d");
+        context.drawImage(image, 0, 0);
+        var imageData : ImageData = context.getImageData(0, 0, image.width, image.height);
 
 		/* Copy width/height and image data to imageData object. */
 		this.imageData = new ImgData(imageData.width, imageData.height);

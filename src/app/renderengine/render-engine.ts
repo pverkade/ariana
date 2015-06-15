@@ -230,7 +230,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         return newLayer;
     }
 
-    public createImageLayer(image : ImageData) {
+    public createImageLayer(image : HTMLImageElement) {
         return new ImageLayer(
             this.resourceManager,
             this.width,

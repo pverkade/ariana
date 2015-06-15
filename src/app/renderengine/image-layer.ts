@@ -8,19 +8,21 @@ class ImageLayer extends Layer {
     protected program : ImageShaderProgram;
     protected layerType : LayerType = LayerType.ImageLayer;
 
+    private image : HTMLImageElement;
 	private texture : WebGLTexture;
 
 	constructor(
         resourceManager : ResourceManager,
         canvasWidth : number,
         canvasHeight : number,
-        image : ImageData) {
+        image : HTMLImageElement) {
         super(resourceManager, canvasWidth, canvasHeight, image ? image.width : 0, image ? image.width : 0);
 
         this.program = resourceManager.imageShaderProgramInstance();
 
         var gl = this.gl;
 
+        this.image = image;
 		this.texture = gl.createTexture();
 		gl.bindTexture(gl.TEXTURE_2D, this.texture);
 
@@ -56,6 +58,10 @@ class ImageLayer extends Layer {
         /* SetDimensions already triggers notifyPropertyChanged */
         this.setDimensions(width, height);
 	}
+
+    getImage() : HTMLImageElement {
+        return this.image;
+    }
 
     destroy() {
         super.destroy();
