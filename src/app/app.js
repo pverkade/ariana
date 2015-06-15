@@ -56,7 +56,7 @@ app.controller('AppCtrl', ['$scope',
                 zoom: 1,
             },
             tools: {
-                activeTool: null,
+                activeTool: 'pan',
                 activeToolFunctions: null,
                 activeToolset: null,
                 colors: {
