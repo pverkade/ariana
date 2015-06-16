@@ -125,10 +125,16 @@ app.controller('AppCtrl', ['$scope',
         };
 
         $scope.resizeCanvases = function(width, height) {
+            var toolFunctions = $scope.config.tools.activeToolFunctions;
+            
             $scope.config.canvas.width = width;
             $scope.config.canvas.height = height;
             $scope.renderEngine.resize($scope.config.canvas.width, $scope.config.canvas.height);
             $scope.drawEngine.resize($scope.config.canvas.width, $scope.config.canvas.height);
+
+            if (toolFunctions && toolFunctions.init) {
+                toolFunctions.init();
+            }
 
             $scope.config.layers.numberOfLayers = 0;
             $scope.config.layers.currentLayer = -1;
