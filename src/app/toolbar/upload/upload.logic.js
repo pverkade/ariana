@@ -17,7 +17,7 @@ app.controller('UploadModalController', ['$scope', '$modalInstance', 'Upload',
  
         $scope.upload = function () {
 
-            if ($scope.config.canvas.width == 0 && $scope.imageUrls.length > 0) {
+            if (!$scope.config.canvas.visible) {
                 var image = new Image();
                 image.onload = function() {
                     $scope.resizeCanvases(image.width, image.height);

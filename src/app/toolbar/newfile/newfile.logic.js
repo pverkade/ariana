@@ -63,7 +63,7 @@ app.controller('NewFileModalController', ['$scope', '$modalInstance', '$modal',
         };
  
         $scope.create = function () {
-            if ($scope.config.canvas.width > 0) {
+            if ($scope.config.canvas.visible) {
                 $scope.openNoticeModal();
             }
             else {

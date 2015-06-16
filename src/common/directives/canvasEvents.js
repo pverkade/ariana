@@ -13,6 +13,12 @@ app.directive('canvasEvents', function() {
                 
             }, true);
 
+            /* Watches canvas visibility changes  */
+            scope.$watch('config.canvas.visible', function(nval, oval) {
+                element.removeClass("ng-hide");
+                element.css('display', nval ? "block" : "none");
+            }, true);
+
             /* Watches canvas coordinate changes  */
             scope.$watchGroup(['config.canvas.x', 'config.canvas.y'], function(nval, oval) {
                 element.css('transform', "translate(" + scope.config.canvas.x + 

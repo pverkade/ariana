@@ -254,8 +254,13 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         this.width = width;
         this.height = height;
 
-        this.destroy();
+        for (var i = 0; i < this.layers.length; i++) {
+            this.layers[i].destroy();
+        }
         this.layers = new Array();
+
+        this.drawbuffer1.destroy();
+        this.drawbuffer2.destroy();
 
         this.gl.viewport(0, 0, this.width, this.height);
         this.drawbuffer1 = new DrawBuffer(this.gl, this.width, this.height);

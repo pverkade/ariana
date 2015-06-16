@@ -14,19 +14,19 @@
         width="{{config.canvas.width}}"
         height="{{config.canvas.height}}"
         canvas-events
-        ng-show="renderEngine !== null">
+        ng-show="{{config.canvas.visible}}">
     </canvas>
     <canvas id="editing-canvas"
         width="{{config.canvas.width}}"
         height="{{config.canvas.height}}"
         canvas-events
-        ng-show="renderEngine !== null">
+        ng-show="{{config.canvas.visible}}">
     </canvas>
     <canvas id="top-canvas"
         width="{{config.canvas.width}}"
         height="{{config.canvas.height}}"
         canvas-events
-        ng-show="renderEngine !== null">
+        ng-show="{{config.canvas.visible}}">
     </canvas>
 </div>
 
