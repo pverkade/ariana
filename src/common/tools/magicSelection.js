@@ -48,7 +48,6 @@ var magicSelection = {
 
         scope.magic.getMaskBorder();
 
-        //var bitmask = scope.magic.maskWand;
         var width = scope.magic.imageData.width;
         var height = scope.magic.imageData.height;
 

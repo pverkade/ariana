@@ -29,10 +29,10 @@ class MagicSelection{
 	imageData : ImageData;
 	bmON : number;
 	maskWand : number[][];
-	maskBorder : number[];
+	maskBorder : Uint8Array;
 
 	constructor(image : HTMLImageElement) {
-		this.maskBorder = [];
+		this.maskBorder = new Uint8Array(image.width * image.height);
 		this.bmON = 1;
 		this.magicWandColor = null;
 
@@ -63,16 +63,9 @@ class MagicSelection{
 	getMaskBorder() {
 		/* Check whether a maskwand has been created. */
 		if (this.maskWand[0] == undefined) {
-			this.maskBorder = [];
+			this.maskBorder = new Uint8Array(this.imageData.width * this.imageData.height);
 			return undefined;
 		}
-
-		/* Create empty mask for borders of image wand (fill maskBorder with zeros). */
-		this.maskBorder = [];
-		for (var i = 0; i < this.maskWand[0].length; i++) {
-			this.maskBorder.push(0);
-		}
-
 		
 		for (var i = 0; i < this.maskWand[0].length; i++) {
 			if (this.maskWand[0][i] == this.bmON) {
