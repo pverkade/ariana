@@ -31,7 +31,6 @@ app.controller('ScaleCtrl', function($scope) {
 
 	/* onMouseMove */
 	$scope.mouseMove = function() {
-        
 		var mouseCurrentX = $scope.config.mouse.current.x;
         var mouseCurrentY = $scope.config.mouse.current.y; 
 
@@ -61,13 +60,25 @@ app.controller('ScaleCtrl', function($scope) {
             var newHeight = height;
 
 	        if ($scope.scaleToolIndex != 2 && $scope.scaleToolIndex != 6) {
-	            newWidth += (mouseCurrentX - mouseOldX)   * $scope.sign(Math.cos($scope.scaleToolIndex * 0.25 * Math.PI));
+	            newWidth += (mouseCurrentX - mouseOldX) * $scope.sign(Math.cos($scope.scaleToolIndex * 0.25 * Math.PI));
+
 	        }
-	        
+	       
 	        if ($scope.scaleToolIndex != 0 && $scope.scaleToolIndex != 4) {
 	            newHeight += (mouseCurrentY - mouseOldY)  * -1 * $scope.sign(Math.sin($scope.scaleToolIndex * 0.25 * Math.PI));
 	        }
-            
+
+            if ($scope.keepAR) {
+            	if ($scope.scaleToolIndex == 0 || $scope.scaleToolIndex == 4) {
+            		ratio = newWidth / originalWidth;
+            		newHeight = height * ratio;
+            	}
+            	if ($scope.scaleToolIndex == 2 || $scope.scaleToolIndex == 6) {
+            		ratio = newHeight / originalHeight;
+            		newWidth = width * ratio;
+            	}
+            }
+
             if ($scope.scaleToolIndex >= 3 && $scope.scaleToolIndex <= 5)
                 x -= 0.5 * (newWidth - width);
             else if ($scope.scaleToolIndex >= 7 || $scope.scaleToolIndex == 0 || $scope.scaleToolIndex == 1)
@@ -95,10 +106,13 @@ app.controller('ScaleCtrl', function($scope) {
 	        if (!($scope.config.mouse.button[1] || $scope.config.mouse.button[3])) {
 	            
 	            var ratio = Math.abs(differenceY) / Math.abs(differenceX);
-	            var layerRatio = layer.getHeight() / layer.getWidth(); 
-	            
-	            $scope.scaleToolIndex = Math.round(8 * (angle / (2 * Math.PI)));
-	            
+	            var layerRatio = layer.getHeight() / layer.getWidth();
+
+				$scope.scaleToolIndex = Math.round(8 * (angle / (2 * Math.PI)));
+	            if ($scope.keepAR == true) {
+	            	$scope.scaleToolIndex -= $scope.scaleToolIndex % 2;
+	            }
+
 	            if ($scope.scaleToolIndex == 0) { $scope.setCursor("e-resize"); };
 	            if ($scope.scaleToolIndex == 1) { $scope.setCursor("ne-resize"); };
 	            if ($scope.scaleToolIndex == 2) { $scope.setCursor("n-resize"); };
