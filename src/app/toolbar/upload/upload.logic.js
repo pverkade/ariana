@@ -30,6 +30,8 @@ app.controller('UploadModalController', ['$scope', '$modalInstance', 'Upload',
                 var image = new Image();
                 image.onload = function() {
                     $scope.newLayerFromImage(image);
+
+                    window.setTimeout(function() {$scope.renderEngine.render();}, 500);
                 };
                 image.src = url;
             });

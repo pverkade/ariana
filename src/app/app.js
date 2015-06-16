@@ -121,12 +121,13 @@ app.controller('AppCtrl', ['$scope',
                 "rotation": layer.getRotation(),
             }
 
-            $scope.renderEngine.render();
+            window.requestAnimationFrame(function() {$scope.renderEngine.render();});
+            //$scope.renderEngine.render();
         };
 
         $scope.resizeCanvases = function(width, height) {
             var toolFunctions = $scope.config.tools.activeToolFunctions;
-            
+
             $scope.config.canvas.width = width;
             $scope.config.canvas.height = height;
             $scope.renderEngine.resize($scope.config.canvas.width, $scope.config.canvas.height);
@@ -139,6 +140,8 @@ app.controller('AppCtrl', ['$scope',
             $scope.config.layers.numberOfLayers = 0;
             $scope.config.layers.currentLayer = -1;
             $scope.config.layers.layerInfo = [];
+            
+            window.requestAnimationFrame(function() {$scope.renderEngine.render();});
         };
 	}
 ]);

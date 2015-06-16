@@ -7,13 +7,13 @@
  *
  */
  
-app.controller('NewFileModalController', ['$scope', '$modalInstance',  
-    function ($scope, $modalInstance) {
+app.controller('NewFileModalController', ['$scope', '$modalInstance', '$modal',  
+    function ($scope, $modalInstance, $modal) {
 
         $scope.inputWidth = 800;
         $scope.inputHeight = 600;
 
-        $scope.close = function () {
+        $scope.closeNewFileModal = function () {
             $modalInstance.dismiss();
         };
 
@@ -52,15 +52,24 @@ app.controller('NewFileModalController', ['$scope', '$modalInstance',
                 $scope.inputHeight = newValue - (newValue % 1);
             }
         });
+
+        $scope.openNoticeModal = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'app/toolbar/newfile/notice.tpl.html',
+                controller:  'NewFileNoticeModalController',
+                scope: $scope,
+                size: 'sm'
+            });
+        };
  
         $scope.create = function () {
-            //TODO: notice about the canvas being cleared
             if ($scope.config.canvas.width > 0) {
-
+                $scope.openNoticeModal();
             }
-            
-            $scope.resizeCanvases($scope.inputWidth, $scope.inputHeight);
-            $scope.close();
+            else {
+                $scope.resizeCanvases($scope.inputWidth, $scope.inputHeight);
+                $scope.closeNewFileModal();
+            }
         };
     }
 ]);
