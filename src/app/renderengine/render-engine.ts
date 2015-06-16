@@ -7,6 +7,7 @@
 /// <reference path="filters/filter"/>
 /// <reference path="image-layer"/>
 /// <reference path="resource-manager"/>
+/// <reference path="selection-layer"/>
 
 class RenderEngine implements MLayer.INotifyPropertyChanged {
     private gl : WebGLRenderingContext;
@@ -94,7 +95,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
     public removeLayer(index : number) {
         var layer : Layer = this.layers[index];
         this.layers.splice(layer.getID(), 1);
-        layer.destroy();
+        //layer.destroy();
     }
 
     public reorder(i : number, j : number) {
@@ -257,13 +258,22 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         );
     }
 
-    public createSelectionImageLayer(bitmask : HTMLImageElement, layerIndex : number) {
+    public createSelectionImageLayer(bitmask : HTMLImageElement, layerIndex : number) : SelectionLayer {
         var gl = this.gl;
 
         if (this.layers[layerIndex].getLayerType() != LayerType.ImageLayer) {
             return;
         }
         var layer = <ImageLayer>this.layers[layerIndex];
+
+        var width = layer.getWidth();
+        var height = layer.getHeight();
+        var selectedLayer = this.createImageLayer(layer.getImage());
+        var invertedSelectedLayer = this.createImageLayer(layer.getImage());
+        selectedLayer.setPos(layer.getPosX(), layer.getPosY());
+        selectedLayer.setRotation(layer.getRotation());
+        invertedSelectedLayer.setPos(layer.getPosX(), layer.getPosY());
+        invertedSelectedLayer.setRotation(layer.getRotation());
 
         var bitmaskProgram = this.resourceManager.bitmaskProgramInstance();
         var texture = gl.createTexture();
@@ -276,9 +286,9 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
 
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, bitmask);
 
-        var drawbuffer = new DrawBuffer(gl, bitmask.width, bitmask.height);
+        var drawbuffer = new DrawBuffer(gl, width, height);
         drawbuffer.bind();
-        gl.viewport(0, 0, bitmask.width, bitmask.width);
+        gl.viewport(0, 0, width, height);
 
         gl.enable(this.gl.STENCIL_TEST);
         gl.clear(gl.STENCIL_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
@@ -290,19 +300,32 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         bitmaskProgram.setUniforms(texture);
         gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
 
-        /* Draw the image with the bitmask */
+        /* Draw the selected part of the image */
         gl.clear(gl.COLOR_BUFFER_BIT);
         gl.stencilFunc(gl.EQUAL, 1, 0xFF);
         gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP);
         layer.setupRender();
         layer.renderFullscreen();
+        selectedLayer.copyFramebuffer(width, height);
+
+        /* Draw the not selected part of the image */
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.stencilFunc(gl.NOTEQUAL, 1, 0xFF);
+        gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP);
+        layer.setupRender();
+        layer.renderFullscreen();
+        invertedSelectedLayer.copyFramebuffer(width, height);
 
         this.gl.disable(this.gl.STENCIL_TEST);
-        layer.copyFramebuffer(bitmask.width, bitmask.height);
         drawbuffer.unbind();
         gl.viewport(0, 0, this.width, this.height);
 
-        layer.setPos(bitmask.width/2.0, bitmask.height/2.0);
-        this.render();
+        return new SelectionLayer(
+            this.resourceManager,
+            this.width,
+            this.height,
+            selectedLayer,
+            invertedSelectedLayer
+        );
     }
 }

@@ -58,24 +58,20 @@ class ImageLayer extends Layer {
     }
 
 	copyFramebuffer(width : number, height : number) {
-        this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
-        this.gl.copyTexImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 0, 0, width, height, 0);
+        // This way is more efficient (no copying to javascript and back) but it doesnt support flip Y
+        //this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
+        //this.gl.copyTexImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 0, 0, width, height, 0);
 
-        //TODO: Flip Y
-        /*var data = new Uint8Array(width * height * 4);
+        var data = new Uint8Array(width * height * 4);
         this.gl.readPixels(0, 0, width, height, this.gl.RGBA, this.gl.UNSIGNED_BYTE, data);
-        var invertedData = new Uint8Array(width * height * 4);
-        for (var y = 0; y < height; y++) {
-            for (var x = 0; x < width; x++) {
-                invertedData[(y*width+x)*4+0] = data[((height-y)*width+x)*4+0];
-                invertedData[(y*width+x)*4+1] = data[((height-y)*width+x)*4+1];
-                invertedData[(y*width+x)*4+2] = data[((height-y)*width+x)*4+2];
-                invertedData[(y*width+x)*4+3] = data[((height-y)*width+x)*4+3];
-            }
-        }
-        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, width, height, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, invertedData);*/
 
-        /* SetDimensions already triggers notifyPropertyChanged */
+        // Flip the image's Y axis to match the WebGL texture coordinate space
+        this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, 1);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
+        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, width, height, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, data);
+        this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, 0);
+
+        // SetDimensions already triggers notifyPropertyChanged
         this.setDimensions(width, height);
 	}
 

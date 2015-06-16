@@ -55,22 +55,39 @@ var magicSelection = {
         var canvas = document.getElementById("editing-canvas");
         var context = canvas.getContext("2d");
         var imgData = context.createImageData(width, height);
-        for (var i=0; i < bitmask.length; i++) {
-            if (bitmask[i]) {
-                imgData.data[4*i] = 255;//*bitmask[i];
-                imgData.data[4*i+1] = 0;
-                imgData.data[4*i+2] = 0;
-                imgData.data[4*i+3] = 255;
-            }/* else {
-                imgData.data[4*i] = scope.magic.imageData.data[4*i];
-                imgData.data[4*i+1] = scope.magic.imageData.data[4*i+1];
-                imgData.data[4*i+2] = scope.magic.imageData.data[4*i+2];
-                imgData.data[4*i+3] = 255;
-            }*/
+        if (bitmask) {
+            for (var i = 0; i < bitmask.length; i++) {
+                if (bitmask[i]) {
+                    imgData.data[4 * i] = 255;
+                    imgData.data[4 * i + 1] = 0;
+                    imgData.data[4 * i + 2] = 0;
+                    imgData.data[4 * i + 3] = 255;
+                }
+            }
+            var layer = scope.renderEngine.createSelectionImageLayer(imgData, 0);
+            scope.renderEngine.removeLayer(0);
+            scope.renderEngine.addLayer(layer);
+            scope.renderEngine.render();
 
+
+            console.log("Marching ants size: " + scope.offset);
+            console.log("Marching ants time offset: " + scope.offset);
+            var antsMask = scope.magic.marchingAnts(scope.sizeAnts * 2, scope.offset);
+            for (var i = 0; i < antsMask.length; i++) {
+                if (antsMask[i]) {
+                    imgData.data[4 * i] = 0;
+                    imgData.data[4 * i + 1] = 0;
+                    imgData.data[4 * i + 2] = 0;
+                    imgData.data[4 * i + 3] = 255;
+                } else {
+                    imgData.data[4 * i] = 0;
+                    imgData.data[4 * i + 1] = 0;
+                    imgData.data[4 * i + 2] = 0;
+                    imgData.data[4 * i + 3] = 0;
+                }
+            }
+            context.putImageData(imgData, 0, 0);
         }
-
-        var layer = scope.renderEngine.createSelectionImageLayer(imgData, 0);
     },
     
     mouseUp: function($scope) {

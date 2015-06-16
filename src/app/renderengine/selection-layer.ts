@@ -15,11 +15,17 @@ class SelectionLayer extends Layer {
             resourceManager,
             canvasWidth,
             canvasHeight,
-            canvasWidth,
-            canvasHeight
+            selectedLayer.getWidth(),
+            selectedLayer.getHeight()
         );
         this.selectedLayer = selectedLayer;
         this.invertedSelectedLayer = invertedSelectedLayer;
+
+        this.sizeMatrix = this.selectedLayer.sizeMatrix;
+        this.rotationMatrix = this.selectedLayer.rotationMatrix;
+        this.translationMatrix = this.selectedLayer.translationMatrix;
+        this.posX = this.selectedLayer.getPosX();
+        this.posY = this.selectedLayer.getPosY();
     }
 
     public setupRender() {
