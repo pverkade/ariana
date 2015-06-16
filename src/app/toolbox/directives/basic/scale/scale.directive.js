@@ -61,12 +61,24 @@ app.controller('ScaleCtrl', function($scope) {
             var newHeight = height;
 
 	        if ($scope.scaleToolIndex != 2 && $scope.scaleToolIndex != 6) {
-	            newWidth += (mouseCurrentX - mouseOldX)   * $scope.sign(Math.cos($scope.scaleToolIndex * 0.25 * Math.PI));
+                var xScaleFactor = (mouseCurrentX - mouseOldX) / (mouseOldX - x) + 1;
+                if (xScaleFactor && isFinite(xScaleFactor)) {
+                    newWidth *= xScaleFactor;
+                }
+
+                //newWidth *= !xScaleFactor || !isFinite(x)? 1 : xScaleFactor;
+	            // newWidth += (mouseCurrentX - mouseOldX)   * $scope.sign(Math.cos($scope.scaleToolIndex * 0.25 * Math.PI));
 	        }
 	        
 	        if ($scope.scaleToolIndex != 0 && $scope.scaleToolIndex != 4) {
-	            newHeight += (mouseCurrentY - mouseOldY)  * -1 * $scope.sign(Math.sin($scope.scaleToolIndex * 0.25 * Math.PI));
+                var yScaleFactor = (mouseCurrentY - mouseOldY) / (mouseOldY - y) + 1;
+                if (yScaleFactor && isFinite(yScaleFactor)) {
+                    newHeight *= !yScaleFactor ? 1 : yScaleFactor;
+                }
+	            //newHeight += (mouseCurrentY - mouseOldY)  * -1 * $scope.sign(Math.sin($scope.scaleToolIndex * 0.25 * Math.PI));
 	        }
+
+            /*
             
             if ($scope.scaleToolIndex >= 3 && $scope.scaleToolIndex <= 5)
                 x -= 0.5 * (newWidth - width);
@@ -77,7 +89,8 @@ app.controller('ScaleCtrl', function($scope) {
                 y -= 0.5 * (newHeight - height);
             else if ($scope.scaleToolIndex >= 5 && $scope.scaleToolIndex <= 7)
                 y += 0.5 * (newHeight - height);
-	        
+             */
+
 	        $scope.renderEngine.layers[currentLayer].setWidth(newWidth);
 	        $scope.renderEngine.layers[currentLayer].setHeight(newHeight);
 	        
@@ -135,6 +148,10 @@ app.controller('ScaleCtrl', function($scope) {
 				mouseUp:   $scope.mouseUp,
 				mouseMove: $scope.mouseMove
 			};
+		}
+		else if (oval) {
+			var layer = $scope.renderEngine.getLayer($scope.config.layers.currentLayer);
+			layer.commitDimensions();
 		}
 	}, true);
 });

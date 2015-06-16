@@ -31,6 +31,9 @@ class Layer {
     private propertyChanged : MLayer.INotifyPropertyChanged;
     private propertyChangedTimeout;
 
+    transformHistory : Float32Array[];
+
+
 	constructor(
         resourceManager : ResourceManager,
         canvasWidth : number,
@@ -53,6 +56,7 @@ class Layer {
         this.height = height;
         this.angle = 0.0;
         this.hidden = false;
+        this.transformHistory = [];
 
         mat3.identity(this.sizeMatrix);
         mat3.identity(this.rotationMatrix);
@@ -96,6 +100,17 @@ class Layer {
         this.propertyChanged = propertyChanged;
     }
 
+    public commitRotation() {
+        var matrix = mat3.create();
+        mat3.identity(matrix);
+        mat3.rotate(matrix, matrix, this.angle);
+        this.transformHistory.push(matrix);
+
+        this.angle = 0;
+
+        mat3.identity(this.rotationMatrix);
+    }
+
 	public setRotation(angle : number) {
 		this.angle = angle;
 		mat3.identity(this.rotationMatrix);
@@ -103,6 +118,23 @@ class Layer {
 
         this.notifyPropertyChanged();
 	}
+
+    public commitDimensions() {
+        var matrix = mat3.create();
+        mat3.identity(matrix);
+        mat3.scale(
+            matrix,
+            matrix,
+            new Float32Array([this.width / 2, this.height / 2])
+        );
+
+        this.transformHistory.push(matrix);
+
+        this.width = 2;
+        this.height = 2;
+
+        mat3.identity(this.sizeMatrix);
+    }
 
 	public getRotation() : number {
 		return this.angle;
