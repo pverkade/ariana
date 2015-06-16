@@ -19,7 +19,7 @@ app.controller('layersCtrl', function($scope) {
         event.stopPropagation();
         
         $scope.config.layers.layerInfo.push({
-            "name": $scope.config.layers.currentLayer,
+            "name": 'Layer' + $scope.config.layers.currentLayer,
             "x": 0,
             "y": 0,
             "xScale": 1,
@@ -75,4 +75,9 @@ app.controller('layersCtrl', function($scope) {
         }
         return false;
     };
+
+    $scope.getThumbnail = function(index) {
+        return $scope.renderEngine.getLayer(index).getThumbnail();
+    };
+
 });

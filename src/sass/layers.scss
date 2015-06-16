@@ -12,7 +12,7 @@
     right: 0;
     z-index: 2;
 
-    width: 3 * $blocksize;
+    width: 4 * $blocksize;
 //     max-height: calc(100% - 2 * $blocksize);
 
 //     .row {
@@ -80,4 +80,23 @@ accordion {
 	        background-color: lighten($light, 2 * $active-lighten);
 	    }
 	}
+}
+
+.layer-name {
+	background-color: inherit;
+	color: inherit;
+
+	border: none;
+  	border-bottom: 1px solid $dark;
+
+  	&:active {
+  		border-bottom: 1px solid $light;
+  	}
+}
+
+.preview {
+	width: 170px;
+	border: 1px solid $dark;
+
+	@include transform(scale(1, -1));
 }
