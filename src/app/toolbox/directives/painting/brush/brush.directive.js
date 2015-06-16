@@ -22,6 +22,7 @@ app.controller('BrushCtrl', function($scope) {
         $scope.setColor($scope.config.tools.colors.primary);
         $scope.thickness = 2;
         $scope.opacity = 1;
+        $scope.updateDrawEngine();
 	};
     
     $scope.updateDrawEngine = function() {
