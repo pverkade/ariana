@@ -135,6 +135,8 @@ app.controller('ScaleCtrl', function($scope) {
 				mouseUp:   $scope.mouseUp,
 				mouseMove: $scope.mouseMove
 			};
+		} else {
+			$scope.editEngine.clear();
 		}
 	}, true);
 });

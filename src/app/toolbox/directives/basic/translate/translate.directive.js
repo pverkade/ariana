@@ -33,20 +33,22 @@ app.controller('translateCtrl', function($scope) {
          
         var currentLayer = $scope.config.layers.currentLayer;
         if (currentLayer == -1) return;
-
-        var dx = ($scope.config.mouse.current.x - $scope.config.mouse.old.x);
-        var dy = ($scope.config.mouse.current.y - $scope.config.mouse.old.y);
+        var layer = $scope.renderEngine.layers[currentLayer];
+        
+        var dx = $scope.config.mouse.current.x - $scope.config.mouse.old.x;
+        var dy = $scope.config.mouse.current.y - $scope.config.mouse.old.y;
         
         /* Update th old mouse position. */
         $scope.config.mouse.old.x += dx;
         $scope.config.mouse.old.y += dy;
         
         /* Get the layer position. */
-        var x = $scope.renderEngine.layers[currentLayer].getPosX();
-        var y = $scope.renderEngine.layers[currentLayer].getPosY();
+        var x = layer.getPosX();
+        var y = layer.getPosY();
 
-        $scope.renderEngine.layers[currentLayer].setPos(x + dx, y + dy);
-        window.requestAnimationFrame(function() { $scope.renderEngine.render(); });
+        layer.setPos(x + dx, y + dy);
+        $scope.editEngine.drawTranslateTool(layer);
+        window.requestAnimationFrame(function() {$scope.renderEngine.render();});  
     };
 
     /*
@@ -67,6 +69,8 @@ app.controller('translateCtrl', function($scope) {
                 mouseUp: $scope.mouseUp,
                 mouseMove: $scope.mouseMove
             };
+        } else {
+            $scope.editEngine.clear();
         }
     }, true);
 });
