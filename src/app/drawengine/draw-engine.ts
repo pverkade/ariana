@@ -127,6 +127,13 @@ class DrawEngine {
         this.memContext = <CanvasRenderingContext2D>this.memCanvas.getContext('2d');
         this.drawContext = <CanvasRenderingContext2D>this.drawCanvas.getContext('2d');
     }
+
+    resize (width : number, height : number) : void {
+        this.memCanvas.width = width;
+        this.memCanvas.height = height;
+        this.clearCanvases();
+    }
+    
     /*
      * Function that is called at mousepress
      */
