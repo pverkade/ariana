@@ -11,10 +11,14 @@ app.controller('PaletteCtrl', function($scope) {
 	$scope.toolname = 'palette'
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
+	hsv = RGBtoHSV(	$scope.config.tools.colors.primary.r,
+            		$scope.config.tools.colors.primary.g,
+            		$scope.config.tools.colors.primary.b)
+
 	$scope.color = {
-        H: 100,
-        S: 70,
-        V: 80,
+        H: hsv.H,
+        S: hsv.S,
+        V: hsv.V,
         hex: "#000000",
     }
 
