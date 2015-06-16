@@ -65,3 +65,7 @@ accordion {
     @include transition(transform $scale-speed ease-in);
     @include transform(scale(1,1) translate(0px, 0px));
 }
+
+.mb10 {
+    margin-bottom: 10px;
+}

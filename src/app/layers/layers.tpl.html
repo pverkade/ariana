@@ -46,17 +46,33 @@
             
             <accordion-group ng-repeat="layer in config.layers.layerInfo" is-open="open" ng-click="selectLayer($index)" ng-class="{'layer-active': $index == config.layers.currentLayer}">
                 <accordion-heading>
-                    {{$index}}
+                    <div class="row mb10 text-center">
+                        <input type="text" value="{{layer.name}}" class="layer-name">
+                    </div>
 
-                    <i class="pull-left mdi " ng-class="{'mdi-chevron-up': open, 'mdi-chevron-left': !open}"></i>
+                    <div class="row">
+                        <div class="col-md-2">
 
-                    <input type="text" value="{{layer.name}}" style="width: 80px;">
+                            <span text-center>
+                                {{$index}}
+                                <i class="text-center mdi " ng-class="{'mdi-chevron-up': open, 'mdi-chevron-left': !open}"></i>
+                            </span>
+                        </div>
 
-                    <i class="pull-right mdi mdi-delete" ng-click="removeLayer($event, $index)"></i>
-                    <i class="pull-right mdi mdi-chevron-double-down" ng-click="moveLayerDown($event, $index)" ng-class="{'inactive': $index == config.layers.numberOfLayers - 1}"></i>
-                    <i class="pull-right mdi mdi-chevron-double-up" ng-click="moveLayerUp($event, $index)" ng-class="{'inactive': $index <= 0}"></i>
+                        <div class="col-md-8">
+                            <img class="preview" ng-src="{{getThumbnail($index)}}"></img>
+                        </div>
+
+                        <div class="col-md-2">
+                            
+
+                            <i class="mdi mdi-delete" ng-click="removeLayer($event, $index)"></i>
+                            <i class="mdi mdi-chevron-double-down" ng-click="moveLayerDown($event, $index)" ng-class="{'inactive': $index == config.layers.numberOfLayers - 1}"></i>
+                            <i class="mdi mdi-chevron-double-up" ng-click="moveLayerUp($event, $index)" ng-class="{'inactive': $index <= 0}"></i>
+                        </div>
+                    </div>
                 </accordion-heading>
-                
+
                 <div class="selectable item" ng-repeat="(key, value) in layer">
                     <span>
                         <b>{{key}}</b>: {{value}}
