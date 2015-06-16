@@ -22,7 +22,13 @@ app.controller('PencilCtrl', function($scope) {
         $scope.setColor($scope.config.tools.colors.primary);
         $scope.thickness = 2;
         $scope.opacity = 1;
+        $scope.updateDrawEngine();
 	};
+    
+    $scope.updateDrawEngine = function() {
+        $scope.drawEngine.setLineWidth($scope.thickness);
+        $scope.drawEngine.setOpacity($scope.opacity);
+    }
     
     $scope.setColor = function(color) {
         $scope.drawEngine.setColor(
