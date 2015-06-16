@@ -28,7 +28,7 @@ class MagicSelection{
 	magicWandColor : number[];
 	imageData : ImageData;
 	bmON : number;
-	maskWand : number[][];
+	maskWand : Uint8Array[];
 	maskBorder : Uint8Array;
 
 	constructor(image : HTMLImageElement) {
@@ -53,10 +53,7 @@ class MagicSelection{
 		/* Initialise maskWand with zeros (divide data length by 4 because
 			RGB pixels are described by 4 bytes). */
 		this.maskWand = [];
-		this.maskWand[0] = [];
-		for (var i = 0; i < this.imageData.data.length / 4; i++) {
-			this.maskWand[this.maskWand.length - 1].push(0);
-		}
+		this.maskWand[0] = new Uint8Array(this.imageData.width * this.imageData.height);
 	}
 
 	/* Return borders (bitmask) of magic wand mask. */
@@ -104,10 +101,7 @@ class MagicSelection{
 		this.magicWandColor = this.getColorPoint(x, y);
 
 		/* Create new empty maskWand for selection. */
-		this.maskWand.push([]);
-		for (var i = 0; i < this.maskWand[0].length; i++) {
-			this.maskWand[this.maskWand.length - 1].push(0);
-		}
+		this.maskWand.push(new Uint8Array(this.maskWand[0].length));
 
 		/* Use searchLine to get a horizontal line of points with colors next to given point
 			and push to stack. */
@@ -167,9 +161,6 @@ class MagicSelection{
 				} else {
                     val = 0;
 				}
-                imageData.data[(i*this.imageData.width+j)*4] = 0;
-                imageData.data[(i*this.imageData.width+j)*4 + 1] = 0;
-                imageData.data[(i*this.imageData.width+j)*4 + 2] = 0;
                 imageData.data[(i*this.imageData.width+j)*4 + 3] = val;
 			}
 		}
@@ -275,11 +266,7 @@ class MagicSelection{
 
 		value /= 3.0 * 255.0 * 255.0; 
 
-		if (value <= treshold) {
-			return true;
-		} else {
-			return false;
-		}
+		return (value <= treshold);
 	}
 
 	mergeMaskWand() {
