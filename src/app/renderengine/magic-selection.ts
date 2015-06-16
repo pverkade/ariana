@@ -30,11 +30,9 @@ class MagicSelection{
 	bmON : number;
 	maskWand : number[][];
 	maskBorder : number[];
-	maskAnts : number[][];
 
 	constructor(image : HTMLImageElement) {
 		this.maskBorder = [];
-		this.maskAnts = [];
 		this.bmON = 1;
 		this.magicWandColor = null;
 
@@ -161,26 +159,27 @@ class MagicSelection{
 		}
 	}
 
-	marchingAnts(size : number, offset : number) {
+	marchingAnts(imageData : ImageData, size : number, offset : number) : void {
 		// this.applyFilter(size, offset);
-		this.maskAnts[offset] = [];
+		var width = this.imageData.width;
+		var height = this.imageData.height;
 
-		/* A square of maximum size width/height of image data has to be created. */
-		var max_size = Math.max(this.imageData.width, this.imageData.height);
-
-		for (var i = 0; i < this.imageData.height; i++) {
-			for (var j = 0; j < this.imageData.width; j++) {
-				if (this.maskBorder[i*this.imageData.width + j] == 0) {
-					this.maskAnts[offset][i*this.imageData.width + j] = 0;
+		for (var i = 0; i < height; i++) {
+			for (var j = 0; j < width; j++) {
+                var val;
+				if (this.maskBorder[i*width + j] == 0) {
+                    val = 0;
 				} else if ((i + j + offset) % size < size / 2) {
-					this.maskAnts[offset][i*this.imageData.width + j] = 1;
+                    val = 255;
 				} else {
-					this.maskAnts[offset][i*this.imageData.width + j] = 0;
+                    val = 0;
 				}
+                imageData.data[(i*this.imageData.width+j)*4] = 0;
+                imageData.data[(i*this.imageData.width+j)*4 + 1] = 0;
+                imageData.data[(i*this.imageData.width+j)*4 + 2] = 0;
+                imageData.data[(i*this.imageData.width+j)*4 + 3] = val;
 			}
 		}
-
-		return this.maskAnts[offset];
 	}
 
 	/* Remove bitmask of magic wand that contains point. Do not remove first bitmask

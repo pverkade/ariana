@@ -69,23 +69,7 @@ var magicSelection = {
             scope.renderEngine.addLayer(layer);
             scope.renderEngine.render();
 
-
-            console.log("Marching ants size: " + scope.offset);
-            console.log("Marching ants time offset: " + scope.offset);
-            var antsMask = scope.magic.marchingAnts(scope.sizeAnts * 2, scope.offset);
-            for (var i = 0; i < antsMask.length; i++) {
-                if (antsMask[i]) {
-                    imgData.data[4 * i] = 0;
-                    imgData.data[4 * i + 1] = 0;
-                    imgData.data[4 * i + 2] = 0;
-                    imgData.data[4 * i + 3] = 255;
-                } else {
-                    imgData.data[4 * i] = 0;
-                    imgData.data[4 * i + 1] = 0;
-                    imgData.data[4 * i + 2] = 0;
-                    imgData.data[4 * i + 3] = 0;
-                }
-            }
+            scope.magic.marchingAnts(imgData, 5.0, 1.0);
             context.putImageData(imgData, 0, 0);
         }
     },
