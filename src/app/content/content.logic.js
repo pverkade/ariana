@@ -112,6 +112,4 @@ app.controller('ContentController', function($scope, $window) {
         document.getElementById("main-canvas"),
         document.getElementById("editing-canvas")
     );
-
-    $scope.resizeCanvases($scope.config.canvas.width, $scope.config.canvas.height);
 });

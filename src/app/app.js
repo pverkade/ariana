@@ -54,8 +54,9 @@ app.controller('AppCtrl', ['$scope',
                 xr: 1,
                 yr: 1,
                 zoom: 1,
-                width: 0,
-                height: 0
+                width: 800,
+                height: 600,
+                visible: false
             },
             tools: {
                 activeTool: 'pan',
@@ -142,6 +143,10 @@ app.controller('AppCtrl', ['$scope',
             $scope.config.layers.numberOfLayers = 0;
             $scope.config.layers.currentLayer = -1;
             $scope.config.layers.layerInfo = [];
+
+            if (!$scope.config.canvas.visible) {
+                $scope.config.canvas.visible = true;
+            }
             
             window.requestAnimationFrame(function() {$scope.renderEngine.render();});
         };
