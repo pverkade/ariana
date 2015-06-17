@@ -63,9 +63,8 @@
                             <img class="preview" ng-src="{{getThumbnail($index)}}"></img>
                         </div>
 
-                        <div class="col-md-2">
-                            
-
+                        <div class="col-md-2">         
+                            <i class="mdi " ng-click="hideLayer($event, $index)" ng-class="{'mdi-eye-off': isHidden($index), 'mdi-eye': !isHidden($index)}"></i>
                             <i class="mdi mdi-delete" ng-click="removeLayer($event, $index)"></i>
                             <i class="mdi mdi-chevron-double-down" ng-click="moveLayerDown($event, $index)" ng-class="{'inactive': $index == config.layers.numberOfLayers - 1}"></i>
                             <i class="mdi mdi-chevron-double-up" ng-click="moveLayerUp($event, $index)" ng-class="{'inactive': $index <= 0}"></i>
