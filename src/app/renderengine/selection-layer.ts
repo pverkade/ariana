@@ -20,12 +20,21 @@ class SelectionLayer extends Layer {
         );
         this.selectedLayer = selectedLayer;
         this.invertedSelectedLayer = invertedSelectedLayer;
+    }
 
-        this.sizeMatrix = this.selectedLayer.sizeMatrix;
-        this.rotationMatrix = this.selectedLayer.rotationMatrix;
-        this.translationMatrix = this.selectedLayer.translationMatrix;
-        this.posX = this.selectedLayer.getPosX();
-        this.posY = this.selectedLayer.getPosY();
+    public setStartPos(x : number, y : number) {
+        this.invertedSelectedLayer.setPos(x, y);
+        this.setPos(x, y);
+    }
+
+    public setStartRotation(angle : number) {
+        this.invertedSelectedLayer.setRotation(angle);
+        this.setRotation(angle);
+    }
+
+    public setStartDimensions(width : number, height : number) {
+        this.invertedSelectedLayer.setDimensions(width, height);
+        this.setDimensions(width, height);
     }
 
     public setupRender() {

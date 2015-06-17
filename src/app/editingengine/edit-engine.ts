@@ -168,15 +168,26 @@ class EditEngine {
             }
         }
 
+        /* Draw marching ends */
         var selectionLayer : SelectionLayer = this.selectionLayer;
-        if (selectionLayer) {
+        if (currentLayer) {
             this.context.save();
-            this.context.rotate(selectionLayer.getRotation());
             this.context.translate(
-                selectionLayer.getPosX() - selectionLayer.getWidth() / 2.0,
-                selectionLayer.getPosY() - selectionLayer.getHeight() / 2.0
+                currentLayer.getPosX(),
+                currentLayer.getPosY()
             );
-            this.context.drawImage(this.selectionTmpCanvas, 0, 0);
+            this.context.rotate(-currentLayer.getRotation());
+            this.context.drawImage(
+                this.selectionTmpCanvas,
+                0,
+                0,
+                this.selectionTmpCanvas.width,
+                this.selectionTmpCanvas.height,
+                -currentLayer.getWidth()/2.0,
+                -currentLayer.getHeight()/2.0,
+                currentLayer.getWidth(),
+                currentLayer.getHeight()
+            );
             this.context.restore();
         }
     }

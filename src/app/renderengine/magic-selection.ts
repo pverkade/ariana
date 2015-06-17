@@ -25,11 +25,11 @@ class ImgData {
 }
 
 class MagicSelection implements SelectionInterface {
-	magicWandColor : number[];
-	imageData : ImageData;
-	bmON : number;
-	maskWand : Uint8Array[];
-	maskBorder : Uint8Array;
+	private magicWandColor : number[];
+	private imageData : ImageData;
+	private bmON : number;
+	private maskWand : Uint8Array[];
+	private maskBorder : Uint8Array;
 
 	constructor(image : HTMLImageElement) {
 		this.maskBorder = new Uint8Array(image.width * image.height);

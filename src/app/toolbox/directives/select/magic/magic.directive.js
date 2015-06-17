@@ -47,9 +47,48 @@ angular.module('ariana').controller('MagicCtrl', function($scope) {
 	$scope.mouseDown = function() {
 		var scope = angular.element($("#main-canvas")).scope();
 
-		/* x and y coordinates in pixels relative to image. */
+		/* x and y coordinates in pixels relative to canvas left top corner. */
 		var xRelative = $scope.config.mouse.current.x - $scope.config.canvas.x;
 		var yRelative = $scope.config.mouse.current.y - $scope.config.canvas.y;
+        console.log("xRelative: " + xRelative);
+        console.log("yRelative: " + yRelative);
+
+        /* Calculate x and y coordinates in pixels of the original image */
+        var currentLayer = 0;//$scope.config.layers.currentLayer;
+        var layer = $scope.renderEngine.layers[currentLayer];
+        var x = layer.getPosX();
+        var y = layer.getPosY();
+        xRelative -= x;
+        yRelative -= y;
+        console.log("xRelative: " + xRelative);
+        console.log("yRelative: " + yRelative);
+
+        var cos = Math.cos(layer.getRotation());
+        var sin = Math.sin(layer.getRotation());
+        xRelative = cos * xRelative - sin * yRelative;
+        yRelative = sin * xRelative + cos * yRelative;
+        console.log("xRelative: " + xRelative);
+        console.log("yRelative: " + yRelative);
+
+        xRelative /= layer.getWidth();
+        yRelative /= layer.getHeight();
+        console.log("xRelative: " + xRelative);
+        console.log("yRelative: " + yRelative);
+
+        xRelative += .5;
+        yRelative += .5;
+        console.log("xRelative: " + xRelative);
+        console.log("yRelative: " + yRelative);
+
+        xRelative *= layer.getImage().width;
+        yRelative *= layer.getImage().height;
+        console.log("xRelative: " + xRelative);
+        console.log("yRelative: " + yRelative);
+
+        xRelative = Math.round(xRelative);
+        yRelative = Math.round(yRelative);
+        console.log("xRelative: " + xRelative);
+        console.log("yRelative: " + yRelative);
 
 		/* Check wheter user has clicked inside of a selection. */
 		if (scope.magic.isInSelection(xRelative, yRelative)) {
@@ -66,7 +105,7 @@ angular.module('ariana').controller('MagicCtrl', function($scope) {
 		var canvas = document.getElementById("editing-canvas");
 		var context = canvas.getContext("2d");
 		var imgData = context.createImageData(width, height);
-		console.log("BItmask: " + bitmask);
+
 		if (bitmask) {
 			for (var i = 0; i < bitmask.length; i++) {
 				if (bitmask[i]) {
@@ -76,10 +115,14 @@ angular.module('ariana').controller('MagicCtrl', function($scope) {
 					imgData.data[4 * i + 3] = 255;
 				}
 			}
-			var layer = scope.renderEngine.createSelectionImageLayer(imgData, 0);
+			var newLayer = scope.renderEngine.createSelectionImageLayer(imgData, 0);
+            newLayer.setStartRotation(layer.getRotation());
+            newLayer.setStartPos(layer.getPosX(), layer.getPosY());
+            newLayer.setStartDimensions(layer.getWidth(), layer.getHeight());
 			scope.renderEngine.removeLayer(0);
-			scope.renderEngine.addLayer(layer);
+			scope.renderEngine.addLayer(newLayer);
 			scope.renderEngine.render();
+            scope.requestRenderEngineUpdate();
 
 			scope.editEngine.setSelectionLayer(scope.magic, layer);
             scope.requestEditEngineUpdate();
