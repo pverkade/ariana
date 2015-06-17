@@ -135,6 +135,7 @@ app.controller('AppCtrl', ['$scope',
             $scope.config.canvas.height = height;
             $scope.renderEngine.resize($scope.config.canvas.width, $scope.config.canvas.height);
             $scope.drawEngine.resize($scope.config.canvas.width, $scope.config.canvas.height);
+            $scope.editEngine.resize($scope.config.canvas.width, $scope.config.canvas.height);
 
             if (toolFunctions && toolFunctions.init) {
                 toolFunctions.init();
