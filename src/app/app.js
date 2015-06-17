@@ -27,23 +27,23 @@ app.controller('AppCtrl', ['$scope',
             mouse: {
                 old : {
                     x : 0,
-                    y : 0,
+                    y : 0
                 },
                 current: {
                     x: 0,
-                    y: 0,
+                    y: 0
                 },
                 button: {
                     1: false, // left button
                     2: false, // middle button
-                    3: false, // right button
+                    3: false // right button
                 }
             },
             canvas: {
                 cursor: 'default',
                 x: 128,
                 y: 128,
-                zoom: 1,
+                zoom: 1
             },
             tools: {
                 activeTool: null,
@@ -65,7 +65,7 @@ app.controller('AppCtrl', ['$scope',
             layers: {
                 numberOfLayers: 0,
                 currentLayer: -1,
-                layerInfo: [],
+                layerInfo: []
             }
         };
 
@@ -109,7 +109,7 @@ app.controller('AppCtrl', ['$scope',
                 "width": width,
                 "height": height,
                 "rotation": layer.getRotation(),
-            }
+            };
 
             $scope.renderEngine.render();
         };
@@ -122,7 +122,7 @@ app.controller('AppCtrl', ['$scope',
             
             layer.setPos(0.3 * width, 0.3 * height);
             
-            $scope.renderEngine.addLayer(layer)
+            $scope.renderEngine.addLayer(layer);
 
             /* set the correct layer info in config. The new layer comes on top
              * and is immediately selected. */
@@ -138,7 +138,7 @@ app.controller('AppCtrl', ['$scope',
                 "width": width,
                 "height": height,
                 "rotation": layer.getRotation()
-            }
+            };
 
             $scope.renderEngine.render();
         };

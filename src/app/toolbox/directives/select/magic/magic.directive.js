@@ -47,6 +47,10 @@ angular.module('ariana').controller('MagicCtrl', function($scope) {
         /* Calculate x and y coordinates in pixels of the original image */
         var currentLayer = $scope.config.layers.currentLayer;
         var layer = $scope.renderEngine.layers[currentLayer];
+        if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
+            return;
+        }
+        
         var x = layer.getPosX();
         var y = layer.getPosY();
         xRelative -= x;

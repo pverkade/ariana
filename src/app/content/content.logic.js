@@ -58,7 +58,7 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
         /* Call the appropriate tool functions. */
         var toolFunctions = $scope.config.tools.activeToolFunctions;
         if (toolFunctions) toolFunctions.mouseUp($scope, event);
-    }
+    };
     
     $scope.mwheelUp = function() {
         if ($scope.config.canvas.zoom < 0.1) {
@@ -67,7 +67,7 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
             $scope.config.canvas.zoom *= 1.1;
         }
         //console.log($scope.config.canvas.zoom);
-    }
+    };
 
     $scope.mwheelDown = function() {
         if ($scope.config.canvas.zoom < 0.1) {
@@ -76,7 +76,7 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
             $scope.config.canvas.zoom *= 0.9;
         }
         //console.log($scope.config.canvas.zoom);
-    }
+    };
 
     /* Get the canvas element and start the engine. */
     $scope.startEngines(
