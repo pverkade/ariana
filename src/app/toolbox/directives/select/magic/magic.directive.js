@@ -18,9 +18,6 @@ angular.module('ariana').controller('MagicCtrl', function($scope) {
 		/* working with $scope to share variables between functions in this file does not seem to work. */
 		var scope = angular.element($("#main-canvas")).scope();
 
-		/*scope.imgData = new ImgData($scope.renderEngine.getWidth(), $scope.renderEngine.getHeight());
-		 scope.imgData.data = $scope.renderEngine.renderAsUint8Array();
-		 scope.magic = new MagicSelection(scope.imgData);*/
 		var currentLayer = $scope.config.layers.currentLayer;
 		if (currentLayer == -1) {
 			console.log("No layer selected");
@@ -33,7 +30,7 @@ angular.module('ariana').controller('MagicCtrl', function($scope) {
 			return;
 		}
 		var image = layer.getImage();
-		scope.magic = magicSelection = new MagicSelection(image);
+		scope.magic = new MagicSelection(image);
 	};
 
 	/* onMouseDown */

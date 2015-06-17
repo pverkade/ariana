@@ -12,18 +12,6 @@ class Point {
 	// }
 }
 
-class ImgData {
-	width : number;
-	height : number;
-	data : number[];
-
-	constructor(width : number, height : number) {
-		this.width = width;
-		this.height = height;
-		this.data = [];
-	}
-}
-
 class MagicSelection implements SelectionInterface {
 	private magicWandColor : number[];
 	private imageData : ImageData;
@@ -42,13 +30,7 @@ class MagicSelection implements SelectionInterface {
 
         var context = canvas.getContext("2d");
         context.drawImage(image, 0, 0);
-        var imageData : ImageData = context.getImageData(0, 0, image.width, image.height);
-
-		/* Copy width/height and image data to imageData object. */
-		this.imageData = new ImgData(imageData.width, imageData.height);
-		for (var i = 0; i < imageData.data.length; i++) {
-			this.imageData.data.push(imageData.data[i]);
-		}
+        this.imageData = context.getImageData(0, 0, image.width, image.height);
 
 		/* Initialise maskWand with zeros (divide data length by 4 because
 			RGB pixels are described by 4 bytes). */
