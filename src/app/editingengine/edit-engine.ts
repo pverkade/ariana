@@ -123,7 +123,7 @@ class EditEngine {
         this.currentLayer = null;
     }
 
-    public setSelectionLayer(magicSelection : MagicSelection, selectionLayer : SelectionLayer) : void {
+    public setSelectionLayer(selectionClass : SelectionInterface, selectionLayer : SelectionLayer) : void {
         console.log("Edit engine setSelecitonLayer");
         this.selectionLayer = selectionLayer;
 
@@ -138,7 +138,7 @@ class EditEngine {
 
         this.selectionAntsInterval = setInterval(function() {
             var tmpContext = thisPtr.selectionTmpContext;
-            magicSelection.marchingAnts(imageData, 5.0, ++offset);
+            selectionClass.marchingAnts(imageData, 5.0, ++offset);
             tmpContext.clearRect(0, 0, selectionLayer.getWidth(), selectionLayer.getHeight());
             tmpContext.putImageData(imageData, 0, 0);
         }, 500);

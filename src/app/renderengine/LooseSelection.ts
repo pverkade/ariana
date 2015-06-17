@@ -1,7 +1,7 @@
-class LooseSelection {
+class LooseSelection implements SelectionInterface {
 	points : Point[];
 	maskBorder : number[];
-	maskAnts : number[][];
+	// maskAnts : number[][];
 
 	width : number;
 	height : number;
@@ -10,7 +10,7 @@ class LooseSelection {
 		this.width = width;
 		this.height = height;
 		this.maskBorder = [];
-		this.maskAnts = [];
+		// this.maskAnts = [];
 
 		for (var i=0; i < this.width * this.height; i++) {
 			this.maskBorder.push(0);
@@ -120,25 +120,21 @@ class LooseSelection {
 		return [];
 	}
 
-	marchingAnts(size : number, offset : number) {
-		this.maskAnts[offset] = [];
-
-		/* A square of maximum size width/height of image data has to be created. */
-		var max_size = Math.max(this.width, this.height);
+	marchingAnts(imageData : ImageData, size : number, offset : number) : void {
+        var alpha;
 
 		for (var i = 0; i < this.height; i++) {
 			for (var j = 0; j < this.width; j++) {
 				if (this.maskBorder[i*this.width + j] == 0) {
-					this.maskAnts[offset][i*this.width + j] = 0;
+                    alpha = 0;
 				} else if ((i + j + offset) % size < size / 2) {
-					this.maskAnts[offset][i*this.width + j] = 1;
+                    alpha = 255;
 				} else {
-					this.maskAnts[offset][i*this.width + j] = 0;
+                    alpha = 0;
 				}
+                imageData.data[(i*this.width+j)*4 + 3] = alpha;
 			}
 		}
-
-		return this.maskAnts[offset];
 	}
 
 	reset() {

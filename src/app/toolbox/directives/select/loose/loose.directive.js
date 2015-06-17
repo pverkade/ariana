@@ -86,23 +86,26 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
                 var boundingPath = scope.looseSelection.getBoundingPath();
                 if (boundingPath.length != 0) {
                     var bitmaskBorder = scope.looseSelection.getMaskBorder();
-                    var bitmaskWand = scope.looseSelection.getMaskWand();
-                    var maskAnts = scope.looseSelection.marchingAnts(8, 0);
+                    var bitmask = scope.looseSelection.getMaskWand();
+                    // var maskAnts = scope.looseSelection.marchingAnts(8, 0);
+					if (bitmask) {
+						for (var i = 0; i < bitmask.length; i++) {
+							if (bitmask[i]) {
+								scope.imgData.data[4 * i] = 255;
+								scope.imgData.data[4 * i + 1] = 0;
+								scope.imgData.data[4 * i + 2] = 0;
+								scope.imgData.data[4 * i + 3] = 255;
+							}
+						}
+						var layer = scope.renderEngine.createSelectionImageLayer(scope.imgData, 0);
+						scope.renderEngine.removeLayer(0);
+						scope.renderEngine.addLayer(layer);
+						scope.renderEngine.render();
 
-                    for (var i=0; i < bitmaskBorder.length; i++) {
-                        if (bitmaskBorder[i] && maskAnts[i] == 0) {
-                            scope.imgData.data[4*i] = 255*bitmaskBorder[i];
-                            scope.imgData.data[4*i+1] = 255*bitmaskBorder[i];
-                            scope.imgData.data[4*i+2] = 255*bitmaskBorder[i];
-                            scope.imgData.data[4*i+3] = 255; 
-                        } else if (bitmaskBorder[i] && maskAnts[i] == 1) {
-                            scope.imgData.data[4*i] = 0;
-                            scope.imgData.data[4*i+1] = 0;
-                            scope.imgData.data[4*i+2] = 0;
-                            scope.imgData.data[4*i+3] = 255; 
-                        }
-
-                    }  
+						console.log(scope.looseSelection);
+						scope.editEngine.setSelectionLayer(scope.looseSelection, layer);
+			            scope.requestEditEngineUpdate();
+					}
 
                     scope.looseSelection.reset();
 

@@ -24,7 +24,7 @@ class ImgData {
 	}
 }
 
-class MagicSelection{
+class MagicSelection implements SelectionInterface {
 	magicWandColor : number[];
 	imageData : ImageData;
 	bmON : number;
