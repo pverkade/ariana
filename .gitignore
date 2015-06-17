@@ -14,4 +14,5 @@ src/*/Thumbs.db
 .sass-cache/
 .tscache/*
 src/app/drawengine/*.js
+src/app/editengine/*.js
 *.tmp.txt

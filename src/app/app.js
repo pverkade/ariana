@@ -142,5 +142,46 @@ app.controller('AppCtrl', ['$scope',
 
             $scope.renderEngine.render();
         };
+
+        $scope.updates = {
+            renderEngine: false,
+            drawEngine: false,
+            editEngine: false,
+            animationFrameCallback: null,
+            animationFrameFunction: function() {
+                if ($scope.updates.renderEngine) {
+                    $scope.renderEngine.render();
+                    $scope.updates.renderEngine = false;
+                }
+
+                if ($scope.editEngine) {
+                    $scope.editEngine.render();
+                    $scope.updates.editEngine = false;
+                }
+
+                if ($scope.editEngine.needsAnimating()) {
+                    $scope.updates.editEngine = true;
+                    $scope.updates.animationFrameCallback =
+                        requestAnimationFrame($scope.updates.animationFrameFunction);
+                } else {
+                    $scope.updates.animationFrameCallback = null;
+                }
+            }
+        };
+
+        $scope.requestRenderEngineUpdate = function() {
+            $scope.updates.renderEngine = true;
+            if (!$scope.updates.animationFrameCallback) {
+                $scope.updates.animationFrameCallback =
+                    requestAnimationFrame($scope.updates.animationFrameFunction);
+            }
+        };
+        $scope.requestEditEngineUpdate = function() {
+            $scope.updates.editEngine = true;
+            if (!$scope.updates.animationFrameCallback) {
+                $scope.updates.animationFrameCallback =
+                    requestAnimationFrame($scope.updates.animationFrameFunction);
+            }
+        };
 	}
 ]);

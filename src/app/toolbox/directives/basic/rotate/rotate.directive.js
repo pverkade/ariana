@@ -63,8 +63,10 @@ angular.module('ariana').controller('RotateCtrl', function($scope) {
         var rotation = layer.getRotation();
         
         layer.setRotation(rotation + difference);
-		$scope.editEngine.drawRotateTool(layer);
-        window.requestAnimationFrame(function() {$scope.renderEngine.render();});
+        $scope.requestRenderEngineUpdate();
+
+		$scope.editEngine.setEditLayer(layer, EditMode.rotate);
+        $scope.requestEditEngineUpdate();
 	};
 -
 	/*

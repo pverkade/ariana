@@ -81,10 +81,8 @@ angular.module('ariana').controller('MagicCtrl', function($scope) {
 			scope.renderEngine.addLayer(layer);
 			scope.renderEngine.render();
 
-			//scope.magic.marchingAnts(imgData, 5.0, 1.0);
-			//context.putImageData(imgData, 0, 0);
-			console.log("Edit engine: " + scope.editEngine);
 			scope.editEngine.setSelectionLayer(scope.magic, layer);
+            scope.requestEditEngineUpdate();
 		}
 	};
 

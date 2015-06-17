@@ -2,12 +2,24 @@
 /// <reference path="../renderengine/selection-layer"/>
 /// <reference path="../renderengine/magic-selection"/>
 
+enum EditMode {
+    translate,
+    rotate,
+    scale
+}
+
 class EditEngine {
     littleSquareDiameter = 4;
     rotateImage : HTMLImageElement;
     width : number;
     height : number;
     context : CanvasRenderingContext2D;
+
+    /* Scale/rotate/translate stuff */
+    currentLayer : Layer;
+    currentMode : EditMode;
+
+    /* (Magic) selection stuff */
     selectionLayer : SelectionLayer;
     selectionAntsInterval;
     selectionTmpCanvas;
@@ -21,7 +33,7 @@ class EditEngine {
         this.rotateImage.src = "/assets/vectors/rotate-left.svg";
     }
 
-    clear() {
+    private clear() {
         this.context.clearRect(0, 0, this.width, this.height);
     }
 
@@ -31,15 +43,13 @@ class EditEngine {
         context.strokeStyle = "#000000";
     }
 
-    drawTranslateTool(layer : Layer) {
+    private drawTranslateTool(layer : Layer) {
         var context = this.context;
         var x = layer.getPosX();
         var y = layer.getPosY();
         var width = layer.getWidth();
         var height = layer.getHeight();
         var rotation = layer.getRotation();
-
-        this.clear();
 
         context.save();
         this.setColors(context);
@@ -55,15 +65,13 @@ class EditEngine {
         context.restore();
     }
 
-    drawRotateTool(layer : Layer) {
+    private drawRotateTool(layer : Layer) {
         var context = this.context;
         var x = layer.getPosX();
         var y = layer.getPosY();
         var width = layer.getWidth();
         var height = layer.getHeight();
         var rotation = layer.getRotation();
-
-        this.clear();
 
         context.save();
         this.setColors(context);
@@ -80,15 +88,13 @@ class EditEngine {
         context.restore();
     }
 
-    drawScaleTool(layer : Layer) {
+    private drawScaleTool(layer : Layer) {
         var context = this.context;
         var x = layer.getPosX();
         var y = layer.getPosY();
         var width = layer.getWidth();
         var height = layer.getHeight();
         var rotation = layer.getRotation();
-
-        this.clear();
 
         context.save();
         this.setColors(context);
@@ -108,7 +114,16 @@ class EditEngine {
         context.restore();
     }
 
-    setSelectionLayer(magicSelection : MagicSelection, selectionLayer : SelectionLayer) {
+    public setEditLayer(layer : Layer, mode : EditMode) {
+        this.currentLayer = layer;
+        this.currentMode = mode;
+    }
+
+    public removeEditLayer() {
+        this.currentLayer = null;
+    }
+
+    public setSelectionLayer(magicSelection : MagicSelection, selectionLayer : SelectionLayer) : void {
         console.log("Edit engine setSelecitonLayer");
         this.selectionLayer = selectionLayer;
 
@@ -123,26 +138,50 @@ class EditEngine {
 
         this.selectionAntsInterval = setInterval(function() {
             var tmpContext = thisPtr.selectionTmpContext;
-            var layer : SelectionLayer = thisPtr.selectionLayer;
-            magicSelection.marchingAnts(imageData, 5.0, offset);
-            offset+=0.1;
+            magicSelection.marchingAnts(imageData, 5.0, ++offset);
             tmpContext.clearRect(0, 0, selectionLayer.getWidth(), selectionLayer.getHeight());
             tmpContext.putImageData(imageData, 0, 0);
-
-
-            thisPtr.clear();
-            thisPtr.context.save();
-            thisPtr.context.rotate(layer.getRotation());
-            thisPtr.context.translate(layer.getPosX()-layer.getWidth()/2.0, layer.getPosY()-layer.getHeight()/2.0);
-            thisPtr.context.drawImage(this.selectionTmpCanvas, 0, 0);
-            thisPtr.context.restore();
-        }, 1000);
+        }, 500);
     }
 
-    removeSelectionLayer() {
+    public removeSelectionLayer() : void {
         this.selectionLayer = null;
         if (this.selectionAntsInterval) {
             clearInterval(this.selectionAntsInterval);
         }
+    }
+
+    public render() : void {
+        this.clear();
+        var currentLayer : Layer = this.currentLayer;
+        if (currentLayer) {
+            switch (this.currentMode) {
+                case EditMode.rotate:
+                    this.drawRotateTool(currentLayer);
+                    break;
+                case EditMode.translate:
+                    this.drawTranslateTool(currentLayer);
+                    break;
+                case EditMode.scale:
+                    this.drawScaleTool(currentLayer);
+                    break;
+            }
+        }
+
+        var selectionLayer : SelectionLayer = this.selectionLayer;
+        if (selectionLayer) {
+            this.context.save();
+            this.context.rotate(selectionLayer.getRotation());
+            this.context.translate(
+                selectionLayer.getPosX() - selectionLayer.getWidth() / 2.0,
+                selectionLayer.getPosY() - selectionLayer.getHeight() / 2.0
+            );
+            this.context.drawImage(this.selectionTmpCanvas, 0, 0);
+            this.context.restore();
+        }
+    }
+
+    needsAnimating() : boolean {
+        return (this.selectionLayer!=null);
     }
 }

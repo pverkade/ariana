@@ -1,6 +1,12 @@
 /// <reference path="../renderengine/layer"/>
 /// <reference path="../renderengine/selection-layer"/>
 /// <reference path="../renderengine/magic-selection"/>
+var EditMode;
+(function (EditMode) {
+    EditMode[EditMode["translate"] = 0] = "translate";
+    EditMode[EditMode["rotate"] = 1] = "rotate";
+    EditMode[EditMode["scale"] = 2] = "scale";
+})(EditMode || (EditMode = {}));
 var EditEngine = (function () {
     function EditEngine(canvas) {
         this.littleSquareDiameter = 4;
@@ -25,7 +31,6 @@ var EditEngine = (function () {
         var width = layer.getWidth();
         var height = layer.getHeight();
         var rotation = layer.getRotation();
-        this.clear();
         context.save();
         this.setColors(context);
         context.translate(x, y);
@@ -41,7 +46,6 @@ var EditEngine = (function () {
         var width = layer.getWidth();
         var height = layer.getHeight();
         var rotation = layer.getRotation();
-        this.clear();
         context.save();
         this.setColors(context);
         context.translate(x, y);
@@ -58,7 +62,6 @@ var EditEngine = (function () {
         var width = layer.getWidth();
         var height = layer.getHeight();
         var rotation = layer.getRotation();
-        this.clear();
         context.save();
         this.setColors(context);
         context.translate(x, y);
@@ -70,6 +73,13 @@ var EditEngine = (function () {
             }
         }
         context.restore();
+    };
+    EditEngine.prototype.setEditLayer = function (layer, mode) {
+        this.currentLayer = layer;
+        this.currentMode = mode;
+    };
+    EditEngine.prototype.removeEditLayer = function () {
+        this.currentLayer = null;
     };
     EditEngine.prototype.setSelectionLayer = function (magicSelection, selectionLayer) {
         console.log("Edit engine setSelecitonLayer");
@@ -83,24 +93,44 @@ var EditEngine = (function () {
         this.selectionTmpContext = this.selectionTmpCanvas.getContext("2d");
         this.selectionAntsInterval = setInterval(function () {
             var tmpContext = thisPtr.selectionTmpContext;
-            var layer = thisPtr.selectionLayer;
-            magicSelection.marchingAnts(imageData, 5.0, offset);
-            offset += 0.1;
+            magicSelection.marchingAnts(imageData, 5.0, ++offset);
             tmpContext.clearRect(0, 0, selectionLayer.getWidth(), selectionLayer.getHeight());
             tmpContext.putImageData(imageData, 0, 0);
-            thisPtr.clear();
-            thisPtr.context.save();
-            thisPtr.context.rotate(layer.getRotation());
-            thisPtr.context.translate(layer.getPosX() - layer.getWidth() / 2.0, layer.getPosY() - layer.getHeight() / 2.0);
-            thisPtr.context.drawImage(this.selectionTmpCanvas, 0, 0);
-            thisPtr.context.restore();
-        }, 1000);
+        }, 500);
     };
     EditEngine.prototype.removeSelectionLayer = function () {
         this.selectionLayer = null;
         if (this.selectionAntsInterval) {
             clearInterval(this.selectionAntsInterval);
         }
+    };
+    EditEngine.prototype.render = function () {
+        this.clear();
+        var currentLayer = this.currentLayer;
+        if (currentLayer) {
+            switch (this.currentMode) {
+                case 1 /* rotate */:
+                    this.drawRotateTool(currentLayer);
+                    break;
+                case 0 /* translate */:
+                    this.drawTranslateTool(currentLayer);
+                    break;
+                case 2 /* scale */:
+                    this.drawScaleTool(currentLayer);
+                    break;
+            }
+        }
+        var selectionLayer = this.selectionLayer;
+        if (selectionLayer) {
+            this.context.save();
+            this.context.rotate(selectionLayer.getRotation());
+            this.context.translate(selectionLayer.getPosX() - selectionLayer.getWidth() / 2.0, selectionLayer.getPosY() - selectionLayer.getHeight() / 2.0);
+            this.context.drawImage(this.selectionTmpCanvas, 0, 0);
+            this.context.restore();
+        }
+    };
+    EditEngine.prototype.needsAnimating = function () {
+        return (this.selectionLayer != null);
     };
     return EditEngine;
 })();

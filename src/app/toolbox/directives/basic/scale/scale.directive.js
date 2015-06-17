@@ -126,10 +126,10 @@ angular.module('ariana').controller('ScaleCtrl', function($scope) {
 			y -= 0.5 * (height - originalHeight);
 
 		layer.setPos(x, y);
-		$scope.editEngine.drawScaleTool(layer);
-		window.requestAnimationFrame(function() {
-			$scope.renderEngine.render();
-		});
+		$scope.requestRenderEngineUpdate();
+
+		$scope.editEngine.setEditLayer(layer, EditMode.scale);
+		$scope.requestEditEngineUpdate();
 	}; -
 	/*
 	 * This will watch for this tools' "active" variable changes.
