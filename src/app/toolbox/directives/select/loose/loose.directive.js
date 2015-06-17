@@ -46,7 +46,7 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
         scope.mouseBTNDown = false;
 
         scope.drawEngine.setLineWidth(2);
-        scope.drawEngine.setDrawType(drawType.NORMAL);
+        scope.drawEngine.setDrawType(drawType.DOTTED);
 	};
 
 	/* onMouseDown */
@@ -126,20 +126,11 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
 								scope.imgData.data[4 * i + 3] = 255;
 							}
 						}
+                        var newLayer = scope.renderEngine.createSelectionImageLayer(scope.imgData, 0);
+                        scope.renderEngine.addLayer(newLayer);
+                        scope.requestRenderEngineUpdate();
 
-
-
-						var newLayer = scope.renderEngine.createSelectionImageLayer(scope.imgData, 0);
-			            newLayer.setStartRotation(layer.getRotation());
-			            newLayer.setStartPos(layer.getPosX(), layer.getPosY());
-			            newLayer.setStartDimensions(layer.getWidth(), layer.getHeight());
-						scope.renderEngine.removeLayer(0);
-						scope.renderEngine.addLayer(newLayer);
-						scope.renderEngine.render();
-			            scope.requestRenderEngineUpdate();
-
-						console.log(scope.looseSelection);
-						scope.editEngine.setSelectionLayer(scope.looseSelection, layer);
+						scope.editEngine.setSelectionLayer(scope.looseSelection, newLayer);
 			            scope.requestEditEngineUpdate();
 					}
 

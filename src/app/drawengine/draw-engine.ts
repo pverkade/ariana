@@ -72,7 +72,7 @@ class Color {
  * RECTANGLE : draw rectangles
  * 
  */
-enum drawType { NORMAL, QUADRATIC_BEZIER, BRUSH, LINE, RECTANGLE, CIRCLE, ERASE };
+enum drawType { NORMAL, DOTTED, QUADRATIC_BEZIER, BRUSH, LINE, RECTANGLE, CIRCLE, ERASE };
 
 /*
  * Brushes
@@ -118,6 +118,8 @@ class DrawEngine {
     drawCanvas : HTMLCanvasElement;
     drawContext : CanvasRenderingContext2D;
 
+    dottedDistance : number;
+
     constructor(public canvas : HTMLCanvasElement) {
         this.drawCanvas = canvas;
 
@@ -126,6 +128,8 @@ class DrawEngine {
         this.memCanvas.height = this.canvas.height;
         this.memContext = <CanvasRenderingContext2D>this.memCanvas.getContext('2d');
         this.drawContext = <CanvasRenderingContext2D>this.drawCanvas.getContext('2d');
+
+        this.dottedDistance = 0.0;
     }
 
     getMousePos = (e : MouseEvent) : Position2D => {
@@ -218,6 +222,7 @@ class DrawEngine {
      */
     setDrawType (drawType : drawType) : void {
         this.drawType = drawType;
+        console.log(this.drawType);
     }
 
     /*
@@ -343,6 +348,11 @@ class DrawEngine {
             this.drawNormal(points, path, context);
         }
 
+        /* Normal draw */
+        if (this.drawType == drawType.DOTTED) {
+            this.drawDotted(points, path, context);
+        }
+
         /* Smoother draw by using quadratic Bézier curves */
         if (this.drawType == drawType.QUADRATIC_BEZIER) {
             this.drawQuadraticBezierCurves(points, context);
@@ -391,8 +401,8 @@ class DrawEngine {
      */
     drawNormal (points, path : Path, context : CanvasRenderingContext2D) {
 
-        return this.drawLines(points, context);
-        /*var i : number = path.lastDrawnItem;
+        // return this.drawLines(points, context); /* */
+        var i : number = path.lastDrawnItem;
 
         context.beginPath();
         context.moveTo(points[i].x, points[i].y);
@@ -401,7 +411,33 @@ class DrawEngine {
         }
         context.stroke();
 
-        path.lastDrawnItem = i - 1;*/
+        path.lastDrawnItem = i - 1;
+    }
+
+    drawDotted (points, path : Path, context : CanvasRenderingContext2D) {
+        // return this.drawLines(points, context); /* */
+        var nrLastDrawn : number = path.lastDrawnItem;
+        var newDistance : number = 0.0;
+
+        for (var i = nrLastDrawn; i < points.length - 1; i++) {
+            newDistance += points[i].distanceTo(points[i+1]);
+        }
+        this.dottedDistance += newDistance;
+        
+        if (this.dottedDistance % 10 > 5.0) {
+            this.setColor(0, 0, 0, 255);
+        } else {
+            this.setColor(255, 255, 255, 255);
+        }
+
+        context.beginPath();
+        context.moveTo(points[nrLastDrawn].x, points[nrLastDrawn].y);
+        for (var i = nrLastDrawn + 1; i < points.length; i++) {
+            context.lineTo(points[i].x, points[i].y);
+        }
+        context.stroke();
+
+        path.lastDrawnItem = points.length - 1;
     }
 
     /*
