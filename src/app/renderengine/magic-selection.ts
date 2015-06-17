@@ -25,11 +25,11 @@ class ImgData {
 }
 
 class MagicSelection{
-	magicWandColor : number[];
-	imageData : ImageData;
-	bmON : number;
-	maskWand : Uint8Array[];
-	maskBorder : Uint8Array;
+	private magicWandColor : number[];
+	private imageData : ImageData;
+	private bmON : number;
+	private maskWand : Uint8Array[];
+	private maskBorder : Uint8Array;
 
 	constructor(image : HTMLImageElement) {
 		this.maskBorder = new Uint8Array(image.width * image.height);
@@ -275,5 +275,13 @@ class MagicSelection{
 				this.maskWand[0][j] = this.maskWand[0][j] || this.maskWand[i][j];
 			}	
 		}
+	}
+
+	public getWidth() : number {
+		return this.imageData.width;
+	}
+
+	public getHeight() : number {
+		return this.imageData.height;
 	}
 }

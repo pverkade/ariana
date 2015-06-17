@@ -124,16 +124,17 @@ class EditEngine {
     }
 
     public setSelectionLayer(magicSelection : MagicSelection, selectionLayer : SelectionLayer) : void {
-        console.log("Edit engine setSelecitonLayer");
         this.selectionLayer = selectionLayer;
 
-        var imageData = this.context.createImageData(selectionLayer.getWidth(), selectionLayer.getHeight());
+        var width = magicSelection.getWidth();
+        var height = magicSelection.getHeight();
+        var imageData = this.context.createImageData(width, height);
 
         var offset = 0;
         var thisPtr = this;
         this.selectionTmpCanvas = document.createElement("canvas");
-        this.selectionTmpCanvas.width = imageData.width;
-        this.selectionTmpCanvas.height = imageData.height;
+        this.selectionTmpCanvas.width = width;
+        this.selectionTmpCanvas.height = height;
         this.selectionTmpContext = this.selectionTmpCanvas.getContext("2d");
 
         this.selectionAntsInterval = setInterval(function() {
@@ -168,15 +169,26 @@ class EditEngine {
             }
         }
 
+        /* Draw marching ends */
         var selectionLayer : SelectionLayer = this.selectionLayer;
-        if (selectionLayer) {
+        if (currentLayer) {
             this.context.save();
-            this.context.rotate(selectionLayer.getRotation());
             this.context.translate(
-                selectionLayer.getPosX() - selectionLayer.getWidth() / 2.0,
-                selectionLayer.getPosY() - selectionLayer.getHeight() / 2.0
+                currentLayer.getPosX(),
+                currentLayer.getPosY()
             );
-            this.context.drawImage(this.selectionTmpCanvas, 0, 0);
+            this.context.rotate(-currentLayer.getRotation());
+            this.context.drawImage(
+                this.selectionTmpCanvas,
+                0,
+                0,
+                this.selectionTmpCanvas.width,
+                this.selectionTmpCanvas.height,
+                -currentLayer.getWidth()/2.0,
+                -currentLayer.getHeight()/2.0,
+                currentLayer.getWidth(),
+                currentLayer.getHeight()
+            );
             this.context.restore();
         }
     }
