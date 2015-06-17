@@ -1,85 +1,147 @@
-class LineElt {
-	point1: Point;
-	point2: Point;
-
-	constructor(point1: Point, point2: Point) {
-		this.point1 = point1;
-		this.point2 = point2;
-	}
-}
-
 class LooseSelection {
 	points : Point[];
+	maskBorder : number[];
+	maskAnts : number[][];
 
-	constructor() {
-		this.points = [];
+	width : number;
+	height : number;
+
+	constructor(width, height) {
+		this.width = width;
+		this.height = height;
+		this.maskBorder = [];
+		this.maskAnts = [];
+
+		for (var i=0; i < this.width * this.height; i++) {
+			this.maskBorder.push(0);
+		}
+		this.reset();
 	}
 
+    sign(x : number) { return x > 0 ? 1 : x < 0 ? -1 : 0; }
+
 	addPoint(point : Point) {
-		if (this.points[this.points.length-1].x != point.x &&
-			this.points[this.points.length-1].y != point.y) {
-			
+		if (this.points.length == 0) {
 			this.points.push(point);
+			this.maskBorder[this.width * point.y + point.x] = 1;
+			return true;
+		} else {
+			if (this.points[this.points.length-1].x != point.x ||
+				this.points[this.points.length-1].y != point.y) {
+
+				var difX = point.x - this.points[this.points.length-1].x;
+				var difY = point.y - this.points[this.points.length-1].y;
+				var maxDif = Math.max(Math.abs(difX), Math.abs(difY));
+
+                var x = this.points[this.points.length-1].x;
+                var y = this.points[this.points.length-1].y; 
+
+				for (var i = 0; i < maxDif; i++) {
+                    x += this.sign(difX);
+                    y += this.sign(difY);
+
+                    this.points.push(new Point(x, y));
+                    this.maskBorder[this.width * y + x] = 1;
+
+                    difX -= this.sign(difX);
+                    difY -= this.sign(difY);
+                }
+
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
 
-	checkIntersection(line1 : LineElt, line2 : LineElt) {
-		return this.line_intersects(line1.point1.x, line1.point1.y, line1.point2.x, line1.point2.y, 
-			line2.point1.x, line2.point1.y, line2.point2.x, line2.point2.y);
-	}
+	getMaskWand() {
+		var borderCount : number;
+		var lastEltLine : number;
+		var maskWand = [];
 
-	getIntersection(line1 : LineElt, line2 : LineElt) : Point{
-		var intersectionPoint : Point;
+		for (var i = 0; i < this.height; i++){
+			for (var j = this.width - 1; j >= 0; j--) {
+				if (this.maskBorder[i * this.width + j] == 1){
+					lastEltLine = j;
+					break;
+				}
+			}
 
-		
-
-		return intersectionPoint;
-	}
-
-	// Adapted from: http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect/1968345#1968345
-	line_intersects(p0_x : number, p0_y : number, p1_x : number, p1_y : number, p2_x : number, p2_y : number, p3_x : number, p3_y : number) {
-	 
-	    var s1_x, s1_y, s2_x, s2_y;
-	    s1_x = p1_x - p0_x;
-	    s1_y = p1_y - p0_y;
-	    s2_x = p3_x - p2_x;
-	    s2_y = p3_y - p2_y;
-	 
-	    var s, t;
-	    s = (-s1_y * (p0_x - p2_x) + s1_x * (p0_y - p2_y)) / (-s2_x * s1_y + s1_x * s2_y);
-	    t = ( s2_x * (p0_y - p2_y) - s2_y * (p0_x - p2_x)) / (-s2_x * s1_y + s1_x * s2_y);
-	 
-	    if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
-	    {
-	        // Collision detected
-	        return true;
-	    }
-	 
-	    return false; // No collision
-	}
-
-	getkBoundingPath() {
-		var intersectionPoint : Point;
-		var newLineElt : LineElt;
-		var prevLineElt : LineElt;
-		var point = this.points[this.points.length - 1];
-
-		if (this.points.length >= 1) {
-			newLineElt = new LineElt(this.points[this.points.length -1], point);
-
-			for (var i = this.points.length - 2; i >= 0; i--) {
-				prevLineElt = new LineElt(this.points[i], this.points[i+1]);
-
-				if (this.checkIntersection(prevLineElt, newLineElt)) {
-					// intersectionPoint = this.getIntersection(prevLineElt, newLineElt);
-					// this.points[i].x = intersectionPoint.x;
-					// this.points[i].y = intersectionPoint.y;
-
-					return this.points.slice(i, this.points.length);
+			borderCount = 0;
+			for (var j = 0; j < this.width; j++) {
+				if (j <= lastEltLine) {
+					if (this.maskBorder[i * this.width + j] == 1) {
+						maskWand.push(1);
+						if (j < this.width - 1 && this.maskBorder[i * this.width + j + 1] == 0) {
+							borderCount += 1;
+						}
+					} else if (borderCount % 2 == 1) {
+						maskWand.push(1);
+					} else {
+						maskWand.push(0);
+					}
+				} else {
+					maskWand.push(0);
 				}
 			}
 		}
 
-	return [];
+		return maskWand;
+	}
+
+	getMaskBorder() {
+		return this.maskBorder;
+	}
+
+    /* Returns true when points are within 1 pixel distance of each other. */
+    comparePoints(point1 : Point, point2 : Point) {
+        var difX = point1.x - point2.x;
+        var difY = point1.y - point2.y; 
+
+        if (Math.abs(difX) <= 1 && Math.abs(difY) <= 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+	getBoundingPath() {
+        for (var i = this.points.length - 4; i >= 0; i--) {
+            /* Look if last added point is close enough to current point. */
+            if (this.comparePoints(this.points[i], this.points[this.points.length-1])) {
+                for (var j = 0; j < i; j++) {
+                    this.maskBorder[this.points[j].y * this.width + this.points[j].x] = 0;
+                }
+
+                return this.points.slice(i, this.points.length-1);
+            }
+        }
+
+		return [];
+	}
+
+	marchingAnts(size : number, offset : number) {
+		this.maskAnts[offset] = [];
+
+		/* A square of maximum size width/height of image data has to be created. */
+		var max_size = Math.max(this.width, this.height);
+
+		for (var i = 0; i < this.height; i++) {
+			for (var j = 0; j < this.width; j++) {
+				if (this.maskBorder[i*this.width + j] == 0) {
+					this.maskAnts[offset][i*this.width + j] = 0;
+				} else if ((i + j + offset) % size < size / 2) {
+					this.maskAnts[offset][i*this.width + j] = 1;
+				} else {
+					this.maskAnts[offset][i*this.width + j] = 0;
+				}
+			}
+		}
+
+		return this.maskAnts[offset];
+	}
+
+	reset() {
+		this.points = [];
 	}
 }
