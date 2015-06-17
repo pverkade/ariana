@@ -88,6 +88,7 @@ angular.module('ariana').controller('ContentController', function($scope, $windo
     var image1 = new Image();
     image1.src="/assets/img/logo.png";
     image1.onload = function(){$scope.newLayerFromImage(image1)};
+    $scope.config.layers.currentLayer = 0;
 
     //TODO: nu tekenen we op de canvas, maar we moeten in de renderEngine tekenen o.i.d.
     //$scope.drawEngine = new Draw(canvas, $scope.renderEngine);
