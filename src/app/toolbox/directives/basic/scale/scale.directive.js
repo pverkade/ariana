@@ -60,41 +60,53 @@ app.controller('ScaleCtrl', function($scope) {
             var newWidth = width;
             var newHeight = height;
 
+            var xScaleFactor = 1, yScaleFactor = 1;
+
+
 	        if ($scope.scaleToolIndex != 2 && $scope.scaleToolIndex != 6) {
-                var xScaleFactor = (mouseCurrentX - mouseOldX) / (mouseOldX - x) + 1;
-                if (xScaleFactor && isFinite(xScaleFactor)) {
-                    newWidth *= xScaleFactor;
+                xScaleFactor = 0.5 * (mouseCurrentX - mouseOldX) / (mouseOldX - x) + 1;
+
+                if (isNaN(xScaleFactor) || xScaleFactor === 0 || !isFinite(xScaleFactor)) {
+                    xScaleFactor = 1;
                 }
 
-                //newWidth *= !xScaleFactor || !isFinite(x)? 1 : xScaleFactor;
-	            // newWidth += (mouseCurrentX - mouseOldX)   * $scope.sign(Math.cos($scope.scaleToolIndex * 0.25 * Math.PI));
-	        }
+                newWidth *= xScaleFactor;
+            }
 	        
 	        if ($scope.scaleToolIndex != 0 && $scope.scaleToolIndex != 4) {
-                var yScaleFactor = (mouseCurrentY - mouseOldY) / (mouseOldY - y) + 1;
-                if (yScaleFactor && isFinite(yScaleFactor)) {
-                    newHeight *= !yScaleFactor ? 1 : yScaleFactor;
+                yScaleFactor = 0.5 * (mouseCurrentY - mouseOldY) / (mouseOldY - y) + 1;
+
+                if (isNaN(yScaleFactor) || yScaleFactor === 0 || !isFinite(yScaleFactor)) {
+                    yScaleFactor = 1;
                 }
-	            //newHeight += (mouseCurrentY - mouseOldY)  * -1 * $scope.sign(Math.sin($scope.scaleToolIndex * 0.25 * Math.PI));
-	        }
 
-            /*
-            
-            if ($scope.scaleToolIndex >= 3 && $scope.scaleToolIndex <= 5)
-                x -= 0.5 * (newWidth - width);
-            else if ($scope.scaleToolIndex >= 7 || $scope.scaleToolIndex == 0 || $scope.scaleToolIndex == 1)
-                x += 0.5 * (newWidth - width);
-            
-            if ($scope.scaleToolIndex >= 1 && $scope.scaleToolIndex <= 3)
-                y -= 0.5 * (newHeight - height);
-            else if ($scope.scaleToolIndex >= 5 && $scope.scaleToolIndex <= 7)
-                y += 0.5 * (newHeight - height);
-             */
+                newHeight *= yScaleFactor;
+            }
 
-	        $scope.renderEngine.layers[currentLayer].setWidth(newWidth);
-	        $scope.renderEngine.layers[currentLayer].setHeight(newHeight);
-	        
-	        layer.setPos(x, y);
+            var widthAndHeight = layer.getTransformedDimensions();
+            var transformedWidth = widthAndHeight[0], transformedHeight = widthAndHeight[1];
+
+            console.log(transformedWidth, transformedHeight);
+
+            var deltaX  = (xScaleFactor - 1) * transformedWidth * 0.5;
+            var deltaY  = (yScaleFactor - 1) * transformedHeight * 0.5;
+
+            //deltaX = 0;
+            //deltaY = 0;
+
+            if (3 <= $scope.scaleToolIndex && $scope.scaleToolIndex <= 5) {
+                deltaX *= -1;
+            }
+            if (1 <= $scope.scaleToolIndex && $scope.scaleToolIndex <= 3) {
+                deltaY *= -1;
+            }
+
+            // var newX = x;
+            // var newY = y;
+
+	        layer.setWidth(newWidth);
+	        layer.setHeight(newHeight);
+	        layer.setPos(x + deltaX, y + deltaY);
             
             window.requestAnimationFrame(function() {
                 $scope.renderEngine.render();
