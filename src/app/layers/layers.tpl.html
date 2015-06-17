@@ -1,84 +1,36 @@
-<!-- <div class="layer-container">
-    <div class="container-fluid">
+<div class="layers" ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}">
 
-        <div class="row layers" ng-repeat="layer in config.layers.layerInfo">
-            <div class="col-md-2 layer options">
-                <div class="row">
-                    <div>{{$index}}</div>
-                    <div ng-click="toggleVisible($index)">
-                        <img src="assets/vectors/eye.svg"></img>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-7 layer content"> -->
-              <!--div>{{content}}</div-->
-<!--               <div class="btn btn-default" ng-click="layerSelect($index)">Select layer</div>
-            </div>
-
-            <div class="col-md-3 layer content">
-                <div class="btn btn-default btn-sm" ng-click="safeLayerReorder($index, $index + 1)">Up</div>
-                <div class="btn btn-default btn-sm" ng-click="safeLayerReorder($index, $index - 1)">Down</div>
-            </div>
-        </div>
-
+    <div class="layer-header">
+        <div class="tool float-left" ng-click="hideLayers()" ng-hide="hidden"> <i class="mdi mdi-chevron-right"> </i> </div>
+        <div class="tool float-left" ng-click="showLayers()" ng-show="hidden"> <i class="mdi mdi-chevron-left"> </i> </div>
+        <h2 ng-hide="hidden"> Layers </h2>
     </div>
-</div> -->
+    
+        
+    <div class="layer tool clearfix" 
+        ng-repeat="layer in config.layers.layerInfo" 
+        ng-click="selectLayer($index)" 
+        ng-class="{'active': $index == config.layers.currentLayer}"
+        ng-hide="hidden">
 
-<div class="layer-container" ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}">
-    <div class="box-shadow" ng-controller="ToolboxAccordionCtrl">
-        <accordion close-others="true">
-
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <span>
-                            <a class="btn btn-sm" ng-click="addLayer($event)">
-                                <i class="mdi mdi-plus"></i>
-                            </a>
-
-                            <span class="pull-right">
-                                Zoom: {{config.canvas.zoom * 100 | int}}%
-                            </span>
-                        </span>
-                    </h4>
-                </div>
-            </div>
-            
-            <accordion-group ng-repeat="layer in config.layers.layerInfo" is-open="open" ng-click="selectLayer($index)" ng-class="{'layer-active': $index == config.layers.currentLayer}">
-                <accordion-heading>
-                    <div class="row mb10 text-center">
-                        <input type="text" value="{{layer.name}}" class="layer-name">
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-2">
-
-                            <span text-center>
-                                {{$index}}
-                                <i class="text-center mdi " ng-class="{'mdi-chevron-up': open, 'mdi-chevron-left': !open}"></i>
-                            </span>
-                        </div>
-
-                        <div class="col-md-8">
-                            <img class="preview" ng-src="{{getThumbnail($index)}}"></img>
-                        </div>
-
-                        <div class="col-md-2">         
-                            <i class="mdi " ng-click="hideLayer($event, $index)" ng-class="{'mdi-eye-off': isHidden($index), 'mdi-eye': !isHidden($index)}"></i>
-                            <i class="mdi mdi-delete" ng-click="removeLayer($event, $index)"></i>
-                            <i class="mdi mdi-chevron-double-down" ng-click="moveLayerDown($event, $index)" ng-class="{'inactive': $index == config.layers.numberOfLayers - 1}"></i>
-                            <i class="mdi mdi-chevron-double-up" ng-click="moveLayerUp($event, $index)" ng-class="{'inactive': $index <= 0}"></i>
-                        </div>
-                    </div>
-                </accordion-heading>
-
-                <div class="selectable item" ng-repeat="(key, value) in layer">
-                    <span>
-                        <b>{{key}}</b>: {{value}}
-                    </span>
-                </div>
-            </accordion-group>
-
-        </accordion>
+        <img class="preview float-left" ng-src="{{getThumbnail($index)}}"> </img>
+        <div class="layer-name float-left">
+            {{$index + 1}} <input type="text" value="Layer {{$index + 1}}">
+        </div>
+      
+        <div class="small-tool float-left"> <i class="mdi " 
+            ng-click="hideLayer($event, $index)" 
+            ng-class="{'mdi-eye-off': isHidden($index), 'mdi-eye': !isHidden($index)}"> </i> </div>
+        <div class="small-tool float-left"> <i class="mdi mdi-delete" 
+            ng-click="removeLayer($event, $index)"> </i> </div>
+        <div class="small-tool float-left" 
+            ng-click="moveLayerDown($event, $index)" 
+            ng-class="{'inactive': $index == config.layers.numberOfLayers - 1}"> 
+            <i class="mdi mdi-chevron-double-down" > </i> </div>
+        <div class="small-tool float-left"
+            ng-click="moveLayerUp($event, $index)" 
+            ng-class="{'inactive': $index <= 0}"> 
+            <i class="mdi mdi-chevron-double-up"> </i> </div>
+                    
     </div>
 </div>
