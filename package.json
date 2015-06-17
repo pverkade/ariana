@@ -1,13 +1,13 @@
 {
   "name": "ariana",
-  "version": "0.1.0",
+  "version": "0.4.20",
   "description": "An online photoshop app",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "BSD-2-Clause",
+  "license": "MIT",
   "dependencies": {
     "grunt-cli": "~0.1.13",
     "bower": "~1.4.1",
