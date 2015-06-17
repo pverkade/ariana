@@ -15,6 +15,8 @@ var translateTool = {
 
         var currentLayer = $scope.config.layers.currentLayer;
         if (currentLayer == -1) return;
+
+        var layer = $scope.renderEngine.layers[currentLayer];
         
         var dx = $scope.config.mouse.current.x - $scope.config.mouse.old.x;
         var dy = $scope.config.mouse.current.y - $scope.config.mouse.old.y;
@@ -24,10 +26,12 @@ var translateTool = {
         $scope.config.mouse.old.y += dy;
         
         /* Get the layer position. */
-        var x = $scope.renderEngine.layers[currentLayer].getPosX();
-        var y = $scope.renderEngine.layers[currentLayer].getPosY();
+        var x = layer.getPosX();
+        var y = layer.getPosY();
 
-        $scope.renderEngine.layers[currentLayer].setPos(x + dx, y + dy);
+        layer.setPos(x + dx, y + dy);
+        console.log("Edit engine draw translate tool");
+        $scope.editEngine.drawTranslateTool(layer);
         window.requestAnimationFrame(function() {$scope.renderEngine.render();});    
     },
 };

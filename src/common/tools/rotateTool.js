@@ -45,6 +45,7 @@ var rotateTool = {
         var rotation = layer.getRotation();
         
         $scope.renderEngine.layers[currentLayer].setRotation(rotation + difference);
+        $scope.editEngine.drawRotateTool(layer);
         window.requestAnimationFrame(function() {$scope.renderEngine.render();});
     },
 };

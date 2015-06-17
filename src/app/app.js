@@ -40,6 +40,7 @@ app.controller('AppCtrl', ['$scope',
                 }
             },
             canvas: {
+                cursor: 'default',
                 x: 128,
                 y: 128,
                 zoom: 1,
@@ -70,12 +71,14 @@ app.controller('AppCtrl', ['$scope',
 
         $scope.renderEngine = null;
         $scope.drawEngine = null;
+        $scope.editEngine = null;
 
         /* This function creates the RenderEngine. It requires the canvas to
          * render on. */
         $scope.startEngines = function(renderCanvas, drawCanvas) {
             $scope.renderEngine = new RenderEngine(renderCanvas);
             $scope.drawEngine = new DrawEngine(drawCanvas);
+            $scope.editEngine = new EditEngine(drawCanvas);
         };
 
         /* This function creates a new layer from a given Image-object. The new

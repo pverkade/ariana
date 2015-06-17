@@ -54,6 +54,7 @@ var magicSelection = {
         var canvas = document.getElementById("editing-canvas");
         var context = canvas.getContext("2d");
         var imgData = context.createImageData(width, height);
+        console.log("BItmask: " + bitmask);
         if (bitmask) {
             for (var i = 0; i < bitmask.length; i++) {
                 if (bitmask[i]) {
@@ -68,8 +69,10 @@ var magicSelection = {
             scope.renderEngine.addLayer(layer);
             scope.renderEngine.render();
 
-            scope.magic.marchingAnts(imgData, 5.0, 1.0);
-            context.putImageData(imgData, 0, 0);
+            //scope.magic.marchingAnts(imgData, 5.0, 1.0);
+            //context.putImageData(imgData, 0, 0);
+            console.log("Edit engine: " + scope.editEngine);
+            scope.editEngine.setSelectionLayer(scope.magic, layer);
         }
     },
     
