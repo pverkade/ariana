@@ -14,8 +14,6 @@ angular.module('ariana').controller('MagicCtrl', function($scope) {
 	/* init */
 	$scope.init = function() {
 		$scope.setCursor('crosshair');
-		console.log("Magic selection start");
-		//$("#main-canvas").css("cursor", "crosshair");
 
 		/* working with $scope to share variables between functions in this file does not seem to work. */
 		var scope = angular.element($("#main-canvas")).scope();
@@ -23,7 +21,7 @@ angular.module('ariana').controller('MagicCtrl', function($scope) {
 		/*scope.imgData = new ImgData($scope.renderEngine.getWidth(), $scope.renderEngine.getHeight());
 		 scope.imgData.data = $scope.renderEngine.renderAsUint8Array();
 		 scope.magic = new MagicSelection(scope.imgData);*/
-		var currentLayer = 0;//$scope.config.layers.currentLayer;
+		var currentLayer = $scope.config.layers.currentLayer;
 		if (currentLayer == -1) {
 			console.log("No layer selected");
 			return;
@@ -36,11 +34,6 @@ angular.module('ariana').controller('MagicCtrl', function($scope) {
 		}
 		var image = layer.getImage();
 		scope.magic = magicSelection = new MagicSelection(image);
-
-
-		// $interval(callAtInterval, 1000);
-		scope.sizeAnts = 4;
-		scope.offset = 0;
 	};
 
 	/* onMouseDown */
@@ -50,45 +43,32 @@ angular.module('ariana').controller('MagicCtrl', function($scope) {
 		/* x and y coordinates in pixels relative to canvas left top corner. */
 		var xRelative = $scope.config.mouse.current.x - $scope.config.canvas.x;
 		var yRelative = $scope.config.mouse.current.y - $scope.config.canvas.y;
-        console.log("xRelative: " + xRelative);
-        console.log("yRelative: " + yRelative);
 
         /* Calculate x and y coordinates in pixels of the original image */
-        var currentLayer = 0;//$scope.config.layers.currentLayer;
+        var currentLayer = $scope.config.layers.currentLayer;
         var layer = $scope.renderEngine.layers[currentLayer];
         var x = layer.getPosX();
         var y = layer.getPosY();
         xRelative -= x;
         yRelative -= y;
-        console.log("xRelative: " + xRelative);
-        console.log("yRelative: " + yRelative);
 
         var cos = Math.cos(layer.getRotation());
         var sin = Math.sin(layer.getRotation());
         xRelative = cos * xRelative - sin * yRelative;
         yRelative = sin * xRelative + cos * yRelative;
-        console.log("xRelative: " + xRelative);
-        console.log("yRelative: " + yRelative);
 
         xRelative /= layer.getWidth();
         yRelative /= layer.getHeight();
-        console.log("xRelative: " + xRelative);
-        console.log("yRelative: " + yRelative);
 
         xRelative += .5;
         yRelative += .5;
-        console.log("xRelative: " + xRelative);
-        console.log("yRelative: " + yRelative);
 
         xRelative *= layer.getImage().width;
         yRelative *= layer.getImage().height;
-        console.log("xRelative: " + xRelative);
-        console.log("yRelative: " + yRelative);
 
         xRelative = Math.round(xRelative);
         yRelative = Math.round(yRelative);
-        console.log("xRelative: " + xRelative);
-        console.log("yRelative: " + yRelative);
+
 
 		/* Check wheter user has clicked inside of a selection. */
 		if (scope.magic.isInSelection(xRelative, yRelative)) {
@@ -124,7 +104,7 @@ angular.module('ariana').controller('MagicCtrl', function($scope) {
 			scope.renderEngine.render();
             scope.requestRenderEngineUpdate();
 
-			scope.editEngine.setSelectionLayer(scope.magic, layer);
+			scope.editEngine.setSelectionLayer(scope.magic, newLayer);
             scope.requestEditEngineUpdate();
 		}
 	};
