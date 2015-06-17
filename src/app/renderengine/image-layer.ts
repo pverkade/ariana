@@ -72,7 +72,8 @@ class ImageLayer extends Layer {
         this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, 0);
 
         // SetDimensions already triggers notifyPropertyChanged
-        this.setDimensions(width, height);
+        //this.setDimensions(width, height);
+        this.notifyPropertyChanged();
 	}
 
     getImage() : HTMLImageElement {

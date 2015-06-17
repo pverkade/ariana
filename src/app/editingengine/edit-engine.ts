@@ -126,7 +126,7 @@ class EditEngine {
     public setSelectionLayer(selectionClass : SelectionInterface, selectionLayer : ImageLayer) : void {
         this.selectionLayer = selectionLayer;
 
-        var imageData = this.context.createImageData(selectionLayer.getWidth(), selectionLayer.getHeight());
+        var imageData = this.context.createImageData(selectionLayer.getImage().width, selectionLayer.getImage().height);
 
         var offset = 0;
         var thisPtr = this;
