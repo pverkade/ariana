@@ -266,8 +266,8 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         }
         var layer = <ImageLayer>this.layers[layerIndex];
 
-        var width = layer.getWidth();
-        var height = layer.getHeight();
+        var width = bitmask.width;
+        var height = bitmask.height;
         var selectedLayer = this.createImageLayer(layer.getImage());
         var invertedSelectedLayer = this.createImageLayer(layer.getImage());
         selectedLayer.setPos(layer.getPosX(), layer.getPosY());
