@@ -97,6 +97,7 @@ app.controller('ScaleCtrl', function($scope) {
             if (3 <= $scope.scaleToolIndex && $scope.scaleToolIndex <= 5) {
                 deltaX *= -1;
             }
+
             if (1 <= $scope.scaleToolIndex && $scope.scaleToolIndex <= 3) {
                 deltaY *= -1;
             }
