@@ -7,7 +7,6 @@
 /// <reference path="filters/filter"/>
 /// <reference path="image-layer"/>
 /// <reference path="resource-manager"/>
-/// <reference path="selection-layer"/>
 
 class RenderEngine implements MLayer.INotifyPropertyChanged {
     private gl : WebGLRenderingContext;
@@ -258,7 +257,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         );
     }
 
-    public createSelectionImageLayer(bitmask : HTMLImageElement, layerIndex : number) : SelectionLayer {
+    public createSelectionImageLayer(bitmask : HTMLImageElement, layerIndex : number) : ImageLayer {
         var gl = this.gl;
 
         if (this.layers[layerIndex].getLayerType() != LayerType.ImageLayer) {
@@ -269,11 +268,9 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         var width = bitmask.width;
         var height = bitmask.height;
         var selectedLayer = this.createImageLayer(layer.getImage());
-        var invertedSelectedLayer = this.createImageLayer(layer.getImage());
-        selectedLayer.setPos(layer.getPosX(), layer.getPosY());
-        selectedLayer.setRotation(layer.getRotation());
-        invertedSelectedLayer.setPos(layer.getPosX(), layer.getPosY());
-        invertedSelectedLayer.setRotation(layer.getRotation());
+        //var invertedSelectedLayer = this.createImageLayer(layer.getImage());
+        //invertedSelectedLayer.setPos(layer.getPosX(), layer.getPosY());
+        //invertedSelectedLayer.setRotation(layer.getRotation());
 
         var bitmaskProgram = this.resourceManager.bitmaskProgramInstance();
         var texture = gl.createTexture();
@@ -314,18 +311,24 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP);
         layer.setupRender();
         layer.renderFullscreen();
-        invertedSelectedLayer.copyFramebuffer(width, height);
+        layer.copyFramebuffer(width, height);
+        //invertedSelectedLayer.copyFramebuffer(width, height);
 
         this.gl.disable(this.gl.STENCIL_TEST);
         drawbuffer.unbind();
         gl.viewport(0, 0, this.width, this.height);
 
-        return new SelectionLayer(
+        selectedLayer.setPos(layer.getPosX(), layer.getPosY());
+        selectedLayer.setRotation(layer.getRotation());
+        selectedLayer.setDimensions(width, height);
+        return selectedLayer;
+
+        /*return new SelectionLayer(
             this.resourceManager,
             this.width,
             this.height,
             selectedLayer,
             invertedSelectedLayer
-        );
+        );*/
     }
 }

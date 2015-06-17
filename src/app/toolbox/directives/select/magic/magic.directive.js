@@ -100,12 +100,7 @@ angular.module('ariana').controller('MagicCtrl', function($scope) {
 				}
 			}
 			var newLayer = scope.renderEngine.createSelectionImageLayer(imgData, 0);
-            newLayer.setStartRotation(layer.getRotation());
-            newLayer.setStartPos(layer.getPosX(), layer.getPosY());
-            newLayer.setStartDimensions(layer.getWidth(), layer.getHeight());
-			scope.renderEngine.removeLayer(0);
 			scope.renderEngine.addLayer(newLayer);
-			scope.renderEngine.render();
             scope.requestRenderEngineUpdate();
 
 			scope.editEngine.setSelectionLayer(scope.magic, newLayer);

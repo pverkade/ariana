@@ -1,5 +1,5 @@
 /// <reference path="../renderengine/layer"/>
-/// <reference path="../renderengine/selection-layer"/>
+/// <reference path="../renderengine/image-layer"/>
 /// <reference path="../renderengine/magic-selection"/>
 
 enum EditMode {
@@ -20,7 +20,7 @@ class EditEngine {
     currentMode : EditMode;
 
     /* (Magic) selection stuff */
-    selectionLayer : SelectionLayer;
+    selectionLayer : ImageLayer;
     selectionAntsInterval;
     selectionTmpCanvas;
     selectionTmpContext;
@@ -123,8 +123,7 @@ class EditEngine {
         this.currentLayer = null;
     }
 
-    public setSelectionLayer(selectionClass : SelectionInterface, selectionLayer : SelectionLayer) : void {
-        console.log("Edit engine setSelecitonLayer");
+    public setSelectionLayer(selectionClass : SelectionInterface, selectionLayer : ImageLayer) : void {
         this.selectionLayer = selectionLayer;
 
         var imageData = this.context.createImageData(selectionLayer.getWidth(), selectionLayer.getHeight());
@@ -169,7 +168,7 @@ class EditEngine {
         }
 
         /* Draw marching ends */
-        var selectionLayer : SelectionLayer = this.selectionLayer;
+        var selectionLayer : ImageLayer = this.selectionLayer;
         if (selectionLayer) {
             this.context.save();
             this.context.translate(
