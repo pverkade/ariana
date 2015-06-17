@@ -15,13 +15,14 @@ var app = angular.module('ariana', [
     'cfp.hotkeys',
     'templates-ariana',
     'ngFileUpload',
-    'ngAnimate'
+    'ngAnimate',
+    'ngMock'
 ]);
 
 /* The AppController is the main controller of the application. */
 app.controller('AppCtrl', ['$scope',
     function($scope) {
-        
+
         /* The config object contains the current state of the layers, tools, 
          * canvas and the mouse. It is accessed by all kinds of controllers. */
         $scope.config = {
@@ -152,5 +153,5 @@ app.controller('AppCtrl', ['$scope',
             
             window.requestAnimationFrame(function() {$scope.renderEngine.render();});
         };
-	}
+    }
 ]);

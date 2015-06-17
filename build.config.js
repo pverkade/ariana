@@ -14,17 +14,22 @@ module.exports = {
 
     vendor_files: {
         js: [
-            'bower_components/jquery/dist/jquery.js',
-            'bower_components/bootstrap/dist/js/bootstrap.js',
-            'bower_components/angular/angular.js',
-            'bower_components/angular-animate/angular-animate.js',
-            'bower_components/angular-ui-router/release/angular-ui-router.js',
-            'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-            'bower_components/ng-file-upload/ng-file-upload-all.js',
-            'bower_components/angular-hotkeys/build/hotkeys.js'
+            'vendor/jquery/dist/jquery.js',
+            'vendor/bootstrap/dist/js/bootstrap.js',
+            'vendor/angular/angular.js',
+            'vendor/angular-animate/angular-animate.js',
+            'vendor/angular-ui-router/release/angular-ui-router.js',
+            'vendor/angular-bootstrap/ui-bootstrap-tpls.js',
+            'vendor/ng-file-upload/ng-file-upload-all.js',
+            'vendor/angular-hotkeys/build/hotkeys.js'
         ],
         css: [
-            'bower_components/bootstrap/dist/css/bootstrap.css.map'
+            'vendor/bootstrap/dist/css/bootstrap.css.map'
+        ]
+    },
+    test_files: {
+        js: [
+            'vendor/angular-mocks/angular-mocks.js'
         ]
     }
 };
