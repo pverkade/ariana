@@ -16,7 +16,9 @@
         ng-class="{'active': $index == config.layers.currentLayer}"
         ng-hide="hidden">
 
-        <img class="preview float-left" ng-src="{{getThumbnail($index)}}"></img>
+        <div class="crop">
+            <img class="preview float-left" ng-src="{{getThumbnail($index)}}"></img>
+        </div>
       
         <div class="small-tool float-left" 
             ng-click="hideLayer($event, $index)" > 

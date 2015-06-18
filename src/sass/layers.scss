@@ -24,7 +24,7 @@
     @extend .gui-element;
     box-shadow: none;
     
-    border-bottom: $border-thickness solid $brand-color;
+    //border-bottom: $border-thickness solid $brand-color;
         
     h2 {
         width: 3 * $blocksize;
@@ -43,7 +43,7 @@
     width: 4 * $blocksize;
     padding: 0.25 * $blocksize !important;
     
-    border-bottom: $border-thickness solid $brand-color;
+    border-top: $border-thickness solid darken($light, $seperator-darken);
     height: auto;
     float: left;
     
@@ -53,13 +53,21 @@
     position: relative;
     transition: transform 200ms ease;
     
-    .preview {
+    .crop {
+        float: left;
         width: 3 * $blocksize;
-        min-height: 2 * $blocksize;
+        height: 2 * $blocksize;
+        overflow: hidden;
+        background: url(/assets/img/canvas_background.svg) repeat;    
+    }
+    
+    .preview {
+        width: auto;
+        height: auto;
+        max-width: 3 * $blocksize;
+        max-height: 2 * $blocksize;
         margin: 0;
-        padding: 0;
-
-        background: url(/assets/img/canvas_background.svg) repeat;        
+        padding: 0;    
         @include transform(scale(1, -1));
     }
 
