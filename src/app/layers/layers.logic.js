@@ -40,10 +40,10 @@ app.controller('layersCtrl', function($scope) {
     }
 
     $scope.addLayer = function(event) {
-        event.stopPropagation();
+        //event.stopPropagation();
         
         $scope.config.layers.layerInfo.push({
-            "name": 'Layer ' + $scope.config.layers.currentLayer + 1,
+            "name": 'Layer ' + $scope.config.layers.numberOfLayers,
             "x": 0,
             "y": 0,
             "xScale": 1,

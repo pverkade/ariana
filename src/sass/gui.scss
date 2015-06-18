@@ -83,6 +83,18 @@ body {
     &:hover {
         background-color: lighten($light, $active-lighten);
     }
+    
+    .tool, .small-tool {
+        background-color: lighten($light, $active-lighten);
+        
+        &:hover {
+            background-color: lighten($light, $active-lighten + $hover-lighten);
+        }
+    }
+    
+    .inactive:hover {
+        background-color: lighten($light, $active-lighten) !important;
+    }
 }
 
 .inactive {

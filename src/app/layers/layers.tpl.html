@@ -1,6 +1,7 @@
 <div class="layers" ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}">
 
     <div class="layer-header">
+        <!-- <div class="tool float-left" ng-click="addLayer()" ng-hide="hidden"> <i class="mdi mdi-plus"> </i> </div> -->
         <div class="tool float-left" ng-click="hideLayers()" ng-hide="hidden"> <i class="mdi mdi-chevron-right"> </i> </div>
         <div class="tool float-left" ng-click="showLayers()" ng-show="hidden"> <i class="mdi mdi-chevron-left"> </i> </div>
         <h2 ng-hide="hidden"> Layers </h2>
@@ -13,9 +14,10 @@
         ng-class="{'active': $index == config.layers.currentLayer}"
         ng-hide="hidden">
 
-        <img class="preview float-left" ng-src="{{getThumbnail($index)}}"> </img>
-        <div class="layer-name float-left">
-            {{$index + 1}} <input type="text" value="Layer {{$index + 1}}">
+        <img class="preview float-left" ng-src="{{getThumbnail($index)}}"></img>
+        <div class="layer-name float-left input-group">
+            <span class="input-group-addon"> {{$index + 1}} </span>
+            <input type="text" placeholder="{{layer.name}}" class="form-control text"></input>
         </div>
       
         <div class="small-tool float-left"> <i class="mdi " 

@@ -7,21 +7,26 @@
  */
 
 .layers {
-
     position: absolute;
     top: 1.5 * $blocksize;
     right: 0;
 
     width: 4 * $blocksize;
     height: auto;
+    max-height: calc(100% - #{2 * $blocksize});
+    overflow: hidden;
 }
 
 .layer-header {
-    @extend .gui-element;
     position: relative;
     width: auto;
     height: $blocksize;
     float: right;
+    
+    @extend .gui-element;
+    box-shadow: none;
+    
+    border-bottom: $border-thickness solid $brand-color;
         
     h2 {
         width: 3 * $blocksize;
@@ -43,6 +48,8 @@
     float: left;
     
     @extend .gui-element;
+    box-shadow: none;
+    
     position: relative;
     transition: transform 200ms ease;
     
