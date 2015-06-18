@@ -12,6 +12,7 @@ app.controller('BrushCtrl', function($scope) {
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
     $scope.thickness = 2;
     $scope.opacity = 1;
+    $scope.brush = "thin";
 
     $scope.currentLayer = -1;
     $scope.numberOfLayers = 0;
@@ -22,7 +23,7 @@ app.controller('BrushCtrl', function($scope) {
         $scope.hasDrawn = false;
 		$scope.setCursor('default');
         $scope.setColor($scope.config.tools.colors.primary);
-        $scope.brush = "thin";
+        
         $scope.updateDrawEngine();
         $scope.updateBrushStyle();
 
