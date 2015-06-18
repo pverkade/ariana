@@ -151,10 +151,9 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
             this.drawbuffer2.unbind();
 
             layer.setRotation(0);
+            layer.setPos(this.width/2.0, this.height/2.0);
+            layer.setDimensions(this.width, this.height);
         }
-
-        imageLayer.setPos(this.width/2.0, this.height/2.0);
-        imageLayer.setDimensions(this.width, this.height);
     }
 
     public getPixelColor(x : number, y : number) : Uint8Array {
@@ -265,6 +264,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
             return;
         }
         var layer = <ImageLayer>this.layers[layerIndex];
+        console.log("x of to select layer: " + layer.getPosX());
 
         var width = bitmask.width;
         var height = bitmask.height;
@@ -313,7 +313,6 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         layer.setupRender();
         layer.renderFullscreen();
         layer.copyFramebuffer(width, height);
-        //invertedSelectedLayer.copyFramebuffer(width, height);
 
         this.gl.disable(this.gl.STENCIL_TEST);
         drawbuffer.unbind();
@@ -323,14 +322,6 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         selectedLayer.setRotation(layer.getRotation());
         selectedLayer.setDimensions(layer.getWidth(), layer.getHeight());
         return selectedLayer;
-
-        /*return new SelectionLayer(
-            this.resourceManager,
-            this.width,
-            this.height,
-            selectedLayer,
-            invertedSelectedLayer
-        );*/
     }
 
     public resize(width : number, height : number) {
