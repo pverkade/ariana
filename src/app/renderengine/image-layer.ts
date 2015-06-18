@@ -39,21 +39,8 @@ class ImageLayer extends Layer {
 	}
 
 	render() {
-		var matrix : Float32Array = mat3.create();
-		mat3.identity(matrix);
-
-        var historyMatrix : Float32Array = mat3.create();
-        mat3.identity(historyMatrix);
-
-        for (var i = 0; i < this.transformHistory.length; i ++) {
-            mat3.multiply(historyMatrix, this.transformHistory[i], historyMatrix);
-        }
-
-        mat3.multiply(matrix, matrix, this.pixelConversionMatrix);
-		mat3.multiply(matrix, matrix, this.translationMatrix);
-		mat3.multiply(matrix, matrix, this.rotationMatrix);
-        mat3.multiply(matrix, matrix, this.sizeMatrix);
-        mat3.multiply(matrix, matrix, historyMatrix);
+		var matrix : Float32Array = this.calculateTransformation();
+        mat3.multiply(matrix, this.pixelConversionMatrix, matrix);
 
         this.program.setUniforms(this.texture, matrix);
         this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
