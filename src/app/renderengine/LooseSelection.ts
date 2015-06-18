@@ -60,6 +60,7 @@ class LooseSelection implements SelectionInterface {
 		var maskWand = [];
 
 		for (var i = 0; i < this.height; i++){
+			/* Search for most right border on current line. */
 			for (var j = this.width - 1; j >= 0; j--) {
 				if (this.maskBorder[i * this.width + j] == 1){
 					lastEltLine = j;
@@ -67,8 +68,11 @@ class LooseSelection implements SelectionInterface {
 				}
 			}
 
+			/* Fill maskWand row. */
 			borderCount = 0;
 			for (var j = 0; j < this.width; j++) {
+				/* Fill maskWand with ones if there is one border crossed. Take into account
+					that borders can be horizontal as well. */
 				if (j <= lastEltLine) {
 					if (this.maskBorder[i * this.width + j] == 1) {
 						maskWand.push(1);
@@ -112,7 +116,7 @@ class LooseSelection implements SelectionInterface {
                 for (var j = 0; j < i; j++) {
                     this.maskBorder[this.points[j].y * this.width + this.points[j].x] = 0;
                 }
-
+                /* Points that are not part of the bounding path are not returned. */
                 return this.points.slice(i, this.points.length-1);
             }
         }
