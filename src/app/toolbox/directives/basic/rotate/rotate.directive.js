@@ -88,7 +88,8 @@ app.controller('RotateCtrl', function($scope) {
 		} else {
 			$scope.editEngine.clear();
 		}
-		else if (oval) {
+
+		if (oval) {
 			var layer = $scope.renderEngine.getLayer($scope.config.layers.currentLayer);
             layer.commitRotation();
 		}
