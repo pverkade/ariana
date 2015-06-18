@@ -50,13 +50,13 @@ class MagicSelection implements SelectionInterface {
                     this.maskBorder[i] = this.bmON;
                 /* Check if one 8 neighbor pixels is off then it is an "inside" pixel. */
                 } else if ( this.maskWand[0][i - this.imageData.width - 1] == 0 ||
-                        this.maskWand[0][i - this.imageData.width ] == 0 ||
-                        this.maskWand[0][i - this.imageData.width + 1] == 0 ||
-                        this.maskWand[0][i - 1] == 0 ||
-                        this.maskWand[0][i + 1] == 0 ||
-                        this.maskWand[0][i + this.imageData.width - 1] == 0 ||
-                        this.maskWand[0][i + this.imageData.width] == 0 ||
-                        this.maskWand[0][i + this.imageData.width + 1] == 0 ) {
+                    this.maskWand[0][i - this.imageData.width ] == 0 ||
+                    this.maskWand[0][i - this.imageData.width + 1] == 0 ||
+                    this.maskWand[0][i - 1] == 0 ||
+                    this.maskWand[0][i + 1] == 0 ||
+                    this.maskWand[0][i + this.imageData.width - 1] == 0 ||
+                    this.maskWand[0][i + this.imageData.width] == 0 ||
+                    this.maskWand[0][i + this.imageData.width + 1] == 0 ) {
                     this.maskBorder[i] = this.bmON;
                 }
             }
