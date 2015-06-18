@@ -97,24 +97,27 @@ app.controller('AppCtrl', ['$scope',
 
         /* This function creates a new layer from a given Image-object. The new
          * layer is placed on top. */
-        $scope.newLayerFromImage = function(image) {
+        $scope.newLayerFromImage = function(image, index) {
             var layer = $scope.renderEngine.createImageLayer(image);
             
             var height = layer.getHeight();
             var width  = layer.getWidth();
             
             layer.setPos(0.5 * width, 0.5 * height);
-            
-            $scope.renderEngine.addLayer(layer)
+
+            if (typeof index === "undefined" || index == null) {
+                index = $scope.config.layers.numberOfLayers;
+            }
+            $scope.renderEngine.insertLayer(layer, index);
 
             /* set the correct layer info in config. The new layer comes on top
              * and is immediately selected. */
             //$scope.setSelection([$scope.config.layers.numberOfLayers]);
             $scope.config.layers.numberOfLayers += 1;
-            $scope.config.layers.currentLayer = $scope.config.layers.numberOfLayers - 1;
-            
+            $scope.config.layers.currentLayer = index;
+
             /* Store information about the layers in the config object. */
-            $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {
+            $scope.config.layers.layerInfo.splice(index, 0, {
                 "name": 'Layer ' + $scope.config.layers.numberOfLayers,
                 "x": layer.getPosX(),
                 "y": layer.getPosY(),
@@ -123,7 +126,7 @@ app.controller('AppCtrl', ['$scope',
                 "width": width,
                 "height": height,
                 "rotation": layer.getRotation(),
-            }
+            });
 
             window.requestAnimationFrame(function() {$scope.renderEngine.render();});
             //$scope.renderEngine.render();
