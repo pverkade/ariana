@@ -124,9 +124,7 @@ class LooseSelection implements SelectionInterface {
 	}
 
 	reset() {
-		for (var i = 0; i < this.maskBorder.length; i++) {
-			this.maskBorder[i] = 0;
-		}
+
 		this.points = [];
 	}
 }
