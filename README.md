@@ -1,7 +1,7 @@
 # Project Ariana
 Project ariana - is a web-based image editing solution. We focus on a clean interface usable for both mouse and touchscreens. Our official website is fazeclan.xxx.
 
-[Project voortgang](https://docs.google.com/document/d/12oiV5l1bo-w7UL8XrIKF9Y2DEm7g-BXc2GsCOzvmjbw/edit?usp=sharing)
+[Project progress](https://docs.google.com/document/d/12oiV5l1bo-w7UL8XrIKF9Y2DEm7g-BXc2GsCOzvmjbw/edit?usp=sharing)
 
 [User stories](https://docs.google.com/document/d/1qySwIDR8abtethyeTkNcCvziDz7zHKml942X5S-pPow/edit)
 
@@ -213,4 +213,5 @@ angular.module('moduleName').run(['resource',
 - 
 
 ### Testing
-For testing, we use Karma, which is based on [Jasmine](http://jasmine.github.io/2.3/introduction.html) a behaviour driven testing suite. Position your test files next to the controller/directive to be tested and name them something.spec.js, so they will automatically be picked up by Grunt. The tests will be executed everytime the project is build, and you will be unable to finish building when the tests fail. 
+For testing, we use Karma, which is based on [Jasmine](http://jasmine.github.io/2.3/introduction.html), a behaviour driven JavaScript testing suite. 
+Position your test files next to the controller/directive to be tested and name them something.spec.js, so they will automatically be picked up by Grunt. The tests will be executed everytime the project is build, and you will be unable to finish building when the tests fail. 
