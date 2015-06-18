@@ -15,8 +15,7 @@ var app = angular.module('ariana', [
     'cfp.hotkeys',
     'templates-ariana',
     'ngFileUpload',
-    'ngAnimate',
-    'ngMock'
+    'ngAnimate'
 ]);
 
 /* The AppController is the main controller of the application. */

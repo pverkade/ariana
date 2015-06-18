@@ -235,11 +235,11 @@ module.exports = function(grunt) {
                 configFile: '<%= build_dir %>/karma-unit.js'
             },
             unit: {
-                port: 9019,
-                background: true
+                singleRun: true
             },
             continuous: {
-                singleRun: true
+                background: true,
+                singleRun: false
             }
         }, 
 
@@ -252,8 +252,8 @@ module.exports = function(grunt) {
                 dir: '<%= build_dir %>',
                 src: [
                     '<%= vendor_files.js %>',
-                    // '<%= html2js.app.dest %>',
-                    '<%= test_files.js %>'
+                    '<%= test_files.js %>',
+                    '<%= src_files.jsunit %>'
                 ]
             }
         },
@@ -264,6 +264,14 @@ module.exports = function(grunt) {
         delta: {
             options: {
                 livereload: true
+            },
+            startup: {
+                files: [], // This is redundant, but necessary
+                tasks: ['karma:continuous:start'],
+                options: {
+                    atBegin: true,
+                    spawn: false
+                }
             },
             html: {
                 files: ['<%= src_files.html %>'],
@@ -276,6 +284,10 @@ module.exports = function(grunt) {
             js: {
                 files: ['<%= src_files.js %>'],
                 tasks: ['chain_js']
+            },
+            jsunit: {
+                files: ['<%= src_files.jsunit %>'],
+                tasks: ['karmaconfig', 'karma:unit:run']
             },
             ts: {
                 files: ['<%= src_files.ts %>'],
@@ -314,7 +326,7 @@ module.exports = function(grunt) {
         'includeSource', // Link all js and css files to index.html
         'preprocess:dev', // Add some links to index.html
         'karmaconfig', // Configure karma test
-        'karma:continuous' // Run karma tests
+        'karma:unit' // Run karma tests
     ]);
 
     /* The build_prod task completely builds, concats and (SOON) minifies the src */
