@@ -1,0 +1,31 @@
+<div class="modal-header">
+    <h1 class="modal-title"> Save Image </h1>
+</div>
+
+<div class="modal-body">
+    <form>
+        <div class="form-group">
+            <label for="format-input">File Name:</label>
+            <input type="text" id="filename-input" ng-model="filename" class="form-control">
+            <div class="input-group-addon">.{{format}}</div>
+        </div>
+        <div class="form-group">
+            <label for="format-input">Format:</label>
+            <select id="format-input" class="form-control" ng-model="format">
+                <option value="png">PNG</option>
+                <option value="jpeg">JPEG</option>
+            </select>
+        </div>
+
+        <div class="form-group" ng-show="format == 'jpeg'">
+            <label for="quality-input">Quality:</label>
+            <input type="range" id="quality-input" ng-model="quality" class="form-control" />
+            <div class="input-group-addon">{{quality}}</div>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-default btn-lg" ng-click="closeSaveImageModal()"> Cancel </button>
+    <button type="button" class="btn btn-primary btn-lg" ng-click="saveImage()"> Download </button>
+</div>
