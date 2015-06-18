@@ -3,7 +3,8 @@ module.exports = {
 
     src_files: {
         tpl: 'src/**/*.tpl.html',
-        js: ['src/**/*.js', '!src/app/renderengine/**/*.js'],
+        js: ['src/**/*.js', '!src/**/*.spec.js', '!src/app/renderengine/**/*.js'],
+        jsunit: ['src/**/*.spec.js'],
         ts: ['src/**/*.ts', '!src/app/renderengine/start.ts'],
         sass: 'src/**/*.scss',
         html: 'src/index.html',
