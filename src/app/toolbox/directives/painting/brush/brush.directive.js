@@ -23,8 +23,6 @@ app.controller('BrushCtrl', function($scope) {
 		$scope.setCursor('default');
         $scope.setColor($scope.config.tools.colors.primary);
         $scope.brush = "thin";
-        $scope.thickness = 2;
-        $scope.opacity = 1;
         $scope.updateDrawEngine();
         $scope.updateBrushStyle();
 
