@@ -1,43 +1,43 @@
 {
-  "name": "ariana",
-  "version": "0.4.20",
-  "description": "An online photoshop app",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "MIT",
-  "dependencies": {
-    "grunt-cli": "~0.1.13",
-    "bower": "~1.4.1",
-    "karma": "~0.12.35",
-    "sass": "~0.5.0",
-    "serve-static": "~1.9.3",
-    "connect": "~3.3.5"
-  },
-  "devDependencies": {
-    "glob": "~5.0.10",
-    "gm": "~1.18.1",
-    "grunt-bower-concat": "^0.5.0",
-    "grunt-contrib-clean": "~0.6.0",
-    "grunt-contrib-concat": "^0.5.1",
-    "grunt-contrib-copy": "~0.8.0",
-    "grunt-contrib-watch": "~0.6.1",
-    "grunt-html2js": "^0.3.2",
-    "grunt-include-source": "^0.6.0",
-    "grunt-karma": "~0.11.0",
-    "grunt-preprocess": "^4.1.0",
-    "grunt-sass": "~1.0.0",
-    "grunt-ts": "~4.1.2",
-    "grunt-wiredep": "^2.0.0",
-    "jasmine-core": "~2.3.4",
-    "karma-firefox-launcher": "^0.1.6",
-    "karma-html-reporter": "^0.2.6",
-    "karma-jasmine": "~0.3.5",
-    "karma-phantomjs-launcher": "^0.2.0",
-    "node-bourbon": "~1.0.0",
-    "phantomjs": "^1.9.17",
-    "request": "^2.57.0"
-  }
+    "name": "ariana",
+    "version": "0.4.20",
+    "description": "Online phote editing build on Node.js, Angular.js and WebGL",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "grunt-cli": "~0.1.13",
+        "bower": "~1.4.1",
+        "karma": "~0.12.35",
+        "sass": "~0.5.0",
+        "serve-static": "~1.9.3",
+        "connect": "~3.3.5"
+    },
+    "devDependencies": {
+        "glob": "~5.0.10",
+        "gm": "~1.18.1",
+        "grunt-bower-concat": "^0.5.0",
+        "grunt-contrib-clean": "~0.6.0",
+        "grunt-contrib-concat": "^0.5.1",
+        "grunt-contrib-copy": "~0.8.0",
+        "grunt-contrib-watch": "~0.6.1",
+        "grunt-html2js": "^0.3.2",
+        "grunt-include-source": "^0.6.0",
+        "grunt-karma": "~0.11.0",
+        "grunt-preprocess": "^4.1.0",
+        "grunt-sass": "~1.0.0",
+        "grunt-ts": "~4.1.2",
+        "grunt-wiredep": "^2.0.0",
+        "jasmine-core": "~2.3.4",
+        "karma-firefox-launcher": "^0.1.6",
+        "karma-html-reporter": "^0.2.6",
+        "karma-jasmine": "~0.3.5",
+        "karma-phantomjs-launcher": "^0.2.0",
+        "node-bourbon": "~1.0.0",
+        "phantomjs": "^1.9.17",
+        "request": "^2.57.0"
+    }
 }
