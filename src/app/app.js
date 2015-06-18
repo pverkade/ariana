@@ -12,6 +12,7 @@
 var app = angular.module('ariana', [
     'ui.router',
     'ui.bootstrap',
+    'cfp.hotkeys',
     'templates-ariana',
     'ngFileUpload',
     'ngAnimate'
@@ -54,9 +55,12 @@ app.controller('AppCtrl', ['$scope',
                 xr: 1,
                 yr: 1,
                 zoom: 1,
+                width: 800,
+                height: 600,
+                visible: false
             },
             tools: {
-                activeTool: null,
+                activeTool: 'pan',
                 activeToolFunctions: null,
                 activeToolset: null,
                 colors: {
@@ -81,12 +85,14 @@ app.controller('AppCtrl', ['$scope',
 
         $scope.renderEngine = null;
         $scope.drawEngine = null;
+        $scope.editEngine = null;
 
         /* This function creates the RenderEngine. It requires the canvas to
          * render on. */
         $scope.startEngines = function(renderCanvas, drawCanvas) {
             $scope.renderEngine = new RenderEngine(renderCanvas);
             $scope.drawEngine = new DrawEngine(drawCanvas);
+            $scope.editEngine = new EditEngine(drawCanvas);
         };
 
         /* This function creates a new layer from a given Image-object. The new
@@ -119,36 +125,32 @@ app.controller('AppCtrl', ['$scope',
                 "rotation": layer.getRotation(),
             }
 
-            $scope.renderEngine.render();
+            window.requestAnimationFrame(function() {$scope.renderEngine.render();});
+            //$scope.renderEngine.render();
         };
 
-        $scope.newLayerFromDrawing = function(image) {
-            var layer = $scope.renderEngine.createImageLayer(image);
-            
-            var height = layer.getHeight();
-            var width = layer.getWidth();
-            
-            layer.setPos(0.3 * width, 0.3 * height);
-            
-            $scope.renderEngine.addLayer(layer)
+        $scope.resizeCanvases = function(width, height) {
+            var toolFunctions = $scope.config.tools.activeToolFunctions;
 
-            /* set the correct layer info in config. The new layer comes on top
-             * and is immediately selected. */
-            $scope.setSelection([$scope.config.layers.numberOfLayers]);
-            $scope.config.layers.numberOfLayers += 1;
-            
-            $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {
-                "name": $scope.config.layers.currentLayer,
-                "x": layer.getPosX(),
-                "y": layer.getPosY(),
-                "originalWidth": width,
-                "originalHeight": height,
-                "width": width,
-                "height": height,
-                "rotation": layer.getRotation()
+            $scope.config.canvas.width = width;
+            $scope.config.canvas.height = height;
+            $scope.renderEngine.resize($scope.config.canvas.width, $scope.config.canvas.height);
+            $scope.drawEngine.resize($scope.config.canvas.width, $scope.config.canvas.height);
+            $scope.editEngine.resize($scope.config.canvas.width, $scope.config.canvas.height);
+
+            if (toolFunctions && toolFunctions.init) {
+                toolFunctions.init();
             }
 
-            $scope.renderEngine.render();
+            $scope.config.layers.numberOfLayers = 0;
+            $scope.config.layers.currentLayer = -1;
+            $scope.config.layers.layerInfo = [];
+
+            if (!$scope.config.canvas.visible) {
+                $scope.config.canvas.visible = true;
+            }
+            
+            window.requestAnimationFrame(function() {$scope.renderEngine.render();});
         };
 	}
 ]);

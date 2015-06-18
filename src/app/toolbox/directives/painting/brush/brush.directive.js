@@ -16,11 +16,13 @@ app.controller('BrushCtrl', function($scope) {
 	/* init */
 	$scope.init = function() {
         $scope.drawing = false;
+        $scope.hasDrawn = false;
 		$scope.setCursor('default');
         $scope.drawEngine.setBrush(brushType.THIN);
         $scope.setColor($scope.config.tools.colors.primary);
         $scope.thickness = 2;
         $scope.opacity = 1;
+        $scope.updateDrawEngine();
 	};
     
     $scope.updateDrawEngine = function() {
@@ -38,13 +40,12 @@ app.controller('BrushCtrl', function($scope) {
     };
     
     $scope.stop = function() {
-        var image = $scope.drawEngine.getCanvasImageData();
-        var imageLayer = $scope.renderEngine.createImageLayer(image);
-        imageLayer.setPos(0.5 * image.width, 0.5 * image.height);
-        $scope.renderEngine.addLayer(imageLayer);
-        $scope.renderEngine.render();
+        if ($scope.hasDrawn) {
+            var image = $scope.drawEngine.getCanvasImageData();
+            $scope.newLayerFromImage(image); 
 
-        $scope.drawEngine.clearCanvases();
+            $scope.drawEngine.clearCanvases();
+        }
     }
 
 	/* onMouseDown */
@@ -71,6 +72,7 @@ app.controller('BrushCtrl', function($scope) {
 	/* onMouseMove */
 	$scope.mouseMove = function() {
         if (!$scope.drawing) return;
+        $scope.hasDrawn = true;
 		$scope.drawEngine.onMousemove($scope.config.mouse.current.x, $scope.config.mouse.current.y);
 	};
 	/*

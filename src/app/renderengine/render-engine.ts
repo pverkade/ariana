@@ -21,8 +21,8 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
     private width : number;
     private height : number;
 
-    private thumbnailWidth = 100;
-    private thumbnailHeight = 60;
+    private thumbnailWidth = 200;
+    private thumbnailHeight = 120;
 
     public resourceManager;
 
@@ -171,7 +171,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
         layer.setupRender();
         layer.render();
-        layer.thumbnail = this.thumbnailDrawbuffer.getImage();
+        layer.setThumbnail(this.thumbnailDrawbuffer.getImage());
         this.thumbnailDrawbuffer.unbind();
         this.gl.viewport(0, 0, this.width, this.height);
     }
@@ -248,5 +248,23 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
             this.height,
             image
         );
+    }
+
+    public resize(width : number, height : number) {
+        this.width = width;
+        this.height = height;
+
+        for (var i = 0; i < this.layers.length; i++) {
+            this.layers[i].destroy();
+        }
+        this.layers = new Array();
+
+        this.drawbuffer1.destroy();
+        this.drawbuffer2.destroy();
+
+        this.gl.viewport(0, 0, this.width, this.height);
+        this.drawbuffer1 = new DrawBuffer(this.gl, this.width, this.height);
+        this.drawbuffer2 = new DrawBuffer(this.gl, this.width, this.height);
+        this.render();
     }
 }

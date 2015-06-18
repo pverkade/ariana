@@ -14,12 +14,25 @@ app.controller('layersCtrl', function($scope) {
     $scope.checkVisible = function() {
         return (!($scope.config.mouse.button[1] || $scope.config.mouse.button[2] || $scope.config.mouse.button[3]));
     };
+
+    $scope.hideLayer = function(event, index) {
+        event.stopPropagation();
+        var layer = $scope.renderEngine.getLayer(index);
+        layer.setHidden(!layer.isHidden());
+        $scope.config.layers.layerInfo[index].hidden = layer.isHidden();
+
+        $scope.renderEngine.render();
+    }
     
+    $scope.isHidden = function(index) {
+        return $scope.config.layers.layerInfo[index].hidden;
+    }
+
     $scope.addLayer = function(event) {
         event.stopPropagation();
         
         $scope.config.layers.layerInfo.push({
-            "name": $scope.config.layers.currentLayer,
+            "name": 'Layer' + $scope.config.layers.currentLayer,
             "x": 0,
             "y": 0,
             "xScale": 1,
@@ -34,6 +47,10 @@ app.controller('layersCtrl', function($scope) {
         event.stopPropagation();
         $scope.config.layers.layerInfo.splice(index, 1);
         $scope.config.layers.numberOfLayers = $scope.config.layers.layerInfo.length;
+        
+        if ($scope.config.layers.currentLayer == $scope.config.layers.numberOfLayers)
+            $scope.config.layers.currentLayer -= 1;
+        
         $scope.renderEngine.removeLayer(index);
 
         $scope.renderEngine.render();
@@ -71,4 +88,9 @@ app.controller('layersCtrl', function($scope) {
         }
         return false;
     };
+
+    $scope.getThumbnail = function(index) {
+        return $scope.renderEngine.getLayer(index).getThumbnail();
+    };
+
 });
