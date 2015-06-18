@@ -11,7 +11,7 @@ $fonts: Roboto, Noto, Helvetica, Arial, sans-serif;
 
 /* Colors */
 $dark:      #222;
-$light:     #333;
+$light:     #444;
 
 $white:     #bbb;
 $black:     #000;
@@ -21,11 +21,10 @@ $brand-color: #8c4;
 $blocksize: 64px;
 
 /* Effects */
-$box-shadow-size: 4px;
 $border-thickness: 2px;
 
-$hover-lighten: 10%;
-$active-lighten: 15%;
+$hover-lighten: 8%;
+$active-lighten: 16%;
 $seperator-darken: 2%;
 
 $fade-amount: 0.25;

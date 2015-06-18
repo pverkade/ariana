@@ -14,6 +14,17 @@ app.controller('layersCtrl', function($scope) {
     $scope.checkVisible = function() {
         return (!($scope.config.mouse.button[1] || $scope.config.mouse.button[2] || $scope.config.mouse.button[3]));
     };
+    
+    $scope.hidden = false;
+    
+    $scope.showLayers = function() {
+        $scope.hidden = false;
+    }
+    
+    $scope.hideLayers = function() {
+        $scope.hidden = true;
+    }
+
 
     $scope.hideLayer = function(event, index) {
         event.stopPropagation();
@@ -29,10 +40,10 @@ app.controller('layersCtrl', function($scope) {
     }
 
     $scope.addLayer = function(event) {
-        event.stopPropagation();
+        //event.stopPropagation();
         
         $scope.config.layers.layerInfo.push({
-            "name": 'Layer' + $scope.config.layers.currentLayer,
+            "name": 'Layer ' + $scope.config.layers.numberOfLayers,
             "x": 0,
             "y": 0,
             "xScale": 1,

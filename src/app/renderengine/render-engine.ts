@@ -21,15 +21,16 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
     private width : number;
     private height : number;
 
-    private thumbnailWidth = 200;
-    private thumbnailHeight = 120;
+    private thumbnailWidth = 192;
+    private thumbnailHeight = 192;
 
     public resourceManager;
 
     constructor (canvas : HTMLCanvasElement) {
         this.width = canvas.width;
-        this.height = canvas.height;
-
+        this.height = canvas.height;        
+        this.thumbnailHeight = Math.round(this.thumbnailWidth * (this.height / this.width)); 
+        
         this.layers = new Array();
 
         try {
@@ -253,7 +254,9 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
     public resize(width : number, height : number) {
         this.width = width;
         this.height = height;
-
+        this.thumbnailHeight = Math.round(this.thumbnailWidth * (this.height / this.width)); 
+        this.thumbnailDrawbuffer = new DrawBuffer(this.gl, this.thumbnailWidth, this.thumbnailHeight);
+                
         for (var i = 0; i < this.layers.length; i++) {
             this.layers[i].destroy();
         }

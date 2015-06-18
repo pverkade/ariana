@@ -1,6 +1,7 @@
 <!-- Template for the toolbox elements. -->
 
 <div class="toolset" 
+    ng-right-click
     ng-class="{'fade-on inactive': !checkVisible(), 'fade-off': checkVisible()}">
 
     <div class="tool" id="basic" 
@@ -51,6 +52,7 @@
         
     </div>
 
+    <!-- 
     <div class="tool" id="text" 
          ng-click="selectToolSet('text')" 
          ng-class="{active: isActiveToolset('text')}">
@@ -59,13 +61,14 @@
         
         <div class="toolbox" ng-show="isActiveToolset('text')">
         </div>
-        
     </div>
+    -->
 </div>
 
 <!-- Template for the color-preview elements. -->
 
 <div class="color-preview" 
+    ng-right-click
     ng-click="swapColors()" 
     ng-class="{'fade-on': !checkVisible() && config.tools.activeTool != 'picker', 'scale-on': !checkVisible() && config.tools.activeTool == 'picker', 'fade-off scale-off': checkVisible()}">
     <div class="color-primary"   style="background-color: rgb({{config.tools.colors.primary.r}},   {{config.tools.colors.primary.g}},   {{config.tools.colors.primary.b}})"> </div>

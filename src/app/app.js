@@ -115,7 +115,7 @@ app.controller('AppCtrl', ['$scope',
             
             /* Store information about the layers in the config object. */
             $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {
-                "name": $scope.config.layers.currentLayer,
+                "name": 'Layer ' + $scope.config.layers.numberOfLayers,
                 "x": layer.getPosX(),
                 "y": layer.getPosY(),
                 "originalWidth": width,
