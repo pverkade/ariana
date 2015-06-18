@@ -76,10 +76,8 @@ enum drawType { NORMAL, QUADRATIC_BEZIER, BRUSH, LINE, RECTANGLE, CIRCLE, ERASE 
 
 /*
  * Brushes
- * TODO: add more brushes (and remove NORMAL, its color won't be changed while its not a svg image)
- * TODO: use drawType NORMAL if the brushType NORMAL is set..
  */
-enum brushType { NORMAL, THIN, PEPPER, DUNES }
+enum brushType { THIN, PEPPER, DUNES, PEN }
 
 /*
  * Drawing class
@@ -232,6 +230,9 @@ class DrawEngine {
     setBrush (brush : brushType) : void {
         this.brush = brush;
         var brushImageURL : string = this.getBrushImage(brush);
+        if (brushImageURL == null) {
+            return;
+        }
         if (brushImageURL.indexOf('.svg') > 0) {
             return this.loadBrushSVG(brushImageURL);
         }
@@ -253,7 +254,7 @@ class DrawEngine {
         if (brush == brushType.DUNES) {
             return 'assets/draw/dunes.svg';
         }
-        return 'assets/draw/normal.png';
+        return this.setDrawType(drawType.BRUSH);;
     }
 
     /*
@@ -373,8 +374,8 @@ class DrawEngine {
      */
     drawNormal (points, path : Path, context : CanvasRenderingContext2D) {
 
-        return this.drawLines(points, context);
-        /*var i : number = path.lastDrawnItem;
+        //return this.drawLines(points, context);
+        var i : number = path.lastDrawnItem;
 
         context.beginPath();
         context.moveTo(points[i].x, points[i].y);
@@ -383,7 +384,7 @@ class DrawEngine {
         }
         context.stroke();
 
-        path.lastDrawnItem = i - 1;*/
+        path.lastDrawnItem = i - 1;
     }
 
     /*
@@ -475,7 +476,7 @@ class DrawEngine {
     /*
      * Function to draw brush..
      */
-    drawBrush (points, path : Path, context : CanvasRenderingContext2D) {
+    drawBrushImage (points, path : Path, context : CanvasRenderingContext2D) {
         var halfBrushW = this.brushImage.width/2;
         var halfBrushH = this.brushImage.height/2;
         var i : number = path.lastDrawnItem - 2;
@@ -517,6 +518,61 @@ class DrawEngine {
             }
         }
         path.lastDrawnItem = i;
+    }
+
+
+    drawBrush (points, path : Path, context : CanvasRenderingContext2D) {
+        if (this.brush == brushType.THIN || this.brush == brushType.PEPPER || this.brush == brushType.DUNES) {
+            return this.drawBrushImage(points, path, context);
+        }
+
+        if (this.brush == brushType.PEN) {
+            return this.drawBrushPen(points, path, context);
+        }
+    }
+
+    drawBrushPen (points, path : Path, context : CanvasRenderingContext2D) {
+
+        var i : number = path.lastDrawnItem;
+
+        context.beginPath();
+        context.moveTo(points[i].x, points[i].y);
+        for (i = i + 1; i < points.length; i++) {
+            context.lineWidth = (Math.random() * 0.4 + 0.8) * this.lineWidth;
+            context.lineTo(points[i].x, points[i].y);
+        }
+        context.stroke();
+
+        path.lastDrawnItem = i - 1;
+    }
+
+    drawBrushMultiStroke (points, path : Path, context : CanvasRenderingContext2D) {
+
+        var i : number = path.lastDrawnItem;
+
+        context.beginPath();
+        for (i = i + 1; i < points.length; i++) {
+  
+          context.moveTo(points[i-1].x - this.getRandomInt(0, 2), points[i-1].y - this.getRandomInt(0, 2));
+          context.lineTo(points[i].x - this.getRandomInt(0, 2), points[i].y - this.getRandomInt(0, 2));
+          context.stroke();
+          
+          context.moveTo(points[i-1].x, points[i-1].y);
+          context.lineTo(points[i].x, points[i].y);
+          context.stroke();
+          
+          context.moveTo(points[i-1].x + this.getRandomInt(0, 2), points[i-1].y + this.getRandomInt(0, 2));
+          context.lineTo(points[i].x + this.getRandomInt(0, 2), points[i].y + this.getRandomInt(0, 2));
+          context.stroke();
+
+        }
+        context.stroke();
+
+        path.lastDrawnItem = i - 1;
+    }
+
+    getRandomInt (min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     /*
