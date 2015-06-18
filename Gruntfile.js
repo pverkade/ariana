@@ -287,7 +287,7 @@ module.exports = function(grunt) {
             },
             jsunit: {
                 files: ['<%= src_files.jsunit %>'],
-                tasks: ['karmaconfig', 'karma:unit:run']
+                tasks: ['karmaconfig', 'karma:continuous:run']
             },
             ts: {
                 files: ['<%= src_files.ts %>'],
