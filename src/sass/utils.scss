@@ -46,7 +46,6 @@ accordion {
 
 .fade-on {
     @include transition(opacity $fade-speed ease-in);
-    z-index: 1;
     opacity: $fade-amount;
     pointer-events: none;
 }

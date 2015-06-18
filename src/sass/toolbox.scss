@@ -97,7 +97,6 @@
         position: absolute;
         height: 0.625 * $blocksize;
         width: 0.625 * $blocksize;
-        @extend .box-shadow;
     }
     
     .color-primary {

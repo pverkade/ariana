@@ -6,97 +6,84 @@
  *
  */
 
-.layer-container {
+.layers {
     position: absolute;
     top: 1.5 * $blocksize;
     right: 0;
-    z-index: 2;
 
     width: 4 * $blocksize;
-//     max-height: calc(100% - 2 * $blocksize);
-
-//     .row {
-//         &.layers {
-//             margin-bottom: 0.25 * $blocksize;
-//             @extend .box-shadow;
-//         }
-//     }
+    height: calc(100% - #{2 * $blocksize});
+    overflow: hidden;
     
-//     .layer {
-//         height: 1 * $blocksize;
-//         padding: 0;
-
-//         background-color: lighten($light, 10%);
-        
-//         &.options {
-//             color: $brand-color;
-//             text-align: center;
-//         }
-
-//         &.content {
-
-//         }
-//     }
-
-//     padding-bottom: 0.25 * $blocksize;
-}
-
-accordion {
-	span {
-		text-transform: uppercase;
-	}
-}
-
-.item {
-	padding-left: 15px;
-	padding-right: 15px;
-	padding-top: 2px;
-	padding-bottom: 2px;
-}
-
-.panel-group .panel {
-	border-radius: 0;
-}
-
-.panel-group .panel + .panel {
-	margin-top: 0;
-}
-
-.panel-body {
-	padding: 0;
-}
-
-.panel-heading {
-	&:hover {
-        background-color: lighten($light, 4 * $active-lighten);
+    .scroll {
+        height: calc(100% - #{1 * $blocksize});
+        overflow-y: auto;
+        overflow-x: hidden;
+        width: 4 * $blocksize;
+        position: relative;
+        float: left;
+    }
+    
+    .ng-hide {
+        @include transform(translate(4 * $blocksize, 0px));
     }
 }
 
-.layer-active {
-	.panel-heading {
-		background-color: lighten($light, 3 * $active-lighten);
-	    
-	    &:hover {
-	        background-color: lighten($light, 2 * $active-lighten);
-	    }
-	}
+.layer-header {
+    position: relative;
+    float: right;
+    
+    @extend .gui-element;
+        
+    h2 {
+        width: 3 * $blocksize;
+        height: $blocksize;
+        line-height: $blocksize;
+        float: left;
+        padding: 0;
+        padding-right: $blocksize;
+        margin: 0;
+        
+        font-size: 20pt;
+        text-align: center;
+    }
 }
 
-.layer-name {
-	background-color: inherit;
-	color: inherit;
+.layer {
+    width: 4 * $blocksize;
+    padding: 0.25 * $blocksize !important;
+    
+    border-top: $border-thickness solid darken($light, $seperator-darken);
+    height: auto;
+    float: left;
+    
+    @extend .gui-element;
+    
+    position: relative;
+    transition: transform 200ms ease;
+    
+    .crop {
+        float: left;
+        width: 3 * $blocksize;
+        height: 2 * $blocksize;
+        overflow: hidden;
+        background: url(/assets/img/canvas_background.svg) repeat;    
+    }
+    
+    .preview {
+        width: auto;
+        height: auto;
+        max-width: 3 * $blocksize;
+        max-height: 2 * $blocksize;
+        margin: 0;
+        padding: 0;    
+        @include transform(scale(1, -1));
+    }
 
-	border: none;
-  	border-bottom: 1px solid $dark;
+    .layer-name {
+        height: 0.5 * $blocksize;
+        width: 3 * $blocksize;
 
-  	&:active {
-  		border-bottom: 1px solid $light;
-  	}
-}
-
-.preview {
-	width: 170px;
-	border: 1px solid $dark;
-
-	@include transform(scale(1, -1));
+        background-color: darken($light, 5%);
+    }
 }
