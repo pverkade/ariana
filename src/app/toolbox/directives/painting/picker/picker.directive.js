@@ -20,6 +20,7 @@ app.controller('PickerCtrl', function($scope) {
     /* onMouseDown */
     $scope.mouseDown = function() {
         $scope.picking = true;
+        $scope.mouseMove();
     };
 
     /* onMouseUp */
