@@ -45,6 +45,7 @@ app.controller('PencilCtrl', function($scope) {
         for (var i = 0; i <= $scope.currentLayer; i++) {
             lowerIndices.push(i);
         }
+        console.log(lowerIndices);
         
         $scope.renderEngine.renderIndices(lowerIndices);
 
@@ -53,14 +54,19 @@ app.controller('PencilCtrl', function($scope) {
         for (var i = $scope.currentLayer + 1; i < $scope.numberOfLayers; i++) {
             upperIndices.push(i);
         }
+        console.log(upperIndices);
         
         var topCanvasImage = new Image();
-        topCanvasImage.src = $scope.renderEngine.renderIndicesToImg(upperIndices);
 
-        var topCanvas = document.getElementById('top-canvas');
-        var topCanvasContext = topCanvas.getContext('2d');
-        topCanvasContext.scale(1, -1);
-        topCanvasContext.drawImage(topCanvasImage, 0, -topCanvasImage.height);
+        topCanvasImage.onload = function() {
+            console.log(topCanvasImage.src);
+            console.log(topCanvasImage);
+            var topCanvas = document.getElementById('top-canvas');
+            var topCanvasContext = topCanvas.getContext('2d');
+            topCanvasContext.scale(1, -1);
+            topCanvasContext.drawImage(topCanvasImage, 0, -topCanvasImage.height);
+        };
+        topCanvasImage.src = $scope.renderEngine.renderIndicesToImg(upperIndices);
     }
     
     $scope.updateDrawEngine = function() {
@@ -90,6 +96,9 @@ app.controller('PencilCtrl', function($scope) {
             var topCanvas = document.getElementById('top-canvas');
             var topCanvasContext = topCanvas.getContext('2d');
             topCanvasContext.clearRect(0, 0, topCanvas.width, topCanvas.height);
+            console.log("We doen clear op canvas");
+            console.log(topCanvas);
+            console.log(topCanvas.width, topCanvas.height);
         }
     }
 
