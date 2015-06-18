@@ -18,7 +18,7 @@ app.controller('BrushCtrl', function($scope) {
         $scope.drawing = false;
         $scope.hasDrawn = false;
 		$scope.setCursor('default');
-        $scope.drawEngine.setBrush(brushType.PEN);
+        $scope.drawEngine.setBrush(brushType.FUR);
         $scope.setColor($scope.config.tools.colors.primary);
         $scope.thickness = 2;
         $scope.opacity = 1;

@@ -60,6 +60,10 @@ class Color {
     getRGBA () {
         return 'rgba('+ this.r + ', '+ this.g + ', '+ this.b + ', '+ this.a + ')';
     }
+
+    getRGBWithOpacity (alpha : number) {
+        return 'rgba('+ this.r + ', '+ this.g + ', '+ this.b + ', '+ alpha + ')';
+    }
 }
 
 /*
@@ -70,14 +74,22 @@ class Color {
  * BRUSH : Draw lines using a brush image
  * LINE : draw lines
  * RECTANGLE : draw rectangles
+ * CIRCLE : draw a circle
  * 
  */
 enum drawType { NORMAL, QUADRATIC_BEZIER, BRUSH, LINE, RECTANGLE, CIRCLE, ERASE };
 
 /*
  * Brushes
+ *
+ * THIN : thin line,
+ * PEPPER : pepper symbol
+ * DUNES : dune structure
+ * PEN : line with changing width
+ * NEIGHBOR : stroke nearby lines
+ * FUR : fur effect with nearby points
  */
-enum brushType { THIN, PEPPER, DUNES, PEN }
+enum brushType { THIN, PEPPER, DUNES, PEN, NEIGHBOR, FUR }
 
 /*
  * Drawing class
@@ -85,12 +97,9 @@ enum brushType { THIN, PEPPER, DUNES, PEN }
  * This class allows the user to draw lines, and anything else you can imagine,
  * on the canvas.
  *
- * TODO: - Polygone support?
- *       - Circle support
- *         - Fill and Fill with background-color
+ * TODO: - Fill and Fill with background-color
  *       - Text? ( https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D )
  *       - just a dot
- *       - Use secondary color at right mouseclick.
  *
  *       Gum / eraser
  */
@@ -530,6 +539,14 @@ class DrawEngine {
         if (this.brush == brushType.PEN) {
             return this.drawBrushPen(points, path, context);
         }
+
+        if (this.brush == brushType.NEIGHBOR) {
+            return this.drawBrushNeighbor(points, path, context);
+        }
+
+        if (this.brush == brushType.FUR) {
+            return this.drawBrushFur(points, path, context);
+        }
     }
 
     drawBrushPen (points, path : Path, context : CanvasRenderingContext2D) {
@@ -547,6 +564,83 @@ class DrawEngine {
         path.lastDrawnItem = i - 1;
     }
 
+    drawBrushNeighbor (points, path : Path, context : CanvasRenderingContext2D) {
+
+        var i : number = path.lastDrawnItem;
+
+        if (i == 0) {
+            i = 1;
+        }
+
+        for (; i > 0 && i < points.length; i++) {
+
+            var lastpoint = points[i];
+            context.beginPath();
+            context.strokeStyle = this.color.getRGBA();
+            context.lineWidth = this.lineWidth;
+            context.moveTo(points[i - 1].x, points[i - 1].y);
+            context.lineTo(lastpoint.x, lastpoint.y);
+            context.stroke();
+
+            for (var j = 0; j < i; j++) {
+
+                var dx = points[j].x - lastpoint.x;
+                var dy = points[j].y - lastpoint.y;
+
+                if (lastpoint.distanceTo(points[j]) < 32) {
+                    context.beginPath();
+                    context.strokeStyle = this.color.getRGBWithOpacity(0.3);
+                    context.lineWidth = Math.ceil(this.lineWidth / 10);
+                    context.moveTo( lastpoint.x + (dx * 0.2), lastpoint.y + (dy * 0.2));
+                    context.lineTo( points[j].x - (dx * 0.2), points[j].y - (dy * 0.2));
+                    context.stroke();
+                }
+            }
+        }
+
+        path.lastDrawnItem = i;
+    }
+
+    drawBrushFur (points, path : Path, context : CanvasRenderingContext2D) {
+
+        var i : number = path.lastDrawnItem;
+
+        if (i == 0) {
+            i = 1;
+        }
+
+        for (; i > 0 && i < points.length; i++) {
+
+            var lastpoint = points[i];
+            context.beginPath();
+            context.strokeStyle = this.color.getRGBA();
+            context.lineWidth = this.lineWidth;
+            context.moveTo(points[i - 1].x, points[i - 1].y);
+            context.lineTo(lastpoint.x, lastpoint.y);
+            context.stroke();
+
+            for (var j = 0; j < i; j++) {
+
+                var dx = points[j].x - lastpoint.x;
+                var dy = points[j].y - lastpoint.y;
+                
+                var distance = lastpoint.distanceTo(points[j]);
+
+                if (distance < 32 && Math.random() > distance / 64) {
+                    context.beginPath();
+                    context.strokeStyle = this.color.getRGBWithOpacity(0.3);
+                    context.lineWidth = Math.ceil(this.lineWidth / 10);
+                    context.moveTo( lastpoint.x + (dx * 0.5), lastpoint.y + (dy * 0.5));
+                    context.lineTo( lastpoint.x - (dx * 0.5), lastpoint.y - (dy * 0.5));
+                    context.stroke();
+                }
+            }
+        }
+
+        path.lastDrawnItem = i;
+    }
+
+    //TODO: wat doet onderstaand? Gebruiken we die shit wel?
     drawBrushMultiStroke (points, path : Path, context : CanvasRenderingContext2D) {
 
         var i : number = path.lastDrawnItem;
