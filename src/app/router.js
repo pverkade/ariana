@@ -32,7 +32,7 @@ app.config(function($stateProvider, $locationProvider) {
                 },
                 "toolbox": {
                     templateUrl: "app/toolbox/toolbox.tpl.html",
-                    controller: 'ToolboxController'
+                    controller: 'ToolboxCtrl'
                 }
             }
         })
@@ -53,7 +53,7 @@ app.config(function($stateProvider, $locationProvider) {
                 },
                 "toolbox": {
                     templateUrl: "app/toolbox/toolbox.tpl.html",
-                    controller: 'ToolboxController'
+                    controller: 'ToolboxCtrl'
                 }
             }
         })
@@ -92,7 +92,7 @@ app.config(function($stateProvider, $locationProvider) {
                 },
                 "toolbox": {
                     templateUrl: "app/toolbox/toolbox.tpl.html",
-                    controller: 'ToolboxController'
+                    controller: 'ToolboxCtrl'
                 }
             }
         });*/
