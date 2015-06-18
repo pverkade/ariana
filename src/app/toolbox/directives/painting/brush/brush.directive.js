@@ -18,11 +18,12 @@ app.controller('BrushCtrl', function($scope) {
         $scope.drawing = false;
         $scope.hasDrawn = false;
 		$scope.setCursor('default');
-        $scope.drawEngine.setBrush(brushType.THIN);
         $scope.setColor($scope.config.tools.colors.primary);
+        $scope.brush = "thin";
         $scope.thickness = 2;
         $scope.opacity = 1;
         $scope.updateDrawEngine();
+        $scope.updateBrushStyle();
 	};
     
     $scope.updateDrawEngine = function() {
@@ -30,6 +31,25 @@ app.controller('BrushCtrl', function($scope) {
         $scope.drawEngine.setOpacity($scope.opacity);
     }
     
+    $scope.updateBrushStyle = function() {
+        if ($scope.brush == "thin") {
+            $scope.brushStyle = brushType.THIN;
+        }
+        if ($scope.brush == "pen") {
+            $scope.brushStyle = brushType.PEN;
+        }
+        if ($scope.brush == "neighbor") {
+            $scope.brushStyle = brushType.NEIGHBOR;
+        }
+        if ($scope.brush == "fur") {
+            $scope.brushStyle = brushType.FUR;
+        }
+        if ($scope.brush == "multistroke") {
+            $scope.brushStyle = brushType.MULTISTROKE;
+        }
+        $scope.drawEngine.setBrush($scope.brushStyle);
+    }
+
     $scope.setColor = function(color) {
         $scope.drawEngine.setColor(
             color.r,

@@ -60,6 +60,10 @@ class Color {
     getRGBA () {
         return 'rgba('+ this.r + ', '+ this.g + ', '+ this.b + ', '+ this.a + ')';
     }
+
+    getRGBWithOpacity (alpha : number) {
+        return 'rgba('+ this.r + ', '+ this.g + ', '+ this.b + ', '+ alpha + ')';
+    }
 }
 
 /*
@@ -70,16 +74,22 @@ class Color {
  * BRUSH : Draw lines using a brush image
  * LINE : draw lines
  * RECTANGLE : draw rectangles
+ * CIRCLE : draw a circle
  * 
  */
 enum drawType { NORMAL, QUADRATIC_BEZIER, BRUSH, LINE, RECTANGLE, CIRCLE, ERASE };
 
 /*
  * Brushes
- * TODO: add more brushes (and remove NORMAL, its color won't be changed while its not a svg image)
- * TODO: use drawType NORMAL if the brushType NORMAL is set..
+ *
+ * THIN : thin line,
+ * PEPPER : pepper symbol
+ * DUNES : dune structure
+ * PEN : line with changing width
+ * NEIGHBOR : stroke nearby lines
+ * FUR : fur effect with nearby points
  */
-enum brushType { NORMAL, THIN, PEPPER, DUNES }
+enum brushType { THIN, PEPPER, DUNES, PEN, NEIGHBOR, FUR, MULTISTROKE }
 
 /*
  * Drawing class
@@ -87,12 +97,9 @@ enum brushType { NORMAL, THIN, PEPPER, DUNES }
  * This class allows the user to draw lines, and anything else you can imagine,
  * on the canvas.
  *
- * TODO: - Polygone support?
- *       - Circle support
- *         - Fill and Fill with background-color
+ * TODO: - Fill and Fill with background-color
  *       - Text? ( https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D )
  *       - just a dot
- *       - Use secondary color at right mouseclick.
  *
  *       Gum / eraser
  */
@@ -232,6 +239,9 @@ class DrawEngine {
     setBrush (brush : brushType) : void {
         this.brush = brush;
         var brushImageURL : string = this.getBrushImage(brush);
+        if (brushImageURL == null) {
+            return;
+        }
         if (brushImageURL.indexOf('.svg') > 0) {
             return this.loadBrushSVG(brushImageURL);
         }
@@ -253,7 +263,8 @@ class DrawEngine {
         if (brush == brushType.DUNES) {
             return 'assets/draw/dunes.svg';
         }
-        return 'assets/draw/normal.png';
+        this.setDrawType(drawType.BRUSH);
+        return null;
     }
 
     /*
@@ -373,8 +384,8 @@ class DrawEngine {
      */
     drawNormal (points, path : Path, context : CanvasRenderingContext2D) {
 
-        return this.drawLines(points, context);
-        /*var i : number = path.lastDrawnItem;
+        //return this.drawLines(points, context);
+        var i : number = path.lastDrawnItem;
 
         context.beginPath();
         context.moveTo(points[i].x, points[i].y);
@@ -383,7 +394,7 @@ class DrawEngine {
         }
         context.stroke();
 
-        path.lastDrawnItem = i - 1;*/
+        path.lastDrawnItem = i - 1;
     }
 
     /*
@@ -475,7 +486,7 @@ class DrawEngine {
     /*
      * Function to draw brush..
      */
-    drawBrush (points, path : Path, context : CanvasRenderingContext2D) {
+    drawBrushImage (points, path : Path, context : CanvasRenderingContext2D) {
         var halfBrushW = this.brushImage.width/2;
         var halfBrushH = this.brushImage.height/2;
         var i : number = path.lastDrawnItem - 2;
@@ -517,6 +528,149 @@ class DrawEngine {
             }
         }
         path.lastDrawnItem = i;
+    }
+
+
+    drawBrush (points, path : Path, context : CanvasRenderingContext2D) {
+        if (this.brush == brushType.THIN || this.brush == brushType.PEPPER || this.brush == brushType.DUNES) {
+            return this.drawBrushImage(points, path, context);
+        }
+
+        if (this.brush == brushType.PEN) {
+            return this.drawBrushPen(points, path, context);
+        }
+
+        if (this.brush == brushType.NEIGHBOR) {
+            return this.drawBrushNeighbor(points, path, context);
+        }
+
+        if (this.brush == brushType.FUR) {
+            return this.drawBrushFur(points, path, context);
+        }
+
+        if (this.brush == brushType.MULTISTROKE) {
+            return this.drawBrushMultiStroke(points, path, context);
+        }
+    }
+
+    drawBrushPen (points, path : Path, context : CanvasRenderingContext2D) {
+
+        var i : number = path.lastDrawnItem;
+
+        context.beginPath();
+        context.moveTo(points[i].x, points[i].y);
+        for (i = i + 1; i < points.length; i++) {
+            context.lineWidth = (Math.random() * 0.4 + 0.8) * this.lineWidth;
+            context.lineTo(points[i].x, points[i].y);
+        }
+        context.stroke();
+
+        path.lastDrawnItem = i - 1;
+    }
+
+    drawBrushNeighbor (points, path : Path, context : CanvasRenderingContext2D) {
+
+        var i : number = path.lastDrawnItem;
+
+        if (i == 0) {
+            i = 1;
+        }
+
+        for (; i > 0 && i < points.length; i++) {
+
+            var lastpoint = points[i];
+            context.beginPath();
+            context.strokeStyle = this.color.getRGBA();
+            context.lineWidth = this.lineWidth;
+            context.moveTo(points[i - 1].x, points[i - 1].y);
+            context.lineTo(lastpoint.x, lastpoint.y);
+            context.stroke();
+
+            for (var j = 0; j < i; j++) {
+
+                var dx = points[j].x - lastpoint.x;
+                var dy = points[j].y - lastpoint.y;
+
+                if (lastpoint.distanceTo(points[j]) < 32) {
+                    context.beginPath();
+                    context.strokeStyle = this.color.getRGBWithOpacity(0.3);
+                    context.lineWidth = Math.ceil(this.lineWidth / 10);
+                    context.moveTo( lastpoint.x + (dx * 0.2), lastpoint.y + (dy * 0.2));
+                    context.lineTo( points[j].x - (dx * 0.2), points[j].y - (dy * 0.2));
+                    context.stroke();
+                }
+            }
+        }
+
+        path.lastDrawnItem = i;
+    }
+
+    drawBrushFur (points, path : Path, context : CanvasRenderingContext2D) {
+
+        var i : number = path.lastDrawnItem;
+
+        if (i == 0) {
+            i = 1;
+        }
+
+        for (; i > 0 && i < points.length; i++) {
+
+            var lastpoint = points[i];
+            context.beginPath();
+            context.strokeStyle = this.color.getRGBA();
+            context.lineWidth = this.lineWidth;
+            context.moveTo(points[i - 1].x, points[i - 1].y);
+            context.lineTo(lastpoint.x, lastpoint.y);
+            context.stroke();
+
+            for (var j = 0; j < i; j++) {
+
+                var dx = points[j].x - lastpoint.x;
+                var dy = points[j].y - lastpoint.y;
+                
+                var distance = lastpoint.distanceTo(points[j]);
+
+                if (distance < 32 && Math.random() > distance / 64) {
+                    context.beginPath();
+                    context.strokeStyle = this.color.getRGBWithOpacity(0.3);
+                    context.lineWidth = Math.ceil(this.lineWidth / 10);
+                    context.moveTo( lastpoint.x + (dx * 0.5), lastpoint.y + (dy * 0.5));
+                    context.lineTo( lastpoint.x - (dx * 0.5), lastpoint.y - (dy * 0.5));
+                    context.stroke();
+                }
+            }
+        }
+
+        path.lastDrawnItem = i;
+    }
+
+    drawBrushMultiStroke (points, path : Path, context : CanvasRenderingContext2D) {
+
+        var i : number = path.lastDrawnItem;
+
+        context.beginPath();
+        for (i = i + 1; i < points.length; i++) {
+  
+          context.moveTo(points[i-1].x - this.getRandomInt(0, 2), points[i-1].y - this.getRandomInt(0, 2));
+          context.lineTo(points[i].x - this.getRandomInt(0, 2), points[i].y - this.getRandomInt(0, 2));
+          context.stroke();
+          
+          context.moveTo(points[i-1].x, points[i-1].y);
+          context.lineTo(points[i].x, points[i].y);
+          context.stroke();
+          
+          context.moveTo(points[i-1].x + this.getRandomInt(0, 2), points[i-1].y + this.getRandomInt(0, 2));
+          context.lineTo(points[i].x + this.getRandomInt(0, 2), points[i].y + this.getRandomInt(0, 2));
+          context.stroke();
+
+        }
+        context.stroke();
+
+        path.lastDrawnItem = i - 1;
+    }
+
+    getRandomInt (min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     /*
