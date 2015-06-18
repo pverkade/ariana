@@ -381,8 +381,6 @@ class DrawEngine {
      * Function to draw a line between each pixel
      */
     drawNormal (points, path : Path, context : CanvasRenderingContext2D) {
-
-        // return this.drawLines(points, context); /* */
         var i : number = path.lastDrawnItem;
 
         context.beginPath();
@@ -396,9 +394,8 @@ class DrawEngine {
     }
 
     drawDotted (points, path : Path, context : CanvasRenderingContext2D) {
-        // return this.drawLines(points, context); /* */
         var nrLastDrawn : number = path.lastDrawnItem;
-        var newDistance : number = 5.0;
+        var newDistance : number = 0.0;
 
         for (var i = nrLastDrawn; i < points.length - 1; i++) {
             newDistance += points[i].distanceTo(points[i+1]);

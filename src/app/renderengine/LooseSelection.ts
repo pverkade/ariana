@@ -10,7 +10,7 @@ class LooseSelection implements SelectionInterface {
 		this.height = height;
 		this.maskBorder = [];
 
-		for (var i=0; i < this.width * this.height; i++) {
+		for (var i = 0; i < this.width * this.height; i++) {
 			this.maskBorder.push(0);
 		}
 		this.reset();
@@ -124,6 +124,9 @@ class LooseSelection implements SelectionInterface {
 	}
 
 	reset() {
+		for (var i = 0; i < this.maskBorder.length; i++) {
+			this.maskBorder[i] = 0;
+		}
 		this.points = [];
 	}
 }
