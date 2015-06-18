@@ -87,7 +87,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
  
     public removeLayer(index : number) {
         var layer : Layer = this.layers[index];
-        this.layers.splice(layer.getID(), 1);
+        this.layers.splice(index, 1);
         layer.destroy();
     }
 
