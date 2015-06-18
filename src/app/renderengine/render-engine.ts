@@ -21,15 +21,16 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
     private width : number;
     private height : number;
 
-    private thumbnailWidth = 200;
-    private thumbnailHeight = 120;
+    private thumbnailWidth = 192;
+    private thumbnailHeight = 192;
 
     public resourceManager;
 
     constructor (canvas : HTMLCanvasElement) {
         this.width = canvas.width;
-        this.height = canvas.height;
-
+        this.height = canvas.height;        
+        this.thumbnailHeight = Math.round(this.thumbnailWidth * (this.height / this.width)); 
+        
         this.layers = new Array();
 
         try {
@@ -86,7 +87,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
  
     public removeLayer(index : number) {
         var layer : Layer = this.layers[index];
-        this.layers.splice(layer.getID(), 1);
+        this.layers.splice(index, 1);
         layer.destroy();
     }
 
@@ -130,23 +131,25 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
             }
 
             var imageLayer = <ImageLayer> layer;
+            var textureProgram = this.resourceManager.textureProgramInstance();
+
+            // FIXME: images that are larger than the canvas are downsized when a filter is applied
             this.drawbuffer1.bind();
-            this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
-            imageLayer.setupRender();
-            imageLayer.render();
+            {
+                this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
+                filter.render(this.resourceManager, imageLayer.getWebGlTexture());
+
+                this.gl.bindTexture(this.gl.TEXTURE_2D, imageLayer.getWebGlTexture());
+                this.gl.copyTexImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 0, 0, this.width, this.height, 0);
+
+                this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
+                textureProgram.render(imageLayer.getWebGlTexture());
+
+                this.gl.bindTexture(this.gl.TEXTURE_2D, imageLayer.getWebGlTexture());
+                this.gl.copyTexImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 0, 0, this.width, this.height, 0);
+            }
             this.drawbuffer1.unbind();
-
-            this.drawbuffer2.bind();
-            this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
-            filter.render(this.resourceManager, this.drawbuffer1.getWebGlTexture());
-            imageLayer.copyFramebuffer(this.width, this.height);
-            this.drawbuffer2.unbind();
-            
-            layer.setRotation(0);
         }
-
-        imageLayer.setPos(this.width/2.0, this.height/2.0);
-        imageLayer.setDimensions(this.width, this.height);
     }
 
     public getPixelColor(x : number, y : number) : Uint8Array {
@@ -181,6 +184,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
     }
 
     private renderIndices(indices : number[]) {
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
         var oldType = -1;
         for (var i = 0; i < indices.length; i++) {
             // Take the old layer (one layer at a time)
@@ -253,7 +257,9 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
     public resize(width : number, height : number) {
         this.width = width;
         this.height = height;
-
+        this.thumbnailHeight = Math.round(this.thumbnailWidth * (this.height / this.width)); 
+        this.thumbnailDrawbuffer = new DrawBuffer(this.gl, this.thumbnailWidth, this.thumbnailHeight);
+                
         for (var i = 0; i < this.layers.length; i++) {
             this.layers[i].destroy();
         }

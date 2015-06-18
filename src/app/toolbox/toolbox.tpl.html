@@ -1,8 +1,8 @@
 <!-- Template for the toolbox elements. -->
 
 <div class="toolset" 
+    ng-right-click
     ng-class="{'fade-on inactive': !checkVisible(), 'fade-off': checkVisible()}">
-
     <div class="tool" id="basic" 
          ng-click="selectToolSet('basic')" 
          ng-class="{active: isActiveToolset('basic')}">
@@ -29,9 +29,9 @@
             <palette tool></palette>
             <pencil tool></pencil>
             <brush tool></brush>
-            <eraser tool></eraser>
+            <!-- <eraser tool></eraser> -->
             <picker tool></picker>
-            <fill tool></fill>
+            <!-- <fill tool></fill> -->
         </div>
 
     </div>
@@ -43,14 +43,15 @@
         <i class="mdi mdi-select"></i>
 
         <div class="toolbox" ng-show="isActiveToolset('select')">
-            <rectangle tool></rectangle>
-            <elipse tool></elipse>
+            <!-- <rectangle tool></rectangle> -->
+            <!-- <elipse tool></elipse> -->
             <curve tool></curve>
             <magic tool></magic>
         </div>
         
     </div>
 
+    <!-- 
     <div class="tool" id="text" 
          ng-click="selectToolSet('text')" 
          ng-class="{active: isActiveToolset('text')}">
@@ -59,15 +60,19 @@
         
         <div class="toolbox" ng-show="isActiveToolset('text')">
         </div>
-        
     </div>
+    -->
 </div>
 
 <!-- Template for the color-preview elements. -->
 
 <div class="color-preview" 
+    ng-right-click
     ng-click="swapColors()" 
     ng-class="{'fade-on': !checkVisible() && config.tools.activeTool != 'picker', 'scale-on': !checkVisible() && config.tools.activeTool == 'picker', 'fade-off scale-off': checkVisible()}">
     <div class="color-primary"   style="background-color: rgb({{config.tools.colors.primary.r}},   {{config.tools.colors.primary.g}},   {{config.tools.colors.primary.b}})"> </div>
     <div class="color-secondary" style="background-color: rgb({{config.tools.colors.secondary.r}}, {{config.tools.colors.secondary.g}}, {{config.tools.colors.secondary.b}})"> </div>
-</div> 
+
+</div>
+<!--<colorselector style="position:absolute; bottom: 0; left: 100px; height:100px; width:100px;">
+</colorselector>-->

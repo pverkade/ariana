@@ -1,0 +1,78 @@
+.input-group {
+    height: 0.5 * $blocksize;
+    
+    .input-group-addon {
+        border-radius: 0;
+    }
+    
+    input {
+        border-radius: 0;
+    }
+}
+
+.filter-options {
+    position: absolute;
+    left: 1.5 * $blocksize;
+    width: calc(100% - #{2 * $blocksize});
+    max-width: 12 * $blocksize;
+    min-width: 5.5 * $blocksize;
+    bottom: 0;
+
+    @extend .gui-element;
+    min-height: $blocksize;
+    
+    .float-left {
+        float: left;
+    }
+    
+    .float-right {
+        float: right;
+    }
+    
+    .center-box {
+        width: calc(100% - #{2 * $blocksize});
+    }
+        
+    .input-group {  
+        width: 100%;
+        
+        .filter-name {
+            min-width: 2 * $blocksize;
+            width: 50%;
+            @media (max-width: 10 * $blocksize) {
+                display: none;
+            }
+        }
+        
+        .filter-checkbox {
+            min-width: 2 * $blocksize;
+            width: 50%;
+            @media (max-width: 10 * $blocksize) {
+                width: 100%;
+            }
+        }
+        
+        .input-group-addon, .number {
+            width: 2 * $blocksize;
+            @media (max-width: 10 * $blocksize) {
+                width: 50%;
+            }
+        }
+        
+        .slider {
+            width: calc(100% - #{2 * $blocksize});
+            
+            @media (max-width: 10 * $blocksize) {
+                width: 100%;
+            }
+        }
+        
+        .number {
+            width: 2 * $blocksize;
+           
+            @media (max-width: 10 * $blocksize) {
+                display: none;
+            }
+        }
+    }   
+}
