@@ -19,8 +19,6 @@
 
 .layer-header {
     position: relative;
-    width: auto;
-    height: $blocksize;
     float: right;
     
     @extend .gui-element;
