@@ -1,44 +1,49 @@
 class LooseSelection implements SelectionInterface {
-	points : Point[];
+	points : Point[][];
 	maskBorder : number[];
 
 	width : number;
 	height : number;
 
-	constructor(width, height) {
+	constructor(width : number, height : number) {
 		this.width = width;
 		this.height = height;
-		this.maskBorder = [];
 
+		this.points = [];
+		this.points[0] = [];
+
+		this.maskBorder = [];
 		for (var i = 0; i < this.width * this.height; i++) {
 			this.maskBorder.push(0);
 		}
-		this.reset();
 	}
 
     sign(x : number) { return x > 0 ? 1 : x < 0 ? -1 : 0; }
 
 	addPoint(point : Point) {
-		if (this.points.length == 0) {
-			this.points.push(point);
+		var nrWands = this.points.length;
+		var nrPointsLast = this.points[nrWands - 1].length;
+
+		if (this.points[nrWands - 1].length == 0) {
+			this.points[nrWands - 1].push(point);
 			this.maskBorder[this.width * point.y + point.x] = 1;
 			return true;
 		} else {
-			if (this.points[this.points.length-1].x != point.x ||
-				this.points[this.points.length-1].y != point.y) {
+			if (this.points[nrWands - 1][nrPointsLast - 1].x != point.x ||
+				this.points[nrWands - 1][nrPointsLast - 1].y != point.y) {
 
-				var difX = point.x - this.points[this.points.length-1].x;
-				var difY = point.y - this.points[this.points.length-1].y;
+				var difX = point.x - this.points[nrWands - 1][nrPointsLast - 1].x;
+				var difY = point.y - this.points[nrWands - 1][nrPointsLast - 1].y;
 				var maxDif = Math.max(Math.abs(difX), Math.abs(difY));
 
-                var x = this.points[this.points.length-1].x;
-                var y = this.points[this.points.length-1].y; 
+                var x = this.points[nrWands - 1][nrPointsLast - 1].x;
+                var y = this.points[nrWands - 1][nrPointsLast - 1].y; 
 
 				for (var i = 0; i < maxDif; i++) {
                     x += this.sign(difX);
                     y += this.sign(difY);
 
-                    this.points.push(new Point(x, y));
+                    this.points[nrWands - 1].push(new Point(x, y));
                     this.maskBorder[this.width * y + x] = 1;
 
                     difX -= this.sign(difX);
@@ -91,15 +96,26 @@ class LooseSelection implements SelectionInterface {
         }
     }
 
-	getBoundingPath() {
-        for (var i = this.points.length - 4; i >= 0; i--) {
+    // getLastBoundingPath()?
+	getLastBoundingPath() {
+		var nrWands = this.points.length;
+		var nrPointsLast = this.points[nrWands - 1].length;
+		var curPoint : Point;
+		var lastAddedPoint : Point;
+
+        for (var i = this.points[nrWands - 1].length - 4; i >= 0; i--) {
             /* Look if last added point is close enough to current point. */
-            if (this.comparePoints(this.points[i], this.points[this.points.length-1])) {
+            curPoint = this.points[nrWands - 1][i];
+            lastAddedPoint = this.points[nrWands - 1][nrPointsLast - 1];
+            if (this.comparePoints(curPoint, lastAddedPoint)) {
+            	/* Remove points not part of loose selection from maskBoreder and points array. */
                 for (var j = 0; j < i; j++) {
-                    this.maskBorder[this.points[j].y * this.width + this.points[j].x] = 0;
+                    this.maskBorder[this.points[nrWands - 1][j].y * this.width + this.points[nrWands - 1][j].x] = 0;
                 }
-                /* Points that are not part of the bounding path are not returned. */
-                return this.points.slice(i, this.points.length-1);
+                this.points[nrWands - 1].splice(0, i);
+
+                this.points[nrWands] = [];
+                return this.points[nrWands - 1];
             }
         }
 
@@ -118,13 +134,20 @@ class LooseSelection implements SelectionInterface {
 				} else {
                     alpha = 0;
 				}
-                imageData.data[(i*this.width+j)*4 + 3] = alpha;
+                imageData.data[(i * this.width + j) * 4 + 3] = alpha;
 			}
 		}
 	}
 
 	reset() {
+		var nrWands = this.points.length;
+		var indexPointMask;
 
-		this.points = [];
+		for (var i = 0; i < this.points[nrWands - 1].length; i++) {
+			indexPointMask = this.points[nrWands - 1][i].y * this.width + this.points[nrWands - 1][i].x
+			this.maskBorder[indexPointMask] = 0;
+		} 
+		// volgorde van verwijderen punten die wel/niet gebruikt worden en getBoudingPath?
+		this.points[nrWands - 1] = [];
 	}
 }

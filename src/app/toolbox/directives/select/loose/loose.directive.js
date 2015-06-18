@@ -91,7 +91,7 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
 
         if (scope.mouseBTNDown == true) {
             if (scope.looseSelection.addPoint(new Point(xRelative, yRelative))) {
-                var boundingPath = scope.looseSelection.getBoundingPath();
+                var boundingPath = scope.looseSelection.getLastBoundingPath();
                 if (boundingPath.length != 0) {
                     var bitmaskBorder = scope.looseSelection.getMaskBorder();
                     var bitmask = scope.looseSelection.getMaskWand();
