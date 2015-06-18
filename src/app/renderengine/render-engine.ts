@@ -184,6 +184,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
     }
 
     private renderIndices(indices : number[]) {
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
         var oldType = -1;
         for (var i = 0; i < indices.length; i++) {
             // Take the old layer (one layer at a time)

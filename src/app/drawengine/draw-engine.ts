@@ -230,7 +230,13 @@ class DrawEngine {
      * Set the opacity
      */
     setOpacity (opacity : number) : void {
-        this.opacity = opacity * opacity;
+        opacity = parseFloat(opacity);
+    	if (opacity < 0.8) {
+    		this.opacity = opacity / 8;
+    	}
+    	else {
+    		this.opacity = 4.5 * opacity - 3.5;
+    	}
     }
 
     /*
@@ -670,7 +676,7 @@ class DrawEngine {
     }
 
     getRandomInt (min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
     /*
