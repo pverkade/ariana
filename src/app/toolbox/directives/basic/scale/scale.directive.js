@@ -94,7 +94,7 @@ app.controller('ScaleCtrl', function($scope) {
                     ratio = newWidth / originalWidth;
                     newHeight = height * ratio;
                 }
-                if ($scope.scaleToolIndex == 2 || $scope.scaleToolIndex == 6) {
+                else {
                     ratio = newHeight / originalHeight;
                     newWidth = width * ratio;
                 }

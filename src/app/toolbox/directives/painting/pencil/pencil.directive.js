@@ -23,8 +23,6 @@ app.controller('PencilCtrl', function($scope) {
 		$scope.setCursor('default');
         $scope.drawEngine.setDrawType(drawType.NORMAL);
         $scope.setColor($scope.config.tools.colors.primary);
-        $scope.thickness = 2;
-        $scope.opacity = 1;
         $scope.updateDrawEngine();
 
         /* If the last layer is not selected, draw between other layers. */

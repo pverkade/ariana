@@ -230,7 +230,12 @@ class DrawEngine {
      * Set the opacity
      */
     setOpacity (opacity : number) : void {
-        this.opacity = opacity * opacity;
+    	if (opacity < 0.8) {
+    		this.opacity = opacity / 8;
+    	}
+    	else {
+    		this.opacity = 4.5 * opacity - 3.5;
+    	}
     }
 
     /*
