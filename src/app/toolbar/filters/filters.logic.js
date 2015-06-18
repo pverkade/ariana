@@ -33,7 +33,7 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
             },
             
             "saturation": {
-                image: "/assets/img/saturationsample.jpg",
+                image: "/assets/img/saturation.png",
                 constructor: SaturationFilter
             },
             
