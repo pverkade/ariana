@@ -68,6 +68,23 @@
 
 }
 
+.large-tool-settings {
+    width: 8 * $blocksize;
+    height: 6 * $blocksize;
+
+    #pallette {
+        float: left;
+    }
+
+    #hue {
+        float: left;
+    }
+
+    .textinput {
+        float: left;
+    }
+}
+
 .color-preview {
     position: absolute;
     bottom: 0;
