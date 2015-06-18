@@ -20,16 +20,6 @@ body {
     @include user-select(none);
 }
 
-/* Style-class for box-shadow. */
-.box-shadow {
-    box-shadow: 0px 0px $box-shadow-size $black; 
-}
-
-/* Style-class for box-shadow. */
-.text-shadow {
-    text-shadow: 0px 0px $box-shadow-size $black; 
-}
-
 /* Styleclass for all GUI elements that float above the canvas. */
 .gui-element {
     //@extend .box-shadow;

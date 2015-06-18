@@ -12,9 +12,17 @@
     right: 0;
 
     width: 4 * $blocksize;
-    height: auto;
-    max-height: calc(100% - #{2 * $blocksize});
+    height: calc(100% - #{2 * $blocksize});
     overflow: hidden;
+    
+    .scroll {
+        height: calc(100% - #{3 * $blocksize});
+        overflow-y: auto;
+        overflow-x: hidden;
+        width: 4 * $blocksize;
+        position: relative;
+        float: left;
+    }
 }
 
 .layer-header {
@@ -22,9 +30,6 @@
     float: right;
     
     @extend .gui-element;
-    box-shadow: none;
-    
-    //border-bottom: $border-thickness solid $brand-color;
         
     h2 {
         width: 3 * $blocksize;
@@ -32,6 +37,7 @@
         line-height: $blocksize;
         float: left;
         padding: 0;
+        padding-right: $blocksize;
         margin: 0;
         
         font-size: 20pt;
@@ -48,7 +54,6 @@
     float: left;
     
     @extend .gui-element;
-    box-shadow: none;
     
     position: relative;
     transition: transform 200ms ease;
