@@ -10,8 +10,9 @@ app.directive('scale', function() {
 app.controller('ScaleCtrl', function($scope) {
 	$scope.toolname = 'scale';
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
+    $scope.cursorTypes = ["e-resize", "ne-resize", "n-resize", "nw-resize", "w-resize",
+                          "sw-resize", "s-resize", "se-resize", "e-resize"];
 
-    
     $scope.sign = function(x) { return x > 0 ? 1 : x < 0 ? -1 : 0; };
     
 	/* init */
@@ -41,7 +42,7 @@ app.controller('ScaleCtrl', function($scope) {
         var currentLayer = $scope.config.layers.currentLayer;
         if (currentLayer == -1) return;
 
-        var layer = $scope.renderEngine.layers[currentLayer];
+        var layer = $scope.renderEngine.getLayer(currentLayer);
 
         var x = layer.getPosX();
         var y = layer.getPosY();
@@ -52,55 +53,49 @@ app.controller('ScaleCtrl', function($scope) {
 
 	        var width  = layer.getWidth();
 	        var height = layer.getHeight();
-	        var rotation = layer.getRotation();
-	        
-	        var originalWidth = width;
-	        var originalHeight = height;
-            
+
             var newWidth = width;
             var newHeight = height;
 
+            var xScaleFactor, yScaleFactor;
+
 	        if ($scope.scaleToolIndex != 2 && $scope.scaleToolIndex != 6) {
-                var xScaleFactor = (mouseCurrentX - mouseOldX) / (mouseOldX - x) + 1;
+                xScaleFactor = (mouseCurrentX - mouseOldX ) / (mouseOldX - x) + 1;
+
                 if (xScaleFactor && isFinite(xScaleFactor)) {
                     newWidth *= xScaleFactor;
                 }
-
-                //newWidth *= !xScaleFactor || !isFinite(x)? 1 : xScaleFactor;
-	            // newWidth += (mouseCurrentX - mouseOldX)   * $scope.sign(Math.cos($scope.scaleToolIndex * 0.25 * Math.PI));
+                else if (isNaN(xScaleFactor)) {
+                    newWidth *= -1;
+                }
+                else if (!isFinite(xScaleFactor)) {
+                    newWidth *= Math.sign(xScaleFactor);
+                }
 	        }
 	        
 	        if ($scope.scaleToolIndex != 0 && $scope.scaleToolIndex != 4) {
-                var yScaleFactor = (mouseCurrentY - mouseOldY) / (mouseOldY - y) + 1;
+                yScaleFactor = (mouseCurrentY - mouseOldY ) / (mouseOldY - y) + 1;
+
                 if (yScaleFactor && isFinite(yScaleFactor)) {
-                    newHeight *= !yScaleFactor ? 1 : yScaleFactor;
+                    newHeight *= yScaleFactor;
                 }
-	            //newHeight += (mouseCurrentY - mouseOldY)  * -1 * $scope.sign(Math.sin($scope.scaleToolIndex * 0.25 * Math.PI));
+                else if (isNaN(yScaleFactor)) {
+                    newHeight *= -1;
+                }
+                else if (!isFinite(yScaleFactor)) {
+                    newHeight *= Math.sign(yScaleFactor);
+                }
 	        }
 
-            /*
-            
-            if ($scope.scaleToolIndex >= 3 && $scope.scaleToolIndex <= 5)
-                x -= 0.5 * (newWidth - width);
-            else if ($scope.scaleToolIndex >= 7 || $scope.scaleToolIndex == 0 || $scope.scaleToolIndex == 1)
-                x += 0.5 * (newWidth - width);
-            
-            if ($scope.scaleToolIndex >= 1 && $scope.scaleToolIndex <= 3)
-                y -= 0.5 * (newHeight - height);
-            else if ($scope.scaleToolIndex >= 5 && $scope.scaleToolIndex <= 7)
-                y += 0.5 * (newHeight - height);
-             */
+	        layer.setWidth(newWidth);
+	        layer.setHeight(newHeight);
 
-	        $scope.renderEngine.layers[currentLayer].setWidth(newWidth);
-	        $scope.renderEngine.layers[currentLayer].setHeight(newHeight);
-	        
-	        layer.setPos(x, y);
-            
             window.requestAnimationFrame(function() {
                 $scope.renderEngine.render();
             });
 
-        } else {              
+        }
+        else {
 	        var differenceX = mouseCurrentX - x;
 	        var differenceY = y - mouseCurrentY;
                   
@@ -108,20 +103,15 @@ app.controller('ScaleCtrl', function($scope) {
 	        if (!($scope.config.mouse.button[1] || $scope.config.mouse.button[3])) {
 	            
 	            var ratio = Math.abs(differenceY) / Math.abs(differenceX);
-	            var layerRatio = layer.getHeight() / layer.getWidth(); 
 	            
 	            $scope.scaleToolIndex = Math.round(8 * (angle / (2 * Math.PI)));
-	            
-	            if ($scope.scaleToolIndex == 0) { $scope.setCursor("e-resize"); };
-	            if ($scope.scaleToolIndex == 1) { $scope.setCursor("ne-resize"); };
-	            if ($scope.scaleToolIndex == 2) { $scope.setCursor("n-resize"); };
-	            if ($scope.scaleToolIndex == 3) { $scope.setCursor("nw-resize"); };
-	            if ($scope.scaleToolIndex == 4) { $scope.setCursor("w-resize"); };
-	            if ($scope.scaleToolIndex == 5) { $scope.setCursor("sw-resize"); };
-	            if ($scope.scaleToolIndex == 6) { $scope.setCursor("s-resize"); };
-	            if ($scope.scaleToolIndex == 7) { $scope.setCursor("se-resize"); };
-	            if ($scope.scaleToolIndex == 8) { $scope.setCursor("e-resize"); $scope.scaleToolIndex = 0; };
-	            return;
+                $scope.setCursor($scope.cursorTypes[$scope.scaleToolIndex]);
+
+                if ($scope.scaleToolIndex === 8) {
+                    $scope.scaleToolIndex = 0;
+                }
+
+                return;
 	        }	
         } 
         
