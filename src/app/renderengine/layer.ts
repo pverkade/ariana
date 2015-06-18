@@ -20,6 +20,8 @@ class Layer {
     protected height : number;
 	protected posX : number;
 	protected posY : number;
+    protected flipX : boolean;
+    protected flipY : boolean;
     private thumbnail : String;
     private hidden : boolean;
 
@@ -49,6 +51,8 @@ class Layer {
         /* Apperently calling a function on this object from within the constructor crashes it */
         this.posX = 0.0;
         this.posY = 0.0;
+        this.flipX = false;
+        this.flipY = false;
         this.width = width;
         this.height = height;
         this.angle = 0.0;
@@ -123,12 +127,14 @@ class Layer {
 	public setDimensions(width : number, height : number) {
         this.width = width;
         this.height = height;
-
-		mat3.identity(this.sizeMatrix);
+        mat3.identity(this.sizeMatrix);
         mat3.scale(
             this.sizeMatrix,
             this.sizeMatrix,
-            new Float32Array([width/2.0, height/2.0])
+            new Float32Array([
+                this.width / 2,
+                this.height / 2
+            ])
         );
 
         this.notifyPropertyChanged();
@@ -146,6 +152,24 @@ class Layer {
 
     public setHidden(hidden : boolean) {
         this.hidden = hidden;
+    }
+
+    public setFlipX(flipX : boolean) {
+        this.flipX = flipX;
+        this.notifyPropertyChanged();
+    }
+
+    public setFlipY(flipY : boolean) {
+        this.flipY = flipY;
+        this.notifyPropertyChanged();
+    }
+
+    public isFlippedX() {
+        return this.flipX;
+    }
+
+    public isFlippedY() {
+        return this.flipY;
     }
 
 	public getPosX() : number {

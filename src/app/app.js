@@ -100,12 +100,15 @@ app.controller('AppCtrl', ['$scope',
         $scope.newLayerFromImage = function(image) {
             var layer = $scope.renderEngine.createImageLayer(image);
             $scope.addLayer(layer);
+
+            var height = layer.getHeight();
+            var width  = layer.getWidth();
+            layer.setPos(0.5 * width, 0.5 * height);
         };
 
         $scope.addLayer = function(layer) {
-            var width  = layer.getWidth();
             var height = layer.getHeight();
-            layer.setPos(0.5 * width, 0.5 * height);
+            var width  = layer.getWidth();
 
             $scope.renderEngine.addLayer(layer);
 

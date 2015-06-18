@@ -42,7 +42,9 @@ class ImageLayer extends Layer {
 
     renderFullscreen() {
         var matrix = mat3.create();
-        this.program.setUniforms(this.texture, matrix);
+        var flipMatrix = mat3.create();
+
+        this.program.setUniforms(this.texture, matrix, flipMatrix);
         this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
     }
 
@@ -53,7 +55,26 @@ class ImageLayer extends Layer {
         mat3.multiply(matrix, matrix, this.translationMatrix);
         mat3.multiply(matrix, matrix, this.rotationMatrix);
         mat3.multiply(matrix, matrix, this.sizeMatrix);
-        this.program.setUniforms(this.texture, matrix);
+
+        var flipMatrix = mat3.create();
+        mat3.scale(
+            flipMatrix,
+            flipMatrix,
+            new Float32Array([
+                this.flipX ? -1.0 : 1.0,
+                this.flipY ? -1.0 : 1.0
+            ])
+        );
+        mat3.translate(
+            flipMatrix,
+            flipMatrix,
+            new Float32Array([
+                this.flipX ? -1.0 : 0.0,
+                this.flipY ? -1.0 : 0.0
+            ])
+        );
+
+        this.program.setUniforms(this.texture, matrix, flipMatrix);
         this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
     }
 

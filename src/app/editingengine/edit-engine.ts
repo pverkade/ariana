@@ -182,6 +182,10 @@ class EditEngine {
                 selectionLayer.getPosY()
             );
             this.context.rotate(-selectionLayer.getRotation());
+            this.context.scale(
+                selectionLayer.isFlippedX() ? -1.0 : 1.0,
+                selectionLayer.isFlippedY() ? -1.0 : 1.0
+            );
             this.context.drawImage(
                 this.selectionTmpCanvas,
                 0,
