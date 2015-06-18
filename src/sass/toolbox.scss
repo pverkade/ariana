@@ -14,10 +14,6 @@
     
     top: 1.5 * $blocksize;
     
-    @media (max-width: 10.5 * $blocksize) {
-        top: 2.5 * $blocksize;
-    }
-    
     @extend .gui-element;
 }
 
