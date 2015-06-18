@@ -16,12 +16,16 @@
     overflow: hidden;
     
     .scroll {
-        height: calc(100% - #{3 * $blocksize});
+        height: calc(100% - #{1 * $blocksize});
         overflow-y: auto;
         overflow-x: hidden;
         width: 4 * $blocksize;
         position: relative;
         float: left;
+    }
+    
+    .ng-hide {
+        @include transform(translate(4 * $blocksize, 0px));
     }
 }
 
@@ -82,8 +86,4 @@
 
         background-color: darken($light, 5%);
     }
-}
-
-.ng-hide {
-    @include transform(translate(4 * $blocksize, 0px));
 }
