@@ -193,7 +193,7 @@ class MagicSelection implements SelectionInterface {
         /* Search left from starting point. */
         for (var x = startX - 1; x >= 0; x--) {
             if (this.matchPoint(x, startY, treshold) == false) {
-                left = x;
+                left = x + 1;
                 break;
             } else if( x == 0) {
                 left = 0;
@@ -204,7 +204,7 @@ class MagicSelection implements SelectionInterface {
         /* Search right from starting point. */
         for (var x = startX + 1; x < this.imageData.width; x++) {
             if (this.matchPoint(x, startY, treshold) == false) {
-                right = x;
+                right = x - 1;
                 break;
             } else if( x == this.imageData.width - 1) {
                 right = this.imageData.width - 1;

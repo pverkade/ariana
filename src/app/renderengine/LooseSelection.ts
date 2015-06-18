@@ -1,7 +1,6 @@
 class LooseSelection implements SelectionInterface {
 	points : Point[];
 	maskBorder : number[];
-	// maskAnts : number[][];
 
 	width : number;
 	height : number;
@@ -10,7 +9,6 @@ class LooseSelection implements SelectionInterface {
 		this.width = width;
 		this.height = height;
 		this.maskBorder = [];
-		// this.maskAnts = [];
 
 		for (var i=0; i < this.width * this.height; i++) {
 			this.maskBorder.push(0);
