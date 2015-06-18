@@ -32,16 +32,25 @@ app.controller('SaveImageModalController', ['$scope', '$modalInstance', '$modal'
         var nameInput = document.createElement("input") ;
         nameInput.setAttribute("name", 'filename') ;
         nameInput.setAttribute("value", $scope.filename);
+        nameInput.setAttribute("type", "hidden");
 
         var formatInput = document.createElement("input") ;
         formatInput.setAttribute("name", 'format') ;
         formatInput.setAttribute("value", $scope.format);
+        nameInput.setAttribute("type", "hidden");
+
+        var qualityInput = document.createElement("input");
+        qualityInput.setAttribute("name", "quality");
+        qualityInput.setAttribute("value", $scope.quality);
+        qualityInput.setAttribute("type", "hidden");
 
         var myForm = document.createElement("form");
         myForm.method = 'post';
         myForm.action = url;
         myForm.appendChild(dataInput);
         myForm.appendChild(nameInput);
+        myForm.appendChild(formatInput);
+        myForm.appendChild(qualityInput);
 
         document.body.appendChild(myForm) ;
         myForm.submit() ;
