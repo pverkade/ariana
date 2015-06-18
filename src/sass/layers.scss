@@ -12,20 +12,36 @@
     right: 0;
 
     width: 4 * $blocksize;
-    height: calc(100% - #{2 * $blocksize});
+    height: auto;
+    max-height: calc(100% - #{2 * $blocksize});
     overflow: hidden;
     
+    .scroll-wrapper {
+        width: 4 * $blocksize;
+        height: auto;
+        max-height: calc(100% - #{2 * $blocksize});
+        overflow: hidden;
+    }
+    
     .scroll {
-        height: calc(100% - #{1 * $blocksize});
+        display: block;
+        position: relative;
+        
+        height: 100%;
+        max-height: calc(100% - #{$blocksize});
         overflow-y: auto;
         overflow-x: hidden;
         width: 4 * $blocksize;
         position: relative;
         float: left;
     }
-    
+ 
     .ng-hide {
         @include transform(translate(4 * $blocksize, 0px));
+    }
+    
+    .layer-header, .layer, .scroll {
+        transition: transform $move-speed ease;
     }
 }
 
