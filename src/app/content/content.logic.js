@@ -112,16 +112,4 @@ app.controller('ContentController', function($scope, $window) {
         document.getElementById("main-canvas"),
         document.getElementById("editing-canvas")
     );
-
-    // Add Arnold the First
-    // var image1 = new Image();
-    // image1.src="/assets/img/logo.png";
-    // image1.onload = function(){$scope.newLayerFromImage(image1)};
-
-    //TODO: nu tekenen we op de canvas, maar we moeten in de renderEngine tekenen o.i.d.
-    //$scope.drawEngine = new Draw(canvas, $scope.renderEngine);
-    //$scope.drawEngine.activate();
-    //$scope.drawEngine.setBrush(brushType.THIN);
-    //$scope.drawEngine.loadBrushSVG('assets/draw/thin.svg');
-    //$scope.drawEngine.setDrawType(drawType.CIRCLE);
 });

@@ -12,6 +12,7 @@
 var app = angular.module('ariana', [
     'ui.router',
     'ui.bootstrap',
+    'cfp.hotkeys',
     'templates-ariana',
     'ngFileUpload',
     'ngAnimate'
@@ -54,6 +55,9 @@ app.controller('AppCtrl', ['$scope',
                 xr: 1,
                 yr: 1,
                 zoom: 1,
+                width: 800,
+                height: 600,
+                visible: false
             },
             tools: {
                 activeTool: 'pan',
@@ -81,12 +85,14 @@ app.controller('AppCtrl', ['$scope',
 
         $scope.renderEngine = null;
         $scope.drawEngine = null;
+        $scope.editEngine = null;
 
         /* This function creates the RenderEngine. It requires the canvas to
          * render on. */
         $scope.startEngines = function(renderCanvas, drawCanvas) {
             $scope.renderEngine = new RenderEngine(renderCanvas);
             $scope.drawEngine = new DrawEngine(drawCanvas);
+            $scope.editEngine = new EditEngine(drawCanvas);
         };
 
         /* This function creates a new layer from a given Image-object. The new
@@ -109,7 +115,7 @@ app.controller('AppCtrl', ['$scope',
             
             /* Store information about the layers in the config object. */
             $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {
-                "name": $scope.config.layers.currentLayer,
+                "name": 'Layer ' + $scope.config.layers.numberOfLayers,
                 "x": layer.getPosX(),
                 "y": layer.getPosY(),
                 "originalWidth": width,
@@ -119,7 +125,32 @@ app.controller('AppCtrl', ['$scope',
                 "rotation": layer.getRotation(),
             }
 
-            $scope.renderEngine.render();
+            window.requestAnimationFrame(function() {$scope.renderEngine.render();});
+            //$scope.renderEngine.render();
+        };
+
+        $scope.resizeCanvases = function(width, height) {
+            var toolFunctions = $scope.config.tools.activeToolFunctions;
+
+            $scope.config.canvas.width = width;
+            $scope.config.canvas.height = height;
+            $scope.renderEngine.resize($scope.config.canvas.width, $scope.config.canvas.height);
+            $scope.drawEngine.resize($scope.config.canvas.width, $scope.config.canvas.height);
+            $scope.editEngine.resize($scope.config.canvas.width, $scope.config.canvas.height);
+
+            if (toolFunctions && toolFunctions.init) {
+                toolFunctions.init();
+            }
+
+            $scope.config.layers.numberOfLayers = 0;
+            $scope.config.layers.currentLayer = -1;
+            $scope.config.layers.layerInfo = [];
+
+            if (!$scope.config.canvas.visible) {
+                $scope.config.canvas.visible = true;
+            }
+            
+            window.requestAnimationFrame(function() {$scope.renderEngine.render();});
         };
 	}
 ]);

@@ -14,6 +14,8 @@ app.controller('ScaleCtrl', function($scope) {
                           "sw-resize", "s-resize", "se-resize", "e-resize"];
 
     $scope.sign = function(x) { return x > 0 ? 1 : x < 0 ? -1 : 0; };
+
+    $scope.keepAR = false;
     
 	/* init */
 	$scope.init = function() {
@@ -87,6 +89,17 @@ app.controller('ScaleCtrl', function($scope) {
                 }
 	        }
 
+            if ($scope.keepAR) {
+                if ($scope.scaleToolIndex == 0 || $scope.scaleToolIndex == 4) {
+                    ratio = newWidth / originalWidth;
+                    newHeight = height * ratio;
+                }
+                if ($scope.scaleToolIndex == 2 || $scope.scaleToolIndex == 6) {
+                    ratio = newHeight / originalHeight;
+                    newWidth = width * ratio;
+                }
+            }
+
 	        layer.setWidth(newWidth);
 	        layer.setHeight(newHeight);
 
@@ -138,8 +151,12 @@ app.controller('ScaleCtrl', function($scope) {
 				mouseUp:   $scope.mouseUp,
 				mouseMove: $scope.mouseMove
 			};
+		} 
+        else {
+			$scope.editEngine.clear();
 		}
-		else if (oval) {
+        
+        if (oval) {
 			var layer = $scope.renderEngine.getLayer($scope.config.layers.currentLayer);
 			layer.commitDimensions();
 		}

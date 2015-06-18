@@ -10,6 +10,15 @@
 			<span class="input-group-addon"> Opacity </span>
 			<input type="range" class="form-control" ng-model="opacity" ng-change="updateDrawEngine()" min="0" max="1" step="0.01"></input>
 		</div>
-        
+        <div class="input-group">
+			<span class="input-group-addon"> Style </span>
+			<select class="form-control" ng-model="brush" ng-change="updateBrushStyle()">
+				<option value="thin" selected>Thin</option>
+				<option value="pen">Pen</option>
+				<option value="neighbor">Neighbor</option>
+				<option value="fur">Fur</option>
+				<option value="multistroke">Multistroke</option>
+			</select>
+		</div>
 	<div>
 </div>

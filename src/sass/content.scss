@@ -25,6 +25,5 @@
 }
 
 #main-canvas {
-    background-color: #ffffff;
-    @extend .box-shadow;
+    background: url(/assets/img/canvas_background.svg) repeat;
 }

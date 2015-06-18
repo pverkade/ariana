@@ -1,13 +1,14 @@
 <!-- Template for the toolbar. -->
 
 <div class="toolbar"
+    ng-right-click
     ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}">
     <div class="brand float-left">
         ARIANA
     </div>
     
     <ul class="clearfix">
-        <li class="inactive tool float-left">
+        <li class="tool float-left" ng-click="openNewFileModal()">
             <!-- new canvas -->
             <i class="mdi mdi-file"></i>
         </li>
@@ -49,6 +50,7 @@
 <!-- Template for the filter-options element. -->
 
 <div class="filter-options" 
+    ng-right-click
     ng-show="filter.filterObject"
     ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}"> 
     <div class="tool float-left" ng-click="cancel()"> <i class="mdi mdi-close"> </i> </div>

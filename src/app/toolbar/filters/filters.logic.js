@@ -13,22 +13,22 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
         $scope.filters = {
             
             "noise": {
-                image: "/assets/img/arnold.jpg", 
+                image: "/assets/img/noisesample.jpg", 
                 constructor: NoiseFilter,
             },
             
             "contrast": {
-                image: "/assets/img/arnold.jpg",
+                image: "/assets/img/contrastsample.jpg",
                 constructor: ContrastFilter,
             },
             
             "brightness": {
-                image: "/assets/img/arnold.jpg",
+                image: "/assets/img/brightnesssample.jpg",
                 constructor: BrightnessFilter,
             },
             
             "invert colors": {
-                image: "/assets/img/arnold.jpg",
+                image: "/assets/img/invertsample.jpg",
                 constructor: InvertColorsFilter,
             },
             
@@ -38,12 +38,12 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
             },
             
             "sepia": {
-                image: "/assets/img/arnold.jpg",
+                image: "/assets/img/sepiasample.jpg",
                 constructor: SepiaFilter,
             },
             
             "colorize": {
-                image: "/assets/img/arnold.jpg",
+                image: "/assets/img/colorizesample.jpg",
                 constructor: ColorizeFilter,
             },
         };

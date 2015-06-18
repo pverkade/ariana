@@ -20,7 +20,7 @@ class Layer {
     protected height : number;
 	protected posX : number;
 	protected posY : number;
-    public thumbnail : String;
+    private thumbnail : String;
     private hidden : boolean;
 
 	public sizeMatrix : Float32Array;
@@ -148,6 +148,10 @@ class Layer {
         this.setDimensions(this.width, height);
 	}
 
+    public setThumbnail(thumbnail : String) {
+        this.thumbnail = thumbnail;
+    }
+
 	public setDimensions(width : number, height : number) {
         this.width = width;
         this.height = height;
@@ -246,6 +250,10 @@ class Layer {
 
     public getLayerType() : LayerType {
         return this.layerType;
+    }
+
+    public getThumbnail() : String {
+        return this.thumbnail;
     }
 
     public isHidden() : boolean {

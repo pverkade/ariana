@@ -15,11 +15,35 @@ app.controller('layersCtrl', function($scope) {
         return (!($scope.config.mouse.button[1] || $scope.config.mouse.button[2] || $scope.config.mouse.button[3]));
     };
     
-    $scope.addLayer = function(event) {
+    $scope.hidden = false;
+    
+    $scope.showLayers = function() {
+        $scope.hidden = false;
+    }
+    
+    $scope.hideLayers = function() {
+        $scope.hidden = true;
+    }
+
+
+    $scope.hideLayer = function(event, index) {
         event.stopPropagation();
+        var layer = $scope.renderEngine.getLayer(index);
+        layer.setHidden(!layer.isHidden());
+        $scope.config.layers.layerInfo[index].hidden = layer.isHidden();
+
+        $scope.renderEngine.render();
+    }
+    
+    $scope.isHidden = function(index) {
+        return $scope.config.layers.layerInfo[index].hidden;
+    }
+
+    $scope.addLayer = function(event) {
+        //event.stopPropagation();
         
         $scope.config.layers.layerInfo.push({
-            "name": $scope.config.layers.currentLayer,
+            "name": 'Layer ' + $scope.config.layers.numberOfLayers,
             "x": 0,
             "y": 0,
             "xScale": 1,
@@ -75,4 +99,9 @@ app.controller('layersCtrl', function($scope) {
         }
         return false;
     };
+
+    $scope.getThumbnail = function(index) {
+        return $scope.renderEngine.getLayer(index).getThumbnail();
+    };
+
 });
