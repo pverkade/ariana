@@ -254,7 +254,8 @@ class DrawEngine {
         if (brush == brushType.DUNES) {
             return 'assets/draw/dunes.svg';
         }
-        return this.setDrawType(drawType.BRUSH);;
+        this.setDrawType(drawType.BRUSH);
+        return null;
     }
 
     /*
