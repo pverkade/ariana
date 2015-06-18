@@ -89,7 +89,7 @@ enum drawType { NORMAL, QUADRATIC_BEZIER, BRUSH, LINE, RECTANGLE, CIRCLE, ERASE 
  * NEIGHBOR : stroke nearby lines
  * FUR : fur effect with nearby points
  */
-enum brushType { THIN, PEPPER, DUNES, PEN, NEIGHBOR, FUR }
+enum brushType { THIN, PEPPER, DUNES, PEN, NEIGHBOR, FUR, MULTISTROKE }
 
 /*
  * Drawing class
@@ -547,6 +547,10 @@ class DrawEngine {
         if (this.brush == brushType.FUR) {
             return this.drawBrushFur(points, path, context);
         }
+
+        if (this.brush == brushType.MULTISTROKE) {
+            return this.drawBrushMultiStroke(points, path, context);
+        }
     }
 
     drawBrushPen (points, path : Path, context : CanvasRenderingContext2D) {
@@ -640,7 +644,6 @@ class DrawEngine {
         path.lastDrawnItem = i;
     }
 
-    //TODO: wat doet onderstaand? Gebruiken we die shit wel?
     drawBrushMultiStroke (points, path : Path, context : CanvasRenderingContext2D) {
 
         var i : number = path.lastDrawnItem;
