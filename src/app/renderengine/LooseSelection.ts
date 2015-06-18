@@ -52,43 +52,27 @@ class LooseSelection implements SelectionInterface {
 		}
 	}
 
-	getMaskWand() {
-		var borderCount : number;
-		var lastEltLine : number;
-		var maskWand = [];
-
-		for (var i = 0; i < this.height; i++){
-			/* Search for most right border on current line. */
-			for (var j = this.width - 1; j >= 0; j--) {
-				if (this.maskBorder[i * this.width + j] == 1){
-					lastEltLine = j;
-					break;
-				}
-			}
-
-			/* Fill maskWand row. */
-			borderCount = 0;
-			for (var j = 0; j < this.width; j++) {
-				/* Fill maskWand with ones if there is one border crossed. Take into account
-					that borders can be horizontal as well. */
-				if (j <= lastEltLine) {
-					if (this.maskBorder[i * this.width + j] == 1) {
-						maskWand.push(1);
-						if (j < this.width - 1 && this.maskBorder[i * this.width + j + 1] == 0) {
-							borderCount += 1;
-						}
-					} else if (borderCount % 2 == 1) {
-						maskWand.push(1);
+	getInsidePoint() {
+		for (var y = 0; y < this.height; y++) {
+			for (var x = 0; x < this.width; x++) {
+				if (this.maskBorder[y * this.width + x] == 1) {
+					if (this.maskBorder[(y + 1) * this.width + x + 1] == 0) {
+						return new Point(x+1, y+1);
 					} else {
-						maskWand.push(0);
+						return new Point(x, y+1);
 					}
-				} else {
-					maskWand.push(0);
 				}
 			}
 		}
 
-		return maskWand;
+		return null;
+	}
+
+	getMaskWand() {
+		var mask = new MaskSelection(this.maskBorder, this.width, this.height);
+		var insidePoint = this.getInsidePoint();
+
+		return mask.getMaskWand(insidePoint.x, insidePoint.y);				
 	}
 
 	getMaskBorder() {
