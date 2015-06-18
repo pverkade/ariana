@@ -1,10 +1,16 @@
 app.controller("ColorselectorCtrl", ['$scope',
     function($scope) {
+        hsv = RGBtoHSV( $scope.config.tools.colors.primary.r, 
+                        $scope.config.tools.colors.primary.g,
+                        $scope.config.tools.colors.primary.b);
+        hexcode = RGBtoHEX( $scope.config.tools.colors.primary.r, 
+                            $scope.config.tools.colors.primary.g,
+                            $scope.config.tools.colors.primary.b);
         $scope.color = {
-            H: 100,
-            S: 70,
-            V: 80,
-            hex: "#000000",
+            H: hsv.H,
+            S: hsv.S,
+            V: hsv.V,
+            hex: hexcode,
         }
 
         var palmousedown = false;
