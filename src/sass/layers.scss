@@ -12,23 +12,20 @@
     right: 0;
 
     width: 4 * $blocksize;
-    height: auto;
-    max-height: calc(100% - #{2 * $blocksize});
+    height: calc(100% - #{2 * $blocksize});
     overflow: hidden;
     
-    .scroll-wrapper {
-        width: 4 * $blocksize;
-        height: auto;
-        max-height: calc(100% - #{2 * $blocksize});
-        overflow: hidden;
+    pointer-events: none;
+    
+    .layer-header, .layer {
+        pointer-events: auto;
     }
     
     .scroll {
         display: block;
         position: relative;
         
-        height: 100%;
-        max-height: calc(100% - #{$blocksize});
+        height: calc(100% - #{$blocksize});
         overflow-y: auto;
         overflow-x: hidden;
         width: 4 * $blocksize;

@@ -70,14 +70,12 @@
 
     #pallette {
         float: left;
+        display: block;
     }
 
     #hue {
         float: left;
-    }
-
-    .textinput {
-        float: left;
+        display: block;
     }
 }
 
