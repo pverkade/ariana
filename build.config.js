@@ -20,7 +20,8 @@ module.exports = {
             'bower_components/angular-animate/angular-animate.js',
             'bower_components/angular-ui-router/release/angular-ui-router.js',
             'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
-            'bower_components/ng-file-upload/ng-file-upload-all.js'
+            'bower_components/ng-file-upload/ng-file-upload-all.js',
+            'bower_components/angular-hotkeys/build/hotkeys.js'
         ],
         css: [
             'bower_components/bootstrap/dist/css/bootstrap.css.map'
