@@ -204,7 +204,6 @@ class DrawEngine {
      */
     setDrawType (drawType : drawType) : void {
         this.drawType = drawType;
-        console.log(this.drawType);
     }
 
     /*

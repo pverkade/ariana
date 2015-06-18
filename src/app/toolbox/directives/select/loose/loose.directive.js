@@ -13,7 +13,6 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
 
 	/* init */
 	$scope.init = function() {
-		console.log("test");
 		$scope.setCursor('default');
         /* working with $scope to share variables between functions in this file does not seem to work. */
         var scope = angular.element($("#main-canvas")).scope();
