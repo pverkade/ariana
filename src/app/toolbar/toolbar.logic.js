@@ -50,8 +50,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/save-image/save-image.tpl.html',
                 controller: 'SaveImageModalController',
-                scope: $scope,
-                size: 'lg'
+                scope: $scope
             })
         };
         
@@ -59,7 +58,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
             filterName: "",
             filterObject: null,
             filterParameters: null,
-            currentlayerOnly: false,
+            currentlayerOnly: false
         };
     
         /* This function opens the filters modal. */

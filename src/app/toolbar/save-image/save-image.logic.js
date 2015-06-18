@@ -11,12 +11,6 @@ app.controller('SaveImageModalController', ['$scope', '$modalInstance', '$modal'
         $modalInstance.dismiss();
     };
 
-    $scope.saveImage = function () {
-        console.log("quality", $scope.quality);
-        console.log("format", $scope.format);
-        console.log("filename", $scope.filename);
-    };
-
     /* This functions saves the canvas to an image-file. */
     $scope.saveImage = function() {
         var toolFunctions = $scope.config.tools.activeToolFunctions;

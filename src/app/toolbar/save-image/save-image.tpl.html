@@ -17,7 +17,7 @@
             </select>
         </div>
 
-        <div class="form-group" ng-show="format == 'jpeg'">
+        <div class="form-group" ng-class="{'not-visible': format !== 'jpeg'}">
             <label for="quality-input">Quality:</label>
             <input type="range" id="quality-input" ng-model="quality" class="form-control" />
             <div class="input-group-addon">{{quality}}</div>
@@ -27,5 +27,5 @@
 
 <div class="modal-footer">
     <button type="button" class="btn btn-default btn-lg" ng-click="closeSaveImageModal()"> Cancel </button>
-    <button type="button" class="btn btn-primary btn-lg" ng-click="saveImage()"> Download </button>
+    <button type="button" class="btn btn-primary btn-lg" ng-click="saveImage()"> Save Image </button>
 </div>
