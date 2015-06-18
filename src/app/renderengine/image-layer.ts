@@ -58,4 +58,8 @@ class ImageLayer extends Layer {
         super.destroy();
         this.gl.deleteTexture(this.texture);
     }
+
+    public getWebGlTexture() : WebGLTexture {
+        return this.texture
+    }
 }
