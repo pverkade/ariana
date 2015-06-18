@@ -59,13 +59,13 @@
     width: 4 * $blocksize;
     height: 4 * $blocksize;
 
-    z-index: 1;
+    z-index: 3;
     background-color: lighten($light, 2 * $active-lighten);
 
 }
 
 .large-tool-settings {
-    width: 8 * $blocksize;
+    width: 5.5 * $blocksize;
     height: 6 * $blocksize;
 
     #pallette {
