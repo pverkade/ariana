@@ -1,0 +1,20 @@
+<div class="modal-header">
+    <h1 class="modal-title"> New File </h1>
+</div>
+
+<div class="modal-body">
+    <form>
+        <div class="form-group">
+            <label for="inputWidth">Width:</label>
+            <input type="number" id="inputWidth" ng-model="inputWidth" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="inputHeight">Height:</label>
+            <input type="number" id="inputHeight" ng-model="inputHeight" class="form-control" />
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default btn-lg" ng-click="closeNewFileModal()"> Cancel </button>
+    <button type="button" class="btn btn-primary btn-lg" ng-click="create()"> Create File </button>
+</div>

@@ -132,83 +132,65 @@ class DrawEngine {
         this.dottedDistance = 0.0;
     }
 
-    getMousePos = (e : MouseEvent) : Position2D => {
-        var bbox = this.drawCanvas.getBoundingClientRect(); //top en left
-        var x : number = e.pageX - bbox.left;
-        var y : number = e.pageY - bbox.top;
-        return new Position2D(x, y);
+    resize (width : number, height : number) : void {
+        this.memCanvas.width = width;
+        this.memCanvas.height = height;
+        this.clearCanvases();
     }
-
+    
     /*
      * Function that is called at mousepress
      */
-    onMousedown = (e : MouseEvent) : void => {
+    onMousedown = (x : number, y : number) : void => {
         if (!this.currentPath) {
             this.saveCanvas();
-            this.currentPath = new Path(this.getMousePos(e));
+            this.currentPath = new Path(new Position2D(x, y));
             if (this.drawType == drawType.RECTANGLE || this.drawType == drawType.CIRCLE) {
-                this.currentPath.addPosition(this.getMousePos(e));
+                this.currentPath.addPosition(new Position2D(x, y));
             }
         }
 
         if (this.drawType == drawType.LINE) {
-            this.currentPath.addPosition(this.getMousePos(e));
+            this.currentPath.addPosition(new Position2D(x, y));
         }
-    }
-
-    /*
-     * Function that is called at right mousepress
-     */
-    onContextmenu = (e : MouseEvent) : void => {
-        e.preventDefault();
-
-        this.onMousedown(e);
-    }
+    };
 
     /*
      * Funtion that is called when the mouse is moved
      */
-    onMousemove = (e : MouseEvent) : void => {
+    onMousemove = (x : number, y : number) : void => {
         if (this.currentPath) {
-            /* If mouse button is upped outside of the canvas screen, stop drawing */
-            if (e.buttons == 0) {
-                this.currentPath = null;
-                return;
-            }
 
             if (this.drawType == drawType.LINE || this.drawType == drawType.RECTANGLE
                  || this.drawType == drawType.CIRCLE) {
-                this.currentPath.setLastPosition(this.getMousePos(e));
+                this.currentPath.setLastPosition(new Position2D(x, y));
             }
             else {
-                this.currentPath.addPosition(this.getMousePos(e));
+                this.currentPath.addPosition(new Position2D(x, y));
             }
             this.draw(this.currentPath);
         }
-    }
+    };
 
     /*
      * Function being called when the mouse is no longer being pressed
      */
-    onMouseup = (e : MouseEvent) : void => {
+    onMouseup =  (x : number, y : number) : void => {
         if (!this.currentPath) return;
         
         if (this.drawType == drawType.RECTANGLE || this.drawType == drawType.CIRCLE) {
-            this.currentPath.setLastPosition(this.getMousePos(e));
+            this.currentPath.setLastPosition(new Position2D(x, y));
         }
         else if (this.drawType == drawType.LINE) {
-            if (e.buttons > 0) {
-                return;
-            }
-            this.currentPath.setLastPosition(this.getMousePos(e));
+            this.currentPath.setLastPosition(new Position2D(x, y));
         }
         else {
-            this.currentPath.addPosition(this.getMousePos(e));
+            this.currentPath.addPosition(new Position2D(x, y));
         }
 
         this.draw(this.currentPath);
         this.currentPath = null;
-    }
+    };
 
     /*
      * Set the size of the brush/line
@@ -246,7 +228,7 @@ class DrawEngine {
      * Set the opacity
      */
     setOpacity (opacity : number) : void {
-        this.opacity = opacity;
+        this.opacity = opacity * opacity;
     }
 
     /*
@@ -284,7 +266,7 @@ class DrawEngine {
      */
     brushLoaded = () : void => {
         this.setDrawType(drawType.BRUSH);
-    }
+    };
 
     /*
      * Save the canvas (use this before drawing)
@@ -292,7 +274,7 @@ class DrawEngine {
     saveCanvas = () : void => {
         this.memContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.memContext.drawImage(this.drawCanvas, 0, 0);
-    }
+    };
 
     /*
      * Reset the canvas to its original state (the saved state)
@@ -308,7 +290,7 @@ class DrawEngine {
         if (this.currentPath) {
             this.currentPath.lastDrawnItem = 0;
         }
-    }
+    };
 
     clearCanvases() : void {
         this.memContext.clearRect(0, 0, this.memCanvas.width, this.memCanvas.height);

@@ -7,7 +7,7 @@
  *
  */
  
-angular.module('ariana').controller('layersCtrl', function($scope) {
+app.controller('layersCtrl', function($scope) {
     
     /* This functions returns whether the toolbox should be visible. It is 
      * hidden when the user is clicking on the canvas/background. */
@@ -15,11 +15,35 @@ angular.module('ariana').controller('layersCtrl', function($scope) {
         return (!($scope.config.mouse.button[1] || $scope.config.mouse.button[2] || $scope.config.mouse.button[3]));
     };
     
-    $scope.addLayer = function() {
+    $scope.hidden = false;
+    
+    $scope.showLayers = function() {
+        $scope.hidden = false;
+    }
+    
+    $scope.hideLayers = function() {
+        $scope.hidden = true;
+    }
+
+
+    $scope.hideLayer = function(event, index) {
         event.stopPropagation();
+        var layer = $scope.renderEngine.getLayer(index);
+        layer.setHidden(!layer.isHidden());
+        $scope.config.layers.layerInfo[index].hidden = layer.isHidden();
+
+        $scope.renderEngine.render();
+    }
+    
+    $scope.isHidden = function(index) {
+        return $scope.config.layers.layerInfo[index].hidden;
+    }
+
+    $scope.addLayer = function(event) {
+        //event.stopPropagation();
         
         $scope.config.layers.layerInfo.push({
-            "name": $scope.config.layers.currentLayer,
+            "name": 'Layer ' + $scope.config.layers.numberOfLayers,
             "x": 0,
             "y": 0,
             "xScale": 1,
@@ -34,6 +58,13 @@ angular.module('ariana').controller('layersCtrl', function($scope) {
         event.stopPropagation();
         $scope.config.layers.layerInfo.splice(index, 1);
         $scope.config.layers.numberOfLayers = $scope.config.layers.layerInfo.length;
+        
+        if ($scope.config.layers.currentLayer == $scope.config.layers.numberOfLayers)
+            $scope.config.layers.currentLayer -= 1;
+        
+        $scope.renderEngine.removeLayer(index);
+
+        $scope.renderEngine.render();
     };
 
     $scope.moveLayerUp = function(event, index) {
@@ -42,6 +73,9 @@ angular.module('ariana').controller('layersCtrl', function($scope) {
 
         if (index > 0) {
             $scope.config.layers.layerInfo.swap(index, index - 1);
+            $scope.renderEngine.reorder(index, index - 1);
+
+            $scope.renderEngine.render();
         }
     };
 
@@ -51,6 +85,9 @@ angular.module('ariana').controller('layersCtrl', function($scope) {
 
         if (index < $scope.config.layers.numberOfLayers - 1 && $scope.config.layers.numberOfLayers > 1) {
             $scope.config.layers.layerInfo.swap(index, index + 1);
+            $scope.renderEngine.reorder(index, index + 1);
+
+            $scope.renderEngine.render();
         }
     };
 
@@ -62,4 +99,9 @@ angular.module('ariana').controller('layersCtrl', function($scope) {
         }
         return false;
     };
+
+    $scope.getThumbnail = function(index) {
+        return $scope.renderEngine.getLayer(index).getThumbnail();
+    };
+
 });

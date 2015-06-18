@@ -46,7 +46,6 @@ accordion {
 
 .fade-on {
     @include transition(opacity $fade-speed ease-in);
-    z-index: 1;
     opacity: $fade-amount;
     pointer-events: none;
 }
@@ -64,4 +63,8 @@ accordion {
 .scale-off {
     @include transition(transform $scale-speed ease-in);
     @include transform(scale(1,1) translate(0px, 0px));
+}
+
+.mb10 {
+    margin-bottom: 10px;
 }

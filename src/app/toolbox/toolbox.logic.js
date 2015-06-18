@@ -8,7 +8,7 @@
  */
 
 /* This contoller defines the behaviour of the toolbox and the color-preview. */
-angular.module('ariana').controller('ToolboxController', function($scope) {
+app.controller('ToolboxController', function($scope) {
     
     $scope.setCursor = function(cursor) {
         $scope.config.canvas.cursor = cursor;
@@ -28,7 +28,7 @@ angular.module('ariana').controller('ToolboxController', function($scope) {
     $scope.checkVisible = function() {
         return (!($scope.config.mouse.button[1] || $scope.config.mouse.button[2] || $scope.config.mouse.button[3]));
     }
-    
+
     /* 
      * Returns whether this tool is active
      */
@@ -63,120 +63,4 @@ angular.module('ariana').controller('ToolboxController', function($scope) {
         $scope.config.tools.activeTool = name;
         return true;
     }
-    
-    /* This function selects a certain tool. */
-    // $scope.selectTool = function(event, tool) {
-    //     if (event) event.stopPropagation();
-
-
-    //     $scope.config.tools.activeTool = tool;
-        
-    //     /* Find the required tool-functions in the toolbox object. The 
-    //      * currrently selected toolset is used. */
-    //     var toolset = $scope.config.tools.activeToolset;
-    //     if (toolset) toolFunctions = $scope.toolbox[toolset].tools[tool].toolFunctions;
-    //     else toolFunctions = $scope.toolbox.basic.tools[tool].toolFunctions;
-
-    //     if (toolFunctions) {
-    //         $scope.config.tools.activeToolFunctions = toolFunctions;
-    //         toolFunctions.start();
-    //     }
-    //     else {
-    //         $scope.config.tools.activeToolFunctions = null;
-    //         /* Reset the background cursor. */
-    //         $("#background").css("cursor", "default");
-    //     }
-    // };
-
-    /* 
-     * This object contains all the tools that are present in the toolbox. 
-     * It also contains the name of the icon and the required functions.
-     */
-    // $scope.toolbox = {
-    //     basic: {
-    //         image: 'mdi-arrow-all',
-    //         tools: {
-    //             pan: {
-    //                 image: 'mdi-cursor-pointer',
-    //                 toolFunctions: panTool,
-    //                 settings: false
-    //             },
-    //             translate: {
-    //                 image: 'mdi-arrow-all',
-    //                 toolFunctions: translateTool,
-    //                 settings: false
-    //             },
-    //             scale: {
-    //                 image: 'mdi-arrow-expand',
-    //                 settings: false
-    //             },
-    //             rotate: {
-    //                 image: 'mdi-rotate-left',
-    //                 toolFunctions: rotateTool,
-    //                 settings: false
-    //             },
-    //             crop: {
-    //                 image: 'mdi-crop',
-    //                 settings: false
-    //             }
-    //         }
-    //     },
-    //     painting: {
-    //         image: 'mdi-brush',
-    //         tools: {
-    //             palette: {
-    //                 image: 'mdi-palette',
-    //                 settings: false
-    //             },
-    //             pencil: {
-    //                 image: 'mdi-pen',
-    //                 settings: false
-    //             },
-    //             brush: {
-    //                 image: 'mdi-brush',
-    //                 settings: false
-    //             },
-    //             eraser: {
-    //                 image: 'mdi-eraser',
-    //                 settings: false
-    //             },
-    //             picker: {
-    //                 image: 'mdi-eyedropper',
-    //                 toolFunctions: colorPicker,
-    //                 settings: false
-    //             },
-    //             fill: {
-    //                 image: 'mdi-format-color-fill',
-    //                 settings: false
-    //             }
-    //         }
-    //     },
-    //     select: {
-    //         image: 'mdi-select',
-    //         tools: {
-    //             rectangle: {
-    //                 image: 'mdi-select',
-    //                 settings: false
-    //             },
-    //             elipse: {
-    //                 image: 'mdi-checkbox-blank-circle-outline',
-    //                 settings: false
-    //             },
-    //             curve: {
-    //                 image: 'mdi-vector-curve',
-    //                 settings: false
-    //             },
-    //             magic: {
-    //                 image: 'mdi-auto-fix',
-    //                 settings: '<div ui-slider="slider.options" ng-model="values">test</div>'
-    //             }
-    //         }
-    //     },
-    //     text: {
-    //         image: 'mdi-format-size'
-    //     }
-    // }
-
-    /* The pan tool is selected by default. */
-    $scope.selectTool(null, "pan");
 });

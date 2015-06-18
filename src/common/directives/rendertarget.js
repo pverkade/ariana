@@ -1,4 +1,4 @@
-angular.module('ariana').directive('rendertarget', function() {
+app.directive('rendertarget', function() {
     return function($scope, $element) {
         $scope.rendertarget = $element;
     }

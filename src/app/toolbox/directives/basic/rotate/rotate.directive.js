@@ -1,4 +1,4 @@
-angular.module('ariana').directive('rotate', function() {
+app.directive('rotate', function() {
     return {
         restrict: 'E',
         scope: true,
@@ -7,7 +7,7 @@ angular.module('ariana').directive('rotate', function() {
     };
 });
 
-angular.module('ariana').controller('RotateCtrl', function($scope) {
+app.controller('RotateCtrl', function($scope) {
 	$scope.toolname = 'rotate';
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
@@ -43,10 +43,10 @@ angular.module('ariana').controller('RotateCtrl', function($scope) {
         var y = layer.getPosY();
         
         /* Get the mouse current location and the one before it. */
-        var mouseCurrentX = $scope.config.mouse.current.x - $scope.config.canvas.x;
-        var mouseCurrentY = $scope.config.mouse.current.y - $scope.config.canvas.y;  
-        var mouseOldX = $scope.config.mouse.old.x - $scope.config.canvas.x;
-        var mouseOldY = $scope.config.mouse.old.y - $scope.config.canvas.y;
+        var mouseCurrentX = $scope.config.mouse.current.x;
+        var mouseCurrentY = $scope.config.mouse.current.y; 
+        var mouseOldX = $scope.config.mouse.old.x;
+        var mouseOldY = $scope.config.mouse.old.y;
         
         /* Update the old mouse position. */
         var dx = $scope.config.mouse.current.x - $scope.config.mouse.old.x;

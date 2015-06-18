@@ -1,10 +1,19 @@
-angular.module('ariana').directive('ngMouseWheelUp', function() {
+app.directive('ngMouseWheelUp', function() {
     return function(scope, element, attrs) {
         element.bind("DOMMouseScroll mousewheel onmousewheel", function(event) {
 
             // cross-browser wheel delta
             var event = window.event || event; // old IE support
-            var delta = Math.max(-1, Math.min(1, (event.wheelDelta || -event.detail)));
+            
+            wheelDelta = event.wheelDelta;
+            detail     = event.detail;
+
+            if (isNaN(wheelDelta) || isNaN(detail)) {
+                wheelDelta = event.originalEvent.wheelDelta;
+                detail     = event.originalEvent.detail;
+            }
+
+            var delta = Math.max(-1, Math.min(1, (wheelDelta || -detail)));
 
             if (delta > 0) {
                 scope.$apply(function() {

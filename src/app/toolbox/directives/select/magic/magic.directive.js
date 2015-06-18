@@ -1,4 +1,4 @@
-angular.module('ariana').directive('magic', function() {
+app.directive('magic', function() {
     return {
         restrict: 'E',
         scope: true,
@@ -7,9 +7,11 @@ angular.module('ariana').directive('magic', function() {
     };
 });
 
-angular.module('ariana').controller('MagicCtrl', function($scope) {
+app.controller('MagicCtrl', function($scope) {
 	$scope.toolname = 'magic';
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
+
+	$scope.threshold = 0.5;
 
 	/* init */
 	$scope.init = function() {
@@ -35,6 +37,7 @@ angular.module('ariana').controller('MagicCtrl', function($scope) {
 
 	/* onMouseDown */
 	$scope.mouseDown = function() {
+		console.log("MAGIC");
 		var scope = angular.element($("#main-canvas")).scope();
 
 		/* x and y coordinates in pixels relative to canvas left top corner. */
@@ -67,15 +70,15 @@ angular.module('ariana').controller('MagicCtrl', function($scope) {
         xRelative *= layer.getImage().width;
         yRelative *= layer.getImage().height;
 
-        xRelative = Math.round(xRelative);
-        yRelative = Math.round(yRelative);
-
+        xRelative = 50;//Math.round(xRelative);
+        yRelative = 70;//Math.round(yRelative);
+        console.log("Click in image: " + xRelative + ", " + yRelative);
 
 		/* Check wheter user has clicked inside of a selection. */
 		if (scope.magic.isInSelection(xRelative, yRelative)) {
 			scope.magic.removeSelection(xRelative, yRelative)
 		} else {
-			var bitmask = scope.magic.getMaskWand(xRelative, yRelative, 10);
+			var bitmask = scope.magic.getMaskWand(xRelative, yRelative, 50);
 		}
 
 		scope.magic.getMaskBorder();
@@ -88,17 +91,19 @@ angular.module('ariana').controller('MagicCtrl', function($scope) {
 		var imgData = context.createImageData(width, height);
 
 		if (bitmask) {
+            var x = 0;
 			for (var i = 0; i < bitmask.length; i++) {
 				if (bitmask[i]) {
 					imgData.data[4 * i] = 255;
 					imgData.data[4 * i + 1] = 0;
 					imgData.data[4 * i + 2] = 0;
 					imgData.data[4 * i + 3] = 255;
+                    x++;
 				}
 			}
+            console.log("Bitmask size: " + x);
 			var newLayer = scope.renderEngine.createSelectionImageLayer(imgData, 0);
-			scope.renderEngine.addLayer(newLayer);
-            scope.requestRenderEngineUpdate();
+            scope.addLayer(newLayer);
 
 			scope.editEngine.setSelectionLayer(scope.magic, newLayer);
             scope.requestEditEngineUpdate();
@@ -114,6 +119,7 @@ angular.module('ariana').controller('MagicCtrl', function($scope) {
 	$scope.mouseMove = function() {
 		
 	};
+    
 	/*
 	 * This will watch for this tools' "active" variable changes.
 	 * When "active" changes to "true", this tools functions need to

@@ -16,7 +16,7 @@ class ImageLayer extends Layer {
         canvasWidth : number,
         canvasHeight : number,
         image : HTMLImageElement) {
-        super(resourceManager, canvasWidth, canvasHeight, image ? image.width : 0, image ? image.width : 0);
+        super(resourceManager, canvasWidth, canvasHeight, image ? image.width : 0, image ? image.height : 0);
 
         this.program = resourceManager.imageShaderProgramInstance();
 

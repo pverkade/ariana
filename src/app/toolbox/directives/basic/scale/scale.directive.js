@@ -1,4 +1,4 @@
-angular.module('ariana').directive('scale', function() {
+app.directive('scale', function() {
 	return {
 		restrict: 'E',
 		scope: true,
@@ -7,130 +7,130 @@ angular.module('ariana').directive('scale', function() {
 	};
 });
 
-angular.module('ariana').controller('ScaleCtrl', function($scope) {
+app.controller('ScaleCtrl', function($scope) {
 	$scope.toolname = 'scale';
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
+    
+    $scope.sign = function(x) { return x > 0 ? 1 : x < 0 ? -1 : 0; };
+    
 	/* init */
-	$scope.init = function() { };
+	$scope.init = function() {
+        $scope.scaling = false;
+	};
 
 	/* onMouseDown */
 	$scope.mouseDown = function() {
+        $scope.scaling = true;
 	};
 
 	/* onMouseUp */
 	$scope.mouseUp = function() {
+        $scope.scaling = false;
 	};
 
 	/* onMouseMove */
 	$scope.mouseMove = function() {
-		var currentLayer = $scope.config.layers.currentLayer;
-		if (currentLayer == -1) return;
+		var mouseCurrentX = $scope.config.mouse.current.x;
+        var mouseCurrentY = $scope.config.mouse.current.y; 
 
-		var layer = $scope.renderEngine.layers[currentLayer];
+        var mouseOldX = $scope.config.mouse.old.x;
+        var mouseOldY = $scope.config.mouse.old.y; 
 
-		var mouseCurrentX = $scope.config.mouse.current.x - $scope.config.canvas.x;
-		var mouseCurrentY = $scope.config.mouse.current.y - $scope.config.canvas.y;
-		var x = layer.getPosX();
-		var y = layer.getPosY();
+        var currentLayer = $scope.config.layers.currentLayer;
+        if (currentLayer == -1) return;
 
-		var angle = (Math.atan2(y - mouseCurrentY, mouseCurrentX - x) + 2 * Math.PI) % (2 * Math.PI);
-		var distance = Math.sqrt(Math.pow(y - mouseCurrentY, 2) + Math.pow(mouseCurrentX - x, 2));
+        var layer = $scope.renderEngine.layers[currentLayer];
 
-		var differenceX = mouseCurrentX - x;
-		var differenceY = y - mouseCurrentY;
+        var x = layer.getPosX();
+        var y = layer.getPosY();
 
-		/* Update the index and the cursor. */
-		if (!($scope.config.mouse.button[1] || $scope.config.mouse.button[3])) {
+        var angle = (Math.atan2(y - mouseCurrentY, mouseCurrentX - x) + 2 * Math.PI) % (2 * Math.PI);
+        
+        if ($scope.scaling) {
 
-			var ratio = Math.abs(differenceY) / Math.abs(differenceX);
-			var layerRatio = layer.getHeight() / layer.getWidth();
+	        var width  = layer.getWidth();
+	        var height = layer.getHeight();
+	        var rotation = layer.getRotation();
+	        
+	        var originalWidth = width;
+	        var originalHeight = height;
+            
+            var newWidth = width;
+            var newHeight = height;
 
-			scaleToolIndex = Math.round(8 * (angle / (2 * Math.PI)));
+	        if ($scope.scaleToolIndex != 2 && $scope.scaleToolIndex != 6) {
+	            newWidth += (mouseCurrentX - mouseOldX) * $scope.sign(Math.cos($scope.scaleToolIndex * 0.25 * Math.PI));
 
-			if (scaleToolIndex == 0) {
-				$scope.setCursor('e-resize');
-			};
-			if (scaleToolIndex == 1) {
-				$scope.setCursor('ne-resize');
-			};
-			if (scaleToolIndex == 2) {
-				$scope.setCursor('n-resize');
-			};
-			if (scaleToolIndex == 3) {
-				$scope.setCursor('nw-resize');
-			};
-			if (scaleToolIndex == 4) {
-				$scope.setCursor('w-resize');
-			};
-			if (scaleToolIndex == 5) {
-				$scope.setCursor('sw-resize');
-			};
-			if (scaleToolIndex == 6) {
-				$scope.setCursor('s-resize');
-			};
-			if (scaleToolIndex == 7) {
-				$scope.setCursor('se-resize');
-			};
-			if (scaleToolIndex == 8) {
-				$scope.setCursor('e-resize');
-				scaleToolIndex = 0;
-			};
-			return;
-		}
+	        }
+	       
+	        if ($scope.scaleToolIndex != 0 && $scope.scaleToolIndex != 4) {
+	            newHeight += (mouseCurrentY - mouseOldY)  * -1 * $scope.sign(Math.sin($scope.scaleToolIndex * 0.25 * Math.PI));
+	        }
 
-		var mouseOldX = $scope.config.mouse.old.x - $scope.config.canvas.x;
-		var mouseOldY = $scope.config.mouse.old.y - $scope.config.canvas.y;
+            if ($scope.keepAR) {
+            	if ($scope.scaleToolIndex == 0 || $scope.scaleToolIndex == 4) {
+            		ratio = newWidth / originalWidth;
+            		newHeight = height * ratio;
+            	}
+            	if ($scope.scaleToolIndex == 2 || $scope.scaleToolIndex == 6) {
+            		ratio = newHeight / originalHeight;
+            		newWidth = width * ratio;
+            	}
+            }
 
-		var distanceOld = Math.sqrt(Math.pow(mouseOldY - y, 2) + Math.pow(mouseOldX - x, 2));
+            if ($scope.scaleToolIndex >= 3 && $scope.scaleToolIndex <= 5)
+                x -= 0.5 * (newWidth - width);
+            else if ($scope.scaleToolIndex >= 7 || $scope.scaleToolIndex == 0 || $scope.scaleToolIndex == 1)
+                x += 0.5 * (newWidth - width);
+            
+            if ($scope.scaleToolIndex >= 1 && $scope.scaleToolIndex <= 3)
+                y -= 0.5 * (newHeight - height);
+            else if ($scope.scaleToolIndex >= 5 && $scope.scaleToolIndex <= 7)
+                y += 0.5 * (newHeight - height);
+	        
+	        $scope.renderEngine.layers[currentLayer].setWidth(newWidth);
+	        $scope.renderEngine.layers[currentLayer].setHeight(newHeight);
+	        
+	        layer.setPos(x, y);
+            
+            window.requestAnimationFrame(function() {
+                $scope.renderEngine.render();
+            });
 
-		/* Update old mouse. */
-		$scope.config.mouse.old.x = $scope.config.mouse.current.x;
-		$scope.config.mouse.old.y = $scope.config.mouse.current.y;
+        } else {              
+	        var differenceX = mouseCurrentX - x;
+	        var differenceY = y - mouseCurrentY;
+                  
+	        /* Update the index and the cursor. */
+	        if (!($scope.config.mouse.button[1] || $scope.config.mouse.button[3])) {
+	            
+	            var ratio = Math.abs(differenceY) / Math.abs(differenceX);
+	            var layerRatio = layer.getHeight() / layer.getWidth();
 
-		/* Scale width and height */
-		var scale = 0.5 + 0.5 * (distance / distanceOld);
+				$scope.scaleToolIndex = Math.round(8 * (angle / (2 * Math.PI)));
+	            if ($scope.keepAR == true) {
+	            	$scope.scaleToolIndex -= $scope.scaleToolIndex % 2;
+	            }
 
-		var width = layer.getWidth();
-		var height = layer.getHeight();
-		var rotation = layer.getRotation();
+	            if ($scope.scaleToolIndex == 0) { $scope.setCursor("e-resize"); };
+	            if ($scope.scaleToolIndex == 1) { $scope.setCursor("ne-resize"); };
+	            if ($scope.scaleToolIndex == 2) { $scope.setCursor("n-resize"); };
+	            if ($scope.scaleToolIndex == 3) { $scope.setCursor("nw-resize"); };
+	            if ($scope.scaleToolIndex == 4) { $scope.setCursor("w-resize"); };
+	            if ($scope.scaleToolIndex == 5) { $scope.setCursor("sw-resize"); };
+	            if ($scope.scaleToolIndex == 6) { $scope.setCursor("s-resize"); };
+	            if ($scope.scaleToolIndex == 7) { $scope.setCursor("se-resize"); };
+	            if ($scope.scaleToolIndex == 8) { $scope.setCursor("e-resize"); $scope.scaleToolIndex = 0; };
+	            return;
+	        }	
+        } 
+        
+        /* Update old mouse. */
+        $scope.config.mouse.old.x = $scope.config.mouse.current.x;
+        $scope.config.mouse.old.y = $scope.config.mouse.current.y;
+	};
 
-		var originalWidth = width;
-		var originalHeight = height;
-
-		if (scaleToolIndex != 2 && scaleToolIndex != 6) {
-			width *= scale;
-		}
-
-		if (scaleToolIndex != 0 && scaleToolIndex != 4) {
-			height *= scale;
-		}
-
-		/* Compensate for rotation. */
-		//var width  = originalWidth  + (width - originalWidth) * Math.cos(rotation) + (height - originalHeight) * Math.sin(rotation);
-		//var height = originalHeight + (width - originalWidth) * Math.cos(rotation) + (height - originalHeight) * Math.sin(rotation);
-
-		$scope.renderEngine.layers[currentLayer].setWidth(width);
-		$scope.renderEngine.layers[currentLayer].setHeight(height);
-
-		if (scaleToolIndex == 7 || scaleToolIndex == 0 || scaleToolIndex == 1)
-			x += 0.5 * (width - originalWidth);
-
-		if (scaleToolIndex == 3 || scaleToolIndex == 4 || scaleToolIndex == 5)
-			x -= 0.5 * (width - originalWidth);
-
-		if (scaleToolIndex == 5 || scaleToolIndex == 6 || scaleToolIndex == 7)
-			y += 0.5 * (height - originalHeight);
-
-		if (scaleToolIndex == 1 || scaleToolIndex == 2 || scaleToolIndex == 3)
-			y -= 0.5 * (height - originalHeight);
-
-		layer.setPos(x, y);
-		$scope.requestRenderEngineUpdate();
-
-		$scope.editEngine.setEditLayer(layer, EditMode.scale);
-		$scope.requestEditEngineUpdate();
-	}; -
 	/*
 	 * This will watch for this tools' "active" variable changes.
 	 * When "active" changes to "true", this tools functions need to
@@ -146,7 +146,7 @@ angular.module('ariana').controller('ScaleCtrl', function($scope) {
 
 			$scope.config.tools.activeToolFunctions = {
 				mouseDown: $scope.mouseDown,
-				mouseUp: $scope.mouseUp,
+				mouseUp:   $scope.mouseUp,
 				mouseMove: $scope.mouseMove
 			};
 		} else {

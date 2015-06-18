@@ -7,17 +7,6 @@
  *
  */
 
-/*
-.content {
-   background-color: red;
-   height: 100%;
-}
-
-.content-main {
-   overflow: hidden;
-}
-*/
-
 #background {
     position: absolute;
     top: 0;
@@ -36,6 +25,7 @@
 }
 
 #main-canvas {
-    background-color: #ffffff;
+    /* background-color: #ffffff; */
+    background: url(/assets/img/canvas_background.svg) repeat;
     @extend .box-shadow;
 }

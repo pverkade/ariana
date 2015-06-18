@@ -16,7 +16,6 @@ app.controller('ToolbarController', ['$scope', '$modal',
             return (!($scope.config.mouse.button[1] || $scope.config.mouse.button[2] || $scope.config.mouse.button[3]));
         }
       
-      
         /* This functions saves the canvas to an image-file. */
         $scope.saveImage = function() {
             var toolFunctions = $scope.config.tools.activeToolFunctions;
@@ -50,11 +49,21 @@ app.controller('ToolbarController', ['$scope', '$modal',
             document.body.removeChild(myForm) ;
         };
         
+        /* This function opens the newfile modal. */
+        $scope.openNewFileModal = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'app/toolbar/newfile/newfile.tpl.html',
+                controller:  'NewFileModalController',
+                scope: $scope,
+                size: 'sm'
+            });
+        };
+        
         /* This function opens the upload modal. */
         $scope.openUploadModal = function() {
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/upload/upload.tpl.html',
-                controller:  'UploadModalCtrl',
+                controller:  'UploadModalController',
                 scope: $scope,
                 size: 'lg'
             });
@@ -95,6 +104,12 @@ app.controller('ToolbarController', ['$scope', '$modal',
         $scope.allLayers = true;
         
         $scope.apply = function() {
+            
+            if ($scope.config.layers.numberOfLayers == 0) {
+                $scope.cancel();
+                return;
+            }
+            
             var filter = $scope.filter.filterObject;
             
             /* Set all filter parameters into the filter object. */
@@ -104,7 +119,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
             }
             
             if (filter) {
-                if (filter.currentlayerOnly) {
+                if ($scope.filter.currentlayerOnly) {
                     $scope.renderEngine.filterLayers([$scope.config.layers.currentLayer], filter);
                 }
                 else {

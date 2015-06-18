@@ -33,7 +33,13 @@ class EditEngine {
         this.rotateImage.src = "/assets/vectors/rotate-left.svg";
     }
 
-    private clear() {
+    resize (width : number, height : number) : void {
+        this.width = width;
+        this.height = height;
+        this.clear();
+    }
+
+    clear() {
         this.context.clearRect(0, 0, this.width, this.height);
     }
 

@@ -20,14 +20,9 @@ body {
     @include user-select(none);
 }
 
-/* Style-class for box-shadow. */
-.box-shadow {
-    box-shadow: 0px 0px $box-shadow-size $black; 
-}
-
 /* Styleclass for all GUI elements that float above the canvas. */
 .gui-element {
-    @extend .box-shadow;
+    //@extend .box-shadow;
     position: absolute;
     background-color: $light;
     z-index: 2;
@@ -58,11 +53,37 @@ body {
     }
 }
 
+.small-tool {
+    @extend tool;
+    width: 0.5 * $blocksize;
+    height: 0.5 * $blocksize;
+    
+    svg, i, img {
+        margin: 0.1 * $blocksize;
+        padding: 0 !important; 
+        height: 0.3 * $blocksize;
+        width: 0.3 * $blocksize; 
+        font-size: 0.3 * $blocksize;
+    }
+}
+
 .active {
     background-color: lighten($light, $active-lighten);
     
     &:hover {
         background-color: lighten($light, $active-lighten);
+    }
+    
+    .tool, .small-tool {
+        background-color: lighten($light, $active-lighten);
+        
+        &:hover {
+            background-color: lighten($light, $active-lighten + $hover-lighten);
+        }
+    }
+    
+    .inactive:hover {
+        background-color: lighten($light, $active-lighten) !important;
     }
 }
 
@@ -77,4 +98,8 @@ body {
         cursor: default !important;
         opacity: 0.25;
     }
+}
+
+.float-left {
+    float: left;
 }

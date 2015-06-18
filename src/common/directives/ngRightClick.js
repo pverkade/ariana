@@ -1,4 +1,4 @@
-angular.module('ariana').directive('ngRightClick', function($parse) {
+app.directive('ngRightClick', function($parse) {
 	return function(scope, element, attrs) {
 		var fn = $parse(attrs.ngRightClick);
 

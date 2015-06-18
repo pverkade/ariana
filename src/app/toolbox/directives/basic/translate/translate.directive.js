@@ -1,4 +1,4 @@
-angular.module('ariana').directive('translate', function() {
+app.directive('translate', function() {
     return {
         restrict: 'E',
         scope: true,
@@ -7,7 +7,7 @@ angular.module('ariana').directive('translate', function() {
     };
 });
 
-angular.module('ariana').controller('translateCtrl', function($scope) {
+app.controller('translateCtrl', function($scope) {
     $scope.toolname = 'translate';
     $scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
@@ -52,7 +52,7 @@ angular.module('ariana').controller('translateCtrl', function($scope) {
         $scope.editEngine.setEditLayer(layer, EditMode.translate);
         $scope.requestEditEngineUpdate();
     };
--
+
     /*
      * This will watch for this tools' "active" variable changes.
      * When "active" changes to "true", this tools functions need to
