@@ -88,5 +88,10 @@ app.controller('RotateCtrl', function($scope) {
 		} else {
 			$scope.editEngine.clear();
 		}
+
+		if (oval) {
+			var layer = $scope.renderEngine.getLayer($scope.config.layers.currentLayer);
+            layer.commitRotation();
+		}
 	}, true);
 });
