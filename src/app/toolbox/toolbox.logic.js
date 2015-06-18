@@ -2,16 +2,20 @@
  * Project Ariana
  * toolbox.logic.js
  *
- * This file contains the ToolboxController, which controls the behaviour of
+ * This file contains the ToolboxCtrl, which controls the behaviour of
  * the toolbox and the color preview. 
  *
  */
 
 /* This contoller defines the behaviour of the toolbox and the color-preview. */
-app.controller('ToolboxController', function($scope) {
+app.controller('ToolboxCtrl', function($scope) {
     
     $scope.setCursor = function(cursor) {
         $scope.config.canvas.cursor = cursor;
+    };
+
+    $scope.getCursor = function() {
+        return $scope.config.canvas.cursor;
     };
 
     /* This function swaps the primary and secondary color. */
@@ -62,5 +66,9 @@ app.controller('ToolboxController', function($scope) {
         
         $scope.config.tools.activeTool = name;
         return true;
+    }
+
+    $scope.getActiveToolFunctions = function() {
+        return $scope.config.tools.activeToolFunctions;
     }
 });
