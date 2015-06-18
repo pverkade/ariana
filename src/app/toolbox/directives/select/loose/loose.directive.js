@@ -13,10 +13,11 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
 
 	/* init */
 	$scope.init = function() {
-		
+		console.log("test");
 		$scope.setCursor('default');
         /* working with $scope to share variables between functions in this file does not seem to work. */
         var scope = angular.element($("#main-canvas")).scope();
+
 
         var currentLayer = 0;//$scope.config.layers.currentLayer;
         if (currentLayer == -1) {
@@ -53,8 +54,8 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
 	$scope.mouseDown = function() {
         var scope = angular.element($("#main-canvas")).scope();
 
-        var color = $scope.config.tools.colors.primary;
-        $scope.drawEngine.setColor(0, 0, 0, 1.0);
+        // var color = $scope.config.tools.colors.primary;
+        // $scope.drawEngine.setColor(0, 0, 0, 1.0);
 
         $scope.drawEngine.onMousedown(event);   
         scope.mouseBTNDown = true; 
@@ -74,12 +75,13 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
 
 	/* onMouseMove */
 	$scope.mouseMove = function() {
+
         /* working with $scope to share variables between functions in this file does not seem to work. */
         var scope = angular.element($("#main-canvas")).scope();
 
         /* x and y coordinates in pixels relative to image. */
-        xRelative = $scope.config.mouse.current.x - $scope.config.canvas.x;
-        yRelative = $scope.config.mouse.current.y - $scope.config.canvas.y;    
+        xRelative = $scope.config.mouse.current.x;
+        yRelative = $scope.config.mouse.current.y;    
 
         /* Calculate x and y coordinates in pixels of the original image */
         var currentLayer = $scope.config.layers.currentLayer;
@@ -87,28 +89,6 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
         if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
             return;
         }
-        
-        var x = layer.getPosX();
-        var y = layer.getPosY();
-        xRelative -= x;
-        yRelative -= y;
-
-        var cos = Math.cos(layer.getRotation());
-        var sin = Math.sin(layer.getRotation());
-        xRelative = cos * xRelative - sin * yRelative;
-        yRelative = sin * xRelative + cos * yRelative;
-
-        xRelative /= layer.getWidth();
-        yRelative /= layer.getHeight();
-
-        xRelative += .5;
-        yRelative += .5;
-
-        xRelative *= layer.getImage().width;
-        yRelative *= layer.getImage().height;
-
-        xRelative = Math.round(xRelative);
-        yRelative = Math.round(yRelative);
 
         if (scope.mouseBTNDown == true) {
             if (scope.looseSelection.addPoint(new Point(xRelative, yRelative))) {
@@ -144,7 +124,7 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
             }    
         }
 
-        $scope.drawEngine.onMousemove(event);		
+        $scope.drawEngine.onMousemove(xRelative, yRelative);		
 	};
 	/*
 	 * This will watch for this tools' "active" variable changes.

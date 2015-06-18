@@ -399,13 +399,16 @@ class DrawEngine {
     drawDotted (points, path : Path, context : CanvasRenderingContext2D) {
         // return this.drawLines(points, context); /* */
         var nrLastDrawn : number = path.lastDrawnItem;
-        var newDistance : number = 0.0;
+        var newDistance : number = 5.0;
 
         for (var i = nrLastDrawn; i < points.length - 1; i++) {
             newDistance += points[i].distanceTo(points[i+1]);
         }
-        this.dottedDistance += newDistance;
-        
+
+        if (newDistance) {
+            this.dottedDistance += newDistance;
+        }
+
         if (this.dottedDistance % 10 > 5.0) {
             this.setColor(0, 0, 0, 255);
         } else {
