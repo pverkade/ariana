@@ -41,6 +41,8 @@
 
 .layer {
     width: 4 * $blocksize;
+    padding: 0.25 * $blocksize !important;
+    
     border-bottom: $border-thickness solid $brand-color;
     height: auto;
     float: left;
@@ -52,27 +54,20 @@
     transition: transform 200ms ease;
     
     .preview {
-        width: 3.5 * $blocksize;
-        height: auto;
-        margin: 0.25 * $blocksize;
-        margin-bottom: 0;
-        background: url(/assets/img/canvas_background.svg) repeat;
-        
+        width: 3 * $blocksize;
+        min-height: 2 * $blocksize;
+        margin: 0;
+        padding: 0;
+
+        background: url(/assets/img/canvas_background.svg) repeat;        
         @include transform(scale(1, -1));
     }
 
     .layer-name {
         height: 0.5 * $blocksize;
-        width: 3.5 * $blocksize;
-        margin: 0;
-        margin-left: 0.25 * $blocksize;
+        width: 3 * $blocksize;
 
         background-color: darken($light, 5%);
-        
-        input {
-            width: 3 * $blocksize;
-            float: right;
-        }
     }
 }
 
