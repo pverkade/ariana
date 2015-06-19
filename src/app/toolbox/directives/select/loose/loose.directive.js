@@ -14,9 +14,6 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
 	/* init */
 	$scope.init = function() {
 		$scope.setCursor('default');
-        /* working with $scope to share variables between functions in this file does not seem to work. */
-        var scope = angular.element($("#main-canvas")).scope();
-
 
         var currentLayer = 0;//$scope.config.layers.currentLayer;
         if (currentLayer == -1) {
@@ -29,55 +26,44 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
             console.log("Layer is not of type ImageLayer");
             return;
         }
-        scope.image = layer.getImage();
+        $scope.image = layer.getImage();
 
-        scope.looseSelection = new LooseSelection(scope.image.width, scope.image.height);
+        $scope.looseSelection = new LooseSelection($scope.image.width, $scope.image.height);
 
-        scope.canvas = document.createElement("canvas");
-        scope.canvas.width = scope.image.width;
-        scope.canvas.height = scope.image.height;
-        scope.context = scope.canvas.getContext("2d");
+        $scope.canvas = document.createElement("canvas");
+        $scope.canvas.width = $scope.image.width;
+        $scope.canvas.height = $scope.image.height;
+        $scope.context = $scope.canvas.getContext("2d");
 
-        scope.imgData = scope.context.createImageData(scope.looseSelection.width, scope.looseSelection.height);
+        $scope.imgData = $scope.context.createImageData($scope.looseSelection.width, $scope.looseSelection.height);
 
-        scope.edit_canvas = document.getElementById("editing-canvas");
-        scope.edit_context = scope.edit_canvas.getContext("2d");
+        $scope.edit_canvas = document.getElementById("editing-canvas");
+        $scope.edit_context = $scope.edit_canvas.getContext("2d");
 
-        scope.mouseBTNDown = false;
+        $scope.mouseBTNDown = false;
 
-        scope.drawEngine.setLineWidth(2);
-        scope.drawEngine.setDrawType(drawType.DOTTED);
+        $scope.drawEngine.setLineWidth(2);
+        $scope.drawEngine.setDrawType(drawType.DOTTED);
 	};
 
 	/* onMouseDown */
 	$scope.mouseDown = function() {
-        var scope = angular.element($("#main-canvas")).scope();
-
-        // var color = $scope.config.tools.colors.primary;
-        // $scope.drawEngine.setColor(0, 0, 0, 1.0);
-
         $scope.drawEngine.onMousedown(event);   
-        scope.mouseBTNDown = true; 
+        $scope.mouseBTNDown = true; 
 	};
 
 	/* onMouseUp */
 	$scope.mouseUp = function() {
-        var scope = angular.element($("#main-canvas")).scope();
-
-        scope.looseSelection.reset();
-        scope.mouseBTNDown = false;
+        $scope.looseSelection.reset();
+        $scope.mouseBTNDown = false;
 
         $scope.drawEngine.onMouseup(event);
         $scope.drawEngine.clearCanvases();
-        scope.edit_context.putImageData(scope.imgData, 0, 0);
+        $scope.edit_context.putImageData($scope.imgData, 0, 0);
 	};
 
 	/* onMouseMove */
 	$scope.mouseMove = function() {
-
-        /* working with $scope to share variables between functions in this file does not seem to work. */
-        var scope = angular.element($("#main-canvas")).scope();
-
         /* x and y coordinates in pixels relative to image. */
         xRelative = $scope.config.mouse.current.x;
         yRelative = $scope.config.mouse.current.y;    
@@ -89,36 +75,34 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
             return;
         }
 
-        if (scope.mouseBTNDown == true) {
-            if (scope.looseSelection.addPoint(new Point(xRelative, yRelative))) {
-                var boundingPath = scope.looseSelection.getLastBoundingPath();
+        if ($scope.mouseBTNDown == true) {
+            if ($scope.looseSelection.addPoint(new Point(xRelative, yRelative))) {
+                var boundingPath = $scope.looseSelection.getLastBoundingPath();
                 if (boundingPath.length != 0) {
-                    var bitmaskBorder = scope.looseSelection.getMaskBorder();
-                    var bitmask = scope.looseSelection.getMaskWand();
-                    // var maskAnts = scope.looseSelection.marchingAnts(8, 0);
+                    var bitmask = $scope.looseSelection.getMaskWand();
 					if (bitmask) {
 						for (var i = 0; i < bitmask.length; i++) {
 							if (bitmask[i]) {
-								scope.imgData.data[4 * i] = 255;
-								scope.imgData.data[4 * i + 1] = 0;
-								scope.imgData.data[4 * i + 2] = 0;
-								scope.imgData.data[4 * i + 3] = 255;
+								$scope.imgData.data[4 * i] = 255;
+								$scope.imgData.data[4 * i + 1] = 0;
+								$scope.imgData.data[4 * i + 2] = 0;
+								$scope.imgData.data[4 * i + 3] = 255;
 							}
 						}
-                        var newLayer = scope.renderEngine.createSelectionImageLayer(scope.imgData, 0);
-                        scope.renderEngine.addLayer(newLayer);
-                        scope.requestRenderEngineUpdate();
+                        var newLayer = $scope.renderEngine.createSelectionImageLayer($scope.imgData, 0);
+                        $scope.renderEngine.addLayer(newLayer);
+                        $scope.requestRenderEngineUpdate();
 
-						scope.editEngine.setSelectionLayer(scope.looseSelection, newLayer);
-			            scope.requestEditEngineUpdate();
+						$scope.editEngine.setSelectionLayer($scope.looseSelection, newLayer);
+			            $scope.requestEditEngineUpdate();
 					}
 
-                    scope.looseSelection.reset();
+                    $scope.looseSelection.reset();
 
                     /* When a bounding path is drawn the bounding path is draw and user interface acts like
                         the user has released the mouse button. */
                     $scope.drawEngine.onMouseup(event);
-                    scope.mouseBTNDown = false;
+                    $scope.mouseBTNDown = false;
                 }
             }    
         }

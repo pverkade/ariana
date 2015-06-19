@@ -110,7 +110,6 @@ class LooseSelection implements SelectionInterface {
         }
     }
 
-    // getLastBoundingPath()?
 	getLastBoundingPath() {
 		var nrWands = this.points.length;
 		var nrPointsLast = this.points[nrWands - 1].length;
