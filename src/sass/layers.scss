@@ -15,13 +15,30 @@
     height: calc(100% - #{2 * $blocksize});
     overflow: hidden;
     
+    pointer-events: none;
+    
+    .layer-header, .layer {
+        pointer-events: auto;
+    }
+    
     .scroll {
-        height: calc(100% - #{3 * $blocksize});
+        display: block;
+        position: relative;
+        
+        height: calc(100% - #{$blocksize});
         overflow-y: auto;
         overflow-x: hidden;
         width: 4 * $blocksize;
         position: relative;
         float: left;
+    }
+ 
+    .ng-hide {
+        @include transform(translate(4 * $blocksize, 0px));
+    }
+    
+    .layer-header, .layer, .scroll {
+        transition: transform $move-speed ease;
     }
 }
 
@@ -82,8 +99,4 @@
 
         background-color: darken($light, 5%);
     }
-}
-
-.ng-hide {
-    @include transform(translate(4 * $blocksize, 0px));
 }

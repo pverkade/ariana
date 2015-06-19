@@ -10,7 +10,6 @@
     }
 }
 
-
 .filter-options {
     position: absolute;
     left: 1.5 * $blocksize;
@@ -66,8 +65,6 @@
             @media (max-width: 10 * $blocksize) {
                 width: 100%;
             }
-            
-           
         }
         
         .number {

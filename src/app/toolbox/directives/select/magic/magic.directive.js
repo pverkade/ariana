@@ -41,8 +41,8 @@ app.controller('MagicCtrl', function($scope) {
 		var scope = angular.element($("#main-canvas")).scope();
 
 		/* x and y coordinates in pixels relative to canvas left top corner. */
-		var xRelative = $scope.config.mouse.current.x - $scope.config.canvas.x;
-		var yRelative = $scope.config.mouse.current.y - $scope.config.canvas.y;
+		var xRelative = $scope.config.mouse.current.x;
+		var yRelative = $scope.config.mouse.current.y;
 
         /* Calculate x and y coordinates in pixels of the original image */
         var currentLayer = $scope.config.layers.currentLayer;
@@ -51,35 +51,22 @@ app.controller('MagicCtrl', function($scope) {
             return;
         }
         
-        var x = layer.getPosX();
-        var y = layer.getPosY();
-        xRelative -= x;
-        yRelative -= y;
-
-        var cos = Math.cos(layer.getRotation());
-        var sin = Math.sin(layer.getRotation());
-        xRelative = cos * xRelative - sin * yRelative;
-        yRelative = sin * xRelative + cos * yRelative;
-
-        xRelative /= layer.getWidth();
-        yRelative /= layer.getHeight();
-
-        xRelative += .5;
-        yRelative += .5;
-
-        xRelative *= layer.getImage().width;
-        yRelative *= layer.getImage().height;
-
-        xRelative = 50;//Math.round(xRelative);
-        yRelative = 70;//Math.round(yRelative);
-        console.log("Click in image: " + xRelative + ", " + yRelative);
+        var transformation = layer.calculateTransformation();
+        mat3.invert(transformation, transformation);
+        var position = vec3.fromValues(xRelative, yRelative, 1);
+        vec3.transformMat3(position, position, transformation);
+        
+        console.log("position " + xRelative + ", " + yRelative);
+        xRelative = position[0];
+        yRelative = position[1];
+        console.log("original " + xRelative + ", " + yRelative);    
 
 		/* Check wheter user has clicked inside of a selection. */
-		if (scope.magic.isInSelection(xRelative, yRelative)) {
-			scope.magic.removeSelection(xRelative, yRelative)
-		} else {
+		//if (scope.magic.isInSelection(xRelative, yRelative)) {
+		//	scope.magic.removeSelection(xRelative, yRelative)
+		//} else {
 			var bitmask = scope.magic.getMaskWand(xRelative, yRelative, 50);
-		}
+		//}
 
 		scope.magic.getMaskBorder();
 

@@ -22,7 +22,6 @@ body {
 
 /* Styleclass for all GUI elements that float above the canvas. */
 .gui-element {
-    //@extend .box-shadow;
     position: absolute;
     background-color: $light;
     z-index: 2;

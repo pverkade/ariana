@@ -14,6 +14,8 @@ class MagicSelection implements SelectionInterface {
     private bmON : number;
     private maskWand : Uint8Array[];
     private maskBorder : Uint8Array;
+    private width : number;
+    private height : number;
 
     constructor(image : HTMLImageElement) {
         this.maskBorder = new Uint8Array(image.width * image.height);
@@ -23,6 +25,9 @@ class MagicSelection implements SelectionInterface {
         var canvas = document.createElement("canvas");
         canvas.width = image.width;
         canvas.height = image.height;
+        
+        this.width = image.width;
+        this.height = image.height;
 
         var context = canvas.getContext("2d");
         context.drawImage(image, 0, 0);
@@ -69,6 +74,11 @@ class MagicSelection implements SelectionInterface {
         Algorithm checks for lines horizontally and adds line elements above and below to the 
         stack when they match the color of the given point. */
     getMaskWand(x : number, y : number, treshold : number) {
+    
+        x = Math.round(0.5 * (x + 1) * this.width); 
+        y = Math.round(0.5 * (y + 1) * this.height);
+        console.log("magic " + x + " " + y);
+    
         var stack = [];
         var curLine = [];
         var newLine = [];
