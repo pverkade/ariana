@@ -218,7 +218,6 @@ app.controller('PaletteCtrl', function($scope) {
         while (!(/^#?[0-9A-F]{0,6}$/i.test($scope.hex))) {
             $scope.hex = $scope.hex.substr(0, $scope.hex.length-1);
         }
-        console.log($scope.config.tools.colors.primary);
     }
 
     $scope.blur = function() {
