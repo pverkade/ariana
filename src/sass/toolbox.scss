@@ -68,14 +68,18 @@
     width: 5.5 * $blocksize;
     height: 6 * $blocksize;
 
-    #pallette {
+    #palette {
         float: left;
         display: block;
+        width: 4 * $blocksize;
+        height: 4 * $blocksize;
     }
 
     #hue {
         float: left;
         display: block;
+        width: 1 * $blocksize;
+        height: 4 * $blocksize;
     }
 }
 

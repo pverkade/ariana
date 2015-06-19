@@ -2,18 +2,17 @@
 	<i class="mdi mdi-palette" ></i>
 	<div class="tool-settings large-tool-settings" ng-show="isActive('palette')">
 		<canvas 
-            src="assets/img/bgGradient.png" 
             id="palette" 
             width="256px" 
             height="256px" 
-            style="background: hsl({{palette.color.H}}, 100%, 50%)" 
-            ng-mousedown="palMouseDown($event)" 
-            ng-mousemove="palMouseMove($event)" 
-            ng-mouseup="palMouseUp()"></canvas>
+            style="background: hsl({{color.H}}, 100%, 50%)" 
+            ng-mousedown="paletteMouseDown($event)" 
+            ng-mousemove="paletteMouseMove($event)" 
+            ng-mouseup="paletteMouseUp()"></canvas>
 		
         <canvas 
             id="hue" 
-            width="32px" 
+            width="64px" 
             height="256px" 
             ng-mousedown="hueMouseDown($event)" 
             ng-mousemove="hueMouseMove($event)" 
@@ -21,31 +20,38 @@
             
 		<div class="input-group">
 		    <span class="input-group-addon"> R </span> 
-		    <input type="text" class="form-control text" ng-model="config.tools.colors.primary.r" min="0" max="255"></input>
+		    <input type="number" class="form-control number" 
+                ng-model="config.tools.colors.primary.r" ng-change="updateHSV(); updateHEX();" min="0" max="255"></input>
 		</div>
 		<div class="input-group">
 		    <span class="input-group-addon"> G </span> 
-		    <input type="text" class="form-control text" ng-model="config.tools.colors.primary.g" min="0" max="255"></input>
+		    <input type="number" class="form-control number" 
+                ng-model="config.tools.colors.primary.g" ng-change="updateHSV(); updateHEX();" min="0" max="255"></input>
 		</div>
 		<div class="input-group">
 		    <span class="input-group-addon"> B </span> 
-		    <input type="text" class="form-control text" ng-model="config.tools.colors.primary.b" min="0" max="255"></input>
+		    <input type="number" class="form-control number"
+                ng-model="config.tools.colors.primary.b" ng-change="updateHSV(); updateHEX();" min="0" max="255"></input>
 		</div>
 		<div class="input-group">
 		    <span class="input-group-addon"> H </span>
-		    <input type="text" class="form-control text" ng-model="palette.color.H" min="0" max="360"></input>
+		    <input type="number" class="form-control number" 
+                ng-model="color.H" ng-change="updateRGB(); updateHEX();" min="0" max="360"></input>
 		</div>
 		<div class="input-group">
 		    <span class="input-group-addon"> S </span>
-		    <input type="text" class="form-control text" ng-model="palette.color.S" min="0" max="100"></input>
+		    <input type="number" class="form-control number" 
+                ng-model="color.S" ng-change="updateRGB(); updateHEX();" min="0" max="100"></input>
 		</div>
 		<div class="input-group">
 		    <span class="input-group-addon"> V </span>
-		    <input type="text" class="form-control text" ng-model="palette.color.V" min="0" max="100"></input>
+		    <input type="number" class="form-control number" 
+                ng-model="color.V" ng-change="updateRGB(); updateHEX();" min="0" max="100"></input>
 		</div>
 		<div class="input-group">
 		    <span class="input-group-addon"> Hex </span> 
-		    <input type="text" class="form-control text" ng-model="palette.color.hex"></input>
+		    <input type="text" class="form-control text" 
+                ng-model="hex" ng-change="updateRGBfromHEX(); updateHSV();"></input>
 		</div>
         
 	<div>
