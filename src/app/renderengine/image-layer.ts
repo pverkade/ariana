@@ -3,11 +3,13 @@
 /// <reference path="layer"/>
 /// <reference path="image-shader-program"/>
 /// <reference path="resource-manager"/>
+/// <reference path="filters/filter"/>
 
 class ImageLayer extends Layer {
     protected program : ImageShaderProgram;
     protected layerType : LayerType = LayerType.ImageLayer;
 
+    private filter : Filter;
 	private texture : WebGLTexture;
 
 	constructor(
@@ -38,12 +40,41 @@ class ImageLayer extends Layer {
 		this.program.activate();
 	}
 
-	render() {
-		var matrix : Float32Array = this.calculateTransformation();
+    private renderWithoutFilter() {
+        var matrix : Float32Array = this.calculateTransformation();
         mat3.multiply(matrix, this.pixelConversionMatrix, matrix);
 
         this.program.setUniforms(this.texture, matrix);
         this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
+    }
+
+	render() {
+        console.log("image-layer render");
+
+
+        if (!this.filter) {
+            this.renderWithoutFilter();
+            return;
+        }
+        var drawbuffer1 : DrawBuffer = this.resourceManager.getDrawbuffer1();
+        var drawbuffer2 : DrawBuffer = this.resourceManager.getDrawbuffer2();
+        var textureProgram : TextureProgram = this.resourceManager.textureProgramInstance();
+
+        drawbuffer1.bind();
+        {
+            this.renderWithoutFilter();
+        }
+        drawbuffer1.unbind();
+
+        drawbuffer2.bind();
+        {
+            textureProgram.render(drawbuffer1.getWebGlTexture());
+        }
+        drawbuffer2.unbind();
+
+        if (this.filter) {
+            this.filter.render(this.resourceManager, drawbuffer2.getWebGlTexture());
+        }
 	}
 
 	copyFramebuffer(width : number, height : number) {
@@ -61,5 +92,38 @@ class ImageLayer extends Layer {
 
     public getWebGlTexture() : WebGLTexture {
         return this.texture
+    }
+
+    public applyFilter(filter : Filter) {
+        this.filter = filter;
+    }
+
+    public discardFilter() {
+        this.filter = null;
+    }
+
+    public commitFilter() {
+        if (!this.filter) {
+            return;
+        }
+        var drawbuffer1 : DrawBuffer = this.resourceManager.getDrawbuffer1();
+        var textureProgram : TextureProgram = this.resourceManager.textureProgramInstance();
+
+        drawbuffer1.bind();
+        {
+            this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+            this.filter.render(this.resourceManager, this.texture);
+
+            this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
+            this.gl.copyTexImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 0, 0, this.width, this.height, 0);
+
+            this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+            textureProgram.render(this.texture);
+
+            this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
+            this.gl.copyTexImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 0, 0, this.width, this.height, 0);
+        }
+        drawbuffer1.unbind();
+        this.filter = null;
     }
 }

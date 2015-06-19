@@ -7,6 +7,7 @@
 /// <reference path="filters/sepia-filter"/>
 /// <reference path="filters/colorize-filter"/>
 /// <reference path="texture-program"/>
+/// <reference path="drawbuffer"/>
 
 class ResourceManager {
     private gl : WebGLRenderingContext;
@@ -21,8 +22,14 @@ class ResourceManager {
     private noiseProgram : NoiseProgram;
     private colorizeProgram : ColorizeProgram;
 
-    constructor(gl : WebGLRenderingContext) {
+    private drawbuffer1 : DrawBuffer;
+    private drawbuffer2 : DrawBuffer;
+
+    constructor(gl : WebGLRenderingContext, width : number, height : number) {
         this.gl = gl;
+
+        this.drawbuffer1 = new DrawBuffer(gl, width, height);
+        this.drawbuffer2 = new DrawBuffer(gl, width, height);
     }
 
     getWebGLContext() : WebGLRenderingContext {
@@ -97,5 +104,13 @@ class ResourceManager {
         }
 
         return this.textureProgram;
+    }
+
+    getDrawbuffer1() : DrawBuffer {
+        return this.drawbuffer1;
+    }
+
+    getDrawbuffer2() : DrawBuffer {
+        return this.drawbuffer2;
     }
 }
