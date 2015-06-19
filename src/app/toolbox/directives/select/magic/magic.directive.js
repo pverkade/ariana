@@ -11,7 +11,7 @@ app.controller('MagicCtrl', function($scope) {
 	$scope.toolname = 'magic';
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
-	$scope.threshold = 0.5;
+	$scope.threshold = 50;
 
 	/* init */
 	$scope.init = function() {
@@ -34,9 +34,17 @@ app.controller('MagicCtrl', function($scope) {
 		var image = layer.getImage();
 		scope.magic = new MagicSelection(image);
 	};
+    
+    $scope.stop = function() {
+        var scope = angular.element($("#main-canvas")).scope();
+        scope.editEngine.removeSelectionLayer();
+    };
 
 	/* onMouseDown */
 	$scope.mouseDown = function() {
+        var scope = angular.element($("#main-canvas")).scope();
+        scope.editEngine.removeSelectionLayer();
+        
 		console.log("MAGIC");
 		var scope = angular.element($("#main-canvas")).scope();
 
@@ -65,7 +73,7 @@ app.controller('MagicCtrl', function($scope) {
 		if (scope.magic.isInSelection(xRelative, yRelative)) {
 			scope.magic.removeSelection(xRelative, yRelative)
 		} else {
-			var bitmask = scope.magic.getMaskWand(xRelative, yRelative, 50);
+			var bitmask = scope.magic.getMaskWand(xRelative, yRelative, $scope.threshold);
 		}
 
 		scope.magic.getMaskBorder();
@@ -126,5 +134,8 @@ app.controller('MagicCtrl', function($scope) {
 				mouseMove: $scope.mouseMove
 			};
 		}
+        else if (oval) {
+            $scope.stop();
+        }
 	}, true);
 });
