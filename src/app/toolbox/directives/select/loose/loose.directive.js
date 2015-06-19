@@ -44,6 +44,8 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
 	$scope.mouseDown = function() {
         $scope.drawEngine.onMousedown(event);   
         $scope.mouseBTNDown = true; 
+        $scope.drawEngine.setLineWidth(2);
+        $scope.drawEngine.setDrawType(drawType.DOTTED);
 	};
 
 	/* onMouseUp */
