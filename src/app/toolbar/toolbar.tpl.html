@@ -1,6 +1,7 @@
 <!-- Template for the toolbar. -->
 
 <div class="toolbar"
+    ng-right-click
     ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}">
     <div class="brand float-left">
         ARIANA
@@ -15,40 +16,38 @@
             <!-- import file -->
             <i class="mdi mdi-upload"></i>
         </li>
-        <li class="tool float-left" ng-click="saveImage()">
+        <li class="tool float-left" ng-click="openSaveImageModal()">
             <!-- export file --> 
             <i class="mdi mdi-download"></i>
         </li>
-        <li class="seperator float-left"></li>
+        <!-- <li class="seperator float-left"></li>
         <li class="inactive tool float-left" ng-click="openTransformationModal()">
-            <!-- standard transformations -->
             <i class="mdi mdi-rotate-right-variant"></i>
-        </li>
+        </li> -->
         <li class="tool float-left" ng-click="openFilterModal()">
             <!-- filters and effects -->
             <i class="mdi mdi-star-outline"></i>
         </li>
  
         <!-- Float-right elements are in reverse order. -->
+        <!--
         <li class="inactive tool float-right">
-            <!-- help button -->
             <i class="mdi mdi-school"></i>
         </li>
         <li class="seperator float-right"></li>
         <li class="inactive tool float-right">
-            <!-- redo button -->
             <i class="mdi mdi-redo-variant"></i>
         </li>
         <li class="inactive tool float-right">
-            <!-- undo button -->
             <i class="mdi mdi-undo-variant"></i>
-        </li>
+        </li> -->
     </ul>
 </div>
 
 <!-- Template for the filter-options element. -->
 
 <div class="filter-options" 
+    ng-right-click
     ng-show="filter.filterObject"
     ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}"> 
     <div class="tool float-left" ng-click="cancel()"> <i class="mdi mdi-close"> </i> </div>

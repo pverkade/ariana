@@ -31,21 +31,21 @@ app.controller('ToolboxCtrl', function($scope) {
      */
     $scope.checkVisible = function() {
         return (!($scope.config.mouse.button[1] || $scope.config.mouse.button[2] || $scope.config.mouse.button[3]));
-    }
+    };
 
     /* 
      * Returns whether this tool is active
      */
     $scope.isActive = function(name) {
         return $scope.config.tools.activeTool == name;
-    }
+    };
 
     /* 
      * Returns whether this tool is active
      */
     $scope.isActiveToolset = function(name) {
         return $scope.config.tools.activeToolset == name;
-    }
+    };
 
     /* 
      * This function selects a toolset and therefore opens a toolbox. When

@@ -15,4 +15,7 @@ src/*/Thumbs.db
 .sass-cache/
 .tscache/*
 src/app/drawengine/*.js
-*.tmp.txt
+
+debuglog.txt
+debug_log.txt
+debug-log.txt

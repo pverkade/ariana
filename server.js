@@ -51,7 +51,42 @@ function startServer(host, port) {
     });
 }
 
+function saveImageAsBuffer(inputBuffer, format, handler, quality) {
+    if (format !== "jpeg" && format !== "png") {
+        handler("Bad format", null);
+        return;
+    }
 
+    var newImage = gm(inputBuffer).flip();
+
+    if (format === 'jpeg') {
+        newImage = newImage
+            .compress('JPEG')
+            .quality(quality)
+    }
+
+    newImage.toBuffer(format, handler);
+}
+
+function testSaveImageAsBuffer(filename, format, quality) {
+    var buf = fs.readFileSync(filename);
+
+    saveImageAsBuffer(buf, format, function (err, buffer) {
+        if (err) {
+            console.log("error:", err);
+            return;
+        }
+
+        fs.writeFileSync("output" + "." + format, buffer);
+    }, quality);
+}
+
+function plainTextResponse(response, statuscode, text) {
+    response.writeHead(statuscode, {
+        "Content-Type": "text/plain; charset=utf-8"
+    });
+    response.end(text);
+}
 
 /* This function resends an image received from a post back, if
  * a correct post was made to /save-image.
@@ -75,32 +110,42 @@ function saveImageRouter(req, res) {
 
         req.on('end', function () {
             var post = qs.parse(body);
-            if (!post['image-data'] && !post['image-name']) {
-                res.writeHead(400, { "Content-Type": "text/plain" });
-                res.end("");
+
+            if (!post['image-data'] || !post['filename'] || !post['format']) {
+                plainTextResponse(res, 400, "Image-data, filename or format is missing from request.");
                 return;
             }
 
-            var inputBuffer = new Buffer(post['image-data'], 'base64');
+            var data = post['image-data'],
+                filename = post['filename'],
+                format = post['format'],
+                quality = post['quality'];
 
-            gm(inputBuffer, "input.png")
-                .flip()
-                .toBuffer('PNG',function (err, buffer) {
-                    if (err) {
-                        console.log("error", err);
-                        res.writeHead(500, { "Content-Type": "text/plain" });
-                        res.end("");
-                        return;
-                    }
+            if (format !== 'jpeg' && format !== 'png') {
+                plainTextResponse(res, 400, 'Bad image format.');
+                return;
+            }
+            else if (format === 'jpeg' && (isNaN(quality) || !(0 <= quality && quality <= 100))) {
+                plainTextResponse(res, 400, 'Quality not specified correctly.');
+                return;
+            }
 
-                    res.writeHead(200, {
-                        "Content-Type": "Content-type: image/png" ,
-                        'Content-Disposition': 'attachment; filename="' + post["image-name"] + '"'
-                    });
+            var inputBuffer = new Buffer(data, 'base64');
 
-                    res.end(buffer.toString("binary"), "binary");
+            saveImageAsBuffer(inputBuffer, format, function(err, buffer) {
+                if (err) {
+                    console.log("error", err);
+                    plainTextResponse(res, 500, "Internal Server Error");
                     return;
+                }
+
+                res.writeHead(200, {
+                    "Content-Type": "Content-type: image/" + format ,
+                    'Content-Disposition': 'attachment; filename="' + filename + "." + format+ '"'
                 });
+
+                res.end(buffer.toString("binary"), "binary");
+            }, quality);
         });
 
         return true;
@@ -122,12 +167,11 @@ function staticServe(host, port) {
             }
 
             if (req.url != "/" && req.url != "/index.html" && req.url != "/landing" && req.url != "/drawtest") {
-                res.writeHead(404, { "Content-Type": "text/plain" });
-                res.end("File not Found.");
+                plainTextResponse(res, 404, "File not Found.");
                 return;
             }
 
-            res.writeHead(200, { "Content-Type": "text/html" });
+            res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
             res.end(content);
         });
 
@@ -145,19 +189,17 @@ function dynamicServe(host, port) {
         }
 
         if (req.url != "/" && req.url != "/index.html" && req.url != "/landing" && req.url != "/drawtest") {
-            res.writeHead(404, { "Content-Type": "text/plain" });
-            res.end("File not Found.");
+            plainTextResponse(res, 404, "File not found.");
             return;
         }
 
         readIndex(function(err, content) {
             if (err) {
-                res.writeHead(404, { "Content-Type": "text/plain" });
-                res.end("File not Found.");
+                plainTextResponse(res, 500, "Index not found.");
                 return;
             }
 
-            res.writeHead(200, { "Content-Type": "text/html" });
+            res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
             res.end(content);
         });
     });

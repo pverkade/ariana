@@ -14,10 +14,6 @@
     
     top: 1.5 * $blocksize;
     
-    @media (max-width: 10.5 * $blocksize) {
-        top: 2.5 * $blocksize;
-    }
-    
     @extend .gui-element;
 }
 
@@ -63,9 +59,28 @@
     width: 4 * $blocksize;
     height: 4 * $blocksize;
 
-    z-index: 1;
+    z-index: 3;
     background-color: lighten($light, 2 * $active-lighten);
 
+}
+
+.large-tool-settings {
+    width: 5.5 * $blocksize;
+    height: 6 * $blocksize;
+
+    #palette {
+        float: left;
+        display: block;
+        width: 4 * $blocksize;
+        height: 4 * $blocksize;
+    }
+
+    #hue {
+        float: left;
+        display: block;
+        width: 1 * $blocksize;
+        height: 4 * $blocksize;
+    }
 }
 
 .color-preview {
@@ -80,7 +95,6 @@
         position: absolute;
         height: 0.625 * $blocksize;
         width: 0.625 * $blocksize;
-        @extend .box-shadow;
     }
     
     .color-primary {
