@@ -21,37 +21,37 @@
 		<div class="input-group">
 		    <span class="input-group-addon"> R </span> 
 		    <input type="number" class="form-control number" 
-                ng-model="config.tools.colors.primary.r" ng-change="updateHSV(); updateHEX();" min="0" max="255"></input>
+                ng-model="config.tools.colors.primary.r" ng-change="validate(event); updateHSV(); updateHEX();" ng-blur="blur()"></input>
 		</div>
 		<div class="input-group">
 		    <span class="input-group-addon"> G </span> 
 		    <input type="number" class="form-control number" 
-                ng-model="config.tools.colors.primary.g" ng-change="updateHSV(); updateHEX();" min="0" max="255"></input>
+                ng-model="config.tools.colors.primary.g" ng-change="validate(event); updateHSV(); updateHEX();" ng-blur="blur()"></input>
 		</div>
 		<div class="input-group">
 		    <span class="input-group-addon"> B </span> 
 		    <input type="number" class="form-control number"
-                ng-model="config.tools.colors.primary.b" ng-change="updateHSV(); updateHEX();" min="0" max="255"></input>
+                ng-model="config.tools.colors.primary.b" ng-change="validate(event); updateHSV(); updateHEX();" ng-blur="blur()"></input>
 		</div>
 		<div class="input-group">
 		    <span class="input-group-addon"> H </span>
 		    <input type="number" class="form-control number" 
-                ng-model="color.H" ng-change="updateRGB(); updateHEX();" min="0" max="360"></input>
+                ng-model="color.H" ng-change="validate(event); updateRGB(); updateHEX();" ng-blur="blur()"></input>
 		</div>
 		<div class="input-group">
 		    <span class="input-group-addon"> S </span>
 		    <input type="number" class="form-control number" 
-                ng-model="color.S" ng-change="updateRGB(); updateHEX();" min="0" max="100"></input>
+                ng-model="color.S" ng-change="validate(event); updateRGB(); updateHEX();" ng-blur="blur()"></input>
 		</div>
 		<div class="input-group">
 		    <span class="input-group-addon"> V </span>
 		    <input type="number" class="form-control number" 
-                ng-model="color.V" ng-change="updateRGB(); updateHEX();" min="0" max="100"></input>
+                ng-model="color.V" ng-change="validate(event); updateRGB(); updateHEX();" ng-blur="blur()"></input>
 		</div>
 		<div class="input-group">
 		    <span class="input-group-addon"> Hex </span> 
 		    <input type="text" class="form-control text" 
-                ng-model="hex" ng-change="updateRGBfromHEX(); updateHSV();"></input>
+                ng-model="hex" ng-change="validate(); updateRGBfromHEX(); updateHSV();" ng-blur="blur()"></input>
 		</div>
         
 	<div>
