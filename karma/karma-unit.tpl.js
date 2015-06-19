@@ -16,7 +16,7 @@ module.exports = function(karma) {
             'build/assets/**/*.js'
         ],
         frameworks: ['jasmine'],
-        plugins: ['karma-jasmine', 'karma-firefox-launcher', 'karma-phantomjs-launcher', 'karma-mocha-reporter'],
+        plugins: ['karma-jasmine', 'karma-firefox-launcher', 'karma-mocha-reporter'],
 
         /**
          * How to report, by default.
