@@ -7,11 +7,13 @@
 /// <reference path="filters/noise-filter"/>
 /// <reference path="filters/sepia-filter"/>
 /// <reference path="filters/colorize-filter"/>
+/// <reference path="texture-program"/>
 
 class ResourceManager {
     private gl : WebGLRenderingContext;
     private imageShaderProgram : ImageShaderProgram;
     private bitmaskProgram : BitmaskShaderProgram;
+    private textureProgram : TextureProgram;
 
     private brightnessProgram : BrightnessProgram;
     private contrastProgram : ContrastProgram;
@@ -97,5 +99,13 @@ class ResourceManager {
         }
 
         return this.bitmaskProgram;
+    }
+    
+    textureProgramInstance() : TextureProgram {
+        if (!this.textureProgram) {
+            this.textureProgram = new TextureProgram(this.gl);
+        }
+
+        return this.textureProgram;
     }
 }

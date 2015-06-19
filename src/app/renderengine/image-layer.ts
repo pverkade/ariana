@@ -49,12 +49,6 @@ class ImageLayer extends Layer {
     }
 
 	render() {
-        var matrix : Float32Array = mat3.create();
-        mat3.identity(matrix);
-        mat3.multiply(matrix, matrix, this.pixelConversionMatrix);
-        mat3.multiply(matrix, matrix, this.translationMatrix);
-        mat3.multiply(matrix, matrix, this.rotationMatrix);
-        mat3.multiply(matrix, matrix, this.sizeMatrix);
 
         var flipMatrix = mat3.create();
         mat3.scale(
@@ -73,6 +67,10 @@ class ImageLayer extends Layer {
                 this.flipY ? -1.0 : 0.0
             ])
         );
+        
+        
+		var matrix : Float32Array = this.calculateTransformation();
+        mat3.multiply(matrix, this.pixelConversionMatrix, matrix);
 
         this.program.setUniforms(this.texture, matrix, flipMatrix);
         this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
@@ -108,5 +106,9 @@ class ImageLayer extends Layer {
     destroy() {
         super.destroy();
         this.gl.deleteTexture(this.texture);
+    }
+
+    public getWebGlTexture() : WebGLTexture {
+        return this.texture
     }
 }

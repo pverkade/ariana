@@ -94,8 +94,8 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
 
     public removeLayer(index : number) {
         var layer : Layer = this.layers[index];
-        this.layers.splice(layer.getID(), 1);
-        //layer.destroy();
+        this.layers.splice(index, 1);
+        layer.destroy();
     }
 
     public reorder(i : number, j : number) {
@@ -138,12 +138,15 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
             }
 
             var imageLayer = <ImageLayer> layer;
-            this.drawbuffer1.bind();
-            this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
-            imageLayer.setupRender();
-            imageLayer.render();
-            this.drawbuffer1.unbind();
+            var textureProgram = this.resourceManager.textureProgramInstance();
 
+            // FIXME: images that are larger than the canvas are downsized when a filter is applied
+            this.drawbuffer1.bind();
+            {
+                this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
+                filter.render(this.resourceManager, imageLayer.getWebGlTexture());
+
+            /*
             this.drawbuffer2.bind();
             this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
             filter.render(this.resourceManager, this.drawbuffer1.getWebGlTexture());
@@ -153,6 +156,18 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
             layer.setRotation(0);
             layer.setPos(this.width/2.0, this.height/2.0);
             layer.setDimensions(this.width, this.height);
+            */
+            
+                this.gl.bindTexture(this.gl.TEXTURE_2D, imageLayer.getWebGlTexture());
+                this.gl.copyTexImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 0, 0, this.width, this.height, 0);
+
+                this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
+                textureProgram.render(imageLayer.getWebGlTexture());
+
+                this.gl.bindTexture(this.gl.TEXTURE_2D, imageLayer.getWebGlTexture());
+                this.gl.copyTexImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 0, 0, this.width, this.height, 0);
+            }
+            this.drawbuffer1.unbind();
         }
     }
 
@@ -188,6 +203,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
     }
 
     private renderIndices(indices : number[]) {
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
         var oldType = -1;
         for (var i = 0; i < indices.length; i++) {
             // Take the old layer (one layer at a time)

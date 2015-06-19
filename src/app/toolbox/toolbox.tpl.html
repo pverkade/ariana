@@ -3,7 +3,6 @@
 <div class="toolset" 
     ng-right-click
     ng-class="{'fade-on inactive': !checkVisible(), 'fade-off': checkVisible()}">
-
     <div class="tool" id="basic" 
          ng-click="selectToolSet('basic')" 
          ng-class="{active: isActiveToolset('basic')}">
@@ -30,9 +29,9 @@
             <palette tool></palette>
             <pencil tool></pencil>
             <brush tool></brush>
-            <eraser tool></eraser>
+            <!-- <eraser tool></eraser> -->
             <picker tool></picker>
-            <fill tool></fill>
+            <!-- <fill tool></fill> -->
         </div>
 
     </div>
@@ -44,8 +43,6 @@
         <i class="mdi mdi-select"></i>
 
         <div class="toolbox" ng-show="isActiveToolset('select')">
-            <rectangle tool></rectangle>
-            <elipse tool></elipse>
             <loose tool></loose>
             <magic tool></magic>
         </div>
