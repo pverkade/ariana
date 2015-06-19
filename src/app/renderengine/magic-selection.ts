@@ -74,9 +74,6 @@ class MagicSelection implements SelectionInterface {
         Algorithm checks for lines horizontally and adds line elements above and below to the 
         stack when they match the color of the given point. */
     getMaskWand(x : number, y : number, treshold : number) {
-    
-        x = Math.round(0.5 * (x + 1) * this.width); 
-        y = Math.round(0.5 * (y + 1) * this.height);
         console.log("magic " + x + " " + y);
     
         var stack = [];
@@ -260,5 +257,13 @@ class MagicSelection implements SelectionInterface {
                 this.maskWand[0][j] = this.maskWand[0][j] || this.maskWand[i][j];
             }   
         }
+    }
+    
+    getWidth() {
+        return this.width;
+    }
+    
+    getHeight() {
+        return this.height;
     }
 }
