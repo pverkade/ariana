@@ -112,7 +112,6 @@ app.controller('AppCtrl', ['$scope',
 
             /* set the correct layer info in config. The new layer comes on top
              * and is immediately selected. */
-            //$scope.setSelection([$scope.config.layers.numberOfLayers]);
             $scope.config.layers.numberOfLayers += 1;
             $scope.config.layers.currentLayer = index;
 
@@ -129,7 +128,6 @@ app.controller('AppCtrl', ['$scope',
             });
 
             window.requestAnimationFrame(function() {$scope.renderEngine.render();});
-            //$scope.renderEngine.render();
         };
 
         $scope.resizeCanvases = function(width, height) {
