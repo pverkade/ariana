@@ -16,12 +16,12 @@ module.exports = function(karma) {
             'build/assets/**/*.js'
         ],
         frameworks: ['jasmine'],
-        plugins: ['karma-jasmine', 'karma-firefox-launcher', 'karma-phantomjs-launcher'],
+        plugins: ['karma-jasmine', 'karma-firefox-launcher', 'karma-phantomjs-launcher', 'karma-mocha-reporter'],
 
         /**
          * How to report, by default.
          */
-        reporters: ['dots'],
+        reporters: ['mocha'],
 
         /**
          * On which port should the browser connect, on which port is the test runner

@@ -46,18 +46,4 @@ describe("The scale directive controller", function() {
         });
     });
 
-    describe("sign", function() {
-        it("should return 1 for x>0", function() {
-            expect($scope.sign(1)).toBe(1);
-        });
-
-        it("should return -1 for x<0", function() {
-            expect($scope.sign(-1)).toBe(-1);
-        });
-
-        it("should return 0 for x=0", function() {
-            expect($scope.sign(0)).toBe(0);
-        });
-    })
-
 });
