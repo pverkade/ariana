@@ -200,7 +200,7 @@ class Layer {
         return matrix;
     }
 
-    private getTransformedDimensions() : number[] {
+    public getTransformedDimensions() : number[] {
         var options = [-1, 1];
         var minX : number = Number.POSITIVE_INFINITY;
         var maxX : number = Number.NEGATIVE_INFINITY;

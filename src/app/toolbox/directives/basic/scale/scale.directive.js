@@ -17,6 +17,12 @@ app.controller('ScaleCtrl', function($scope) {
     /* init */
     $scope.init = function() {
         $scope.scaling = false;
+        
+        var currentLayer = $scope.config.layers.currentLayer;
+        if (currentLayer == -1) return;
+
+        var layer = $scope.renderEngine.layers[currentLayer];
+        $scope.editEngine.drawScaleTool(layer);
     };
 
     /* onMouseDown */
@@ -106,6 +112,8 @@ app.controller('ScaleCtrl', function($scope) {
             window.requestAnimationFrame(function() {
                 $scope.renderEngine.render();
             });
+            
+            $scope.editEngine.drawScaleTool(layer);
 
         }
         else {
