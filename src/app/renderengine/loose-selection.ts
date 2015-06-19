@@ -57,10 +57,24 @@ class LooseSelection implements SelectionInterface {
 		}
 	}
 
+	/* -2 since a new empty path is added. */
+	LastPathContains(x : number, y : number) {
+		var nrWands = this.points.length;
+		var nrPointsLast = this.points[nrWands - 2].length; 
+
+		for (var i = 0; i < nrPointsLast; i++) {
+			if (this.points[nrWands - 2][i].x == x && this.points[nrWands - 2][i].y == y) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	getInsidePoint() {
 		for (var y = 0; y < this.height; y++) {
 			for (var x = 0; x < this.width; x++) {
-				if (this.maskBorder[y * this.width + x] == 1) {
+				if (this.maskBorder[y * this.width + x] == 1 && this.LastPathContains(x, y)) {
 					if (this.maskBorder[(y + 1) * this.width + x + 1] == 0) {
 						return new Point(x+1, y+1);
 					} else {
