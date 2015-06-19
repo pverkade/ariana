@@ -28,14 +28,14 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
         }
         $scope.image = layer.getImage();
 
-        $scope.looseSelection = new LooseSelection($scope.image.width, $scope.image.height);
+        $scope.loose = new LooseSelection($scope.image.width, $scope.image.height);
 
         $scope.canvas = document.createElement("canvas");
         $scope.canvas.width = $scope.image.width;
         $scope.canvas.height = $scope.image.height;
         $scope.context = $scope.canvas.getContext("2d");
 
-        $scope.imgData = $scope.context.createImageData($scope.looseSelection.width, $scope.looseSelection.height);
+        $scope.imgData = $scope.context.createImageData($scope.loose.width, $scope.loose.height);
 
         $scope.edit_canvas = document.getElementById("editing-canvas");
         $scope.edit_context = $scope.edit_canvas.getContext("2d");
@@ -54,12 +54,12 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
 
 	/* onMouseUp */
 	$scope.mouseUp = function() {
-        $scope.looseSelection.reset();
+        $scope.loose.reset();
         $scope.mouseBTNDown = false;
 
         $scope.drawEngine.onMouseup(event);
         $scope.drawEngine.clearCanvases();
-        $scope.edit_context.putImageData($scope.imgData, 0, 0);
+        // $scope.edit_context.putImageData($scope.imgData, 0, 0);
 	};
 
 	/* onMouseMove */
@@ -76,10 +76,10 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
         }
 
         if ($scope.mouseBTNDown == true) {
-            if ($scope.looseSelection.addPoint(new Point(xRelative, yRelative))) {
-                var boundingPath = $scope.looseSelection.getLastBoundingPath();
+            if ($scope.loose.addPoint(new Point(xRelative, yRelative))) {
+                var boundingPath = $scope.loose.getLastBoundingPath();
                 if (boundingPath.length != 0) {
-                    var bitmask = $scope.looseSelection.getMaskWand();
+                    var bitmask = $scope.loose.getMaskWand();
 					if (bitmask) {
 						for (var i = 0; i < bitmask.length; i++) {
 							if (bitmask[i]) {
@@ -90,14 +90,13 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
 							}
 						}
                         var newLayer = $scope.renderEngine.createSelectionImageLayer($scope.imgData, 0);
-                        $scope.renderEngine.addLayer(newLayer);
+                        $scope.addLayer(newLayer);
+                        $scope.editEngine.setSelectionLayer($scope.loose, newLayer);
                         $scope.requestRenderEngineUpdate();
 
-						$scope.editEngine.setSelectionLayer($scope.looseSelection, newLayer);
-			            $scope.requestEditEngineUpdate();
 					}
 
-                    $scope.looseSelection.reset();
+                    $scope.loose.reset();
 
                     /* When a bounding path is drawn the bounding path is draw and user interface acts like
                         the user has released the mouse button. */
