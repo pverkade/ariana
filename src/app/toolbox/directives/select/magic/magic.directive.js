@@ -57,16 +57,16 @@ app.controller('MagicCtrl', function($scope) {
         vec3.transformMat3(position, position, transformation);
         
         console.log("position " + xRelative + ", " + yRelative);
-        xRelative = position[0];
-        yRelative = position[1];
+        xRelative = Math.round(0.5 * (position[0] + 1) * scope.magic.getWidth()); 
+        yRelative = Math.round(0.5 * (position[1] - 1) * scope.magic.getHeight());
         console.log("original " + xRelative + ", " + yRelative);    
 
 		/* Check wheter user has clicked inside of a selection. */
-		//if (scope.magic.isInSelection(xRelative, yRelative)) {
-		//	scope.magic.removeSelection(xRelative, yRelative)
-		//} else {
+		if (scope.magic.isInSelection(xRelative, yRelative)) {
+			scope.magic.removeSelection(xRelative, yRelative)
+		} else {
 			var bitmask = scope.magic.getMaskWand(xRelative, yRelative, 50);
-		//}
+		}
 
 		scope.magic.getMaskBorder();
 
