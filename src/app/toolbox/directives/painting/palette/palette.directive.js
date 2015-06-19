@@ -139,6 +139,9 @@ app.controller('PaletteCtrl', function($scope) {
     
     $scope.updateRGB = function() {
         $scope.config.tools.colors.primary = HSVtoRGB($scope.color.H, $scope.color.S, $scope.color.V);
+
+        $scope.drawMarker();
+        $scope.drawBar();
     };
     
     $scope.updateHSV = function() {
@@ -191,5 +194,56 @@ app.controller('PaletteCtrl', function($scope) {
         context.lineWidth = 2;
         context.strokeStyle = "black";
         context.stroke();
+    }
+
+    $scope.clamp = function(num, min, max) {
+        if (num === null || num === undefined) {
+            return null;
+        } else if (num < min) {
+            return min;
+        } else if (num > max) {
+            return max;
+        } else {
+            return Math.round(num);
+        }
+    };
+
+    $scope.validate = function() {
+        $scope.config.tools.colors.primary.r = $scope.clamp($scope.config.tools.colors.primary.r, 0, 255);
+        $scope.config.tools.colors.primary.g = $scope.clamp($scope.config.tools.colors.primary.g, 0, 255);
+        $scope.config.tools.colors.primary.b = $scope.clamp($scope.config.tools.colors.primary.b, 0, 255);
+        $scope.color.H = $scope.clamp($scope.color.H, 0, 360);
+        $scope.color.S = $scope.clamp($scope.color.S, 0, 100);
+        $scope.color.V = $scope.clamp($scope.color.V, 0, 100);
+        while (!(/^#?[0-9A-F]{0,6}$/i.test($scope.hex))) {
+            $scope.hex = $scope.hex.substr(0, $scope.hex.length-1);
+        }
+        console.log($scope.config.tools.colors.primary);
+    }
+
+    $scope.blur = function() {
+        if (!$scope.config.tools.colors.primary.r) {
+            $scope.config.tools.colors.primary.r = 0;
+        }
+        if (!$scope.config.tools.colors.primary.g) {
+            $scope.config.tools.colors.primary.g = 0;
+        }
+        if (!$scope.config.tools.colors.primary.b) {
+            $scope.config.tools.colors.primary.b = 0;
+        }
+        if (!$scope.color.H) {
+            $scope.color.H = 0;
+        }
+        if (!$scope.color.S) {
+            $scope.color.S = 0;
+        }
+        if (!$scope.color.V) {
+            $scope.color.V = 0;
+        }
+        if ($scope.hex.charAt(0) == '#') {
+            $scope.hex = $scope.hex + "#000000".substr($scope.hex.length, 7);
+        } else {
+            $scope.hex = '#' + $scope.hex + "000000".substr($scope.hex.length, 6);
+        }
     }
 });
