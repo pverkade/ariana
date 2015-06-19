@@ -15,7 +15,7 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
 	$scope.init = function() {
 		$scope.setCursor('default');
 
-        var currentLayer = 0;//$scope.config.layers.currentLayer;
+        var currentLayer = $scope.config.layers.currentLayer;//$scope.config.layers.currentLayer;
         if (currentLayer == -1) {
             console.log("No layer selected");
             return;
@@ -31,14 +31,8 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
         $scope.loose = new LooseSelection($scope.image.width, $scope.image.height);
 
         $scope.canvas = document.createElement("canvas");
-        $scope.canvas.width = $scope.image.width;
-        $scope.canvas.height = $scope.image.height;
         $scope.context = $scope.canvas.getContext("2d");
-
         $scope.imgData = $scope.context.createImageData($scope.loose.width, $scope.loose.height);
-
-        $scope.edit_canvas = document.getElementById("editing-canvas");
-        $scope.edit_context = $scope.edit_canvas.getContext("2d");
 
         $scope.mouseBTNDown = false;
 
@@ -59,7 +53,6 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
 
         $scope.drawEngine.onMouseup(event);
         $scope.drawEngine.clearCanvases();
-        // $scope.edit_context.putImageData($scope.imgData, 0, 0);
 	};
 
 	/* onMouseMove */
@@ -78,6 +71,8 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
         if ($scope.mouseBTNDown == true) {
             if ($scope.loose.addPoint(new Point(xRelative, yRelative))) {
                 var boundingPath = $scope.loose.getLastBoundingPath();
+
+                /* A new bounding path has been found. */
                 if (boundingPath.length != 0) {
                     var bitmask = $scope.loose.getMaskWand();
 					if (bitmask) {
@@ -89,11 +84,12 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
 								$scope.imgData.data[4 * i + 3] = 255;
 							}
 						}
+
+                        /* Add new layer for bounding path and set selection. */
                         var newLayer = $scope.renderEngine.createSelectionImageLayer($scope.imgData, 0);
                         $scope.addLayer(newLayer);
                         $scope.editEngine.setSelectionLayer($scope.loose, newLayer);
                         $scope.requestRenderEngineUpdate();
-
 					}
 
                     $scope.loose.reset();
