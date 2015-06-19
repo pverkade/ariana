@@ -183,12 +183,17 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         this.createThumbnail(layer);
     }
 
-    private renderIndices(indices : number[]) {
+    private renderIndices(indices : number[], drawHiddenLayers = false) {
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
         var oldType = -1;
         for (var i = 0; i < indices.length; i++) {
             // Take the old layer (one layer at a time)
             var layer:Layer = this.layers[indices[i]];
+
+            if (!drawHiddenLayers && layer.isHidden()) {
+                continue;
+            }
+
             if (layer.getLayerType() != oldType) {
                 /*
                  * We're drawing a different type of layer then our previous one,
