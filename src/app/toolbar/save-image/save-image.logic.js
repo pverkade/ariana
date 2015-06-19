@@ -39,6 +39,11 @@ app.controller('SaveImageModalController', ['$scope', '$modalInstance', '$modal'
         formatInput.setAttribute("value", $scope.format);
         nameInput.setAttribute("type", "hidden");
 
+        // quality of zero result in quality of 100
+        if ($scope.quality === 0) {
+            $scope.quality = 1;
+        }
+
         var qualityInput = document.createElement("input");
         qualityInput.setAttribute("name", "quality");
         qualityInput.setAttribute("value", $scope.quality);
@@ -52,8 +57,8 @@ app.controller('SaveImageModalController', ['$scope', '$modalInstance', '$modal'
         myForm.appendChild(formatInput);
         myForm.appendChild(qualityInput);
 
-        document.body.appendChild(myForm) ;
-        myForm.submit() ;
-        document.body.removeChild(myForm) ;
+        document.body.appendChild(myForm);
+        myForm.submit();
+        document.body.removeChild(myForm);
     };
 }]);

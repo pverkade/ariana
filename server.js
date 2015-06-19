@@ -121,7 +121,6 @@ function saveImageRouter(req, res) {
                 format = post['format'],
                 quality = post['quality'];
 
-            console.log(filename, format, quality);
             if (format !== 'jpeg' && format !== 'png') {
                 plainTextResponse(res, 400, 'Bad image format.');
                 return;

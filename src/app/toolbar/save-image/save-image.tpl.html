@@ -6,8 +6,10 @@
     <form>
         <div class="form-group">
             <label for="format-input">File Name:</label>
-            <input type="text" id="filename-input" ng-model="filename" class="form-control">
-            <div class="input-group-addon">.{{format}}</div>
+            <div class="input-group">
+                <input type="text" id="filename-input" ng-model="filename" class="form-control">
+                <div class="input-group-addon">.{{format}}</div>
+            </div>
         </div>
         <div class="form-group">
             <label for="format-input">Format:</label>
@@ -19,13 +21,13 @@
 
         <div class="form-group" ng-class="{'not-visible': format !== 'jpeg'}">
             <label for="quality-input">Quality:</label>
-            <input type="range" id="quality-input" ng-model="quality" class="form-control" />
-            <div class="input-group-addon">{{quality}}</div>
+            <div class="">{{quality}}</div>
+            <input type="range" id="quality-input" ng-model="quality"/>
         </div>
     </form>
 </div>
 
 <div class="modal-footer">
     <button type="button" class="btn btn-default btn-lg" ng-click="closeSaveImageModal()"> Cancel </button>
-    <button type="button" class="btn btn-primary btn-lg" ng-click="saveImage()"> Save Image </button>
+    <button type="button" class="btn btn-primary btn-lg" ng-click="saveImage(); closeSaveImageModal()"> Save Image </button>
 </div>
