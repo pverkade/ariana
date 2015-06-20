@@ -33,11 +33,8 @@
     "grunt-wiredep": "^2.0.0",
     "jasmine-core": "~2.3.4",
     "karma-firefox-launcher": "^0.1.6",
-    "karma-html-reporter": "^0.2.6",
     "karma-jasmine": "~0.3.5",
-    "karma-phantomjs-launcher": "^0.2.0",
     "node-bourbon": "~1.0.0",
-    "phantomjs": "^1.9.17",
     "request": "^2.57.0",
     "karma-mocha-reporter": "~1.0.2"
   }
