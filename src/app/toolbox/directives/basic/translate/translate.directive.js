@@ -3,11 +3,11 @@ app.directive('translate', function() {
         restrict: 'E',
         scope: true,
         templateUrl: 'app/toolbox/directives/basic/translate/translate.tpl.html',
-        controller: 'translateCtrl'
+        controller: 'TranslateCtrl'
     };
 });
 
-app.controller('translateCtrl', function($scope) {
+app.controller('TranslateCtrl', function($scope) {
     $scope.toolname = 'translate';
     $scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
