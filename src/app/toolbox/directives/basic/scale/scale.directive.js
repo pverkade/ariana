@@ -52,7 +52,10 @@ app.controller('ScaleCtrl', function($scope) {
         var x = layer.getPosX();
         var y = layer.getPosY();
 
-        var angle = (Math.atan2(y - mouseCurrentY, mouseCurrentX - x) + 2 * Math.PI) % (2 * Math.PI);
+        var dimensions = layer.getTransformedDimensions();
+        var ratio = dimensions[1] / dimensions[0];
+        
+        var angle = (Math.atan2((y - mouseCurrentY) / ratio, mouseCurrentX - x) + 2 * Math.PI) % (2 * Math.PI);
 
         if ($scope.scaling) {
 

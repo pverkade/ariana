@@ -62,15 +62,15 @@ class EditEngine {
         var y = layer.getPosY();
         var dimensions = layer.getTransformedDimensions();
         var rotation = layer.getRotation();
-        var width  = dimensions[0] * Math.cos(rotation) * Math.cos(rotation) + dimensions[1] * Math.sin(rotation) * Math.sin(rotation);
-        var height = dimensions[1] * Math.cos(rotation) * Math.cos(rotation) + dimensions[0] * Math.sin(rotation) * Math.sin(rotation);
+        var width  = dimensions[0];// * Math.cos(rotation) * Math.cos(rotation) + dimensions[1] * Math.sin(rotation) * Math.sin(rotation);
+        var height = dimensions[1];// * Math.cos(rotation) * Math.cos(rotation) + dimensions[0] * Math.sin(rotation) * Math.sin(rotation);
         
         this.clear();
 
         context.save();
         this.setColors(context);
         context.translate(x, y);
-        context.rotate(-rotation);
+        //context.rotate(-rotation);
         context.strokeRect(-width * 0.5, -height * 0.5, width, height);
         context.fillRect(
             -this.littleSquareDiameter * 0.5,
