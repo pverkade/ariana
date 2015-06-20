@@ -62,8 +62,12 @@ class EditEngine {
         var y = layer.getPosY();
         var dimensions = layer.getTransformedDimensions();
         var rotation = layer.getRotation();
-        var width  = dimensions[0];// * Math.cos(rotation) * Math.cos(rotation) + dimensions[1] * Math.sin(rotation) * Math.sin(rotation);
-        var height = dimensions[1];// * Math.cos(rotation) * Math.cos(rotation) + dimensions[0] * Math.sin(rotation) * Math.sin(rotation);
+        var width  = dimensions[0];
+            //(1 / (Math.cos(rotation) * Math.cos(rotation) - Math.sin(rotation) * Math.sin(rotation))) *
+            //(dimensions[0] * Math.abs(Math.cos(rotation)) - dimensions[1] * Math.abs(Math.sin(rotation)));
+        var height = dimensions[1];
+            //(1 / (Math.cos(rotation) * Math.cos(rotation) - Math.sin(rotation) * Math.sin(rotation))) *
+            //(- dimensions[0] * Math.abs(Math.sin(rotation)) + dimensions[1] * Math.abs(Math.cos(rotation)));
         
         this.clear();
 
