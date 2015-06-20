@@ -15,6 +15,12 @@ app.controller('TranslateCtrl', function($scope) {
     $scope.init = function() {
         $scope.setCursor('move');
         $scope.translating = false;
+        
+        var currentLayer = $scope.config.layers.currentLayer;
+        if (currentLayer == -1) return;
+
+        var layer = $scope.renderEngine.layers[currentLayer];
+        $scope.editEngine.drawTranslateTool(layer);
     };
 
     /* onMouseDown */
