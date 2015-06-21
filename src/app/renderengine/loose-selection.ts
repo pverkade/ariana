@@ -14,10 +14,9 @@ class LooseSelection{
 		this.points = [];
 		this.points[0] = [];
 		this.maskWandParts = [];
-		// this.maskWandParts[0] = new Uint8Array(width * height);
 
-		this.maskBorder = null; // = new Uint8Array(width * height);
-		this.maskWand = null; // = new Uint8Array(width * height);
+		this.maskBorder = null; 
+		this.maskWand = null;
 	}
 
     sign(x : number) { return x > 0 ? 1 : x < 0 ? -1 : 0; }
@@ -27,7 +26,7 @@ class LooseSelection{
 		var nrPointsLast = this.points[nrWands - 1].length;
 
 		if (this.maskWand[point.y * this.width + point.x] == 0) {
-			if (this.points[nrWands - 1].length == 0) {	// vereenvoudiging mogelijk want punt kan niet meer gelijk zijn aan vorige punt??
+			if (this.points[nrWands - 1].length == 0) {	// if statements can be simplified?
 				this.points[nrWands - 1].push(point);
 				this.maskBorder[this.width * point.y + point.x] = 1;
 				return true;
@@ -111,9 +110,6 @@ class LooseSelection{
 		return this.maskWandParts[this.maskWandParts.length - 1];			
 	}
 
-	// getMaskBorder() {
-	// 	return this.maskBorder;
-	// }
 	determineOrientation() {
 		var nrWands = this.points.length;
 		var area = 0;
@@ -133,24 +129,6 @@ class LooseSelection{
 	}
 
 	/* Returns index of neighbor maskWandPart if exist within pixels distance of point. */
-	getNeighborMaskWand(point : Point) {
-		for (var i = 0; i < this.maskWandParts.length; i++) {
-			if (this.maskWandParts[i][(point.y - 1) * this.width + point.x - 1] == 1 ||
-				this.maskWandParts[i][(point.y - 1) * this.width + point.x] == 1 ||
-				this.maskWandParts[i][(point.y - 1) * this.width + point.x + 1] == 1 ||
-				this.maskWandParts[i][point.y * this.width + point.x - 1] == 1 ||
-				this.maskWandParts[i][point.y * this.width + point.x + 1] == 1 ||
-				this.maskWandParts[i][(point.y + 1) * this.width + point.x -1] == 1 ||
-				this.maskWandParts[i][(point.y + 1) * this.width + point.x] == 1 ||
-				this.maskWandParts[i][(point.y + 1) * this.width + point.x + 1] == 1) {
-				return i;
-			}
-		}
-
-		return -1;
-	}
-
-	/* Returns index of neighbor maskWandPart if exist within pixels distance of point. */
 	neighborMaskWand(point : Point) {	
 		if (this.maskWand[(point.y - 1) * this.width + point.x - 1] == 1 ||
 			this.maskWand[(point.y - 1) * this.width + point.x] == 1 ||
@@ -166,15 +144,7 @@ class LooseSelection{
 		return false;
 	}	
 
-    getMaskBorder() {
-        /* Check whether a maskwand has been created. */
-        // if (this.maskWand == undefined) {
-        //     this.maskBorder = new Uint8Array(this.imageData.width * this.imageData.height);
-        //    return undefined;
-        //}
-
-        // this.maskBorder = new Uint8Array(this.imageData.width * this.imageData.height);
-        
+    getMaskBorder() {        
         for (var i = 0; i < this.maskWand.length; i++) {
             if (this.maskWand[i] == 1) {
                 /* Check for borders of image (pixel on border of image is edge). */
@@ -208,68 +178,45 @@ class LooseSelection{
 		var lastAddedPoint : Point;
 		var insidePoint : Point;
 
-		if (nrPointsLast > 0){
-			// check maskBorder for closed path
-			// var startNr = this.getNeighborMaskWand(this.points[nrWands - 1][0]);
-			// var endNr = this.getNeighborMaskWand(this.points[nrWands - 1][nrPointsLast - 1]);
-			// console.log("startNr:")
-			// console.log(startNr);
-			if (nrPointsLast > 10 && this.neighborMaskWand(this.points[nrWands - 1][0]) &&
-				this.neighborMaskWand(this.points[nrWands - 1][nrPointsLast - 1])) { // startNr != -1 && startNr == endNr && 
-				var ccw = this.determineOrientation();
+		if (nrPointsLast > 10 && this.neighborMaskWand(this.points[nrWands - 1][0]) &&
+			this.neighborMaskWand(this.points[nrWands - 1][nrPointsLast - 1])) { 
+			var ccw = this.determineOrientation();
 
-				var dX = this.points[nrWands - 1][10].x - this.points[nrWands - 1][0].x
-				var dY = this.points[nrWands - 1][10].y - this.points[nrWands - 1][0].y
-				var dXAdj : number;
-				var dYAdj : number;
+			var dX = this.points[nrWands - 1][10].x - this.points[nrWands - 1][0].x
+			var dY = this.points[nrWands - 1][10].y - this.points[nrWands - 1][0].y
+			var dXAdj : number;
+			var dYAdj : number;
 
-				if (ccw == false) {
-					dXAdj = -dY + dX;
-					dYAdj = dX + dY;
-					console.log("met de klok mee");
-				} else {
-					dXAdj = dX + dY;
-					dYAdj = -dX + dY;
-					console.log("tegen de klok in");
-				}
-
-				for (var i = 0; i < this.points[nrWands - 1].length; i++) {
-					// same as this.points[nrWand - 1][i].y * this.width + this.points[nrWand - 1][i].x
-					var indexPointMask = this.points[nrWands - 1][i].y * this.width + this.points[nrWands - 1][i].x;
-					this.maskBorder[indexPointMask] = 1;
-				}
-
-
-				var mask = new MaskSelection(this.maskBorder, this.width, this.height);
-				insidePoint = new Point(this.points[nrWands - 1][0].x + dXAdj, this.points[nrWands - 1][0].y + dYAdj);
-				// insidePoint.y = this.points[nrWands - 1][0].y + dYAdj;
-				this.maskWandParts[this.maskWandParts.length] = mask.getMaskWand(insidePoint.x, insidePoint.y);
-
-				console.log("new mask wand part:");
-				console.log(this.maskWandParts[this.maskWandParts.length - 1]);
-
-				var q = 0;
-				for (var f2 = 0; f2 < this.maskWandParts[this.maskWandParts.length - 1].length; f2++) {
-					if (this.maskWandParts[this.maskWandParts.length - 1][f2]) {
-						q++;
-					}
-				}
-
-				console.log("q");
-				console.log(q);
-
-				for (var i = 0; i < this.maskWand.length; i++) {
-					if (this.maskWand[i]) {
-						this.maskWandParts[this.maskWandParts.length - 1][i] = 0;
-				 	}
-				} 
-
-				this.mergeMaskWand();
-				this.getMaskBorder();
-
-                this.points[nrWands] = [];
-                return this.points[nrWands - 1];
+			/* Points drawn in counter clockwise direction. */
+			if (ccw == true) {
+				dXAdj = dX + dY;
+				dYAdj = -dX + dY;
+			/* Points drawn in clockwise direction. */
+			} else {
+				dXAdj = -dY + dX;
+				dYAdj = dX + dY;
 			}
+
+			for (var i = 0; i < this.points[nrWands - 1].length; i++) {
+				var indexPointMask = this.points[nrWands - 1][i].y * this.width + this.points[nrWands - 1][i].x;
+				this.maskBorder[indexPointMask] = 1;
+			}
+
+			var mask = new MaskSelection(this.maskBorder, this.width, this.height);
+			insidePoint = new Point(this.points[nrWands - 1][0].x + dXAdj, this.points[nrWands - 1][0].y + dYAdj);
+			this.maskWandParts[this.maskWandParts.length] = mask.getMaskWand(insidePoint.x, insidePoint.y);
+
+			for (var i = 0; i < this.maskWand.length; i++) {
+				if (this.maskWand[i]) {
+					this.maskWandParts[this.maskWandParts.length - 1][i] = 0;
+			 	}
+			} 
+
+			this.mergeMaskWand();
+			this.getMaskBorder();
+
+            this.points[nrWands] = [];
+            return this.points[nrWands - 1];
 		}
 
         for (var i = this.points[nrWands - 1].length - 5; i >= 0; i--) {
@@ -373,7 +320,7 @@ class LooseSelection{
 			indexPointMask = this.points[nrWands - 1][i].y * this.width + this.points[nrWands - 1][i].x;
 			this.maskBorder[indexPointMask] = 0;
 		} 
-		// volgorde van verwijderen punten die wel/niet gebruikt worden en getBoudingPath?
+		
 		this.points[nrWands - 1] = [];
 	}
 
