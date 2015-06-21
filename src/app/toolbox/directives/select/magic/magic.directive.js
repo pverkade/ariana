@@ -140,6 +140,8 @@ app.controller('MagicCtrl', function($scope) {
 				mouseUp: $scope.mouseUp,
 				mouseMove: $scope.mouseMove
 			};
+		} else {
+			$scope.editEngine.removeSelectionLayer();
 		}
         else if (oval) {
             $scope.stop();
