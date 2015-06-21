@@ -86,6 +86,9 @@ app.controller('AppCtrl', ['$scope',
         $scope.renderEngine = null;
         $scope.drawEngine = null;
         $scope.editEngine = null;
+        $scope.maskWand = null;
+        $scope.maskBorder = null;
+        $scope.marchingAnts = null;
 
         /* This function creates the RenderEngine. It requires the canvas to
          * render on. */
@@ -94,6 +97,16 @@ app.controller('AppCtrl', ['$scope',
             $scope.drawEngine = new DrawEngine(drawCanvas);
             $scope.editEngine = new EditEngine(drawCanvas);
         };
+
+        $scope.startSharedSelection = function(width, height) {
+            console.log(width, height);
+            if ($scope.maskWand == null) {
+                $scope.maskWand = new Uint8Array(width * height);
+                $scope.maskBorder = new Uint8Array(width * height);
+                $scope.marchingAnts = new MarchingAnts(width, height);
+                $scope.marchingAnts.setMaskBorder($scope.maskBorder);
+            }
+        }
 
         /* This function creates a new layer from a given Image-object. The new
          * layer is placed on top. */
