@@ -10,8 +10,12 @@
     width: $blocksize !important;
 }
 
-.input-medium {
+.input-small-medium {
     width: 1.5 * $blocksize !important;
+}
+
+.input-medium {
+    width: 2 * $blocksize !important;
 }
 
 .input-large {

@@ -22,35 +22,35 @@
         <div class="float-left">
             <div class="input-group">
                 <span class="input-group-addon input-small"> R </span> 
-                <input type="number" class="form-control number input-medium" 
+                <input type="number" class="form-control number input-small-medium" 
                     ng-model="config.tools.colors.primary.r" ng-change="validate(event); updateHSV(); updateHEX();" ng-blur="blur()"></input>
             </div>
             <div class="input-group">
                 <span class="input-group-addon input-small"> G </span> 
-                <input type="number" class="form-control number input-medium" 
+                <input type="number" class="form-control number input-small-medium" 
                     ng-model="config.tools.colors.primary.g" ng-change="validate(event); updateHSV(); updateHEX();" ng-blur="blur()"></input>
             </div>
             <div class="input-group">
                 <span class="input-group-addon input-small"> B </span> 
-                <input type="number" class="form-control number input-medium"
+                <input type="number" class="form-control number input-small-medium"
                     ng-model="config.tools.colors.primary.b" ng-change="validate(event); updateHSV(); updateHEX();" ng-blur="blur()"></input>
             </div>
         </div>
         
         <div class="float-left">
-            <div class="input-group hide-on-small-screen">
+            <div class="input-group">
                 <span class="input-group-addon input-small"> H </span>
-                <input type="number" class="form-control number input-medium" 
+                <input type="number" class="form-control number input-small-medium" 
                     ng-model="color.H" ng-change="validate(event); updateRGB(); updateHEX();" ng-blur="blur()"></input>
             </div>
-            <div class="input-group hide-on-small-screen">
+            <div class="input-group">
                 <span class="input-group-addon input-small"> S </span>
-                <input type="number" class="form-control number input-medium" 
+                <input type="number" class="form-control number input-small-medium" 
                     ng-model="color.S" ng-change="validate(event); updateRGB(); updateHEX();" ng-blur="blur()"></input>
             </div>
-            <div class="input-group hide-on-small-screen">
+            <div class="input-group">
                 <span class="input-group-addon input-small"> V </span>
-                <input type="number" class="form-control number input-medium" 
+                <input type="number" class="form-control number input-small-medium" 
                     ng-model="color.V" ng-change="validate(event); updateRGB(); updateHEX();" ng-blur="blur()"></input>
             </div>
         </div>
