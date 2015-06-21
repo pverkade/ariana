@@ -39,8 +39,8 @@ app.controller('MagicCtrl', function($scope) {
     
     $scope.stop = function() {
         var scope = angular.element($("#main-canvas")).scope();
-        scope.editEngine.removeSelectionLayer();
-        $scope.requestEditEngineUpdate();
+        // scope.editEngine.removeSelectionLayer();
+        // $scope.requestEditEngineUpdate();
     };
 
 	/* onMouseDown */

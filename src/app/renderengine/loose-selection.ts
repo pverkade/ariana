@@ -194,7 +194,8 @@ class LooseSelection{
 			/* Points drawn in clockwise direction. */
 			} else {
 				dXAdj = -dY + dX;
-				dYAdj = dX + dY;
+				dYAdj = -dX + dY;
+				console.log("clockwise");
 			}
 
 			for (var i = 0; i < this.points[nrWands - 1].length; i++) {
