@@ -32,7 +32,8 @@ class Layer {
     private propertyChangedTimeout;
 
     transformHistory : Float32Array[];
-
+    private transformed = true;
+    private transformedDimensions : number[];
 
 	constructor(
         resourceManager : ResourceManager,
@@ -100,12 +101,24 @@ class Layer {
         this.propertyChanged = propertyChanged;
     }
 
+    public commitRotation() {
+        var matrix = mat3.create();
+        mat3.identity(matrix);
+        mat3.rotate(matrix, matrix, this.angle);
+        this.transformHistory.push(matrix);
+
+        this.angle = 0;
+
+        mat3.identity(this.rotationMatrix);
+    }
+
 	public setRotation(angle : number) {
 		this.angle = angle;
 		mat3.identity(this.rotationMatrix);
 		mat3.rotate(this.rotationMatrix, this.rotationMatrix, angle);
 
         this.notifyPropertyChanged();
+        this.transformed = true;
 	}
 
     public commitTransformations() {
@@ -125,10 +138,12 @@ class Layer {
 
 	public setWidth(width : number) {
 		this.setDimensions(width, this.height);
+        this.transformed = true;
 	}
 
 	public setHeight(height : number) {
         this.setDimensions(this.width, height);
+        this.transformed = true;
 	}
 
     public setThumbnail(thumbnail : String) {
@@ -147,6 +162,7 @@ class Layer {
         );
 
         this.notifyPropertyChanged();
+        this.transformed = true;
 	}
 
 	public setPos(x : number, y : number) {
@@ -157,6 +173,7 @@ class Layer {
 		mat3.translate(this.translationMatrix, this.translationMatrix, new Float32Array([x, -y]));
 
         this.notifyPropertyChanged();
+        this.transformed = true;
 	}
 
     public setHidden(hidden : boolean) {
@@ -183,32 +200,37 @@ class Layer {
         return matrix;
     }
 
-    private getTransformedDimensions() : number[] {
-        var options = [-1, 1];
-        var minX : number = Number.POSITIVE_INFINITY;
-        var maxX : number = Number.NEGATIVE_INFINITY;
+    public getTransformedDimensions() : number[] {
+    
+        if (this.transformed) {
+            var options = [-1, 1];
+            var minX : number = Number.POSITIVE_INFINITY;
+            var maxX : number = Number.NEGATIVE_INFINITY;
 
-        var minY : number = Number.POSITIVE_INFINITY;
-        var maxY : number = Number.NEGATIVE_INFINITY;
+            var minY : number = Number.POSITIVE_INFINITY;
+            var maxY : number = Number.NEGATIVE_INFINITY;
 
-        var matrix : Float32Array = this.calculateTransformation();
+            var matrix : Float32Array = this.calculateTransformation();
 
-        for (var i = 0; i < options.length; i++) {
-            for (var j = 0; j < options.length; j++) {
-                var vector : Float32Array = vec3.fromValues(options[i], options[j], 1);
-                var outVector : Float32Array = vec3.create();
+            for (var i = 0; i < options.length; i++) {
+                for (var j = 0; j < options.length; j++) {
+                    var vector : Float32Array = vec3.fromValues(options[i], options[j], 1);
+                    var outVector : Float32Array = vec3.create();
 
-                vec3.transformMat3(outVector, vector, matrix);
+                    vec3.transformMat3(outVector, vector, matrix);
 
-                minX = Math.min(minX, outVector[0]);
-                maxX = Math.max(maxX, outVector[0]);
+                    minX = Math.min(minX, outVector[0]);
+                    maxX = Math.max(maxX, outVector[0]);
 
-                minY = Math.min(minY, outVector[1]);
-                maxY = Math.max(maxY, outVector[1]);
+                    minY = Math.min(minY, outVector[1]);
+                    maxY = Math.max(maxY, outVector[1]);
+                }
             }
-        }
 
-        return [maxX - minX, maxY - minY];
+            this.transformed = false;
+            this.transformedDimensions = [maxX - minX, maxY - minY];
+        }
+        return this.transformedDimensions;
     }
 
 	public getPosX() : number {

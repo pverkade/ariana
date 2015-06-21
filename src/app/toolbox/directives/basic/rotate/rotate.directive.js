@@ -15,6 +15,13 @@ app.controller('RotateCtrl', function($scope) {
 	$scope.init = function() {
 		$scope.setCursor('grab');
 		$scope.rotating = false;
+        
+        var currentLayer = $scope.config.layers.currentLayer;
+        if (currentLayer == -1) return;
+
+        var layer = $scope.renderEngine.layers[currentLayer];
+        $scope.editEngine.drawRotateTool(layer);
+        window.requestAnimationFrame(function() {$scope.renderEngine.render();});  
 	};
 
 	/* onMouseDown */

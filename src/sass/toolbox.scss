@@ -61,12 +61,12 @@
 
     z-index: 3;
     background-color: lighten($light, 2 * $active-lighten);
-
 }
 
 .large-tool-settings {
     width: 5.5 * $blocksize;
-    height: 6 * $blocksize;
+    height: auto;
+    padding: 0.25 * $blocksize;
 
     #palette {
         float: left;

@@ -12,11 +12,18 @@ app.controller('ScaleCtrl', function($scope) {
     $scope.active = $scope.config.tools.activeTool == $scope.toolname;
     $scope.cursorTypes = ["e-resize", "ne-resize", "n-resize", "nw-resize", "w-resize",
         "sw-resize", "s-resize", "se-resize", "e-resize"];
-    $scope.keepAR = false;
+    $scope.keepAR = true;
 
     /* init */
     $scope.init = function() {
         $scope.scaling = false;
+        
+        var currentLayer = $scope.config.layers.currentLayer;
+        if (currentLayer == -1) return;
+
+        var layer = $scope.renderEngine.layers[currentLayer];
+        $scope.editEngine.drawScaleTool(layer);
+        window.requestAnimationFrame(function() {$scope.renderEngine.render();});  
     };
 
     /* onMouseDown */
@@ -46,7 +53,10 @@ app.controller('ScaleCtrl', function($scope) {
         var x = layer.getPosX();
         var y = layer.getPosY();
 
-        var angle = (Math.atan2(y - mouseCurrentY, mouseCurrentX - x) + 2 * Math.PI) % (2 * Math.PI);
+        var dimensions = layer.getTransformedDimensions();
+        var ratio = dimensions[1] / dimensions[0];
+        
+        var angle = (Math.atan2((y - mouseCurrentY) / ratio, mouseCurrentX - x) + 2 * Math.PI) % (2 * Math.PI);
 
         if ($scope.scaling) {
 
@@ -106,6 +116,8 @@ app.controller('ScaleCtrl', function($scope) {
             window.requestAnimationFrame(function() {
                 $scope.renderEngine.render();
             });
+            
+            $scope.editEngine.drawScaleTool(layer);
 
         }
         else {

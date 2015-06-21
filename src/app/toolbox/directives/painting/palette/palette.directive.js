@@ -74,11 +74,11 @@ app.controller('PaletteCtrl', function($scope) {
             /* Update the S and V value based on the mouse position inside the 
              * palette. */
             $scope.color.S = Math.floor(
-                ((event.clientX - $scope.paletteBox.left) * 100) /
+                ((event.pageX - $scope.paletteBox.left) * 100) /
                 ($scope.paletteBox.right - $scope.paletteBox.left)
             );
             $scope.color.V = Math.floor(
-                100 - ((event.clientY - $scope.paletteBox.top) * 100) /
+                100 - ((event.pageY - $scope.paletteBox.top) * 100) /
                 ($scope.paletteBox.bottom - $scope.paletteBox.top)
             );
             
@@ -104,7 +104,7 @@ app.controller('PaletteCtrl', function($scope) {
             /* Update the H value based on the mouse position inside the 
              * hue bar. */
             $scope.color.H = Math.floor(
-                360 - ((event.clientY - $scope.hueBox.top) * 360) /
+                360 - ((event.pageY - $scope.hueBox.top) * 360) /
                 ($scope.hueBox.bottom - $scope.hueBox.top)
             );
             
@@ -218,7 +218,6 @@ app.controller('PaletteCtrl', function($scope) {
         while (!(/^#?[0-9A-F]{0,6}$/i.test($scope.hex))) {
             $scope.hex = $scope.hex.substr(0, $scope.hex.length-1);
         }
-        console.log($scope.config.tools.colors.primary);
     }
 
     $scope.blur = function() {
