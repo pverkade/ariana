@@ -22,14 +22,8 @@ class ResourceManager {
     private noiseProgram : NoiseProgram;
     private colorizeProgram : ColorizeProgram;
 
-    private drawbuffer1 : DrawBuffer;
-    private drawbuffer2 : DrawBuffer;
-
-    constructor(gl : WebGLRenderingContext, width : number, height : number) {
+    constructor(gl : WebGLRenderingContext) {
         this.gl = gl;
-
-        this.drawbuffer1 = new DrawBuffer(gl, width, height);
-        this.drawbuffer2 = new DrawBuffer(gl, width, height);
     }
 
     getWebGLContext() : WebGLRenderingContext {
@@ -104,13 +98,5 @@ class ResourceManager {
         }
 
         return this.textureProgram;
-    }
-
-    getDrawbuffer1() : DrawBuffer {
-        return this.drawbuffer1;
-    }
-
-    getDrawbuffer2() : DrawBuffer {
-        return this.drawbuffer2;
     }
 }

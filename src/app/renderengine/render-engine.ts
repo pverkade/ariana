@@ -57,7 +57,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         this.drawbuffer1 = new DrawBuffer(this.gl, this.width, this.height);
         this.drawbuffer2 = new DrawBuffer(this.gl, this.width, this.height);
         this.thumbnailDrawbuffer = new DrawBuffer(this.gl, this.thumbnailWidth, this.thumbnailHeight);
-        this.resourceManager = new ResourceManager(this.gl, this.width, this.height);
+        this.resourceManager = new ResourceManager(this.gl);
     }
 
     getLayer(index : number) {
@@ -123,17 +123,6 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         }
     }
 
-    public filterLayers(layerIndices : number[], filter : Filter) {
-        for (var i = 0; i < layerIndices.length; i ++) {
-            var layer = this.layers[layerIndices[i]];
-            if (layer.getLayerType() !== LayerType.ImageLayer) {
-                continue;
-            }
-
-            var imageLayer = <ImageLayer> layer;
-            imageLayer.applyFilter(filter);
-        }
-    }
 
     public getPixelColor(x : number, y : number) : Uint8Array {
         var value = new Uint8Array(4);

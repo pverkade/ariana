@@ -153,5 +153,15 @@ app.controller('AppCtrl', ['$scope',
             
             window.requestAnimationFrame(function() {$scope.renderEngine.render();});
         };
+
+        $scope.getCurrentLayer = function () {
+            return $scope.config.layers.currentLayer;
+        };
+
+        $scope.setCurrentLayer = function (layerIndex) {
+            $scope.config.layers.currentLayer = layerIndex;
+
+            $scope.applyFilterOnLayers();
+        }
 	}
 ]);
