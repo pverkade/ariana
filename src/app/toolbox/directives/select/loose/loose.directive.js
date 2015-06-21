@@ -43,14 +43,21 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
         $scope.drawEngine.setLineWidth(2);
         $scope.drawEngine.setDrawType(drawType.DOTTED);
     };
+    
+    $scope.stop = function() {
+        var scope = angular.element($("#main-canvas")).scope();
+        scope.editEngine.removeSelectionLayer();
+        $scope.requestEditEngineUpdate();
+    };
 
-    /* onMouseDown */
     $scope.mouseDown = function() {
+        $scope.stop();
+        
         /* x and y coordinates in pixels relative to image. */
         xMouse = $scope.config.mouse.current.x;
         yMouse = $scope.config.mouse.current.y;  
 
-        $scope.drawEngine.onMousedown(event);   
+        $scope.drawEngine.onMousedown(xMouse, yMouse);   
         $scope.mouseBTNDown = true; 
     };
 
@@ -59,7 +66,7 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
         $scope.loose.reset();
         $scope.mouseBTNDown = false;
 
-        $scope.drawEngine.onMouseup(event);
+        $scope.drawEngine.onMouseup(xMouse, yMouse);
         $scope.drawEngine.clearCanvases();
     };
 
@@ -103,7 +110,7 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
 
                     /* When a bounding path is drawn the bounding path is draw and user interface acts like
                         the user has released the mouse button. */
-                    $scope.drawEngine.onMouseup(event);
+                    $scope.drawEngine.onMouseup(xMouse, yMouse);
                     $scope.mouseBTNDown = false;
                 }
             }    

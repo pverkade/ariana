@@ -11,7 +11,7 @@ app.controller('MagicCtrl', function($scope) {
 	$scope.toolname = 'magic';
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
-	$scope.threshold = 0.5;
+	$scope.threshold = 35;
 
 	/* init */
 	$scope.init = function() {
@@ -36,10 +36,16 @@ app.controller('MagicCtrl', function($scope) {
         $scope.magic.setMaskWand($scope.maskWand);
         $scope.magic.setMaskBorder($scope.maskBorder);
 	};
+    
+    $scope.stop = function() {
+        var scope = angular.element($("#main-canvas")).scope();
+        scope.editEngine.removeSelectionLayer();
+        $scope.requestEditEngineUpdate();
+    };
 
 	/* onMouseDown */
 	$scope.mouseDown = function() {
-		console.log("MAGIC");
+        $scope.stop();
 
 		/* x and y coordinates in pixels relative to canvas left top corner. */
 		var xRelative = $scope.config.mouse.current.x;
@@ -57,16 +63,15 @@ app.controller('MagicCtrl', function($scope) {
         var position = vec3.fromValues(xRelative, yRelative, 1);
         vec3.transformMat3(position, position, transformation);
         
-        console.log("position " + xRelative + ", " + yRelative);
+        // FIXME only works in original state
         xRelative = Math.round(0.5 * (position[0] + 1) * $scope.magic.getWidth()); 
         yRelative = Math.round(0.5 * (position[1] - 1) * $scope.magic.getHeight());
-        console.log("original " + xRelative + ", " + yRelative);    
 
 		/* Check wheter user has clicked inside of a selection. */
 		if ($scope.magic.isInSelection(xRelative, yRelative)) {
 			$scope.magic.removeSelection(xRelative, yRelative)
 		} else {
-			var bitmask = $scope.magic.getMaskWand(xRelative, yRelative, 50);
+			var bitmask = $scope.magic.getMaskWand(xRelative, yRelative, $scope.threshold);
 		}
 
 		$scope.magic.getMaskBorder();
@@ -136,5 +141,8 @@ app.controller('MagicCtrl', function($scope) {
 				mouseMove: $scope.mouseMove
 			};
 		}
+        else if (oval) {
+            $scope.stop();
+        }
 	}, true);
 });

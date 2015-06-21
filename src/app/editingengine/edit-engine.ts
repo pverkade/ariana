@@ -45,8 +45,8 @@ class EditEngine {
 
     private setColors(context : CanvasRenderingContext2D) {
         context.lineWidth = 1;
-        context.fillStyle = "#000000";
-        context.strokeStyle = "#000000";
+        context.fillStyle = "#FF0000";
+        context.strokeStyle = "#FF0000";
     }
 
     private drawTranslateTool(layer : Layer) {
@@ -98,8 +98,9 @@ class EditEngine {
         var context = this.context;
         var x = layer.getPosX();
         var y = layer.getPosY();
-        var width = layer.getWidth();
-        var height = layer.getHeight();
+        var dimensions = layer.getTransformedDimensions();
+        var width = dimensions[0];
+        var height = dimensions[1];
         var rotation = layer.getRotation();
 
         context.save();
@@ -174,7 +175,7 @@ class EditEngine {
             }
         }
 
-        /* Draw marching ends */
+        /* Draw marching ants */
         var selectionLayer : ImageLayer = this.selectionLayer;
         if (selectionLayer) {
             this.context.save();
