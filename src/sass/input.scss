@@ -1,14 +1,23 @@
 .input-group {
     height: 0.5 * $blocksize;
     
-    .input-group-addon {
-        border-radius: 0;
-    }
-    
-    input {
+    * {
         border-radius: 0;
     }
 }
+
+.input-small {
+    width: $blocksize !important;
+}
+
+.input-medium {
+    width: 1.5 * $blocksize !important;
+}
+
+.input-large {
+    width: 4 * $blocksize !important;
+}
+
 
 .filter-options {
     position: absolute;
