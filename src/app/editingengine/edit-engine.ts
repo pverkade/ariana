@@ -130,7 +130,7 @@ class EditEngine {
         this.currentLayer = null;
     }
 
-    public setSelectionLayer(selectionClass : SelectionInterface, selectionLayer : ImageLayer) : void {
+    public setSelectionLayer(marchingAnts : MarchingAnts, selectionLayer : ImageLayer) : void {
         this.selectionLayer = selectionLayer;
 
         var imageData = this.context.createImageData(selectionLayer.getImage().width, selectionLayer.getImage().height);
@@ -142,9 +142,10 @@ class EditEngine {
         this.selectionTmpCanvas.height = imageData.height;
         this.selectionTmpContext = this.selectionTmpCanvas.getContext("2d");
 
+        console.log(marchingAnts);
         this.selectionAntsInterval = setInterval(function() {
             var tmpContext = thisPtr.selectionTmpContext;
-            selectionClass.marchingAnts(imageData, 5.0, ++offset);
+            marchingAnts.writeData(imageData, 5.0, ++offset);
             tmpContext.clearRect(0, 0, selectionLayer.getWidth(), selectionLayer.getHeight());
             tmpContext.putImageData(imageData, 0, 0);
         }, 500);

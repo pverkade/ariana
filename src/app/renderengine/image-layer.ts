@@ -108,6 +108,9 @@ class ImageLayer extends Layer {
         this.gl.deleteTexture(this.texture);
     }
 
+    merge() {
+        
+    }
     public getWebGlTexture() : WebGLTexture {
         return this.texture
     }

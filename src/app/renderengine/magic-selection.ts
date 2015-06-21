@@ -8,11 +8,12 @@ class Point {
     }
 }
 
-class MagicSelection implements SelectionInterface {
+class MagicSelection {
     private magicWandColor : number[];
     private imageData : ImageData;
     private bmON : number;
-    private maskWand : Uint8Array[];
+    private maskWand : Uint8Array;
+    private maskWandParts : Uint8Array[];
     private maskBorder : Uint8Array;
     private width : number;
     private height : number;
@@ -33,20 +34,22 @@ class MagicSelection implements SelectionInterface {
         context.drawImage(image, 0, 0);
         this.imageData = context.getImageData(0, 0, image.width, image.height);
 
-        this.maskWand = [];
-        this.maskWand[0] = new Uint8Array(this.imageData.width * this.imageData.height);
+        this.maskWand = null;
+        this.maskWandParts = [];
     }
 
     /* Return borders (bitmask) of magic wand mask. */
     getMaskBorder() {
         /* Check whether a maskwand has been created. */
-        if (this.maskWand[0] == undefined) {
-            this.maskBorder = new Uint8Array(this.imageData.width * this.imageData.height);
-            return undefined;
-        }
+        // if (this.maskWand == undefined) {
+        //     this.maskBorder = new Uint8Array(this.imageData.width * this.imageData.height);
+        //    return undefined;
+        //}
+
+        // this.maskBorder = new Uint8Array(this.imageData.width * this.imageData.height);
         
-        for (var i = 0; i < this.maskWand[0].length; i++) {
-            if (this.maskWand[0][i] == this.bmON) {
+        for (var i = 0; i < this.maskWand.length; i++) {
+            if (this.maskWand[i] == this.bmON) {
                 /* Check for borders of image (pixel on border of image is edge). */
                 if (i % this.imageData.width == 0 ||
                   i % this.imageData.width == this.imageData.width - 1 ||
@@ -54,15 +57,17 @@ class MagicSelection implements SelectionInterface {
                   Math.floor( i / this.imageData.width) >= this.imageData.height - 1) { /// aanpassing <--
                     this.maskBorder[i] = this.bmON;
                 /* Check if one 8 neighbor pixels is off then it is an "inside" pixel. */
-                } else if ( this.maskWand[0][i - this.imageData.width - 1] == 0 ||
-                    this.maskWand[0][i - this.imageData.width ] == 0 ||
-                    this.maskWand[0][i - this.imageData.width + 1] == 0 ||
-                    this.maskWand[0][i - 1] == 0 ||
-                    this.maskWand[0][i + 1] == 0 ||
-                    this.maskWand[0][i + this.imageData.width - 1] == 0 ||
-                    this.maskWand[0][i + this.imageData.width] == 0 ||
-                    this.maskWand[0][i + this.imageData.width + 1] == 0 ) {
+                } else if ( this.maskWand[i - this.imageData.width - 1] == 0 ||
+                    this.maskWand[i - this.imageData.width ] == 0 ||
+                    this.maskWand[i - this.imageData.width + 1] == 0 ||
+                    this.maskWand[i - 1] == 0 ||
+                    this.maskWand[i + 1] == 0 ||
+                    this.maskWand[i + this.imageData.width - 1] == 0 ||
+                    this.maskWand[i + this.imageData.width] == 0 ||
+                    this.maskWand[i + this.imageData.width + 1] == 0 ) {
                     this.maskBorder[i] = this.bmON;
+                } else {
+                    this.maskBorder[i] = 0;
                 }
             }
         }
@@ -84,7 +89,7 @@ class MagicSelection implements SelectionInterface {
         this.magicWandColor = this.getColorPoint(x, y);
 
         /* Create new empty maskWand for selection. */
-        this.maskWand.push(new Uint8Array(this.maskWand[0].length));
+        this.maskWandParts.push(new Uint8Array(this.maskWand.length));
 
         /* Use searchLine to get a horizontal line of points with colors next to given point
             and push to stack. */
@@ -117,34 +122,15 @@ class MagicSelection implements SelectionInterface {
         this.mergeMaskWand();
 
         /* Return current maskWand. */
-        return this.maskWand[this.maskWand.length - 1];
+        return this.maskWandParts[this.maskWandParts.length - 1];
     }
 
     /* Return true when point is within selection. */
     isInSelection(x : number, y : number) {
-        if (this.maskWand.length > 0 && this.maskWand[0][y * this.imageData.width + x] != 0) {
+        if (this.maskWandParts.length > 0 && this.maskWandParts[0][y * this.imageData.width + x] != 0) {
             return true;
         } else {
             return false;
-        }
-    }
-
-    marchingAnts(imageData : ImageData, size : number, offset : number) : void {
-        var width = this.imageData.width;
-        var height = this.imageData.height;
-
-        for (var i = 0; i < height; i++) {
-            for (var j = 0; j < width; j++) {
-                var val;
-                if (this.maskBorder[i*width + j] == 0) {
-                    val = 0;
-                } else if ((i + j + offset) % size < size / 2) {
-                    val = 255;
-                } else {
-                    val = 0;
-                }
-                imageData.data[(i*this.imageData.width+j)*4 + 3] = val;
-            }
         }
     }
 
@@ -153,20 +139,20 @@ class MagicSelection implements SelectionInterface {
     removeSelection(startX : number, startY : number) {
         var indexRemove = -1;
 
-        for (var i = 1; i < this.maskWand.length; i++) {
-            if (this.maskWand[i][startY * this.imageData.width + startX] != 0) {
+        for (var i = 1; i < this.maskWandParts.length; i++) {
+            if (this.maskWandParts[i][startY * this.imageData.width + startX] != 0) {
                 indexRemove = i;
             }
         }
 
         if (indexRemove != -1){
-            for (var i = 0; i < this.maskWand[indexRemove].length; i++) {
+            for (var i = 0; i < this.maskWandParts[indexRemove].length; i++) {
                 if (this.maskWand[indexRemove][i] == this.bmON) {
                     this.maskWand[0][i] = 0;
                 }
             }
 
-            this.maskWand.splice(indexRemove, 1);// = [];
+            this.maskWandParts.splice(indexRemove, 1);// = [];
         }
 
         /* Merge because removed selection could also be part of another selection. Make
@@ -188,7 +174,12 @@ class MagicSelection implements SelectionInterface {
         }
 
         /* Check if point is marked in current maskWand as part of the selection. */ 
-        if (this.maskWand[this.maskWand.length - 1][startX + startY * this.imageData.width] != 0) {
+        if (this.maskWand[startX + startY * this.imageData.width] != 0) { // Parts[this.maskWandParts.length - 1]
+            return null;
+        }
+
+        /* Check if point is marked in current maskWand as part of the selection. */ 
+        if (this.maskWandParts[this.maskWandParts.length - 1][startX + startY * this.imageData.width] != 0) { //
             return null;
         }
 
@@ -222,7 +213,7 @@ class MagicSelection implements SelectionInterface {
         /* Make line by adding all points that are found and adjust bitmask */
         for (var x = left; x <= right; x++) {
             line.push(new Point(x, startY));
-            this.maskWand[this.maskWand.length - 1][x + startY * this.imageData.width] = this.bmON;
+            this.maskWandParts[this.maskWandParts.length - 1][x + startY * this.imageData.width] = this.bmON;
         }
 
         return line;
@@ -252,9 +243,9 @@ class MagicSelection implements SelectionInterface {
     }
 
     mergeMaskWand() {
-        for (var i = 1; i < this.maskWand.length; i++) {
-            for (var j = 0; j < this.maskWand[0].length; j++) {
-                this.maskWand[0][j] = this.maskWand[0][j] || this.maskWand[i][j];
+        for (var i = 0; i < this.maskWandParts.length; i++) {
+            for (var j = 0; j < this.maskWandParts[i].length; j++) {
+                this.maskWand[j] = this.maskWand[j] || this.maskWandParts[i][j];
             }   
         }
     }
@@ -265,5 +256,28 @@ class MagicSelection implements SelectionInterface {
     
     getHeight() {
         return this.height;
+    }
+
+    setMaskBorder(maskBorder : Uint8Array) {
+        if (this.width * this.height != maskBorder.length) {
+            console.log("setMaskWand: wrong mask sizes");
+        } else {
+            console.log("Magic Maskborder set");
+            this.maskBorder = maskBorder;
+        }
+
+        // this.mergeMaskWand();
+    }
+
+    setMaskWand(maskWand : Uint8Array) {
+        console.log(maskWand);
+        if (this.width * this.height != maskWand.length) {
+            console.log("setMaskWand: wrong mask sizes");
+        } else {
+            console.log("Magic: Maskwand set");
+            this.maskWand = maskWand;
+        }
+
+        this.mergeMaskWand();
     }
 }

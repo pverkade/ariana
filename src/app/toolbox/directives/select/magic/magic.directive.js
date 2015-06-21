@@ -11,14 +11,11 @@ app.controller('MagicCtrl', function($scope) {
 	$scope.toolname = 'magic';
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
-	$scope.threshold = 50;
+	$scope.threshold = 35;
 
 	/* init */
 	$scope.init = function() {
 		$scope.setCursor('crosshair');
-
-		/* working with $scope to share variables between functions in this file does not seem to work. */
-		var scope = angular.element($("#main-canvas")).scope();
 
 		var currentLayer = $scope.config.layers.currentLayer;
 		if (currentLayer == -1) {
@@ -32,21 +29,23 @@ app.controller('MagicCtrl', function($scope) {
 			return;
 		}
 		var image = layer.getImage();
-		scope.magic = new MagicSelection(image);
+
+		$scope.startSharedSelection(image.width, image.height);
+		
+		$scope.magic = new MagicSelection(image);
+        $scope.magic.setMaskWand($scope.maskWand);
+        $scope.magic.setMaskBorder($scope.maskBorder);
 	};
     
     $scope.stop = function() {
         var scope = angular.element($("#main-canvas")).scope();
         scope.editEngine.removeSelectionLayer();
+        $scope.requestEditEngineUpdate();
     };
 
 	/* onMouseDown */
 	$scope.mouseDown = function() {
-        var scope = angular.element($("#main-canvas")).scope();
-        scope.editEngine.removeSelectionLayer();
-        
-		console.log("MAGIC");
-		var scope = angular.element($("#main-canvas")).scope();
+        $scope.stop();
 
 		/* x and y coordinates in pixels relative to canvas left top corner. */
 		var xRelative = $scope.config.mouse.current.x;
@@ -64,22 +63,21 @@ app.controller('MagicCtrl', function($scope) {
         var position = vec3.fromValues(xRelative, yRelative, 1);
         vec3.transformMat3(position, position, transformation);
         
-        console.log("position " + xRelative + ", " + yRelative);
-        xRelative = Math.round(0.5 * (position[0] + 1) * scope.magic.getWidth()); 
-        yRelative = Math.round(0.5 * (position[1] - 1) * scope.magic.getHeight());
-        console.log("original " + xRelative + ", " + yRelative);    
+        // FIXME only works in original state
+        xRelative = Math.round(0.5 * (position[0] + 1) * $scope.magic.getWidth()); 
+        yRelative = Math.round(0.5 * (position[1] - 1) * $scope.magic.getHeight());
 
 		/* Check wheter user has clicked inside of a selection. */
-		if (scope.magic.isInSelection(xRelative, yRelative)) {
-			scope.magic.removeSelection(xRelative, yRelative)
+		if ($scope.magic.isInSelection(xRelative, yRelative)) {
+			$scope.magic.removeSelection(xRelative, yRelative)
 		} else {
-			var bitmask = scope.magic.getMaskWand(xRelative, yRelative, $scope.threshold);
+			var bitmask = $scope.magic.getMaskWand(xRelative, yRelative, $scope.threshold);
 		}
 
-		scope.magic.getMaskBorder();
+		$scope.magic.getMaskBorder();
 
-		var width = scope.magic.imageData.width;
-		var height = scope.magic.imageData.height;
+		var width = $scope.magic.imageData.width;
+		var height = $scope.magic.imageData.height;
 
 		var canvas = document.getElementById("editing-canvas");
 		var context = canvas.getContext("2d");
@@ -97,11 +95,20 @@ app.controller('MagicCtrl', function($scope) {
 				}
 			}
             console.log("Bitmask size: " + x);
-			var newLayer = scope.renderEngine.createSelectionImageLayer(imgData, 0);
-            scope.addLayer(newLayer);
+			var newLayer = $scope.renderEngine.createSelectionImageLayer(imgData, 0);
+            $scope.addLayer(newLayer);
 
-			scope.editEngine.setSelectionLayer(scope.magic, newLayer);
-            scope.requestEditEngineUpdate();
+            console.log("scope marchingAnts is: ")
+            console.log($scope.marchingAnts);
+
+            $scope.editEngine.setSelectionLayer($scope.marchingAnts, newLayer);
+            $scope.requestRenderEngineUpdate();
+            if ($scope.marchingAnts == null) {
+                $scope.marchingAnts = new MarchingAnts($scope.magic.getWidth(), $scope.magic.getHeight());
+                $scope.marchingAnts.setMaskBorder($scope.maskBorder);
+                $scope.editEngine.setSelectionLayer($scope.marchingAnts, newLayer);
+                $scope.requestRenderEngineUpdate();
+            }            
 		}
 	};
 

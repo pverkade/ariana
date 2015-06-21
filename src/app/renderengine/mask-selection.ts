@@ -1,22 +1,22 @@
 
 
 class MaskSelection {
-    private maskWand : number[];
-    private maskBorder : number[];
+    private maskWand : Uint8Array;
+    private maskBorder : Uint8Array;
     private width : number;
     private height : number;
     private bmON : number;
 
-    constructor(maskBorder : number[], width : number, height : number) {
+    constructor(maskBorder : Uint8Array, width : number, height : number) {
         this.width = width;
         this.height = height;
         this.bmON =1;
 
         this.maskBorder = maskBorder;
-        this.maskWand = []; // new Uint8Array(width * height); // [];
-        for (var i = 0; i < width * height; i++) {
-        	this.maskWand.push(0);
-        }
+        this.maskWand = new Uint8Array(width * height); // [];
+        // for (var i = 0; i < width * height; i++) {
+        // 	this.maskWand.push(0);
+        // }
         // this.maskWand[0] = new Uint8Array(width * height);
     }
 
