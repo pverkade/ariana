@@ -21,6 +21,7 @@ app.controller('TranslateCtrl', function($scope) {
 
         var layer = $scope.renderEngine.layers[currentLayer];
         $scope.editEngine.drawTranslateTool(layer);
+        window.requestAnimationFrame(function() {$scope.renderEngine.render();});  
     };
 
     /* onMouseDown */

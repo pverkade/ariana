@@ -21,6 +21,7 @@ app.controller('RotateCtrl', function($scope) {
 
         var layer = $scope.renderEngine.layers[currentLayer];
         $scope.editEngine.drawRotateTool(layer);
+        window.requestAnimationFrame(function() {$scope.renderEngine.render();});  
 	};
 
 	/* onMouseDown */

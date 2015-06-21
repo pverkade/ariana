@@ -12,7 +12,7 @@ app.controller('ScaleCtrl', function($scope) {
     $scope.active = $scope.config.tools.activeTool == $scope.toolname;
     $scope.cursorTypes = ["e-resize", "ne-resize", "n-resize", "nw-resize", "w-resize",
         "sw-resize", "s-resize", "se-resize", "e-resize"];
-    $scope.keepAR = false;
+    $scope.keepAR = true;
 
     /* init */
     $scope.init = function() {
@@ -23,6 +23,7 @@ app.controller('ScaleCtrl', function($scope) {
 
         var layer = $scope.renderEngine.layers[currentLayer];
         $scope.editEngine.drawScaleTool(layer);
+        window.requestAnimationFrame(function() {$scope.renderEngine.render();});  
     };
 
     /* onMouseDown */
