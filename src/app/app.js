@@ -169,8 +169,7 @@ app.controller('AppCtrl', ['$scope',
 
         $scope.setCurrentLayerIndex = function (layerIndex) {
             $scope.config.layers.currentLayer = layerIndex;
-
-            $scope.applyFilterOnLayers();
+            $scope.$broadcast('newCurrentLayer', layerIndex);
         }
 	}
 ]);

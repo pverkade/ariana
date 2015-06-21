@@ -126,7 +126,6 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 return;
             }
 
-            console.log("apply filter", $scope.config.layers);
             for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) {
                 var layer = $scope.renderEngine.getLayer(i);
                 if (layer.getLayerType() !== LayerType.ImageLayer || layer.isHidden()) {
@@ -146,5 +145,9 @@ app.controller('ToolbarController', ['$scope', '$modal',
             });
 
         };
+
+        $scope.$on("newCurrentLayer", function() {
+            $scope.applyFilterOnLayers();
+        });
     }
 ]);
