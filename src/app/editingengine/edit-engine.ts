@@ -75,14 +75,14 @@ class EditEngine {
         this.setColors(context);
         context.translate(x, y);
         //context.rotate(-rotation);
-        context.strokeRect(-width * 0.5, -height * 0.5, width, height);
+        //context.strokeRect(-width * 0.5, -height * 0.5, width, height);
         context.fillRect(
             -this.littleSquareDiameter * 0.5,
             -this.littleSquareDiameter * 0.5,
             this.littleSquareDiameter,
             this.littleSquareDiameter
         );
-        context.drawImage(this.rotateImage, this.rotateImage.width / -2.0, height/-2.0 - 30);
+        //context.drawImage(this.rotateImage, this.rotateImage.width / -2.0, height/-2.0 - 30);
         context.restore();
     }
 
