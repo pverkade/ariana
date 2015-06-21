@@ -175,7 +175,7 @@ class EditEngine {
             }
         }
 
-        /* Draw marching ends */
+        /* Draw marching ants */
         var selectionLayer : ImageLayer = this.selectionLayer;
         if (selectionLayer) {
             this.context.save();
