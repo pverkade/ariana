@@ -38,10 +38,10 @@ app.controller('ScaleCtrl', function($scope) {
         var mouseOldX = $scope.config.mouse.old.x;
         var mouseOldY = $scope.config.mouse.old.y;
 
-        var currentLayer = $scope.config.layers.currentLayer;
-        if (currentLayer == -1) return;
-
-        var layer = $scope.renderEngine.getLayer(currentLayer);
+        var layer = $scope.getCurrentLayer();
+        if (!layer) {
+            return;
+        }
 
         var x = layer.getPosX();
         var y = layer.getPosY();
@@ -157,8 +157,8 @@ app.controller('ScaleCtrl', function($scope) {
         }
 
         if (oval) {
-            var layer = $scope.renderEngine.getLayer($scope.config.layers.currentLayer);
-            layer.commitDimensions();
+            var layer = $scope.getCurrentLayer();
+            layer.commitTransformations();
         }
     }, true);
 });

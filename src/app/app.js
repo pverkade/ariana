@@ -154,11 +154,20 @@ app.controller('AppCtrl', ['$scope',
             window.requestAnimationFrame(function() {$scope.renderEngine.render();});
         };
 
-        $scope.getCurrentLayer = function () {
+        $scope.getCurrentLayerIndex = function () {
             return $scope.config.layers.currentLayer;
         };
 
-        $scope.setCurrentLayer = function (layerIndex) {
+        $scope.getCurrentLayer = function () {
+            var index = $scope.config.layers.currentLayer;
+            if (index === -1) {
+                return null;
+            }
+
+            return $scope.renderEngine.getLayer(index);
+        };
+
+        $scope.setCurrentLayerIndex = function (layerIndex) {
             $scope.config.layers.currentLayer = layerIndex;
 
             $scope.applyFilterOnLayers();

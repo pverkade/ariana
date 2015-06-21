@@ -100,17 +100,6 @@ class Layer {
         this.propertyChanged = propertyChanged;
     }
 
-    public commitRotation() {
-        var matrix = mat3.create();
-        mat3.identity(matrix);
-        mat3.rotate(matrix, matrix, this.angle);
-        this.transformHistory.push(matrix);
-
-        this.angle = 0;
-
-        mat3.identity(this.rotationMatrix);
-    }
-
 	public setRotation(angle : number) {
 		this.angle = angle;
 		mat3.identity(this.rotationMatrix);
@@ -119,21 +108,15 @@ class Layer {
         this.notifyPropertyChanged();
 	}
 
-    public commitDimensions() {
-        var matrix = mat3.create();
+    public commitTransformations() {
+        var matrix : Float32Array = mat3.create();
         mat3.identity(matrix);
-        mat3.scale(
-            matrix,
-            matrix,
-            new Float32Array([this.width / 2, this.height / 2])
-        );
 
-        this.transformHistory.push(matrix);
+        for (var i = 0; i < this.transformHistory.length; i ++) {
+            mat3.multiply(matrix, this.transformHistory[i], matrix);
+        }
 
-        this.width = 2;
-        this.height = 2;
-
-        mat3.identity(this.sizeMatrix);
+        this.transformHistory = [matrix];
     }
 
 	public getRotation() : number {
