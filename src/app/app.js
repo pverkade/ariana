@@ -21,7 +21,7 @@ var app = angular.module('ariana', [
 /* The AppController is the main controller of the application. */
 app.controller('AppCtrl', ['$scope',
     function($scope) {
-        
+
         /* The config object contains the current state of the layers, tools, 
          * canvas and the mouse. It is accessed by all kinds of controllers. */
         $scope.config = {
@@ -127,7 +127,6 @@ app.controller('AppCtrl', ['$scope',
 
             /* set the correct layer info in config. The new layer comes on top
              * and is immediately selected. */
-            //$scope.setSelection([$scope.config.layers.numberOfLayers]);
             $scope.config.layers.numberOfLayers += 1;
             $scope.config.layers.currentLayer = $scope.config.layers.numberOfLayers - 1;
 
@@ -210,5 +209,23 @@ app.controller('AppCtrl', ['$scope',
                     requestAnimationFrame($scope.updates.animationFrameFunction);
             }
         };
+
+        $scope.getCurrentLayerIndex = function () {
+            return $scope.config.layers.currentLayer;
+        };
+
+        $scope.getCurrentLayer = function () {
+            var index = $scope.config.layers.currentLayer;
+            if (index === -1) {
+                return null;
+            }
+
+            return $scope.renderEngine.getLayer(index);
+        };
+
+        $scope.setCurrentLayerIndex = function (layerIndex) {
+            $scope.config.layers.currentLayer = layerIndex;
+            $scope.$broadcast('newCurrentLayer', layerIndex);
+        }
 	}
 ]);

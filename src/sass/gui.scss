@@ -20,7 +20,6 @@ body {
     @include user-select(none);
 }
 
-/* Styleclass for all GUI elements that float above the canvas. */
 .gui-element {
     position: absolute;
     background-color: $light;
@@ -36,11 +35,11 @@ body {
     cursor: pointer;
     
     svg, i, img {
-        margin: 0.2 * $blocksize;
-        padding: 0 !important; 
-        height: 0.6 * $blocksize;
-        width: 0.6 * $blocksize; 
-        font-size: 0.6 * $blocksize;
+        margin:     0.2 * $blocksize;
+        padding:    0 !important; 
+        height:     0.6 * $blocksize;
+        width:      0.6 * $blocksize; 
+        font-size:  0.6 * $blocksize;
     }
     
     svg path {
@@ -58,11 +57,11 @@ body {
     height: 0.5 * $blocksize;
     
     svg, i, img {
-        margin: 0.1 * $blocksize;
-        padding: 0 !important; 
-        height: 0.3 * $blocksize;
-        width: 0.3 * $blocksize; 
-        font-size: 0.3 * $blocksize;
+        margin:     0.1 * $blocksize;
+        padding:    0 !important; 
+        height:     0.3 * $blocksize;
+        width:      0.3 * $blocksize; 
+        font-size:  0.3 * $blocksize;
     }
 }
 
@@ -97,8 +96,4 @@ body {
         cursor: default !important;
         opacity: 0.25;
     }
-}
-
-.float-left {
-    float: left;
 }

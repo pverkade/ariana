@@ -39,7 +39,7 @@ app.controller('MagicCtrl', function($scope) {
     
     $scope.stop = function() {
         var scope = angular.element($("#main-canvas")).scope();
-        // scope.editEngine.removeSelectionLayer();
+        scope.editEngine.removeSelectionLayer();
         // $scope.requestEditEngineUpdate();
     };
 
@@ -84,7 +84,7 @@ app.controller('MagicCtrl', function($scope) {
 		var imgData = context.createImageData(width, height);
 
 		if (bitmask) {
-            var x = 0;
+            /*var x = 0;
 			for (var i = 0; i < bitmask.length; i++) {
 				if (bitmask[i]) {
 					imgData.data[4 * i] = 255;
@@ -94,11 +94,22 @@ app.controller('MagicCtrl', function($scope) {
                     x++;
 				}
 			}
-            console.log("Bitmask size: " + x);
+            console.log("Bitmask size: " + x);*/
+            for (var y = 0; y < height; y++) {
+                for (var x = 0; x < width; x++) {
+                    if (bitmask[y*width+x]) {
+                        var i = (height-y)*width+x;
+                        imgData.data[4 * i] = 255;
+                        imgData.data[4 * i + 1] = 0;
+                        imgData.data[4 * i + 2] = 0;
+                        imgData.data[4 * i + 3] = 255;
+                    }
+                }
+            }
 			var newLayer = $scope.renderEngine.createSelectionImageLayer(imgData, 0);
             $scope.addLayer(newLayer);
 
-            console.log("scope marchingAnts is: ")
+            console.log("scope marchingAnts is: ");
             console.log($scope.marchingAnts);
 
             $scope.editEngine.setSelectionLayer($scope.marchingAnts, newLayer);

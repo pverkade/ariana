@@ -25,7 +25,6 @@ function HSVtoRGB(H, S, V) {
         case 4: r = x, g = m, b = c; break;
         case 5: r = c, g = m, b = x; break;
     }
-    //console.log("hi hsvtorgb", r, g, b);
     return {
         r: Math.round(r * 255),
         g: Math.round(g * 255),
@@ -48,15 +47,12 @@ function RGBtoHSV(R, G, B) {
     min = Math.min(r, g, b);
     if (r == max) {
         H = (Math.floor(((g - b) / (max - min)) * 60) + 360) % 360;
-        //console.log("r", H, g, b, max, min)
     }
     else if (g == max) {
         H = Math.floor((2 + (b - r) / (max - min)) * 60);
-        //console.log("g", H, b, r, max, min)
     }
     else {
         H = Math.floor((4 + (r - g) / (max - min)) * 60); 
-        //console.log("b", H, r, g, max, min)
     }
     S = (max - min) / max;
     V = max;
@@ -66,7 +62,6 @@ function RGBtoHSV(R, G, B) {
     if (isNaN(S)) {
         S = 0;
     }
-    //console.log("hi rgbtohsv", H, S, V);
     return {
         H: H, S: Math.round(S * 100), V: Math.round(V * 100)
     };

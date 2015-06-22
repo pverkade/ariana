@@ -47,18 +47,18 @@
     float: right;
     
     @extend .gui-element;
+    border-bottom: $border-thickness solid $brand-color;
         
     h2 {
         width: 3 * $blocksize;
+        padding: 0;
+        padding-left: 0.5 * $blocksize;
         height: $blocksize;
         line-height: $blocksize;
         float: left;
-        padding: 0;
-        padding-right: $blocksize;
         margin: 0;
         
-        font-size: 20pt;
-        text-align: center;
+        font-size: 15pt;
     }
 }
 
@@ -66,7 +66,7 @@
     width: 4 * $blocksize;
     padding: 0.25 * $blocksize !important;
     
-    border-top: $border-thickness solid darken($light, $seperator-darken);
+    //border-top: $border-thickness solid darken($light, $seperator-darken);
     height: auto;
     float: left;
     

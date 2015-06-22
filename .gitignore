@@ -1,5 +1,6 @@
-bower_components/
+vendor/
 node_modules/
+bower_components/
 *.tmp.txt
 build/
 src/app/renderengine/shaders.ts

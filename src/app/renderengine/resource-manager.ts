@@ -8,6 +8,7 @@
 /// <reference path="filters/sepia-filter"/>
 /// <reference path="filters/colorize-filter"/>
 /// <reference path="texture-program"/>
+/// <reference path="drawbuffer"/>
 
 class ResourceManager {
     private gl : WebGLRenderingContext;

@@ -8,8 +8,7 @@
             ng-repeat="(name, data) in filters">
             <div class="thumbnail" 
                 ng-click="selectFilter(name)"> 
-                <img 
-                    ng-src="{{data.image}}"> </img>
+                <img ng-src="{{data.image}}"> </img>
                 <div class="caption">
                     <h3> {{name | titlecase}} </h3> 
                 </div>

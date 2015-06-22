@@ -80,6 +80,14 @@ class DrawBuffer {
         return this.texture;
     }
 
+    getWidth() : number {
+        return this.width;
+    }
+
+    getHeight() : number {
+        return this.height;
+    }
+
     resize(width : number, height : number) {
         this.width = width;
         this.height = height;

@@ -25,7 +25,6 @@ app.controller('layersCtrl', function($scope) {
         $scope.hidden = true;
     }
 
-
     $scope.hideLayer = function(event, index) {
         event.stopPropagation();
         var layer = $scope.renderEngine.getLayer(index);
@@ -94,7 +93,7 @@ app.controller('layersCtrl', function($scope) {
     /* This function selects a specific layer if possible. */
     $scope.selectLayer = function(newIndex) {
         if (0 <= newIndex && newIndex < $scope.config.layers.numberOfLayers) {
-            $scope.config.layers.currentLayer = newIndex;
+            $scope.setCurrentLayerIndex(newIndex);
             return true;
         }
         return false;

@@ -137,5 +137,8 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
                 mouseMove: $scope.mouseMove
             };
         }
+        else if (oval) {
+            $scope.stop();
+        }
     }, true);
 });

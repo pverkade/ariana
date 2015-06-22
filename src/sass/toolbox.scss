@@ -61,25 +61,28 @@
 
     z-index: 3;
     background-color: lighten($light, 2 * $active-lighten);
-
 }
 
 .large-tool-settings {
     width: 5.5 * $blocksize;
-    height: 6 * $blocksize;
+    height: auto;
+    padding: 0.25 * $blocksize;
 
     #palette {
         float: left;
         display: block;
         width: 4 * $blocksize;
         height: 4 * $blocksize;
+        margin-bottom: 0.25 * $blocksize;
     }
 
     #hue {
         float: left;
         display: block;
-        width: 1 * $blocksize;
+        margin-left: 0.25 * $blocksize;
+        width: 0.75 * $blocksize;
         height: 4 * $blocksize;
+        margin-bottom: 0.25 * $blocksize;
     }
 }
 
@@ -100,14 +103,14 @@
     .color-primary {
         left:  0.25 * $blocksize;
         bottom: 0.25 * $blocksize;
-        background-color: green;
+        background-color: black;
         z-index: 4;
     }
 
     .color-secondary {
         left: 0.125 * $blocksize;
         bottom: 0.125 * $blocksize;
-        background-color: red;
+        background-color: black;
         z-index: 3;
     }   
 }
