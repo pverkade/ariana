@@ -1,13 +1,13 @@
-app.directive('Elipse', function() {
+app.directive('elipse', function() {
     return {
         restrict: 'E',
         scope: true,
-        templateUrl: 'app/toolbox/directives/select/Elipse/Elipse.tpl.html',
-        controller: 'ElipseCtrl'
+        templateUrl: 'app/toolbox/directives/select/elipse/elipse.tpl.html',
+        controller: 'elipseCtrl'
     };
 });
 
-app.controller('ElipseCtrl', function($scope) {
+app.controller('elipseCtrl', function($scope) {
 	$scope.toolname = 'elipse';
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
