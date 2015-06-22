@@ -116,8 +116,10 @@ app.controller('ScaleCtrl', function($scope) {
             window.requestAnimationFrame(function() {
                 $scope.renderEngine.render();
             });
-            
+
+            $scope.editEngine.setEditLayer(layer, EditMode.scale);
             $scope.editEngine.drawScaleTool(layer);
+            $scope.requestEditEngineUpdate();
 
         }
         else {
@@ -171,6 +173,7 @@ app.controller('ScaleCtrl', function($scope) {
         if (oval) {
             var layer = $scope.getCurrentLayer();
             layer.commitTransformations();
+            $scope.editEngine.clear();
         }
     }, true);
 });
