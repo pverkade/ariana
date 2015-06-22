@@ -48,14 +48,6 @@ body {
     
     &:hover {
         background-color: lighten($light, $hover-lighten);
-        
-        .tool, .small-tool {
-            background-color: lighten($light, $hover-lighten);
-        
-            &:hover {
-                background-color: lighten($light, 2 * $hover-lighten);
-            }
-        }
     }
 }
 
@@ -81,15 +73,15 @@ body {
     }
     
     .tool, .small-tool {
-        background-color: lighten($light, $active-lighten) !important;
+        background-color: lighten($light, $active-lighten);
         
         &:hover {
-            background-color: lighten($light, $active-lighten + $hover-lighten) !important;
+            background-color: lighten($light, $active-lighten + $hover-lighten);
         }
     }
     
     .inactive:hover {
-        background-color: inherit !important;
+        background-color: lighten($light, $active-lighten) !important;
     }
 }
 
@@ -97,7 +89,7 @@ body {
     cursor: default !important;
     
     &:hover {
-        background-color: inherit !important;
+        background-color: $light !important;
     }
     
     svg, img, i {
