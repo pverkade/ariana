@@ -4,11 +4,14 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-bower-concat');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-ts');
     grunt.loadNpmTasks('grunt-html2js');
     grunt.loadNpmTasks('grunt-include-source');
     grunt.loadNpmTasks('grunt-preprocess');
+    grunt.loadNpmTasks('grunt-ng-annotate');
     grunt.loadNpmTasks('grunt-karma');
 
     var glob = require('glob');
@@ -134,6 +137,9 @@ module.exports = function(grunt) {
                 '<%= build_dir %>/css',
                 '<%= build_dir %>/vendor'
             ]
+            // prod: [
+            //     '<%= build_dir %>/'
+            // ]
         },
 
         /*
@@ -224,6 +230,40 @@ module.exports = function(grunt) {
                 },
                 src: ['<%=build_dir%>/**/*.css'],
                 dest: '<%=build_dir%>/style.css'
+            }
+        },
+
+        /**
+         * `ngAnnotate` annotates the sources before minifying. That is, it allows us
+         * to code without the array syntax.
+         */
+        ngAnnotate: {
+            compile: {
+                files: {
+                    '<%= build_dir %>/ariana.js': '<%= build_dir %>/ariana.js'
+                }
+            }
+        },
+
+        /**
+         * Minify and uglify javascript file
+         */
+        uglify: {
+            compile: {
+                files: {
+                    '<%= build_dir %>/ariana.js': '<%= build_dir %>/ariana.js'
+                }
+            }
+        },
+
+        /**
+         * Minify css file
+         */
+        cssmin: {
+            target: {
+                files: {
+                    '<%= build_dir %>/ariana.css': '<%= build_dir %>/style.css'
+                }
             }
         },
 
@@ -339,7 +379,10 @@ module.exports = function(grunt) {
         'copy:build_assets', // Copy assets -> build/assets/
         'copy:build_vendorcss', // Copy bower css -> build/css/
         'concat', // Concat all js and css files
-        'clean:prod', // remove redundant folders
+        'ngAnnotate', // Fix array annotation
+        'uglify', // Uglify and minify javascript file
+        'cssmin', // Minify css file
+        'clean:prod', // Remove redundant folders
         'includeSource', // Link ariana.js and ariana.css to index.html
         'preprocess:prod' // Remove redundant links in index.html
     ]);

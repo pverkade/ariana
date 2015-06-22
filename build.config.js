@@ -1,5 +1,6 @@
 module.exports = {
     build_dir: 'build',
+    prod_dir: 'prod',
 
     src_files: {
         tpl: 'src/**/*.tpl.html',
