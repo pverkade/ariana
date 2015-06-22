@@ -348,6 +348,8 @@ class DrawEngine {
         /* Normal draw */
         if (this.drawType == drawType.DOTTED) {
             this.drawDotted(points, path, context);
+            this.isCleared = true;
+            return;
         }
 
         /* Smoother draw by using quadratic Bézier curves */

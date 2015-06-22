@@ -129,18 +129,18 @@ class LooseSelection{
 	}
 
 	/* Returns index of neighbor maskWandPart if exist within pixels distance of point. */
-	neighborMaskWand(point : Point) {	
-		if (this.maskWand[(point.y - 1) * this.width + point.x - 1] == 1 ||
-			this.maskWand[(point.y - 1) * this.width + point.x] == 1 ||
-			this.maskWand[(point.y - 1) * this.width + point.x + 1] == 1 ||
-			this.maskWand[point.y * this.width + point.x - 1] == 1 ||
-			this.maskWand[point.y * this.width + point.x + 1] == 1 ||
-			this.maskWand[(point.y + 1) * this.width + point.x -1] == 1 ||
-			this.maskWand[(point.y + 1) * this.width + point.x] == 1 ||
-			this.maskWand[(point.y + 1) * this.width + point.x + 1] == 1) {
-			return true;
-		}
+	neighborMaskWand(point : Point) {
+		var size = 1;
+		for (var i = -size; i <= size; i++) {
+			for(var j = -size; j < size; j++) {
+				if (i != j) {
+					if (this.maskWand[(point.y + i) * this.width + point.x + j]) {
+						return true;
+					}				
+				}
 
+			}
+		}	
 		return false;
 	}	
 
@@ -194,10 +194,11 @@ class LooseSelection{
 			/* Points drawn in clockwise direction. */
 			} else {
 				dXAdj = -dY + dX;
-				dYAdj = -dX + dY;
+				dYAdj = dX + dY;
 				console.log("clockwise");
 			}
 
+			// maskborder bevat ook andere grenzen
 			for (var i = 0; i < this.points[nrWands - 1].length; i++) {
 				var indexPointMask = this.points[nrWands - 1][i].y * this.width + this.points[nrWands - 1][i].x;
 				this.maskBorder[indexPointMask] = 1;
@@ -205,7 +206,14 @@ class LooseSelection{
 
 			var mask = new MaskSelection(this.maskBorder, this.width, this.height);
 			insidePoint = new Point(this.points[nrWands - 1][0].x + dXAdj, this.points[nrWands - 1][0].y + dYAdj);
+			// console.log(insidePoint.x, insidePoint.y)
 			this.maskWandParts[this.maskWandParts.length] = mask.getMaskWand(insidePoint.x, insidePoint.y);
+
+			// neem aangegeven grens mee (!)
+			for (var i = 0; i < this.points[nrWands - 1].length; i++) {
+				var indexPointMask = this.points[nrWands - 1][i].y * this.width + this.points[nrWands - 1][i].x;
+				this.maskWandParts[this.maskWandParts.length - 1][indexPointMask] = 1;
+			}
 
 			for (var i = 0; i < this.maskWand.length; i++) {
 				if (this.maskWand[i]) {
