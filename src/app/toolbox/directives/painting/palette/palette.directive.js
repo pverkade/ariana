@@ -168,15 +168,15 @@ app.controller('PaletteCtrl', function($scope) {
                 ($scope.paletteBox.right - $scope.paletteBox.left) / 100;
         locY =  (100 - $scope.color.V) * 
                 ($scope.paletteBox.bottom - $scope.paletteBox.top) / 100;
-        context.arc(locX,locY,5,0,2*Math.PI, false);
+        context.arc(locX, locY, 6, 0, 2 * Math.PI, false);
         context.fillStyle = "rgb("  + $scope.config.tools.colors.primary.r + "," 
                                     + $scope.config.tools.colors.primary.g + "," 
                                     + $scope.config.tools.colors.primary.b + ")";
         context.fill();
-        context.lineWidth = 2;
+        context.lineWidth = 3;
         context.strokeStyle = "black";
         context.stroke();
-        context.lineWidth = 1;
+        context.lineWidth = 2;
         context.strokeStyle = "white";
         context.stroke();
     }
@@ -188,11 +188,14 @@ app.controller('PaletteCtrl', function($scope) {
         context.beginPath();
         loc =   (360 - $scope.color.H) * 
                 ($scope.hueBox.bottom - $scope.hueBox.top)/360;
-        context.rect(0, loc - 3, $scope.hueBox.right - $scope.hueBox.left, 6);
+        context.rect(0, loc - 4, $scope.hueBox.right - $scope.hueBox.left, 8);
         context.fillStyle = "hsl(" + $scope.color.H + ", 100%, 50%)";
         context.fill();
-        context.lineWidth = 2;
+        context.lineWidth = 3;
         context.strokeStyle = "black";
+        context.stroke();
+        context.lineWidth = 2;
+        context.strokeStyle = "white";
         context.stroke();
     }
 

@@ -73,13 +73,16 @@
         display: block;
         width: 4 * $blocksize;
         height: 4 * $blocksize;
+        margin-bottom: 0.25 * $blocksize;
     }
 
     #hue {
         float: left;
         display: block;
-        width: 1 * $blocksize;
+        margin-left: 0.25 * $blocksize;
+        width: 0.75 * $blocksize;
         height: 4 * $blocksize;
+        margin-bottom: 0.25 * $blocksize;
     }
 }
 
