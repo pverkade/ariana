@@ -7,20 +7,29 @@
  */
  
 .landing {
-    background-color: #f7f7f7;
+    background-color: $light;
+}
+
+.lighten {
+    background-color: lighten($light, 5%);
 }
 
 header {
     text-align: center;
-    color: #ffffff;
-    background-attachment: scroll;
-    background-image: url(../assets/img/mat1.jpg);
-    background-position: center center;
-    background-repeat: none;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    background-size: cover;
-    -o-background-size: cover;
+    color: #fff;
+
+    background-color: $dark;
+    border-bottom: $border-thickness solid $brand-color;
+
+    .btn-landing {
+        background-color: $light;
+        border: $border-thickness solid $brand-color;
+        color: #fff;
+
+        &:hover {
+            color: $brand-color;            
+        }
+    }
 
 	.intro-text {
     	padding-top: 100px;
@@ -69,6 +78,8 @@ header {
 
 section {
     padding: 100px 0;
+    color: #fff;
+    border-bottom: $border-thickness solid $brand-color;
 
     @media screen and (min-width:768px) {
         padding: 75px 0;
@@ -76,6 +87,7 @@ section {
 
     h2 {
         &.section-heading {
+            color: $brand-color;
             margin-top: 0;
             margin-bottom: 15px;
             font-size: 40px;
@@ -84,6 +96,7 @@ section {
 
     h3 {
         &.section-subheading {
+            color: #fff;
             margin-bottom: 75px;
             text-transform: none;
             font-family: "Droid Serif","Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -95,6 +108,7 @@ section {
 }
 
 .service-heading {
+    color: $brand-color;
     margin: 15px 0;
     text-transform: none;
 }
@@ -141,4 +155,53 @@ footer {
             line-height: 40px;
         }
     }
+}
+
+.mdi-large {
+    display: inline-block;
+    width: 1.5 * $blocksize;
+    height: 1.5 * $blocksize;
+    text-align: center;
+    
+    font-size: $blocksize;
+
+    border: $border-thickness solid $brand-color;
+    border-radius: 50%;
+}
+
+.bg-cubes {
+    background-image: url("../assets/img/cubes.png");
+}
+
+ul.social-buttons {
+    margin-bottom: 0;
+}
+
+ul.social-buttons li a {
+    display: block;
+    width: $blocksize;
+    height: $blocksize;
+    box-sizing: border-box;
+
+    border-radius: 100%;
+    font-size: $blocksize;
+    line-height: $blocksize;
+
+    color: #fff;
+
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    transition: all .3s;
+
+    &:hover {
+        color: $brand-color;
+    }
+}
+
+blockquote {
+    font-size: 20px;
+}
+
+.text-brand {
+    color: $brand-color;
 }
