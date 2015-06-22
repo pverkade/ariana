@@ -81,6 +81,11 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
     getHeight() {
         return this.height;
     }
+
+    public getNumberOfLayers() : number {
+        return this.layers.length;
+    }
+
     public addLayer(layer : Layer) {
         /* Append layer to user array */
         this.insertLayer(layer, this.layers.length);

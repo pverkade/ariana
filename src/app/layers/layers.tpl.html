@@ -14,33 +14,37 @@
         ng-show="checkVisible()">
         
         <div class="layer tool clearfix" 
-            ng-repeat="layer in config.layers.layerInfo" 
-            ng-click="selectLayer($index)" 
-            ng-class="{'active': $index == config.layers.currentLayer}"
+            ng-repeat="index in getLayersIndices()"
+            ng-click="selectLayer(index)"
+            ng-class="{'active': index === getCurrentLayerIndex()}"
             ng-hide="hidden">
 
             <div class="crop">
-                <img class="preview" ng-src="{{getThumbnail($index)}}"></img>
+                <img class="preview" ng-src="{{getThumbnail(index)}}">
             </div>
           
             <div class="small-tool float-left" 
-                ng-click="hideLayer($event, $index)" > 
-                <i class="mdi " ng-class="{'mdi-eye-off': isHidden($index), 'mdi-eye': !isHidden($index)}"> </i> </div>
+                ng-click="hideLayer($event, index)" >
+                <i class="mdi " ng-class="{'mdi-eye-off': isHidden(index), 'mdi-eye': !isHidden(index)}"> </i>
+            </div>
             <div class="small-tool float-left"
-                ng-click="removeLayer($event, $index)"> 
-                <i class="mdi mdi-delete"> </i> </div>
+                ng-click="removeLayer($event, index)">
+                <i class="mdi mdi-delete"> </i>
+            </div>
             <div class="small-tool float-left"
-                ng-click="moveLayerUp($event, $index)" 
-                ng-class="{'inactive': $index <= 0}"> 
-                <i class="mdi mdi-chevron-double-up"> </i> </div>
+                ng-click="moveLayerUp($event, index)"
+                ng-class="{'inactive': index === renderEngine.getNumberOfLayers() - 1}">
+                <i class="mdi mdi-chevron-double-up"> </i>
+            </div>
             <div class="small-tool float-left" 
-                ng-click="moveLayerDown($event, $index)" 
-                ng-class="{'inactive': $index == config.layers.numberOfLayers - 1}"> 
-                <i class="mdi mdi-chevron-double-down" > </i> </div>
+                ng-click="moveLayerDown($event, index)"
+                ng-class="{'inactive': index <= 0}">
+                <i class="mdi mdi-chevron-double-down" > </i>
+            </div>
                 
             <div class="layer-name float-left input-group">
-                <span class="input-group-addon"> {{$index + 1}} </span>
-                <input type="text" placeholder="{{layer.name}}" class="form-control text"></input>
+                <span class="input-group-addon"> {{index + 1}} </span>
+                <input type="text" placeholder="{{layer.name}}" class="form-control text">
             </div>              
         </div>
         

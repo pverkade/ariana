@@ -31,16 +31,16 @@ app.controller('AppCtrl', ['$scope',
                     y : 0,
                     global: {
                         x : 0,
-                        y : 0,
-                    },
+                        y : 0
+                    }
                 },
                 current: {
                     x: 0,
                     y: 0,
                     global: {
                         x : 0,
-                        y : 0,
-                    },
+                        y : 0
+                    }
                 },
                 button: {
                     1: false, // left button
@@ -106,7 +106,7 @@ app.controller('AppCtrl', ['$scope',
                 $scope.marchingAnts = new MarchingAnts(width, height);
                 $scope.marchingAnts.setMaskBorder($scope.maskBorder);
             }
-        }
+        };
 
         /* This function creates a new layer from a given Image-object. The new
          * layer is placed on top. */
@@ -127,19 +127,12 @@ app.controller('AppCtrl', ['$scope',
 
             /* set the correct layer info in config. The new layer comes on top
              * and is immediately selected. */
-            $scope.config.layers.numberOfLayers += 1;
+            $scope.config.layers.numberOfLayers = $scope.renderEngine.getNumberOfLayers();
             $scope.config.layers.currentLayer = $scope.config.layers.numberOfLayers - 1;
 
             /* Store information about the layers in the config object. */
             $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {
-                "name": 'Layer ' + $scope.config.layers.numberOfLayers,
-                "x": layer.getPosX(),
-                "y": layer.getPosY(),
-                "originalWidth": width,
-                "originalHeight": height,
-                "width": width,
-                "height": height,
-                "rotation": layer.getRotation()
+                "name": 'Layer ' + $scope.config.layers.numberOfLayers
             };
 
             $scope.requestRenderEngineUpdate();
@@ -226,6 +219,7 @@ app.controller('AppCtrl', ['$scope',
         $scope.setCurrentLayerIndex = function (layerIndex) {
             $scope.config.layers.currentLayer = layerIndex;
             $scope.$broadcast('newCurrentLayer', layerIndex);
-        }
+        };
 	}
+
 ]);

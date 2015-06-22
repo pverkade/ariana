@@ -19,80 +19,67 @@ app.controller('layersCtrl', function($scope) {
     
     $scope.showLayers = function() {
         $scope.hidden = false;
-    }
+    };
     
     $scope.hideLayers = function() {
         $scope.hidden = true;
-    }
+    };
 
     $scope.hideLayer = function(event, index) {
         event.stopPropagation();
         var layer = $scope.renderEngine.getLayer(index);
         layer.setHidden(!layer.isHidden());
-        $scope.config.layers.layerInfo[index].hidden = layer.isHidden();
 
         $scope.renderEngine.render();
-    }
+    };
     
     $scope.isHidden = function(index) {
-        return $scope.config.layers.layerInfo[index].hidden;
-    }
+        return $scope.renderEngine.getLayer(index).isHidden();
+    };
 
     $scope.addLayer = function(event) {
         //event.stopPropagation();
-        
-        $scope.config.layers.layerInfo.push({
-            "name": 'Layer ' + $scope.config.layers.numberOfLayers,
-            "x": 0,
-            "y": 0,
-            "xScale": 1,
-            "yScale": 1,
-            "rotation": 0
-        });
-
-        $scope.config.layers.numberOfLayers = $scope.config.layers.layerInfo.length;
+        $scope.config.layers.numberOfLayers = $scope.renderEngine.getNumberOfLayers();
     };
 
     $scope.removeLayer = function(event, index) {
         event.stopPropagation();
         $scope.config.layers.layerInfo.splice(index, 1);
-        $scope.config.layers.numberOfLayers = $scope.config.layers.layerInfo.length;
+        $scope.config.layers.numberOfLayers = $scope.renderEngine.getNumberOfLayers();
         
-        if ($scope.config.layers.currentLayer == $scope.config.layers.numberOfLayers)
+        if ($scope.config.layers.currentLayer == $scope.renderEngine.getNumberOfLayers())
             $scope.config.layers.currentLayer -= 1;
         
         $scope.renderEngine.removeLayer(index);
+        $scope.editEngine.clear();
 
-        $scope.renderEngine.render();
+        window.requestAnimationFrame(function () {
+            $scope.renderEngine.render();
+        });
     };
 
     $scope.moveLayerUp = function(event, index) {
         event.stopPropagation();
-        console.log(index);
 
-        if (index > 0) {
-            $scope.config.layers.layerInfo.swap(index, index - 1);
-            $scope.renderEngine.reorder(index, index - 1);
-
+        if (index < $scope.renderEngine.getNumberOfLayers() - 1 && $scope.renderEngine.getNumberOfLayers() > 1) {
+            $scope.renderEngine.reorder(index, index + 1);
             $scope.renderEngine.render();
         }
     };
 
     $scope.moveLayerDown = function(event, index) {
         event.stopPropagation();
-        console.log(index);
 
-        if (index < $scope.config.layers.numberOfLayers - 1 && $scope.config.layers.numberOfLayers > 1) {
-            $scope.config.layers.layerInfo.swap(index, index + 1);
-            $scope.renderEngine.reorder(index, index + 1);
-
+        if (index > 0) {
+            $scope.renderEngine.reorder(index, index - 1);
             $scope.renderEngine.render();
         }
+
     };
 
     /* This function selects a specific layer if possible. */
     $scope.selectLayer = function(newIndex) {
-        if (0 <= newIndex && newIndex < $scope.config.layers.numberOfLayers) {
+        if (0 <= newIndex && newIndex < $scope.renderEngine.getNumberOfLayers()) {
             $scope.setCurrentLayerIndex(newIndex);
             return true;
         }
@@ -100,7 +87,17 @@ app.controller('layersCtrl', function($scope) {
     };
 
     $scope.getThumbnail = function(index) {
-        return $scope.renderEngine.getLayer(index).getThumbnail();
+        var thumbnail =  $scope.renderEngine.getLayer(index).getThumbnail();
+
+        return thumbnail;
     };
 
+    $scope.getLayersIndices = function() {
+        var indices = [];
+        for (var i = 0; i < $scope.renderEngine.getNumberOfLayers(); i++) {
+            indices.unshift(i);
+        }
+        //return $scope.config.layers.layerInfo.slice().reverse();
+        return indices;
+    }
 });
