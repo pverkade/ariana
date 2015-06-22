@@ -123,34 +123,6 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         }
     }
 
-    public filterLayers(layerIndices : number[], filter : Filter) {
-        for (var i = 0; i < layerIndices.length; i ++) {
-            var layer = this.layers[layerIndices[i]];
-            if (layer.getLayerType() !== LayerType.ImageLayer) {
-                continue;
-            }
-
-            var imageLayer = <ImageLayer> layer;
-            var textureProgram = this.resourceManager.textureProgramInstance();
-
-            // FIXME: images that are larger than the canvas are downsized when a filter is applied
-            this.drawbuffer1.bind();
-            {
-                this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
-                filter.render(this.resourceManager, imageLayer.getWebGlTexture());
-
-                this.gl.bindTexture(this.gl.TEXTURE_2D, imageLayer.getWebGlTexture());
-                this.gl.copyTexImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 0, 0, this.width, this.height, 0);
-
-                this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
-                textureProgram.render(imageLayer.getWebGlTexture());
-
-                this.gl.bindTexture(this.gl.TEXTURE_2D, imageLayer.getWebGlTexture());
-                this.gl.copyTexImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 0, 0, this.width, this.height, 0);
-            }
-            this.drawbuffer1.unbind();
-        }
-    }
 
     public getPixelColor(x : number, y : number) : Uint8Array {
         var value = new Uint8Array(4);

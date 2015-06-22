@@ -43,7 +43,7 @@ app.controller('RotateCtrl', function($scope) {
 		var currentLayer = $scope.config.layers.currentLayer;
         if (currentLayer == -1) return;
 
-        var layer = $scope.renderEngine.layers[currentLayer];
+        var layer = $scope.getCurrentLayer();
         
         /* Get the location of the layer. */
         var x = layer.getPosX();
@@ -97,8 +97,8 @@ app.controller('RotateCtrl', function($scope) {
 		}
 
 		if (oval) {
-			var layer = $scope.renderEngine.getLayer($scope.config.layers.currentLayer);
-            layer.commitRotation();
+			var layer = $scope.getCurrentLayer();
+            layer.commitTransformations();
 		}
 	}, true);
 });

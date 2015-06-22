@@ -56,6 +56,8 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
                 $scope.filter.filterName = name;
                 $scope.filter.filterObject = filterObject;
                 $scope.filter.filterParameters = filterObject.getAttributesObject();
+
+                $scope.applyFilterOnLayers();
             }
             
             $scope.config.tools.activeTool = 'pan';
