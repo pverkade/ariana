@@ -8,6 +8,7 @@ class ImageShaderProgram extends BaseProgram {
 
     samplerLocation : WebGLUniformLocation;
     matrixLocation : WebGLUniformLocation;
+    flipMatrixLocation : WebGLUniformLocation;
 
     constructor(gl : WebGLRenderingContext) {
         super.setShaderSource("image.vert", "image.frag");
@@ -16,6 +17,7 @@ class ImageShaderProgram extends BaseProgram {
         var texCoordLocation = gl.getAttribLocation(this.program, "a_texCoord");
         this.samplerLocation = gl.getUniformLocation(this.program, "u_sampler");
         this.matrixLocation = gl.getUniformLocation(this.program, "u_matrix");
+        this.flipMatrixLocation = gl.getUniformLocation(this.program, "u_flipMatrix");
 
         gl.enableVertexAttribArray(texCoordLocation);
         gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 16, 8);
@@ -27,8 +29,9 @@ class ImageShaderProgram extends BaseProgram {
         this.gl.uniform1i(this.samplerLocation, 0);
     }
 
-    setUniforms(texture : WebGLTexture, matrix : Float32Array) : void {
+    setUniforms(texture : WebGLTexture, matrix : Float32Array, flipMatrix : Float32Array) : void {
         this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
         this.gl.uniformMatrix3fv(this.matrixLocation, false, matrix);
+        this.gl.uniformMatrix3fv(this.flipMatrixLocation, false, flipMatrix);
     }
 }

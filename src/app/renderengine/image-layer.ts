@@ -9,6 +9,7 @@ class ImageLayer extends Layer {
     protected program : ImageShaderProgram;
     protected layerType : LayerType = LayerType.ImageLayer;
 
+    private image : HTMLImageElement;
     private filter : Filter;
 	private texture : WebGLTexture;
 
@@ -21,7 +22,7 @@ class ImageLayer extends Layer {
         resourceManager : ResourceManager,
         canvasWidth : number,
         canvasHeight : number,
-        image : ImageData) {
+        image : HTMLImageElement) {
         super(resourceManager, canvasWidth, canvasHeight, image ? image.width : 0, image ? image.height : 0);
 
         this.program = resourceManager.imageShaderProgramInstance();
@@ -33,6 +34,7 @@ class ImageLayer extends Layer {
 
         var gl = this.gl;
 
+        this.image = image;
 		this.texture = gl.createTexture();
 		gl.bindTexture(gl.TEXTURE_2D, this.texture);
 
@@ -50,11 +52,30 @@ class ImageLayer extends Layer {
 		this.program.activate();
 	}
 
+
 	private renderTexture(texture : WebGLTexture) {
         var matrix : Float32Array = this.calculateTransformation();
         mat3.multiply(matrix, this.pixelConversionMatrix, matrix);
 
-        this.program.setUniforms(texture, matrix);
+        var flipMatrix = mat3.create();
+        mat3.scale(
+            flipMatrix,
+            flipMatrix,
+            new Float32Array([
+                this.flipX ? -1.0 : 1.0,
+                this.flipY ? -1.0 : 1.0
+            ])
+        );
+        mat3.translate(
+            flipMatrix,
+            flipMatrix,
+            new Float32Array([
+                this.flipX ? -1.0 : 0.0,
+                this.flipY ? -1.0 : 0.0
+            ])
+        );
+
+        this.program.setUniforms(texture, matrix, flipMatrix);
         this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
     }
 
@@ -85,19 +106,49 @@ class ImageLayer extends Layer {
         }
     }
 
-	copyFramebuffer(width : number, height : number) {
-        this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
-        this.gl.copyTexImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 0, 0, width, height, 0);
+    renderFullscreen() {
+        var matrix = mat3.create();
+        var flipMatrix = mat3.create();
 
-        /* SetDimensions already triggers notifyPropertyChanged */
-        this.setDimensions(width, height);
+        this.program.setUniforms(this.texture, matrix, flipMatrix);
+        this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
+    }
+
+	copyFramebuffer(width : number, height : number) {
+        // This way is more efficient (no copying to javascript and back) but it doesnt support flip Y
+        //this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
+        //this.gl.copyTexImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 0, 0, width, height, 0);
+
+        var data = new Uint8Array(width * height * 4);
+        this.gl.readPixels(0, 0, width, height, this.gl.RGBA, this.gl.UNSIGNED_BYTE, data);
+
+        // Flip the image's Y axis to match the WebGL texture coordinate space
+        this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, 1);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
+        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, width, height, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, data);
+        this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, 0);
+
+        // SetDimensions already triggers notifyPropertyChanged
+        //this.setDimensions(width, height);
+        this.notifyPropertyChanged();
 	}
+
+    getImage() : HTMLImageElement {
+        return this.image;
+    }
+
+    getWebGLTexture() : WebGLTexture {
+        return this.texture;
+    }
 
     destroy() {
         super.destroy();
         this.gl.deleteTexture(this.texture);
     }
 
+    merge() {
+        
+    }
     public getWebGlTexture() : WebGLTexture {
         return this.texture
     }

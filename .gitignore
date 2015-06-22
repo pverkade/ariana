@@ -15,7 +15,4 @@ src/*/Thumbs.db
 .sass-cache/
 .tscache/*
 src/app/drawengine/*.js
-
-debuglog.txt
-debug_log.txt
-debug-log.txt
+src/app/editingengine/*.js

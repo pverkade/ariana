@@ -94,7 +94,7 @@ app.controller('ContentController', function($scope, $window) {
             $scope.config.canvas.zoom = 0.1;
             return;
         }
-        
+
         /* Zoom on the current mouse location. */
         var cx = $scope.config.canvas.x,
             cy = $scope.config.canvas.y,

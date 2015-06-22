@@ -100,7 +100,6 @@ app.controller('BrushCtrl', function($scope) {
         if ($scope.hasDrawn) {
             var image = $scope.drawEngine.getCanvasImageData();
             $scope.newLayerFromImage(image, $scope.currentLayer + 1);
-
             $scope.drawEngine.clearCanvases();
         }
 

@@ -54,8 +54,10 @@ app.controller('TranslateCtrl', function($scope) {
         var y = layer.getPosY();
 
         layer.setPos(x + dx, y + dy);
-        $scope.editEngine.drawTranslateTool(layer);
-        window.requestAnimationFrame(function() {$scope.renderEngine.render();});  
+        $scope.requestRenderEngineUpdate();
+
+        $scope.editEngine.setEditLayer(layer, EditMode.translate);
+        $scope.requestEditEngineUpdate();
     };
 
     /*
