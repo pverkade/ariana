@@ -324,9 +324,7 @@ module.exports = function(grunt) {
         'copy:build_assets', // Copy assets -> build/assets/
         'copy:build_vendorcss', // Copy bower css -> build/css/
         'includeSource', // Link all js and css files to index.html
-        'preprocess:dev', // Add some links to index.html
-        'karmaconfig', // Configure karma test
-        'karma:unit' // Run karma tests
+        'preprocess:dev' // Add some links to index.html
     ]);
 
     /* The build_prod task completely builds, concats and (SOON) minifies the src */
@@ -347,7 +345,7 @@ module.exports = function(grunt) {
     ]);
 
     /* grunt */
-    grunt.registerTask('default', 'build_dev');
+    grunt.registerTask('default', ['build_dev', 'karmaconfig', 'karma:unit']);
 
     /* grunt dev */
     grunt.registerTask('dev', 'build_dev');
@@ -357,7 +355,7 @@ module.exports = function(grunt) {
 
     /* grunt watch task */
     grunt.renameTask('watch', 'delta');
-    grunt.registerTask('watch', ['build_dev', 'delta']);
+    grunt.registerTask('watch', ['build_dev', 'karmaconfig', 'karma:unit', 'delta']);
 
     /*
      * Removes index.html and templates.js
