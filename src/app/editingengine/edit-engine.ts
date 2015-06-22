@@ -139,6 +139,25 @@ class EditEngine {
         this.currentLayer = null;
     }
 
+    public setSelection(marchingAnts : MarchingAnts) : void {
+        var imageData = this.context.createImageData(marchingAnts.width, marchingAnts.height);
+
+        var offset = 0;
+        var thisPtr = this;
+        this.selectionTmpCanvas = document.createElement("canvas");
+        this.selectionTmpCanvas.width = marchingAnts.width;
+        this.selectionTmpCanvas.height = marchingAnts.height;
+        this.selectionTmpContext = this.selectionTmpCanvas.getContext("2d");
+
+        // console.log(marchingAnts);
+        this.selectionAntsInterval = setInterval(function() {
+            var tmpContext = thisPtr.selectionTmpContext;
+            marchingAnts.writeData(imageData, 5.0, ++offset);
+            tmpContext.clearRect(0, 0, marchingAnts.width, marchingAnts.height);
+            tmpContext.putImageData(imageData, 0, 0);
+        }, 500);
+    }
+
     public setSelectionLayer(marchingAnts : MarchingAnts, selectionLayer : ImageLayer) : void {
         this.selectionLayer = selectionLayer;
 
@@ -151,7 +170,7 @@ class EditEngine {
         this.selectionTmpCanvas.height = imageData.height;
         this.selectionTmpContext = this.selectionTmpCanvas.getContext("2d");
 
-        console.log(marchingAnts);
+        // console.log(marchingAnts);
         this.selectionAntsInterval = setInterval(function() {
             var tmpContext = thisPtr.selectionTmpContext;
             marchingAnts.writeData(imageData, 5.0, ++offset);
@@ -168,7 +187,8 @@ class EditEngine {
     }
 
     public render() : void {
-        this.clear();
+        // this.clear();
+
         var currentLayer : Layer = this.currentLayer;
         if (currentLayer) {
             switch (this.currentMode) {

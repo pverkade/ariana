@@ -89,7 +89,8 @@ app.controller('AppCtrl', ['$scope',
         $scope.maskWand = null;
         $scope.maskBorder = null;
         $scope.marchingAnts = null;
-
+        $scope.maskEnabled = false;
+        
         /* This function creates the RenderEngine. It requires the canvas to
          * render on. */
         $scope.startEngines = function(renderCanvas, drawCanvas) {
