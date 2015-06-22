@@ -22,8 +22,9 @@ app.controller('ScaleCtrl', function($scope) {
         if (currentLayer == -1) return;
 
         var layer = $scope.renderEngine.layers[currentLayer];
+        $scope.editEngine.setEditLayer(layer, EditMode.scale);
         $scope.editEngine.drawScaleTool(layer);
-        window.requestAnimationFrame(function() {$scope.renderEngine.render();});  
+        $scope.requestEditEngineUpdate();
     };
 
     /* onMouseDown */
@@ -116,8 +117,10 @@ app.controller('ScaleCtrl', function($scope) {
             window.requestAnimationFrame(function() {
                 $scope.renderEngine.render();
             });
-            
+
+            $scope.editEngine.setEditLayer(layer, EditMode.scale);
             $scope.editEngine.drawScaleTool(layer);
+            $scope.requestEditEngineUpdate();
 
         }
         else {
@@ -171,6 +174,7 @@ app.controller('ScaleCtrl', function($scope) {
         if (oval) {
             var layer = $scope.getCurrentLayer();
             layer.commitTransformations();
+            $scope.editEngine.clear();
         }
     }, true);
 });

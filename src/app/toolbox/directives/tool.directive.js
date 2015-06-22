@@ -4,7 +4,7 @@ app.directive('tool', function() {
 		scope: true,
 		link: function(scope, element, attrs) {
 
-			scope.expanded = false;
+			scope.expanded = true;
 
 			element.bind('click', function(event) {
 				event.stopPropagation();
@@ -12,13 +12,16 @@ app.directive('tool', function() {
 
 				if (event.target.className.indexOf('mdi') > -1) {
 					scope.expanded = !scope.expanded;
+					scope.$apply(scope.expanded);
 				}
 
-				scope.$apply();
+				scope.$apply(scope.config.tools.activeTool);
 			});
 
 			scope.$watch('config.tools.activeTool', function(newValue, oldValue) {
 				scope.active = scope.config.tools.activeTool == scope.toolname;
+
+				if (!scope.active) scope.expanded = false;
 			}, true);
 		}
 	}
