@@ -48,8 +48,8 @@ app.controller('MagicCtrl', function($scope) {
         $scope.stop();
 
 		/* x and y coordinates in pixels relative to canvas left top corner. */
-		var xRelative = $scope.config.mouse.current.x;
-		var yRelative = $scope.config.mouse.current.y;
+		var mouseX = $scope.config.mouse.current.x;
+		var mouseY = $scope.config.mouse.current.y;
 
         /* Calculate x and y coordinates in pixels of the original image */
         var currentLayer = $scope.config.layers.currentLayer;
@@ -58,15 +58,23 @@ app.controller('MagicCtrl', function($scope) {
             return;
         }
         
+        var x = layer.getPosX();
+        var y = layer.getPosY();
+        
+        console.log("before", mouseX, mouseY);
+        
         var transformation = layer.calculateTransformation();
+        console.log(transformation);
         mat3.invert(transformation, transformation);
-        var position = vec3.fromValues(xRelative, yRelative, 1);
+        var position = vec3.fromValues(mouseX, mouseY, 1);
         vec3.transformMat3(position, position, transformation);
         
         // FIXME only works in original state
-        xRelative = Math.round(0.5 * (position[0] + 1) * $scope.magic.getWidth()); 
-        yRelative = Math.round(0.5 * (position[1] - 1) * $scope.magic.getHeight());
+        var xRelative = Math.round(0.5 * (position[0] + 1) * $scope.magic.getWidth()); 
+        var yRelative = Math.round(0.5 * (position[1] - 1) * $scope.magic.getHeight());
 
+        console.log("after", xRelative, yRelative);
+        
 		/* Check wheter user has clicked inside of a selection. */
 		if ($scope.magic.isInSelection(xRelative, yRelative)) {
 			$scope.magic.removeSelection(xRelative, yRelative)
