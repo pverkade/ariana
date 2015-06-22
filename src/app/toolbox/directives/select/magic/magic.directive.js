@@ -16,6 +16,8 @@ app.controller('MagicCtrl', function($scope) {
 	/* init */
 	$scope.init = function() {
 		$scope.setCursor('crosshair');
+        console.log($scope.selection.maskEnabled);
+        $scope.selection.maskEnabled = true;
 
 		var currentLayer = $scope.config.layers.currentLayer;
 		if (currentLayer == -1) {

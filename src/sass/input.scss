@@ -96,4 +96,5 @@
 .selection-options {
     @extend .filter-options;
     width: 2 * $blocksize;
+    min-width: 2 * $blocksize;
 }
