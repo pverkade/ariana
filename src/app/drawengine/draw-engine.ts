@@ -560,8 +560,9 @@ class DrawEngine {
             /* Draw images between the two points */
             for ( var z=0; (z<=distance || z==0); z += zDiff)
             {
-                x = start.x + (Math.sin(angle) * z) - halfBrushW;
-                y = start.y + (Math.cos(angle) * z) - halfBrushH;
+                console.log(halfBrushW);
+                x = start.x + (Math.sin(angle) * z) - halfBrushW + 5;
+                y = start.y + (Math.cos(angle) * z) - halfBrushH + 5;
                 context.drawImage(this.brushImage, x, y,
                                   this.lineWidth,
                                   this.lineWidth);
