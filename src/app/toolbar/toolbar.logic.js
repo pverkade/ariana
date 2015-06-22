@@ -153,12 +153,19 @@ app.controller('ToolbarController', ['$scope', '$modal',
         $scope.applySelection = function() {
             // cut out selection from texture -> move to new layer
             // throw away selection bitmask
+            var newLayer = $scope.renderEngine.createSelectionImageLayer($scope.imgData, 0);
+            $scope.addLayer(newLayer);
             $scope.maskEnabled = false;
             console.log("DONE!");
         }
         
         $scope.cancelSelection = function() {
             $scope.maskEnabled = false;
+
+            var currentLayer = $scope.config.layers.currentLayer;
+            var layer = $scope.renderEngine.layers[currentLayer];
+
+            $scope.startSharedSelection(layer.getWidth(), layer.getHeight());
             // throw away selection bitmask
             console.log("DENIED!");
         }
