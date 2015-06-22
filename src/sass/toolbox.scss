@@ -114,3 +114,56 @@
         z-index: 3;
     }   
 }
+
+@media screen and (max-width: $breakpoint-tablet) {
+    .toolset {
+        width: $blocksize-tablet;
+        top: 1.5 * $blocksize-tablet;
+    }
+
+    .toolbox {
+        margin-left: $blocksize-tablet;
+        width: $blocksize-tablet;
+    }
+
+    .tool-settings {
+        margin-left: $blocksize-tablet;
+        width: 4 * $blocksize-tablet;
+        height: 4 * $blocksize-tablet;
+    }
+
+    .large-tool-settings {
+        width: 5.5 * $blocksize-tablet;
+        padding: 0.25 * $blocksize-tablet;
+
+        #palette {
+            width: 4 * $blocksize-tablet;
+            height: 4 * $blocksize-tablet;
+            margin-bottom: 0.25 * $blocksize-tablet;
+        }
+
+        #hue {
+            margin-left: 0.25 * $blocksize-tablet;
+            width: 0.75 * $blocksize-tablet;
+            height: 4 * $blocksize-tablet;
+            margin-bottom: 0.25 * $blocksize-tablet;
+        }
+    }
+
+    .color-preview {
+        .color-primary, .color-secondary {
+            height: 0.625 * $blocksize-tablet;
+            width: 0.625 * $blocksize-tablet;
+        }
+
+        .color-primary {
+            left:  0.25 * $blocksize-tablet;
+            bottom: 0.25 * $blocksize-tablet;
+        }
+
+        .color-secondary {
+            left: 0.125 * $blocksize-tablet;
+            bottom: 0.125 * $blocksize-tablet;
+        }
+    }
+}
