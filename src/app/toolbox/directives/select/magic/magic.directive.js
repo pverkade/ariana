@@ -106,6 +106,7 @@ app.controller('MagicCtrl', function($scope) {
                     }
                 }
             }
+            
 			var newLayer = $scope.renderEngine.createSelectionImageLayer(imgData, 0);
             $scope.addLayer(newLayer);
 

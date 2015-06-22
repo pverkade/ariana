@@ -50,7 +50,7 @@
     ng-right-click
     ng-show="filter.filterObject"
     ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}"> 
-    <div class="tool float-left" ng-click="cancel()"> <i class="mdi mdi-close"> </i> </div>
+    <div class="tool float-left" ng-click="cancelFilters()"> <i class="mdi mdi-close"> </i> </div>
     <div class="center-box float-left">
     
         <div class="input-group">
@@ -62,10 +62,19 @@
             <span class="input-group-addon"> {{name}} </span>
             <input type="range"  class="form-control slider" ng-model="parameter.value" ng-change="applyFilterChanges()"
                 min="{{parameter.min}}" max="{{parameter.max}}" step="{{parameter.step}}"> </input>
-            <input type="text" number class="form-control number" ng-model="parameter.value"
+            <input type="text" number class="form-control number" ng-model="parameter.value" ng-change="applyFilterChanges()"
                 min="{{parameter.min}}" max="{{parameter.max}}" step="{{parameter.step}}"> </input>
         </div>
     
     </div>
-    <div class="tool float-right" ng-click="commitFilterOnLayers(); cancel()">  <i class="mdi mdi-check"> </i> </div>
+    <div class="tool float-right" ng-click="commitFilterOnLayers(); cancelFilters()">  <i class="mdi mdi-check"> </i> </div>
+</div>
+
+<div class="selection-options" 
+    ng-right-click
+    ng-show="maskEnabled"
+    ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}"> 
+
+    <div class="tool float-left" ng-click="applySelection()"> <i class="mdi mdi-close"> </i> </div>
+    <div class="tool float-left" ng-click="cancelSelection()"> <i class="mdi mdi-check"> </i> </div>
 </div>

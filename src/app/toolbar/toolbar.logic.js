@@ -71,7 +71,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
             });
         };
 
-        $scope.cancel = function() {
+        $scope.cancelFilters = function() {
             $scope.filter.filterObject = null;
             $scope.filter.currentlayerOnly = false;
 
@@ -122,7 +122,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
             var filter = $scope.filter.filterObject;
 
             if ($scope.config.layers.numberOfLayers == 0 || !filter) {
-                $scope.cancel();
+                $scope.cancelFilters();
                 return;
             }
 
@@ -149,5 +149,18 @@ app.controller('ToolbarController', ['$scope', '$modal',
         $scope.$on("newCurrentLayer", function() {
             $scope.applyFilterOnLayers();
         });
+        
+        $scope.applySelection = function() {
+            // cut out selection from texture -> move to new layer
+            // throw away selection bitmask
+            $scope.maskEnabled = false;
+            console.log("DONE!");
+        }
+        
+        $scope.cancelSelection = function() {
+            $scope.maskEnabled = false;
+            // throw away selection bitmask
+            console.log("DENIED!");
+        }
     }
 ]);
