@@ -22,6 +22,9 @@
     width: 4 * $blocksize !important;
 }
 
+.input-group-addon {
+    cursor: default !important;
+}
 
 .filter-options {
     position: absolute;
