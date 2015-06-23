@@ -1,4 +1,4 @@
-class LooseSelection implements SelectionInterface{
+class LooseSelection extends AbstractSelection implements SelectionInterface{
 	points : Point[][];
 	maskBorder : Uint8Array;
 	maskWand : Uint8Array;
@@ -8,15 +8,10 @@ class LooseSelection implements SelectionInterface{
 	height : number;
 
 	constructor(width : number, height : number) {
-		this.width = width;
-		this.height = height;
+		super(width, height);
 
 		this.points = [];
 		this.points[0] = [];
-		this.maskWandParts = [];
-
-		this.maskBorder = null; 
-		this.maskWand = null;
 	}
 
     sign(x : number) { return x > 0 ? 1 : x < 0 ? -1 : 0; }
@@ -72,14 +67,6 @@ class LooseSelection implements SelectionInterface{
         }
     }
 
-    getNrWands() {
-    	return this.maskWandParts.length;
-    }
-
-	getLastMaskWand() {
-		return this.maskWandParts[this.maskWandParts.length - 1];			
-	}
-
 	determineOrientation() {
 		var nrPoints = this.points.length;
 		var area = 0;
@@ -115,33 +102,6 @@ class LooseSelection implements SelectionInterface{
 
 		return closestPoint;
 	}	
-
-    getMaskBorder() {        
-        for (var i = 0; i < this.maskWand.length; i++) {
-            if (this.maskWand[i] == 1) {
-                /* Check for borders of image (pixel on border of image is edge). */
-                if (i % this.width == 0 ||
-                  Math.floor( i / this.width) == 0 || 
-                  Math.floor( i / this.width) >= this.height - 1) { /// aanpassing <--
-                    this.maskBorder[i] = 1;
-                /* Check if one 8 neighbor pixels is off then it is an "inside" pixel. */
-                } else if ( this.maskWand[i - this.width - 1] == 0 ||
-                    this.maskWand[i - this.width ] == 0 ||
-                    this.maskWand[i - this.width + 1] == 0 ||
-                    this.maskWand[i - 1] == 0 ||
-                    this.maskWand[i + 1] == 0 ||
-                    this.maskWand[i + this.width - 1] == 0 ||
-                    this.maskWand[i + this.width] == 0 ||
-                    this.maskWand[i + this.width + 1] == 0 ) {
-                    this.maskBorder[i] = 1;
-                } else {
-                    this.maskBorder[i] = 0;
-                }
-            }
-        }
-
-        return this.maskBorder;
-    }
 
     fixHole(loosePoint : Point, deltaPoint : Point) {
     	var dX = deltaPoint.x;
@@ -182,7 +142,6 @@ class LooseSelection implements SelectionInterface{
 
 		var deltaFirstPoint = this.neighborBorder(this.points[nrPoints - 1][0], skipSize);
 		var deltaLastPoint = this.neighborBorder(this.points[nrPoints - 1][nrPointsLast - 1], skipSize); 
-		// var deltaTenMinesPoint = 
 
 		if (nrPointsLast > 10 && deltaFirstPoint != null && deltaLastPoint != null) { 
 
@@ -267,34 +226,6 @@ class LooseSelection implements SelectionInterface{
 		return [];
 	}
 
-	getMaskWandPart(index : number) {
-		return this.maskWandParts[index];
-	}
-
-	getSelectionNr(x : number, y : number) {
-		if (this.maskWand[y * this.width + x] == 1) {
-			for (var i = 0; i < this.maskWandParts.length; i++) {
-				if (this.maskWandParts[i][y * this.width + x] == 1) {
-					return i;
-				}
-			}
-		}
-		
-		return -1;		
-	}
-
-	mergeMaskWand() {
-		var nrWandParts = this.maskWandParts.length;
-
-		// this.maskWand = new Uint8Array(this.width * this.height);
-
-		if (nrWandParts > 0) {
-			for (var i = 0; i < this.maskWandParts[nrWandParts - 1].length; i++) {
-				this.maskWand[i] = this.maskWand[i] || this.maskWandParts[nrWandParts - 1][i];
-			}			
-		}
-	}
-
 	removeSelection(x : number, y : number) {
 		var indexSelection = this.getSelectionNr(x, y);
 
@@ -355,33 +286,10 @@ class LooseSelection implements SelectionInterface{
 		}
 
 		this.maskWandParts.splice(nrWands - 1, 1);
-		// this.maskWandParts[nrWands - 1] = new Uint8Array(0);
+
 		// this.mergeMaskWand();
 		this.points.splice(nrPoints - 2, 1);
 
-		console.log("maskWandParsts:");
-		console.log(this.maskWandParts);
-		console.log("points");
-		console.log(this.points);
-		// this.points[nrPoints - 2] = [];
 		return true;
 	}
-
-	setMaskBorder(maskBorder : Uint8Array) {
-        if (this.width * this.height != maskBorder.length) {
-            console.log("setMaskBorder: wrong mask sizes");
-        } else {
-            this.maskBorder = maskBorder;
-        }		
-	}
-
-    setMaskWand(maskWand : Uint8Array) {
-        if (this.width * this.height != maskWand.length) {
-            console.log("setMaskWand: wrong mask sizes");
-        } else {
-            this.maskWand = maskWand;
-        }
-
-        this.mergeMaskWand();
-    }
 }
