@@ -32,6 +32,7 @@ app.controller('TranslateCtrl', function($scope) {
     /* onMouseUp */
     $scope.mouseUp = function() {
         $scope.translating = false;
+        $scope.updateThumbnail($scope.getCurrentLayerIndex());
     };
 
     /* onMouseMove */
@@ -80,6 +81,7 @@ app.controller('TranslateCtrl', function($scope) {
             };
         } else {
             $scope.editEngine.clear();
+            $scope.updateThumbnail($scope.getCurrentLayerIndex());
         }
     }, true);
 });

@@ -27,19 +27,19 @@ app.controller('AppCtrl', ['$scope',
         $scope.config = {
             mouse: {
                 old: {
-                    x : 0,
-                    y : 0,
+                    x: 0,
+                    y: 0,
                     global: {
-                        x : 0,
-                        y : 0
+                        x: 0,
+                        y: 0
                     }
                 },
                 current: {
                     x: 0,
                     y: 0,
                     global: {
-                        x : 0,
-                        y : 0
+                        x: 0,
+                        y: 0
                     }
                 },
                 button: {
@@ -77,6 +77,7 @@ app.controller('AppCtrl', ['$scope',
                 }
             },
             layers: {
+                numberOfLayersCreated: 0,
                 numberOfLayers: 0,
                 currentLayer: -1,
                 layerInfo: []
@@ -92,13 +93,13 @@ app.controller('AppCtrl', ['$scope',
 
         /* This function creates the RenderEngine. It requires the canvas to
          * render on. */
-        $scope.startEngines = function(renderCanvas, drawCanvas) {
+        $scope.startEngines = function (renderCanvas, drawCanvas) {
             $scope.renderEngine = new RenderEngine(renderCanvas);
             $scope.drawEngine = new DrawEngine(drawCanvas);
             $scope.editEngine = new EditEngine(drawCanvas);
         };
 
-        $scope.startSharedSelection = function(width, height) {
+        $scope.startSharedSelection = function (width, height) {
             console.log(width, height);
             if ($scope.maskWand == null) {
                 $scope.maskWand = new Uint8Array(width * height);
@@ -110,35 +111,37 @@ app.controller('AppCtrl', ['$scope',
 
         /* This function creates a new layer from a given Image-object. The new
          * layer is placed on top. */
-        $scope.newLayerFromImage = function(image) {
+        $scope.newLayerFromImage = function (image) {
             var layer = $scope.renderEngine.createImageLayer(image);
             $scope.addLayer(layer);
 
             var height = layer.getHeight();
-            var width  = layer.getWidth();
+            var width = layer.getWidth();
             layer.setPos(0.5 * width, 0.5 * height);
         };
 
-        $scope.addLayer = function(layer) {
+        var numberLayers = 0;
+        $scope.addLayer = function (layer) {
             var height = layer.getHeight();
-            var width  = layer.getWidth();
+            var width = layer.getWidth();
 
             $scope.renderEngine.addLayer(layer);
 
             /* set the correct layer info in config. The new layer comes on top
              * and is immediately selected. */
+            $scope.config.layers.numberOfLayersCreated++;
             $scope.config.layers.numberOfLayers = $scope.renderEngine.getNumberOfLayers();
             $scope.config.layers.currentLayer = $scope.config.layers.numberOfLayers - 1;
 
             /* Store information about the layers in the config object. */
             $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {
-                "name": 'Layer ' + $scope.config.layers.numberOfLayers
+                "name": 'Layer ' + $scope.config.layers.numberOfLayersCreated
             };
 
             $scope.requestRenderEngineUpdate();
         };
 
-        $scope.resizeCanvases = function(width, height) {
+        $scope.resizeCanvases = function (width, height) {
             var toolFunctions = $scope.config.tools.activeToolFunctions;
 
             $scope.config.canvas.width = width;
@@ -158,7 +161,7 @@ app.controller('AppCtrl', ['$scope',
             if (!$scope.config.canvas.visible) {
                 $scope.config.canvas.visible = true;
             }
-            
+
             $scope.requestRenderEngineUpdate();
         };
 
@@ -167,7 +170,7 @@ app.controller('AppCtrl', ['$scope',
             drawEngine: false,
             editEngine: false,
             animationFrameCallback: null,
-            animationFrameFunction: function() {
+            animationFrameFunction: function () {
                 if ($scope.updates.renderEngine) {
                     $scope.renderEngine.render();
                     $scope.updates.renderEngine = false;
@@ -188,14 +191,15 @@ app.controller('AppCtrl', ['$scope',
             }
         };
 
-        $scope.requestRenderEngineUpdate = function() {
+        $scope.requestRenderEngineUpdate = function () {
             $scope.updates.renderEngine = true;
             if (!$scope.updates.animationFrameCallback) {
                 $scope.updates.animationFrameCallback =
                     requestAnimationFrame($scope.updates.animationFrameFunction);
             }
         };
-        $scope.requestEditEngineUpdate = function() {
+
+        $scope.requestEditEngineUpdate = function () {
             $scope.updates.editEngine = true;
             if (!$scope.updates.animationFrameCallback) {
                 $scope.updates.animationFrameCallback =
@@ -220,6 +224,12 @@ app.controller('AppCtrl', ['$scope',
             $scope.config.layers.currentLayer = layerIndex;
             $scope.$broadcast('newCurrentLayer', layerIndex);
         };
-	}
 
+        $scope.updateThumbnail = function (index) {
+            if (0 <= index && index < $scope.renderEngine.getNumberOfLayers()) {
+                var layer = $scope.renderEngine.getLayer(index);
+                $scope.renderEngine.createThumbnail(layer);
+            }
+        };
+    }
 ]);

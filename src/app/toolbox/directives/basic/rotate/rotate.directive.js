@@ -34,7 +34,8 @@ app.controller('RotateCtrl', function($scope) {
 	$scope.mouseUp = function() {
 		$scope.setCursor('grab');
 		$scope.rotating = false;
-	};
+        $scope.updateThumbnail($scope.getCurrentLayerIndex());
+    };
 
 	/* onMouseMove */
 	$scope.mouseMove = function() {
@@ -101,6 +102,7 @@ app.controller('RotateCtrl', function($scope) {
 		if (oval) {
 			var layer = $scope.getCurrentLayer();
             layer.commitTransformations();
+            $scope.updateThumbnail($scope.getCurrentLayerIndex());
 		}
 	}, true);
 });

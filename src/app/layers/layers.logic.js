@@ -8,7 +8,7 @@
  */
  
 app.controller('layersCtrl', function($scope) {
-    
+
     /* This functions returns whether the toolbox should be visible. It is 
      * hidden when the user is clicking on the canvas/background. */
     $scope.checkVisible = function() {
@@ -37,9 +37,15 @@ app.controller('layersCtrl', function($scope) {
         return $scope.renderEngine.getLayer(index).isHidden();
     };
 
+    $scope.setLayerName = function(index, name) {
+        $scope.renderEngine.getLayer(index).setName(name)
+    };
+
+    var allLayersIndex = 0;
     $scope.addLayer = function(event) {
         //event.stopPropagation();
         $scope.config.layers.numberOfLayers = $scope.renderEngine.getNumberOfLayers();
+        $scope.names.push('Layer ' + (allLayersIndex++ + 1));
     };
 
     $scope.removeLayer = function(event, index) {
@@ -53,9 +59,7 @@ app.controller('layersCtrl', function($scope) {
         $scope.renderEngine.removeLayer(index);
         $scope.editEngine.clear();
 
-        window.requestAnimationFrame(function () {
-            $scope.renderEngine.render();
-        });
+        $scope.requestRenderEngineUpdate();
     };
 
     $scope.moveLayerUp = function(event, index) {
@@ -64,8 +68,17 @@ app.controller('layersCtrl', function($scope) {
         if (index < $scope.renderEngine.getNumberOfLayers() - 1 && $scope.renderEngine.getNumberOfLayers() > 1) {
             $scope.renderEngine.reorder(index, index + 1);
             $scope.renderEngine.render();
+
+            swap($scope.config.layers.layerInfo, index, index + 1);
         }
+
     };
+
+    function swap(array, i, j) {
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
 
     $scope.moveLayerDown = function(event, index) {
         event.stopPropagation();
@@ -73,7 +86,9 @@ app.controller('layersCtrl', function($scope) {
         if (index > 0) {
             $scope.renderEngine.reorder(index, index - 1);
             $scope.renderEngine.render();
+            swap($scope.config.layers.layerInfo, index, index - 1);
         }
+
 
     };
 
@@ -87,9 +102,7 @@ app.controller('layersCtrl', function($scope) {
     };
 
     $scope.getThumbnail = function(index) {
-        var thumbnail =  $scope.renderEngine.getLayer(index).getThumbnail();
-
-        return thumbnail;
+        return $scope.renderEngine.getLayer(index).getThumbnail();
     };
 
     $scope.getLayersIndices = function() {
@@ -97,7 +110,7 @@ app.controller('layersCtrl', function($scope) {
         for (var i = 0; i < $scope.renderEngine.getNumberOfLayers(); i++) {
             indices.unshift(i);
         }
-        //return $scope.config.layers.layerInfo.slice().reverse();
+
         return indices;
-    }
+    };
 });
