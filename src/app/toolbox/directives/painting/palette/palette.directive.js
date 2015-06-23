@@ -162,8 +162,6 @@ app.controller('PaletteCtrl', function($scope) {
     $scope.drawMarker = function() {
         context = $scope.paletteContext;
         context.clearRect(0, 0, $scope.paletteBox.right - $scope.paletteBox.left, $scope.paletteBox.bottom - $scope.paletteBox.top);
-        context.fillStyle = "hsl(" + $scope.color.H + ", 100%, 50%)";
-        context.fillRect(0,0,$scope.palette.width,$scope.palette.height)
         context.drawImage($scope.paletteImage, 0, 0);
         context.beginPath();
         locX =  $scope.color.S * 

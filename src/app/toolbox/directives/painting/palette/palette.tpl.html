@@ -6,6 +6,7 @@
             id="palette" 
             width="256px" 
             height="256px" 
+            ng-style="{'background' : 'hsl(' + color.H + ', 100%, 50%)'}"
             ng-mousedown="paletteMouseDown($event)" 
             ng-mousemove="paletteMouseMove($event)" 
             ng-mouseup="paletteMouseUp()"></canvas>
