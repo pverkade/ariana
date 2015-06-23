@@ -62,9 +62,15 @@ app.controller('MagicCtrl', function($scope) {
         
         var transformation = layer.calculateTransformation();
         console.log(transformation);
+        
+        var transformation_y = -1 * transformation[7];
+        var transformation_x = transformation[6];
+        
+        transformation[6] = 0;
+        transformation[7] = 0;
         mat3.invert(transformation, transformation);
-        var position = vec3.fromValues(mouseX, mouseY, 1);
-        transformation[7] = -1 * transformation[7];
+                
+        var position = vec3.fromValues(mouseX - transformation_x, mouseY - transformation_y, 1);
         vec3.transformMat3(position, position, transformation);
         
         // FIXME only works in original state
