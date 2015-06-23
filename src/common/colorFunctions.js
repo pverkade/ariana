@@ -68,7 +68,7 @@ function RGBtoHSV(rgb) {
 }
 
 /* input: RGB = [0,255] */
-/* output: #H3XC0D E */
+/* output: string */
 function RGBtoHEX(rgb) {
     return "#" + ((1 << 24) + (rgb.r << 16) + (rgb.g << 8) + rgb.b).toString(16).slice(1).toUpperCase();
 }
