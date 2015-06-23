@@ -69,11 +69,11 @@ app.controller('PaletteCtrl', function($scope) {
         if ($scope.selectingSaturationValue) {
             /* Update the S and V value based on the mouse position inside the 
              * palette. */
-            $scope.color.S = Math.floor(
+            $scope.color.s = Math.floor(
                 ((event.pageX - $scope.paletteBox.left) * 100) /
                 ($scope.paletteBox.right - $scope.paletteBox.left)
             );
-            $scope.color.V = Math.floor(
+            $scope.color.v = Math.floor(
                 100 - ((event.pageY - $scope.paletteBox.top) * 100) /
                 ($scope.paletteBox.bottom - $scope.paletteBox.top)
             );
@@ -99,7 +99,7 @@ app.controller('PaletteCtrl', function($scope) {
         if ($scope.selectingHue) {
             /* Update the H value based on the mouse position inside the 
              * hue bar. */
-            $scope.color.H = Math.floor(
+            $scope.color.h = Math.floor(
                 360 - ((event.pageY - $scope.hueBox.top) * 360) /
                 ($scope.hueBox.bottom - $scope.hueBox.top)
             );

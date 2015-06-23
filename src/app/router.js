@@ -63,10 +63,6 @@ app.config(function($stateProvider, $locationProvider) {
                 "content": {
                     templateUrl: "app/content/landing/landing.content.tpl.html",
                     controller: 'LandingContentCtrl'
-                },
-                "toolbar": {
-                    templateUrl: "app/toolbar/landing/landing.toolbar.tpl.html",
-                    controller: 'LandingToolbarCtrl'
                 }
             }
         })
