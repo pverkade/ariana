@@ -27,6 +27,10 @@ module.exports = {
         ],
         css: [
             'vendor/bootstrap/dist/css/bootstrap.css.map'
+        ],
+        fonts: [
+            'src/assets/materialdesign/fonts/materialdesignicons-webfont.woff',
+            'src/assets/materialdesign/fonts/materialdesignicons-webfont.woff2'
         ]
     },
     test_files: {

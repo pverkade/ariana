@@ -137,9 +137,6 @@ module.exports = function(grunt) {
                 '<%= build_dir %>/css',
                 '<%= build_dir %>/vendor'
             ]
-            // prod: [
-            //     '<%= build_dir %>/'
-            // ]
         },
 
         /*
@@ -187,6 +184,15 @@ module.exports = function(grunt) {
                     dest: '<%= build_dir %>/assets',
                     cwd: 'src/assets/',
                     expand: true
+                }]
+            },
+            fonts: {
+                files: [{
+                    src: ['<%= vendor_files.fonts %>'],
+                    dest: '<%= build_dir %>/fonts/',
+                    cwd: '.',
+                    expand: true,
+                    flatten: true
                 }]
             }
         },
@@ -378,6 +384,7 @@ module.exports = function(grunt) {
         'copy:build_html', // Copy index.html -> build/index.html
         'copy:build_assets', // Copy assets -> build/assets/
         'copy:build_vendorcss', // Copy bower css -> build/css/
+        'copy:fonts', // Copy the material design fonts
         'concat', // Concat all js and css files
         'ngAnnotate', // Fix array annotation
         'uglify', // Uglify and minify javascript file
