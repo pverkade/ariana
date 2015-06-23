@@ -6,17 +6,40 @@
  * Description: this file contains a class to draw lines on a canvas.
  */
 
+/*
+ * Position2D class for addressing a point in the draw canvas.
+ * TODO: pointInDirection should check if the distance != zero etc
+ */
 class Position2D {
     constructor (public x : number, public y : number) {
 
     }
 
-    distanceTo (otherpoint : Position2D) {
+    distanceTo (otherpoint : Position2D) : number {
         return Math.sqrt(Math.pow( otherpoint.x - this.x, 2) + Math.pow(otherpoint.y - this.y, 2));  
     }
 
-    angleWith (otherpoint : Position2D) {
+    angleWith (otherpoint : Position2D) : number {
         return Math.atan2(otherpoint.x - this.x, otherpoint.y - this.y);
+    }
+
+    pointInDirection (otherpoint : Position2D, distance : number) : Position2D {
+        var dx : number = otherpoint.x - this.x;
+        var dy : number = otherpoint.y - this.y;
+
+        var origDistance : number = this.distanceTo(otherpoint);
+
+        if (distance == origDistance) {
+            return otherpoint;
+        }
+
+        var fraction : number = distance / origDistance;
+
+        var newX : number = this.x + fraction * dx;
+        var newY : number = this.y + fraction * dy;
+
+        return new Position2D(newX, newY);
+
     }
 }
 
@@ -344,7 +367,7 @@ class DrawEngine {
             this.drawNormal(points, path, context);
         }
 
-        /* Normal draw */
+        /* Draw dashed line */
         if (this.drawType == drawType.DASHED) {
             this.drawDashedLine(points, path, context);
         }
@@ -410,49 +433,57 @@ class DrawEngine {
 
     /*
      * Draw a dashed line (black and white) for the magic selection
+     * TODO: on start, set the dashedDistance to zero.
      */
     drawDashedLine (points : Array<Position2D>, path : Path, context : CanvasRenderingContext2D) {
         var nrLastDrawn : number = path.lastDrawnItem;
         var newDistance : number = 0.0;
 
-        context.beginPath();
-        context.moveTo(points[i].x, points[i].y);
         for (var i = nrLastDrawn + 1; i < points.length; i++) {
-            newDistance = points[i].distanceTo(points[i+1]);
-            context.lineTo(points[i].x, points[i].y);
+            var lastPoint : Position2D = points[i-1];
+
+            //newDistance = lastPoint.distanceTo(points[i]);
+            
+            while (lastPoint.distanceTo(points[i]) > 5 - this.dashedDistance % 5) {
+                var nextPoint : Position2D = lastPoint.pointInDirection(points[i], 5 - this.dashedDistance % 5);
+
+                context.beginPath();
+                context.moveTo(lastPoint.x, lastPoint.y);
+                if (this.dashedDistance % 10 >= 5.0) {
+                    context.strokeStyle = 'rgba(0,0,0,255)';
+                }
+                else {
+                    context.strokeStyle = 'rgba(255,255,255,255)';
+                }
+                context.lineTo(nextPoint.x, nextPoint.y);
+                context.stroke();
+
+                lastPoint = nextPoint;
+                this.dashedDistance += 5 - this.dashedDistance % 5;
+            }
+
+            if (lastPoint.distanceTo(points[i]) > 0) {
+                var nextPoint : Position2D = points[i];
+
+                context.beginPath();
+                context.moveTo(lastPoint.x, lastPoint.y);
+                if (this.dashedDistance % 10 >= 5.0) {
+                    context.strokeStyle = 'rgba(0,0,0,255)';
+                }
+                else {
+                    context.strokeStyle = 'rgba(255,255,255,255)';
+                }
+                context.lineTo(nextPoint.x, nextPoint.y);
+                context.stroke();
+
+                this.dashedDistance += lastPoint.distanceTo(points[i]);
+                lastPoint = nextPoint;
+            }
+
         }
-        context.stroke();
-
-        path.lastDrawnItem = i - 1;
-    }/* TODO: old code, remove;
-
-    drawDashedLine (points : Array<Position2D>, path : Path, context : CanvasRenderingContext2D) {
-        var nrLastDrawn : number = path.lastDrawnItem;
-        var newDistance : number = 0.0;
-
-        for (var i = nrLastDrawn; i < points.length - 1; i++) {
-            newDistance += points[i].distanceTo(points[i+1]);
-        }
-
-        if (newDistance) {
-            this.dashedDistance += newDistance;
-        }
-
-        if (this.dashedDistance % 10 > 5.0) {
-            this.setColor(0, 0, 0, 255);
-        } else {
-            this.setColor(255, 255, 255, 255);
-        }
-
-        context.beginPath();
-        context.moveTo(points[nrLastDrawn].x, points[nrLastDrawn].y);
-        for (var i = nrLastDrawn + 1; i < points.length; i++) {
-            context.lineTo(points[i].x, points[i].y);
-        }
-        context.stroke();
 
         path.lastDrawnItem = points.length - 1;
-    }*/
+    }
 
     /*
      * Smoother draw by using quadratic Bézier curves
