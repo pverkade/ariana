@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * palette.directive.js
+ * 
+ * This file contains the PaletteController and directive, 
+ * which controls the palette in the toolbox.
+ *
+ */
+
 app.directive('palette', function() {
     return {
         restrict: 'E',
@@ -67,14 +76,37 @@ app.controller('PaletteCtrl', function($scope) {
 
     $scope.paletteMouseMove = function(event) {
         if ($scope.selectingSaturationValue) {
+            var locX, locY;
+
             /* Update the S and V value based on the mouse position inside the 
              * palette. */
+            if (/^mouse/i.test(event.type)) {
+                locX = event.pageX;
+                locY = event.pageY;
+            } else {
+                locX = event.originalEvent.touches[0].pageX;
+                locY = event.originalEvent.touches[0].pageY;
+            }
+
+            if (locX < $scope.paletteBox.left) {
+                locX = $scope.paletteBox.left;
+            }
+            if (locY < $scope.paletteBox.top) {
+                locY = $scope.paletteBox.top;
+            }            
+            if (locX > $scope.paletteBox.right) {
+                locX = $scope.paletteBox.right;
+            }
+            if (locY > $scope.paletteBox.bottom) {
+                locY = $scope.paletteBox.bottom;
+            }
+
             $scope.color.s = Math.floor(
-                ((event.pageX - $scope.paletteBox.left) * 100) /
+                ((locX - $scope.paletteBox.left) * 100) /
                 ($scope.paletteBox.right - $scope.paletteBox.left)
             );
             $scope.color.v = Math.floor(
-                100 - ((event.pageY - $scope.paletteBox.top) * 100) /
+                100 - ((locY - $scope.paletteBox.top) * 100) /
                 ($scope.paletteBox.bottom - $scope.paletteBox.top)
             );
             
@@ -97,10 +129,26 @@ app.controller('PaletteCtrl', function($scope) {
 
     $scope.hueMouseMove = function(event) {
         if ($scope.selectingHue) {
+            var locY;
+
             /* Update the H value based on the mouse position inside the 
              * hue bar. */
+            if (/^mouse/i.test(event.type)) {
+                locY = event.pageY;
+            } else {
+                locY = event.originalEvent.touches[0].pageY;
+            }
+
+            if (locY < $scope.hueBox.top) {
+                locY = $scope.hueBox.top;
+            }
+            if (locY > $scope.hueBox.bottom) {
+                locY = $scope.hueBox.bottom;
+            }
+            
+
             $scope.color.h = Math.floor(
-                360 - ((event.pageY - $scope.hueBox.top) * 360) /
+                360 - ((locY - $scope.hueBox.top) * 360) /
                 ($scope.hueBox.bottom - $scope.hueBox.top)
             );
             
@@ -156,14 +204,14 @@ app.controller('PaletteCtrl', function($scope) {
     };
 
     $scope.drawMarker = function() {
+        var width = $scope.palette.width;
+        var height = $scope.palette.height;
         context = $scope.paletteContext;
-        context.clearRect(0, 0, $scope.paletteBox.right - $scope.paletteBox.left, $scope.paletteBox.bottom - $scope.paletteBox.top);
-        context.drawImage($scope.paletteImage, 0, 0);
+        context.clearRect(0, 0, width, height);
+        context.drawImage($scope.paletteImage, 0, 0, width, height);
         context.beginPath();
-        locX =  $scope.color.s * 
-                ($scope.paletteBox.right - $scope.paletteBox.left) / 100;
-        locY =  (100 - $scope.color.v) * 
-                ($scope.paletteBox.bottom - $scope.paletteBox.top) / 100;
+        locX =  $scope.color.s * width / 100;
+        locY =  (100 - $scope.color.v) * height / 100;
         context.arc(locX, locY, 6, 0, 2 * Math.PI, false);
         context.fillStyle = "rgb("  + $scope.config.tools.colors.primary.r + "," 
                                     + $scope.config.tools.colors.primary.g + "," 
@@ -178,14 +226,15 @@ app.controller('PaletteCtrl', function($scope) {
     }
 
     $scope.drawBar = function() {
+        var width = $scope.hue.width;
+        var height = $scope.hue.height;
         context = $scope.hueContext;
-        context.clearRect(0, 0, $scope.hueBox.right - $scope.hueBox.left, $scope.hueBox.bottom - $scope.hueBox.top);
-        context.drawImage($scope.hueImage , 0, 0, $scope.hueBox.right - $scope.hueBox.left, $scope.hueBox.bottom - $scope.hueBox.top);
+        context.clearRect(0, 0, width, height);
+        context.drawImage($scope.hueImage , 0, 0, width, height);
         context.beginPath();
-        loc =   (360 - $scope.color.h) * 
-                ($scope.hueBox.bottom - $scope.hueBox.top)/360;
-        context.rect(0, loc - 4, $scope.hueBox.right - $scope.hueBox.left, 8);
-        context.fillStyle = "hsl(" + $scope.color.H + ", 100%, 50%)";
+        loc =   (360 - $scope.color.h) * height / 360;
+        context.rect(0, loc - 4, width, 8);
+        context.fillStyle = "hsl(" + $scope.color.h + ", 100%, 50%)";
         context.fill();
         context.lineWidth = 3;
         context.strokeStyle = "black";

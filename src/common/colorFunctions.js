@@ -59,21 +59,21 @@ function RGBtoHSV(rgb) {
     if (isNaN(h)) {
         h = 0;
     }
-    if (isNaN(S)) {
+    if (isNaN(s)) {
         s = 0;
     }
     return {
-        h: h, s: Math.round(s * 100), V: Math.round(v * 100)
+        h: h, s: Math.round(s * 100), v: Math.round(v * 100)
     };
 }
 
 /* input: RGB = [0,255] */
-/* output: #H3XC0D E */
+/* output: "#hexcode" */
 function RGBtoHEX(rgb) {
     return "#" + ((1 << 24) + (rgb.r << 16) + (rgb.g << 8) + rgb.b).toString(16).slice(1).toUpperCase();
 }
 
-/* input: (#)hexcode */
+/* input: "(#)hexcode" */
 /* output: R,G,B = [0,255] */
 function HEXtoRGB(hex) {
     //cut away '#', if any.
