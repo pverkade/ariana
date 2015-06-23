@@ -29,5 +29,5 @@
 
 <div class="modal-footer">
     <button type="button" class="btn btn-default btn-lg" ng-click="closeSaveImageModal()"> Cancel </button>
-    <button type="button" class="btn btn-primary btn-lg" ng-click="saveImage(); closeSaveImageModal()"> Save Image </button>
+    <button type="button" class="btn btn-primary btn-lg" ng-click="saveImage();" ng-class="{disabled: !filename}"> Save Image </button>
 </div>
