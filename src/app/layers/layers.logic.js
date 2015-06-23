@@ -7,7 +7,7 @@
  *
  */
  
-app.controller('layersCtrl', function($scope) {
+app.controller('layersCtrl', ['$scope', '$animate', function($scope, $animate) {
 
     /* This functions returns whether the toolbox should be visible. It is 
      * hidden when the user is clicking on the canvas/background. */
@@ -51,36 +51,20 @@ app.controller('layersCtrl', function($scope) {
     $scope.removeLayer = function(event, index) {
         event.stopPropagation();
 
-        var done = false;
-        function remove() {
-            if (done) {
-                return;
-            }
+        $scope.config.layers.layerInfo.splice(index, 1);
+        $scope.config.layers.numberOfLayers = $scope.renderEngine.getNumberOfLayers();
 
-            $scope.config.layers.layerInfo.splice(index, 1);
-            $scope.config.layers.numberOfLayers = $scope.renderEngine.getNumberOfLayers();
+        if ($scope.config.layers.currentLayer == $scope.renderEngine.getNumberOfLayers())
+            $scope.config.layers.currentLayer -= 1;
 
-            if ($scope.config.layers.currentLayer == $scope.renderEngine.getNumberOfLayers())
-                $scope.config.layers.currentLayer -= 1;
+        $scope.renderEngine.removeLayer(index);
 
-            $scope.renderEngine.removeLayer(index);
-            $scope.editEngine.clear();
-
-            $scope.requestRenderEngineUpdate();
-            done = true;
-        }
-
-        $scope.config.layers.layerInfo[index].remove = true;
-        var layerElement = document.querySelectorAll(".layer")[$scope.renderEngine.getNumberOfLayers() - 1 - index];
-
-        layerElement.addEventListener("webkitTransitionEnd", remove, false);
-        layerElement.addEventListener("transitionend", remove, false);
-        layerElement.addEventListener("oTransitionEnd", remove, false);
+        $scope.editEngine.clear();
+        $scope.requestRenderEngineUpdate();
     };
 
     $scope.isToBeRemoved = function(index) {
-        var r = $scope.config.layers.layerInfo[index].remove;
-        return r;
+        return $scope.config.layers.layerInfo[index].remove;
     };
 
     $scope.moveLayerUp = function(event, index) {
@@ -109,8 +93,6 @@ app.controller('layersCtrl', function($scope) {
             $scope.renderEngine.render();
             swap($scope.config.layers.layerInfo, index, index - 1);
         }
-
-
     };
 
     /* This function selects a specific layer if possible. */
@@ -134,4 +116,4 @@ app.controller('layersCtrl', function($scope) {
 
         return indices;
     };
-});
+}]);

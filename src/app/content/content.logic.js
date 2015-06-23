@@ -113,7 +113,7 @@ app.controller('ContentController', function($scope, $window) {
         document.getElementById("editing-canvas")
     );
 
-    if (false) {
+    if (true) {
         var i = 1;
         function done() {
             if (i) {

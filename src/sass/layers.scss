@@ -32,11 +32,7 @@
         position: relative;
         float: left;
     }
- 
-    .ng-hide {
-        @include transform(translate(4 * $blocksize, 0px));
-    }
-    
+
     .layer-header, .layer, .scroll {
         transition: transform $move-speed ease;
     }
@@ -60,6 +56,11 @@
         
         font-size: 15pt;
     }
+
+    .ng-hide {
+        @include transform(translate(4 * $blocksize, 0px));
+    }
+
 }
 
 .layer {
@@ -73,8 +74,7 @@
     @extend .gui-element;
     
     position: relative;
-    transition: transform 200ms ease;
-    
+
     .crop {
         float: left;
         width: 3 * $blocksize;
@@ -99,4 +99,9 @@
 
         background-color: darken($light, 5%);
     }
+
+    &.ng-leave.ng-leave-active {
+        @include transform(translate(4 * $blocksize, 0px));
+    }
 }
+
