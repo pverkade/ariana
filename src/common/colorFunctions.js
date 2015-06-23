@@ -59,11 +59,11 @@ function RGBtoHSV(rgb) {
     if (isNaN(h)) {
         h = 0;
     }
-    if (isNaN(S)) {
+    if (isNaN(s)) {
         s = 0;
     }
     return {
-        h: h, s: Math.round(s * 100), V: Math.round(v * 100)
+        h: h, s: Math.round(s * 100), v: Math.round(v * 100)
     };
 }
 
