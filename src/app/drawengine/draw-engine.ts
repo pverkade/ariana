@@ -100,7 +100,7 @@ class Color {
  * CIRCLE : draw a circle
  * 
  */
-enum drawType { NORMAL, DASHED, QUADRATIC_BEZIER, BRUSH, LINE, RECTANGLE, CIRCLE, ERASE };
+enum drawType { NORMAL, DASHED, QUADRATIC_BEZIER, BRUSH, LINE, RECTANGLE, CIRCLE };
 
 /*
  * Brushes
@@ -119,12 +119,6 @@ enum brushType { THIN, PEPPER, DUNES, PEN, NEIGHBOR, FUR, MULTISTROKE }
  *
  * This class allows the user to draw lines, and anything else you can imagine,
  * on the canvas.
- *
- * TODO: - Fill and Fill with background-color
- *       - Text? ( https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D )
- *       - just a dot
- *
- *       Gum / eraser
  */
 class DrawEngine {
 
@@ -172,6 +166,7 @@ class DrawEngine {
      */
     onMousedown = (x : number, y : number) : void => {
         if (!this.currentPath) {
+            this.dashedDistance = 0.0;
             this.saveCanvas();
             this.currentPath = new Path(new Position2D(x, y));
             if (this.drawType == drawType.RECTANGLE || this.drawType == drawType.CIRCLE) {
@@ -354,7 +349,7 @@ class DrawEngine {
             return;
         }
 
-        /* Append the right brush settings (TODO: is this the right place to do this?) */
+        /* Append the right brush settings */
         context.strokeStyle = this.color.getRGBA();
         context.lineWidth = this.lineWidth;
         context.lineCap = 'round'; //TODO: add other linecap options.
@@ -405,13 +400,6 @@ class DrawEngine {
             this.drawCircle(points, context);
         }
 
-        /*
-         * Erase some drawn things
-         */
-        if (this.drawType == drawType.ERASE) {
-            this.erasePath(points, path, context);
-        }
-
         this.isCleared = false;
     }
 
@@ -433,7 +421,6 @@ class DrawEngine {
 
     /*
      * Draw a dashed line (black and white) for the magic selection
-     * TODO: on start, set the dashedDistance to zero.
      */
     drawDashedLine (points : Array<Position2D>, path : Path, context : CanvasRenderingContext2D) {
         var nrLastDrawn : number = path.lastDrawnItem;
@@ -748,23 +735,6 @@ class DrawEngine {
 
     getRandomInt (min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    /*
-     * Function to erase the points in a path.
-     * TODO: rectangle erase from point i to i+1
-     */
-    erasePath (points : Array<Position2D>, path : Path, context : CanvasRenderingContext2D) {
-
-        var i : number = path.lastDrawnItem;
-
-        for (i = i; i < points.length; i++) {
-            context.clearRect(points[i].x - this.lineWidth / 2,
-                              points[i].y - this.lineWidth / 2,
-                              this.lineWidth, this.lineWidth);
-        }
-
-        path.lastDrawnItem = i;
     }
 
     /*
