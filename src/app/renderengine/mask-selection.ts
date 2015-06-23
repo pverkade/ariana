@@ -1,5 +1,3 @@
-
-
 class MaskSelection {
     private maskWand : Uint8Array;
     private maskBorder : Uint8Array;
@@ -14,10 +12,6 @@ class MaskSelection {
 
         this.maskBorder = maskBorder;
         this.maskWand = new Uint8Array(width * height); // [];
-        // for (var i = 0; i < width * height; i++) {
-        // 	this.maskWand.push(0);
-        // }
-        // this.maskWand[0] = new Uint8Array(width * height);
     }
 
     getMaskWand(x : number, y : number) {
@@ -25,10 +19,7 @@ class MaskSelection {
         var curLine = [];
         var newLine = [];
 
-        /* Create new empty maskWand for selection. */
-        // this.maskWand.push(new Uint8Array(this.maskWand[0].length));
-
-        /* Use searchLine to get a horizontal line of points with colors next to given point
+        /* Use searchLine to get a horizontal line of points with zeros
             and push to stack. */
         curLine = this.searchLine(x, y);
         stack.push(curLine);
@@ -55,11 +46,7 @@ class MaskSelection {
             }
         }
         
-        /* Merge maskWand[0] with current maskWand. */
-        // this.mergeMaskWand();
-
-        /* Return current maskWand. */
-        return this.maskWand; // [this.maskWand.length - 1];
+        return this.maskWand; 
     }
 
     /* Return array of points on same line as given point. */
@@ -72,9 +59,7 @@ class MaskSelection {
         if (startY < 0 || startY >= this.height || startX < 0 || startX >= this.width ) {
             return null;
         }
-        // console.log("testest5");
-       // console.log( this.maskWand.length);
-       // console.log( this.maskWand[startX + startY * this.width] );
+
         /* Check if point is marked in current maskWand as part of the selection. */ 
         if (this.maskWand[startX + startY * this.width] != 0) { // [this.maskWand.length - 1]
             return null;
@@ -85,7 +70,6 @@ class MaskSelection {
             return null;
         }
 
-        // console.log("testest");
         /* Search left from starting point. */
         for (var x = startX - 1; x >= 0; x--) {
             if (this.matchPoint(x, startY) == false) {
@@ -112,19 +96,13 @@ class MaskSelection {
         for (var x = left; x <= right; x++) {
             line.push(new Point(x, startY));
             this.maskWand[x + startY * this.width] = this.bmON; // [this.maskWand.length - 1]
-            // console.log("teo");
         }
 
         return line;
     }
 
-    /* Return RGB values of point. */
-    getColorPoint(x : number, y : number) {
-        return this.maskBorder[y * this.width + x];
-    }   
-
     matchPoint(x : number, y : number) {
-        var value = this.getColorPoint(x, y);
+        var value = this.maskBorder[y * this.width + x];
         return value == 0;
     }
 }

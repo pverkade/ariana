@@ -16,7 +16,7 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
         $scope.setCursor('default');
         $scope.selection.maskEnabled = true;
 
-        var currentLayer = $scope.config.layers.currentLayer;//$scope.config.layers.currentLayer;
+        var currentLayer = $scope.config.layers.currentLayer;
         if (currentLayer == -1) {
             console.log("No layer selected");
             return;
@@ -38,7 +38,6 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
         $scope.loose.setMaskWand($scope.maskWand);
         $scope.loose.setMaskBorder($scope.maskBorder);
 
-        $scope.maskEnabled = true;
         $scope.drawEngine.setLineWidth(2);
         $scope.drawEngine.setDrawType(drawType.DOTTED);
     };

@@ -1,23 +1,72 @@
+class Rectangle{
+	point1 : Point;
+	point2 : Point;
+}
 
 
-class Rectangle implements SelectionInterface {
-	points : Point[][];
-	maskBorder : Uint8Array;
-	maskWand : Uint8Array;
-	maskWandParts : Uint8Array[];
-
-	width : number;
-	height : number;
+class RectangleSelection extends AbstractSelection implements SelectionInterface {
+	rects: Rectangle[];
 
 	constructor(width : number, height : number) {
-		this.width = width;
-		this.height = height;
-
-		this.points = [];
-		this.points[0] = [];
-		this.maskWandParts = [];
-
-		this.maskBorder = null; 
-		this.maskWand = null;
+		super(width, height);
+		this.rects = [];
 	}
+
+	addRect(point1 : Point, point2 : Point) {
+		var topLeft = new Point(Math.min(point1.x, point2.x), Math.min(point1.y, point2.y));
+		var bottomRight = new Point(Math.max(point1.x, point2.x), Math.max(point1.y, point2.y));
+
+		var width =  bottomRight.x - topLeft.x;
+		var height = bottomRight.y - topLeft.y;
+		var indexPointMask : number;
+
+		/* Draw borders in mask. */
+		for (var y = 0; y < height; y++) {
+			indexPointMask = (topLeft.y + y) * this.width + topLeft.x;
+			this.maskBorder[indexPointMask] = 1;
+			indexPointMask = (topLeft.y + y) * this.width + bottomRight.x;
+			this.maskBorder[indexPointMask] = 1;
+		}
+
+		for (var x = 0; x < width; x++) {
+			indexPointMask = topLeft.y * this.width + topLeft.x + x;
+			this.maskBorder[indexPointMask] = 1;
+			indexPointMask = bottomRight.y * this.width + topLeft.x + x;
+			this.maskBorder[indexPointMask] = 1;
+		}
+
+		this.maskWandParts[this.maskWandParts.length] = new Uint8Array(this.width * this.height);
+
+		/* Draw mask wand. */
+		var nrWands = this.maskWandParts.length;
+		for (var y = 0; y < height; y++) {
+			for (var x = 0; x < width; x++) {
+				var indexPointMask = (topLeft.y + y) * this.width + topLeft.x + x;
+				this.maskWandParts[nrWands - 1][indexPointMask] = 1;
+			}
+		}
+
+		this.mergeMaskWand();
+
+		return this.maskWandParts[this.maskWandParts.length - 1];
+	}
+
+	clearLast() : boolean {
+		var nrWands = this.maskWandParts.length;
+		var indexPointMask;
+
+		if (nrWands < 1) {
+			return false;
+		}
+
+		return true;
+	}
+
+
+
+	removeRect() {
+
+	}
+
+
 }
