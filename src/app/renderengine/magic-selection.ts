@@ -8,19 +8,18 @@ class Point {
     }
 }
 
-class MagicSelection {
+class MagicSelection implements SelectionInterface{
     private magicWandColor : number[];
     private imageData : ImageData;
-    private bmON : number;
-    private maskWand : Uint8Array;
-    private maskWandParts : Uint8Array[];
-    private maskBorder : Uint8Array;
-    private width : number;
-    private height : number;
+    maskWand : Uint8Array;
+    maskWandParts : Uint8Array[];
+    maskBorder : Uint8Array;
+    width : number;
+    height : number;
 
     constructor(image : HTMLImageElement) {
         this.maskBorder = new Uint8Array(image.width * image.height);
-        this.bmON = 1;
+
         this.magicWandColor = null;
 
         var canvas = document.createElement("canvas");
@@ -38,6 +37,23 @@ class MagicSelection {
         this.maskWandParts = [];
     }
 
+    clearLast() : boolean {
+        var nrWands = this.maskWandParts.length;
+        if (nrWands < 1) {
+            return false;
+        }
+
+        for (var i = 0; i < this.maskWandParts[nrWands - 1].length; i++) {
+            if (this.maskWandParts[nrWands-1][i] == 1) {
+                this.maskBorder[i] = 0;
+                this.maskWand[i] = 0;
+                this.maskWandParts[nrWands-1][i] = 0;
+            }
+        }
+
+        return true;
+    }
+
     /* Return borders (bitmask) of magic wand mask. */
     getMaskBorder() {
         /* Check whether a maskwand has been created. */
@@ -49,13 +65,13 @@ class MagicSelection {
         // this.maskBorder = new Uint8Array(this.imageData.width * this.imageData.height);
         
         for (var i = 0; i < this.maskWand.length; i++) {
-            if (this.maskWand[i] == this.bmON) {
+            if (this.maskWand[i] == 1) {
                 /* Check for borders of image (pixel on border of image is edge). */
                 if (i % this.imageData.width == 0 ||
                   i % this.imageData.width == this.imageData.width - 1 ||
                   Math.floor( i / this.imageData.width) == 0 || 
                   Math.floor( i / this.imageData.width) >= this.imageData.height - 1) { /// aanpassing <--
-                    this.maskBorder[i] = this.bmON;
+                    this.maskBorder[i] = 1;
                 /* Check if one 8 neighbor pixels is off then it is an "inside" pixel. */
                 } else if ( this.maskWand[i - this.imageData.width - 1] == 0 ||
                     this.maskWand[i - this.imageData.width ] == 0 ||
@@ -65,7 +81,7 @@ class MagicSelection {
                     this.maskWand[i + this.imageData.width - 1] == 0 ||
                     this.maskWand[i + this.imageData.width] == 0 ||
                     this.maskWand[i + this.imageData.width + 1] == 0 ) {
-                    this.maskBorder[i] = this.bmON;
+                    this.maskBorder[i] = 1;
                 } else {
                     this.maskBorder[i] = 0;
                 }
@@ -147,7 +163,7 @@ class MagicSelection {
 
         if (indexRemove != -1){
             for (var i = 0; i < this.maskWandParts[indexRemove].length; i++) {
-                if (this.maskWand[indexRemove][i] == this.bmON) {
+                if (this.maskWand[indexRemove][i] == 1) {
                     this.maskWand[0][i] = 0;
                 }
             }
@@ -213,7 +229,7 @@ class MagicSelection {
         /* Make line by adding all points that are found and adjust bitmask */
         for (var x = left; x <= right; x++) {
             line.push(new Point(x, startY));
-            this.maskWandParts[this.maskWandParts.length - 1][x + startY * this.imageData.width] = this.bmON;
+            this.maskWandParts[this.maskWandParts.length - 1][x + startY * this.imageData.width] = 1;
         }
 
         return line;
@@ -279,5 +295,9 @@ class MagicSelection {
         }
 
         this.mergeMaskWand();
+    }
+
+    getNrWands() {
+        return this.maskWandParts.length;
     }
 }

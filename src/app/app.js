@@ -96,10 +96,10 @@ app.controller('AppCtrl', ['$scope',
         
         /* This function creates the RenderEngine. It requires the canvas to
          * render on. */
-        $scope.startEngines = function(renderCanvas, drawCanvas) {
+        $scope.startEngines = function(renderCanvas, drawCanvas, topCanvas) {
             $scope.renderEngine = new RenderEngine(renderCanvas);
             $scope.drawEngine = new DrawEngine(drawCanvas);
-            $scope.editEngine = new EditEngine(drawCanvas);
+            $scope.editEngine = new EditEngine(topCanvas);
         };
 
         $scope.startSharedSelection = function(width, height) {

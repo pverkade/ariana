@@ -110,7 +110,8 @@ app.controller('ContentController', function($scope, $window) {
     /* Get the canvas element and start the engine. */
     $scope.startEngines(
         document.getElementById("main-canvas"),
-        document.getElementById("editing-canvas")
+        document.getElementById("editing-canvas"),
+        document.getElementById("top-canvas")
     );
 
     if (false) {

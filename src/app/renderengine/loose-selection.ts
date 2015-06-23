@@ -28,7 +28,6 @@ class LooseSelection implements SelectionInterface{
 		if (this.maskWand[point.y * this.width + point.x] == 0) {
 			if (nrPointsLast == 0) {
 				this.points[nrPoints - 1].push(point);
-				// this.maskBorder[this.width * point.y + point.x] = 1;
 				return true;
 			} else 	if (this.points[nrPoints - 1][nrPointsLast - 1].x != point.x ||
 						this.points[nrPoints - 1][nrPointsLast - 1].y != point.y) {
@@ -45,7 +44,6 @@ class LooseSelection implements SelectionInterface{
 
                     if (this.maskWand[y * this.width + x] == 0) {
 	                    this.points[nrPoints - 1].push(new Point(x, y));
-	                    // this.maskBorder[this.width * y + x] = 1;
                     } else {
                     	this.reset();
                     	return false;
@@ -74,6 +72,9 @@ class LooseSelection implements SelectionInterface{
         }
     }
 
+    getNrWands() {
+    	return this.maskWandParts.length;
+    }
 
 	getLastMaskWand() {
 		return this.maskWandParts[this.maskWandParts.length - 1];			
@@ -230,11 +231,11 @@ class LooseSelection implements SelectionInterface{
 		var lastAddedPoint : Point;
 		var insidePoint : Point;
 
-		var newArea = this.newAdjustedArea();
+		var newArea = 0; // this.newAdjustedArea();
 
-		if (newArea.length > 0) {
-			return newArea;
-		}
+		// if (newArea.length > 0) {
+		// 	return newArea;
+		// }
 
         for (var i = nrPointsLast - 10; i >= 0; i--) {
             /* Look if last added point is close enough to current point. */
@@ -345,16 +346,19 @@ class LooseSelection implements SelectionInterface{
 			this.maskBorder[indexPointMask] = 0;
 		} 
 
+
 		for (var i = 0; i < this.maskWandParts[nrWands - 1].length; i++) {
 			if (this.maskWandParts[nrWands - 1][i] == 1) {
 				this.maskWand[i] = 0;
 				this.maskWandParts[nrWands - 1][i] = 0;
 			}
 		}
+
+		this.maskWandParts.splice(nrWands - 1, 1);
 		// this.maskWandParts[nrWands - 1] = new Uint8Array(0);
 		// this.mergeMaskWand();
-		
-		this.points[nrPoints - 2] = [];
+		this.points.splice(nrPoints - 2, 1);
+		// this.points[nrPoints - 2] = [];
 		return true;
 	}
 
