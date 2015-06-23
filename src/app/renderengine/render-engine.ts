@@ -184,11 +184,11 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         }
     }
 
-    public renderIndicesToImg(indices : number[]) : String {
+    public renderIndicesToImg(indices : number[], drawHiddenLayers = false) : String {
         this.drawbuffer1.bind();
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
 
-        this.renderIndices(indices);
+        this.renderIndices(indices, drawHiddenLayers);
 
         var data : String = this.drawbuffer1.getImage();
         this.drawbuffer1.unbind();
