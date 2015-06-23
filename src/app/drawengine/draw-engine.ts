@@ -437,12 +437,9 @@ class DrawEngine {
      */
     drawDashedLine (points : Array<Position2D>, path : Path, context : CanvasRenderingContext2D) {
         var nrLastDrawn : number = path.lastDrawnItem;
-        var newDistance : number = 0.0;
 
         for (var i = nrLastDrawn + 1; i < points.length; i++) {
             var lastPoint : Position2D = points[i-1];
-
-            //newDistance = lastPoint.distanceTo(points[i]);
             
             while (lastPoint.distanceTo(points[i]) > 5 - this.dashedDistance % 5) {
                 var nextPoint : Position2D = lastPoint.pointInDirection(points[i], 5 - this.dashedDistance % 5);
@@ -458,8 +455,8 @@ class DrawEngine {
                 context.lineTo(nextPoint.x, nextPoint.y);
                 context.stroke();
 
-                lastPoint = nextPoint;
                 this.dashedDistance += 5 - this.dashedDistance % 5;
+                lastPoint = nextPoint;
             }
 
             if (lastPoint.distanceTo(points[i]) > 0) {
