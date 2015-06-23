@@ -11,110 +11,109 @@ app.controller('PaletteCtrl', function($scope) {
     $scope.toolname = 'palette'
     $scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
-    $scope.palette = {
-        color: true,
-        constants: true,
+    $scope.color = {
+        H: 0,
+        S: 0,
+        V: 0
     }
+    
+    $scope.hex = "#000000";
 
-    var palmousedown = false;
-    var huemousedown = false;
+    $scope.selectingSaturationValue = false;
+    $scope.selectingHue = false;
+    
+    $scope.palette = document.getElementById("palette");
+    $scope.hue = document.getElementById("hue");
+    $scope.paletteContext = $scope.palette.getContext('2d');
+    $scope.hueContext = $scope.hue.getContext('2d');
+    $scope.paletteBox = $scope.palette.getBoundingClientRect();
+    $scope.hueBox = $scope.hue.getBoundingClientRect();
 
-    $scope.palette.constants = {
-        palmousedown: false,
-        huemousedown: false,
-        pal: document.getElementById("palette"),
-        hue: document.getElementById("hue"),
-        palContext: palette.getContext('2d'),
-        hueContext: hue.getContext('2d'),
-        palBox: palette.getBoundingClientRect(),
-        hueBox: hue.getBoundingClientRect(),
-    }
-
-    var palImg = new Image();
-    palImg.src = "assets/img/bgGradient.png";
-
-    var hueImg = new Image();
-    hueImg.src = "assets/img/hueBar.png";
-
-    hueImg.onload = function() {
-        $scope.$watch('palette.color', function(newVal, oldVal) {
-            if(newVal == true) {
-                return;
-            }
-            rgb = HSVtoRGB(newVal.H, newVal.S, newVal.V);
-            $scope.config.tools.colors.primary.r = rgb.R;
-            $scope.config.tools.colors.primary.g = rgb.G;
-            $scope.config.tools.colors.primary.b = rgb.B;
-            $scope.palette.color.hex = RGBtoHEX(rgb.R, rgb.G, rgb.B);
-
-            drawMarker(palImg);
-            drawBar(hueImg);
-        }, true);
-    };
-
+    $scope.paletteImage = new Image();
+    $scope.paletteImage.src = "assets/img/bgGradient.png";
+    
+    $scope.hueImage = new Image();
+    $scope.hueImage.src = "assets/img/hueBar.png";
+    
     /* init */
     $scope.init = function() {
         $scope.setCursor('default');
 
-        hsv = RGBtoHSV( $scope.config.tools.colors.primary.r,
-                        $scope.config.tools.colors.primary.g,
-                        $scope.config.tools.colors.primary.b);
+        $scope.color = RGBtoHSV($scope.config.tools.colors.primary.r,
+                                $scope.config.tools.colors.primary.g,
+                                $scope.config.tools.colors.primary.b);
 
-        hexcode = RGBtoHEX( $scope.config.tools.colors.primary.r,
-                            $scope.config.tools.colors.primary.g,
-                            $scope.config.tools.colors.primary.b);
-
-        $scope.palette.color = {
-            H: hsv.H,
-            S: hsv.S,
-            V: hsv.V,
-            hex: hexcode,
-        }
+        $scope.hex = RGBtoHEX($scope.config.tools.colors.primary.r,
+                              $scope.config.tools.colors.primary.g,
+                              $scope.config.tools.colors.primary.b);
+                              
+        $scope.drawMarker();
+        $scope.drawBar();
     };
 
     $scope.mouseDown = function() {
-
     };
 
-    /* onMouseUp */
     $scope.mouseUp = function() {
-
     };
 
-    /* onMouseMove */
     $scope.mouseMove = function() {
-        
     };
 
-    $scope.palMouseDown = function(event) {
-        updateSV(event);
-        palmousedown = true;
-    }
+    $scope.paletteMouseDown = function(event) {
+        $scope.selectingSaturationValue = true;
+        $scope.paletteMouseMove(event);
+    };
+    
+    $scope.paletteMouseUp = function() {
+        $scope.selectingSaturationValue = false;
+    };
 
-    $scope.palMouseMove = function(event) {
-        if (palmousedown) {
-            updateSV(event);
+    $scope.paletteMouseMove = function(event) {
+        if ($scope.selectingSaturationValue) {
+            /* Update the S and V value based on the mouse position inside the 
+             * palette. */
+            $scope.color.S = Math.floor(
+                ((event.pageX - $scope.paletteBox.left) * 100) /
+                ($scope.paletteBox.right - $scope.paletteBox.left)
+            );
+            $scope.color.V = Math.floor(
+                100 - ((event.pageY - $scope.paletteBox.top) * 100) /
+                ($scope.paletteBox.bottom - $scope.paletteBox.top)
+            );
+            
+            $scope.drawMarker();
+            $scope.drawBar();
+            $scope.updateRGB();
+            $scope.updateHEX();
         }
-    }
-
-    $scope.palMouseUp = function() {
-        palmousedown = false;
-    }
+    };
 
     $scope.hueMouseDown = function(event) {
-        updateH(event);
-        huemousedown = true;
+        $scope.selectingHue= true;
+        $scope.hueMouseMove(event);
+    };
+    
+    
+    $scope.hueMouseUp = function() {
+        $scope.selectingHue = false;
     };
 
     $scope.hueMouseMove = function(event) {
-        if (huemousedown) {
-            updateH(event);
+        if ($scope.selectingHue) {
+            /* Update the H value based on the mouse position inside the 
+             * hue bar. */
+            $scope.color.H = Math.floor(
+                360 - ((event.pageY - $scope.hueBox.top) * 360) /
+                ($scope.hueBox.bottom - $scope.hueBox.top)
+            );
+            
+            $scope.drawMarker();
+            $scope.drawBar();
+            $scope.updateRGB();
+            $scope.updateHEX();
         }
-    }
-
-    $scope.hueMouseUp = function() {
-        huemousedown = false;
-    }
+    };
 
     /*
      * This will watch for this tools' "active" variable changes.
@@ -136,59 +135,117 @@ app.controller('PaletteCtrl', function($scope) {
             };
         }
     }, true);
+    
+    
+    $scope.updateRGB = function() {
+        $scope.config.tools.colors.primary = HSVtoRGB($scope.color.H, $scope.color.S, $scope.color.V);
 
-    function updateSV(event) {
-        $scope.palette.color.S = Math.floor(
-            ((event.clientX - $scope.palette.constants.palBox.left)*100)/
-            ($scope.palette.constants.palBox.right - $scope.palette.constants.palBox.left)
-        );
-        $scope.palette.color.V = Math.floor(
-            100-((event.clientY - $scope.palette.constants.palBox.top)*100)/
-            ($scope.palette.constants.palBox.bottom - $scope.palette.constants.palBox.top)
-        );
-    }
+        $scope.drawMarker();
+        $scope.drawBar();
+    };
+    
+    $scope.updateHSV = function() {
+        $scope.color = RGBtoHSV($scope.config.tools.colors.primary.r, $scope.config.tools.colors.primary.g, $scope.config.tools.colors.primary.b);
+        
+        $scope.drawMarker();
+        $scope.drawBar();
+    };
+    
+    $scope.updateHEX = function() {
+        $scope.hex = RGBtoHEX($scope.config.tools.colors.primary.r, $scope.config.tools.colors.primary.g, $scope.config.tools.colors.primary.b);
+    };
+    
+    $scope.updateRGBfromHEX = function() {
+        $scope.config.tools.colors.primary = HEXtoRGB($scope.hex);
+    };
 
-    function updateH(event) {
-        $scope.palette.color.H = Math.floor(
-            360-((event.clientY - $scope.palette.constants.hueBox.top)*360)/
-            ($scope.palette.constants.hueBox.bottom - $scope.palette.constants.hueBox.top)
-        );
-    }
-
-    function drawMarker(palImg) {
-        context = $scope.palette.constants.palContext;
-        context.clearRect(0, 0, $scope.palette.constants.pal.width, $scope.palette.constants.pal.height);
-        context.drawImage(palImg, 0, 0);
+    $scope.drawMarker = function() {
+        context = $scope.paletteContext;
+        context.clearRect(0, 0, $scope.paletteBox.right - $scope.paletteBox.left, $scope.paletteBox.bottom - $scope.paletteBox.top);
+        context.drawImage($scope.paletteImage, 0, 0);
         context.beginPath();
-        locX =  $scope.palette.color.S * 
-                ($scope.palette.constants.palBox.right - $scope.palette.constants.palBox.left)/100;
-        locY =  (100 - $scope.palette.color.V) * 
-                ($scope.palette.constants.palBox.bottom - $scope.palette.constants.palBox.top)/100;
-        context.arc(locX,locY,5,0,2*Math.PI, false);
+        locX =  $scope.color.S * 
+                ($scope.paletteBox.right - $scope.paletteBox.left) / 100;
+        locY =  (100 - $scope.color.V) * 
+                ($scope.paletteBox.bottom - $scope.paletteBox.top) / 100;
+        context.arc(locX, locY, 6, 0, 2 * Math.PI, false);
         context.fillStyle = "rgb("  + $scope.config.tools.colors.primary.r + "," 
                                     + $scope.config.tools.colors.primary.g + "," 
                                     + $scope.config.tools.colors.primary.b + ")";
         context.fill();
-        context.lineWidth = 2;
+        context.lineWidth = 3;
         context.strokeStyle = "black";
         context.stroke();
-        context.lineWidth = 1;
+        context.lineWidth = 2;
         context.strokeStyle = "white";
         context.stroke();
     }
 
-    function drawBar(hueImg) {
-        context = $scope.palette.constants.hueContext;
-        context.clearRect(0, 0, $scope.palette.constants.hue.width, $scope.palette.constants.hue.height);
-        context.drawImage(hueImg, 0, 0, $scope.palette.constants.hue.width, $scope.palette.constants.hue.height);
+    $scope.drawBar = function() {
+        context = $scope.hueContext;
+        context.clearRect(0, 0, $scope.hueBox.right - $scope.hueBox.left, $scope.hueBox.bottom - $scope.hueBox.top);
+        context.drawImage($scope.hueImage , 0, 0, $scope.hueBox.right - $scope.hueBox.left, $scope.hueBox.bottom - $scope.hueBox.top);
         context.beginPath();
-        loc =   (360 - $scope.palette.color.H) * 
-                ($scope.palette.constants.hueBox.bottom - $scope.palette.constants.hueBox.top)/360;
-        context.rect(0, loc - 3, $scope.palette.constants.hueBox.right-$scope.palette.constants.hueBox.left, 6);
-        context.fillStyle = "hsl(" + $scope.palette.color.H + ", 100%, 50%)";
+        loc =   (360 - $scope.color.H) * 
+                ($scope.hueBox.bottom - $scope.hueBox.top)/360;
+        context.rect(0, loc - 4, $scope.hueBox.right - $scope.hueBox.left, 8);
+        context.fillStyle = "hsl(" + $scope.color.H + ", 100%, 50%)";
         context.fill();
-        context.lineWidth = 2;
+        context.lineWidth = 3;
         context.strokeStyle = "black";
         context.stroke();
+        context.lineWidth = 2;
+        context.strokeStyle = "white";
+        context.stroke();
+    }
+
+    $scope.clamp = function(num, min, max) {
+        if (num === null || num === undefined) {
+            return null;
+        } else if (num < min) {
+            return min;
+        } else if (num > max) {
+            return max;
+        } else {
+            return Math.round(num);
+        }
+    };
+
+    $scope.validate = function() {
+        $scope.config.tools.colors.primary.r = $scope.clamp($scope.config.tools.colors.primary.r, 0, 255);
+        $scope.config.tools.colors.primary.g = $scope.clamp($scope.config.tools.colors.primary.g, 0, 255);
+        $scope.config.tools.colors.primary.b = $scope.clamp($scope.config.tools.colors.primary.b, 0, 255);
+        $scope.color.H = $scope.clamp($scope.color.H, 0, 360);
+        $scope.color.S = $scope.clamp($scope.color.S, 0, 100);
+        $scope.color.V = $scope.clamp($scope.color.V, 0, 100);
+        while (!(/^#?[0-9A-F]{0,6}$/i.test($scope.hex))) {
+            $scope.hex = $scope.hex.substr(0, $scope.hex.length-1);
+        }
+    }
+
+    $scope.blur = function() {
+        if (!$scope.config.tools.colors.primary.r) {
+            $scope.config.tools.colors.primary.r = 0;
+        }
+        if (!$scope.config.tools.colors.primary.g) {
+            $scope.config.tools.colors.primary.g = 0;
+        }
+        if (!$scope.config.tools.colors.primary.b) {
+            $scope.config.tools.colors.primary.b = 0;
+        }
+        if (!$scope.color.H) {
+            $scope.color.H = 0;
+        }
+        if (!$scope.color.S) {
+            $scope.color.S = 0;
+        }
+        if (!$scope.color.V) {
+            $scope.color.V = 0;
+        }
+        if ($scope.hex.charAt(0) == '#') {
+            $scope.hex = $scope.hex + "#000000".substr($scope.hex.length, 7);
+        } else {
+            $scope.hex = '#' + $scope.hex + "000000".substr($scope.hex.length, 6);
+        }
     }
 });

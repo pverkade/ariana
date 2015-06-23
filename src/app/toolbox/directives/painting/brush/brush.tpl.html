@@ -3,21 +3,21 @@
 	<div class="tool-settings" ng-show="isActive('brush') && expanded">
     
 		<div class="input-group">
-			<span class="input-group-addon"> Line Thickness </span>
+			<span class="input-group-addon input-medium"> Line Thickness </span>
 			<input type="range" class="form-control" ng-model="thickness" ng-change="updateDrawEngine()" min="1" max="16" step="0.5"></input>
 		</div>
         <div class="input-group">
-			<span class="input-group-addon"> Opacity </span>
+			<span class="input-group-addon input-medium"> Opacity </span>
 			<input type="range" class="form-control" ng-model="opacity" ng-change="updateDrawEngine()" min="0" max="1" step="0.01"></input>
 		</div>
         <div class="input-group">
-			<span class="input-group-addon"> Style </span>
-			<select class="form-control" ng-model="brush" ng-change="updateBrushStyle()">
-				<option value="thin" selected>Thin</option>
-				<option value="pen">Pen</option>
-				<option value="neighbor">Neighbor</option>
-				<option value="fur">Fur</option>
-				<option value="multistroke">Multistroke</option>
+			<span class="input-group-addon input-medium"> Style </span>
+			<select class="form-control input-medium" ng-model="brush" ng-change="updateBrushStyle()">
+				<option value="thin" selected> Marker </option>
+				<!-- <option value="pen"> Pen </option> -->
+				<option value="neighbor"> Neighbor </option>
+				<option value="fur"> Fur </option>
+				<option value="multistroke"> Multistroke </option>
 			</select>
 		</div>
 	<div>

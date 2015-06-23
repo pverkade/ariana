@@ -1,5 +1,6 @@
-bower_components/
+vendor/
 node_modules/
+bower_components/
 *.tmp.txt
 build/
 src/app/renderengine/shaders.ts
@@ -14,7 +15,5 @@ src/*/Thumbs.db
 .sass-cache/
 .tscache/*
 src/app/drawengine/*.js
-
-debuglog.txt
-debug_log.txt
-debug-log.txt
+src/app/editingengine/*.js
+filters/

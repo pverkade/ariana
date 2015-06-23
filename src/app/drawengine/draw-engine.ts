@@ -77,7 +77,7 @@ class Color {
  * CIRCLE : draw a circle
  * 
  */
-enum drawType { NORMAL, QUADRATIC_BEZIER, BRUSH, LINE, RECTANGLE, CIRCLE, ERASE };
+enum drawType { NORMAL, DOTTED, QUADRATIC_BEZIER, BRUSH, LINE, RECTANGLE, CIRCLE, ERASE };
 
 /*
  * Brushes
@@ -125,6 +125,8 @@ class DrawEngine {
     drawCanvas : HTMLCanvasElement;
     drawContext : CanvasRenderingContext2D;
 
+    dottedDistance : number;
+
     constructor(public canvas : HTMLCanvasElement) {
         this.drawCanvas = canvas;
 
@@ -133,6 +135,8 @@ class DrawEngine {
         this.memCanvas.height = this.canvas.height;
         this.memContext = <CanvasRenderingContext2D>this.memCanvas.getContext('2d');
         this.drawContext = <CanvasRenderingContext2D>this.drawCanvas.getContext('2d');
+
+        this.dottedDistance = 0.0;
     }
 
     resize (width : number, height : number) : void {
@@ -156,7 +160,7 @@ class DrawEngine {
         if (this.drawType == drawType.LINE) {
             this.currentPath.addPosition(new Position2D(x, y));
         }
-    }
+    };
 
     /*
      * Funtion that is called when the mouse is moved
@@ -173,7 +177,7 @@ class DrawEngine {
             }
             this.draw(this.currentPath);
         }
-    }
+    };
 
     /*
      * Function being called when the mouse is no longer being pressed
@@ -193,7 +197,7 @@ class DrawEngine {
 
         this.draw(this.currentPath);
         this.currentPath = null;
-    }
+    };
 
     /*
      * Set the size of the brush/line
@@ -277,7 +281,7 @@ class DrawEngine {
      */
     brushLoaded = () : void => {
         this.setDrawType(drawType.BRUSH);
-    }
+    };
 
     /*
      * Save the canvas (use this before drawing)
@@ -285,7 +289,7 @@ class DrawEngine {
     saveCanvas = () : void => {
         this.memContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.memContext.drawImage(this.drawCanvas, 0, 0);
-    }
+    };
 
     /*
      * Reset the canvas to its original state (the saved state)
@@ -301,7 +305,7 @@ class DrawEngine {
         if (this.currentPath) {
             this.currentPath.lastDrawnItem = 0;
         }
-    }
+    };
 
     clearCanvases() : void {
         this.memContext.clearRect(0, 0, this.memCanvas.width, this.memCanvas.height);
@@ -339,6 +343,11 @@ class DrawEngine {
         /* Normal draw */
         if (this.drawType == drawType.NORMAL) {
             this.drawNormal(points, path, context);
+        }
+
+        /* Normal draw */
+        if (this.drawType == drawType.DOTTED) {
+            this.drawDotted(points, path, context);
         }
 
         /* Smoother draw by using quadratic Bézier curves */
@@ -388,8 +397,6 @@ class DrawEngine {
      * Function to draw a line between each pixel
      */
     drawNormal (points, path : Path, context : CanvasRenderingContext2D) {
-
-        //return this.drawLines(points, context);
         var i : number = path.lastDrawnItem;
 
         context.beginPath();
@@ -400,6 +407,34 @@ class DrawEngine {
         context.stroke();
 
         path.lastDrawnItem = i - 1;
+    }
+
+    drawDotted (points, path : Path, context : CanvasRenderingContext2D) {
+        var nrLastDrawn : number = path.lastDrawnItem;
+        var newDistance : number = 0.0;
+
+        for (var i = nrLastDrawn; i < points.length - 1; i++) {
+            newDistance += points[i].distanceTo(points[i+1]);
+        }
+
+        if (newDistance) {
+            this.dottedDistance += newDistance;
+        }
+
+        if (this.dottedDistance % 10 > 5.0) {
+            this.setColor(0, 0, 0, 255);
+        } else {
+            this.setColor(255, 255, 255, 255);
+        }
+
+        context.beginPath();
+        context.moveTo(points[nrLastDrawn].x, points[nrLastDrawn].y);
+        for (var i = nrLastDrawn + 1; i < points.length; i++) {
+            context.lineTo(points[i].x, points[i].y);
+        }
+        context.stroke();
+
+        path.lastDrawnItem = points.length - 1;
     }
 
     /*
@@ -525,8 +560,8 @@ class DrawEngine {
             /* Draw images between the two points */
             for ( var z=0; (z<=distance || z==0); z += zDiff)
             {
-                x = start.x + (Math.sin(angle) * z) - halfBrushW;
-                y = start.y + (Math.cos(angle) * z) - halfBrushH;
+                x = start.x + (Math.sin(angle) * z) - halfBrushW + 5;
+                y = start.y + (Math.cos(angle) * z) - halfBrushH + 5;
                 context.drawImage(this.brushImage, x, y,
                                   this.lineWidth,
                                   this.lineWidth);

@@ -15,6 +15,14 @@ app.controller('RotateCtrl', function($scope) {
 	$scope.init = function() {
 		$scope.setCursor('grab');
 		$scope.rotating = false;
+        
+        var currentLayer = $scope.config.layers.currentLayer;
+        if (currentLayer == -1) return;
+
+        var layer = $scope.renderEngine.layers[currentLayer];
+		$scope.requestRenderEngineUpdate();
+		$scope.editEngine.setEditLayer(layer, EditMode.rotate);
+		$scope.requestEditEngineUpdate();
 	};
 
 	/* onMouseDown */
@@ -36,7 +44,7 @@ app.controller('RotateCtrl', function($scope) {
 		var currentLayer = $scope.config.layers.currentLayer;
         if (currentLayer == -1) return;
 
-        var layer = $scope.renderEngine.layers[currentLayer];
+        var layer = $scope.getCurrentLayer();
         
         /* Get the location of the layer. */
         var x = layer.getPosX();
@@ -63,8 +71,10 @@ app.controller('RotateCtrl', function($scope) {
         var rotation = layer.getRotation();
         
         layer.setRotation(rotation + difference);
-		$scope.editEngine.drawRotateTool(layer);
-        window.requestAnimationFrame(function() {$scope.renderEngine.render();});
+        $scope.requestRenderEngineUpdate();
+
+		$scope.editEngine.setEditLayer(layer, EditMode.rotate);
+        $scope.requestEditEngineUpdate();
 	};
 -
 	/*
@@ -90,8 +100,8 @@ app.controller('RotateCtrl', function($scope) {
 		}
 
 		if (oval) {
-			var layer = $scope.renderEngine.getLayer($scope.config.layers.currentLayer);
-            layer.commitRotation();
+			var layer = $scope.getCurrentLayer();
+            layer.commitTransformations();
 		}
 	}, true);
 });

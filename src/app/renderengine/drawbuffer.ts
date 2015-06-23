@@ -29,12 +29,12 @@ class DrawBuffer {
 
         this.renderbuffer = this.gl.createRenderbuffer();
         this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, this.renderbuffer);
-        this.gl.renderbufferStorage(this.gl.RENDERBUFFER, this.gl.DEPTH_COMPONENT16, width, height);
+        this.gl.renderbufferStorage(this.gl.RENDERBUFFER, this.gl.STENCIL_INDEX8, width, height);
 
         this.framebuffer = this.gl.createFramebuffer();
         this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.framebuffer);
         this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, this.texture, 0);
-        this.gl.framebufferRenderbuffer(this.gl.FRAMEBUFFER, this.gl.DEPTH_ATTACHMENT, this.gl.RENDERBUFFER, this.renderbuffer);
+        this.gl.framebufferRenderbuffer(this.gl.FRAMEBUFFER, this.gl.STENCIL_ATTACHMENT, this.gl.RENDERBUFFER, this.renderbuffer);
 
         this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
         this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, null);
@@ -78,6 +78,14 @@ class DrawBuffer {
 
     getWebGlTexture() : WebGLTexture {
         return this.texture;
+    }
+
+    getWidth() : number {
+        return this.width;
+    }
+
+    getHeight() : number {
+        return this.height;
     }
 
     resize(width : number, height : number) {

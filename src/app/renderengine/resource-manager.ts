@@ -1,4 +1,5 @@
 /// <reference path="image-shader-program"/>
+/// <reference path="bitmask-shader-program"/>
 /// <reference path="filters/brightness-filter"/>
 /// <reference path="filters/invert-colors-filter"/>
 /// <reference path="filters/contrast-filter"/>
@@ -7,10 +8,12 @@
 /// <reference path="filters/sepia-filter"/>
 /// <reference path="filters/colorize-filter"/>
 /// <reference path="texture-program"/>
+/// <reference path="drawbuffer"/>
 
 class ResourceManager {
     private gl : WebGLRenderingContext;
     private imageShaderProgram : ImageShaderProgram;
+    private bitmaskProgram : BitmaskShaderProgram;
     private textureProgram : TextureProgram;
 
     private brightnessProgram : BrightnessProgram;
@@ -83,7 +86,7 @@ class ResourceManager {
         return this.noiseProgram;
     }
 
-    colorizeProgramInstance() : ColorizeProgram{
+    colorizeProgramInstance() : ColorizeProgram {
         if (!this.colorizeProgram) {
             this.colorizeProgram = new ColorizeProgram(this.gl);
         }
@@ -91,6 +94,14 @@ class ResourceManager {
         return this.colorizeProgram;
     }
 
+    bitmaskProgramInstance() : BitmaskShaderProgram {
+        if (!this.bitmaskProgram) {
+            this.bitmaskProgram = new BitmaskShaderProgram(this.gl);
+        }
+
+        return this.bitmaskProgram;
+    }
+    
     textureProgramInstance() : TextureProgram {
         if (!this.textureProgram) {
             this.textureProgram = new TextureProgram(this.gl);

@@ -9,6 +9,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-html2js');
     grunt.loadNpmTasks('grunt-include-source');
     grunt.loadNpmTasks('grunt-preprocess');
+    grunt.loadNpmTasks('grunt-karma');
 
     var glob = require('glob');
     var path = require('path');
@@ -226,12 +227,51 @@ module.exports = function(grunt) {
             }
         },
 
+        /**
+         * The Karma configurations.
+         */
+        karma: {
+            options: {
+                configFile: '<%= build_dir %>/karma-unit.js'
+            },
+            unit: {
+                singleRun: true
+            },
+            continuous: {
+                background: true,
+                singleRun: false
+            }
+        }, 
+
+        /**
+         * This task compiles the karma template so that changes to its file array
+         * don't have to be managed manually.
+         */
+        karmaconfig: {
+            unit: {
+                dir: '<%= build_dir %>',
+                src: [
+                    '<%= vendor_files.js %>',
+                    '<%= test_files.js %>',
+                    '<%= src_files.jsunit %>'
+                ]
+            }
+        },
+
         /*
          * The delta tasks watches for changes and rebuilds the project in build.
          */
         delta: {
             options: {
                 livereload: true
+            },
+            startup: {
+                files: [], // This is redundant, but necessary
+                tasks: ['karma:continuous:start'],
+                options: {
+                    atBegin: true,
+                    spawn: false
+                }
             },
             html: {
                 files: ['<%= src_files.html %>'],
@@ -244,6 +284,10 @@ module.exports = function(grunt) {
             js: {
                 files: ['<%= src_files.js %>'],
                 tasks: ['chain_js']
+            },
+            jsunit: {
+                files: ['<%= src_files.jsunit %>'],
+                tasks: ['karmaconfig', 'karma:continuous:run']
             },
             ts: {
                 files: ['<%= src_files.ts %>'],
@@ -280,7 +324,9 @@ module.exports = function(grunt) {
         'copy:build_assets', // Copy assets -> build/assets/
         'copy:build_vendorcss', // Copy bower css -> build/css/
         'includeSource', // Link all js and css files to index.html
-        'preprocess:dev' // Add some links to index.html
+        'preprocess:dev', // Add some links to index.html
+        'karmaconfig', // Configure karma test
+        'karma:unit' // Run karma tests
     ]);
 
     /* The build_prod task completely builds, concats and (SOON) minifies the src */
@@ -398,4 +444,33 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('build_renderengine', ['bundle_shaders', 'ts']);
+
+    /**
+     * A utility function to get all app JavaScript sources.
+     */
+    function filterForJS(files) {
+        return files.filter(function(file) {
+            return file.match(/\.js$/);
+        });
+    }
+
+    /**
+     * In order to avoid having to specify manually the files needed for karma to
+     * run, we use grunt to manage the list for us. The `karma/*` files are
+     * compiled as grunt templates for use by Karma. Yay!
+     */
+    grunt.registerMultiTask('karmaconfig', 'Process karma config templates', function() {
+        var jsFiles = filterForJS(this.filesSrc);
+
+        grunt.file.copy('karma/karma-unit.tpl.js', grunt.config('build_dir') + '/karma-unit.js', {
+            process: function(contents, path) {
+                return grunt.template.process(contents, {
+                    data: {
+                        scripts: jsFiles
+                    }
+                });
+            }
+        });
+    });
+
 };

@@ -12,6 +12,7 @@
     
     <div class="scroll clearfix"
         ng-show="checkVisible()">
+        
         <div class="layer tool clearfix" 
             ng-repeat="layer in config.layers.layerInfo" 
             ng-click="selectLayer($index)" 
@@ -19,7 +20,7 @@
             ng-hide="hidden">
 
             <div class="crop">
-                <img class="preview float-left" ng-src="{{getThumbnail($index)}}"></img>
+                <img class="preview" ng-src="{{getThumbnail($index)}}"></img>
             </div>
           
             <div class="small-tool float-left" 
@@ -42,6 +43,7 @@
                 <input type="text" placeholder="{{layer.name}}" class="form-control text"></input>
             </div>              
         </div>
+        
     </div>
     
 </div>

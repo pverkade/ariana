@@ -21,7 +21,7 @@ var app = angular.module('ariana', [
 /* The AppController is the main controller of the application. */
 app.controller('AppCtrl', ['$scope',
     function($scope) {
-        
+
         /* The config object contains the current state of the layers, tools, 
          * canvas and the mouse. It is accessed by all kinds of controllers. */
         $scope.config = {
@@ -45,13 +45,13 @@ app.controller('AppCtrl', ['$scope',
                 button: {
                     1: false, // left button
                     2: false, // middle button
-                    3: false, // right button
+                    3: false // right button
                 }
             },
             canvas: {
                 cursor: 'default',
-                x: 128,
-                y: 128,
+                x: 160,
+                y: 96,
                 xr: 1,
                 yr: 1,
                 zoom: 1,
@@ -79,13 +79,16 @@ app.controller('AppCtrl', ['$scope',
             layers: {
                 numberOfLayers: 0,
                 currentLayer: -1,
-                layerInfo: [],
+                layerInfo: []
             }
         };
 
         $scope.renderEngine = null;
         $scope.drawEngine = null;
         $scope.editEngine = null;
+        $scope.maskWand = null;
+        $scope.maskBorder = null;
+        $scope.marchingAnts = null;
 
         /* This function creates the RenderEngine. It requires the canvas to
          * render on. */
@@ -95,29 +98,40 @@ app.controller('AppCtrl', ['$scope',
             $scope.editEngine = new EditEngine(drawCanvas);
         };
 
+        $scope.startSharedSelection = function(width, height) {
+            console.log(width, height);
+            if ($scope.maskWand == null) {
+                $scope.maskWand = new Uint8Array(width * height);
+                $scope.maskBorder = new Uint8Array(width * height);
+                $scope.marchingAnts = new MarchingAnts(width, height);
+                $scope.marchingAnts.setMaskBorder($scope.maskBorder);
+            }
+        }
+
         /* This function creates a new layer from a given Image-object. The new
          * layer is placed on top. */
-        $scope.newLayerFromImage = function(image, index) {
+        $scope.newLayerFromImage = function(image) {
             var layer = $scope.renderEngine.createImageLayer(image);
-            
+            $scope.addLayer(layer);
+
             var height = layer.getHeight();
             var width  = layer.getWidth();
-            
             layer.setPos(0.5 * width, 0.5 * height);
+        };
 
-            if (typeof index === "undefined" || index == null) {
-                index = $scope.config.layers.numberOfLayers;
-            }
-            $scope.renderEngine.insertLayer(layer, index);
+        $scope.addLayer = function(layer) {
+            var height = layer.getHeight();
+            var width  = layer.getWidth();
+
+            $scope.renderEngine.addLayer(layer);
 
             /* set the correct layer info in config. The new layer comes on top
              * and is immediately selected. */
-            //$scope.setSelection([$scope.config.layers.numberOfLayers]);
             $scope.config.layers.numberOfLayers += 1;
-            $scope.config.layers.currentLayer = index;
+            $scope.config.layers.currentLayer = $scope.config.layers.numberOfLayers - 1;
 
             /* Store information about the layers in the config object. */
-            $scope.config.layers.layerInfo.splice(index, 0, {
+            $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {
                 "name": 'Layer ' + $scope.config.layers.numberOfLayers,
                 "x": layer.getPosX(),
                 "y": layer.getPosY(),
@@ -125,11 +139,10 @@ app.controller('AppCtrl', ['$scope',
                 "originalHeight": height,
                 "width": width,
                 "height": height,
-                "rotation": layer.getRotation(),
-            });
+                "rotation": layer.getRotation()
+            };
 
-            window.requestAnimationFrame(function() {$scope.renderEngine.render();});
-            //$scope.renderEngine.render();
+            $scope.requestRenderEngineUpdate();
         };
 
         $scope.resizeCanvases = function(width, height) {
@@ -153,7 +166,66 @@ app.controller('AppCtrl', ['$scope',
                 $scope.config.canvas.visible = true;
             }
             
-            window.requestAnimationFrame(function() {$scope.renderEngine.render();});
+            $scope.requestRenderEngineUpdate();
         };
+
+        $scope.updates = {
+            renderEngine: false,
+            drawEngine: false,
+            editEngine: false,
+            animationFrameCallback: null,
+            animationFrameFunction: function() {
+                if ($scope.updates.renderEngine) {
+                    $scope.renderEngine.render();
+                    $scope.updates.renderEngine = false;
+                }
+
+                if ($scope.editEngine) {
+                    $scope.editEngine.render();
+                    $scope.updates.editEngine = false;
+                }
+
+                if ($scope.editEngine.needsAnimating()) {
+                    $scope.updates.editEngine = true;
+                    $scope.updates.animationFrameCallback =
+                        requestAnimationFrame($scope.updates.animationFrameFunction);
+                } else {
+                    $scope.updates.animationFrameCallback = null;
+                }
+            }
+        };
+
+        $scope.requestRenderEngineUpdate = function() {
+            $scope.updates.renderEngine = true;
+            if (!$scope.updates.animationFrameCallback) {
+                $scope.updates.animationFrameCallback =
+                    requestAnimationFrame($scope.updates.animationFrameFunction);
+            }
+        };
+        $scope.requestEditEngineUpdate = function() {
+            $scope.updates.editEngine = true;
+            if (!$scope.updates.animationFrameCallback) {
+                $scope.updates.animationFrameCallback =
+                    requestAnimationFrame($scope.updates.animationFrameFunction);
+            }
+        };
+
+        $scope.getCurrentLayerIndex = function () {
+            return $scope.config.layers.currentLayer;
+        };
+
+        $scope.getCurrentLayer = function () {
+            var index = $scope.config.layers.currentLayer;
+            if (index === -1) {
+                return null;
+            }
+
+            return $scope.renderEngine.getLayer(index);
+        };
+
+        $scope.setCurrentLayerIndex = function (layerIndex) {
+            $scope.config.layers.currentLayer = layerIndex;
+            $scope.$broadcast('newCurrentLayer', layerIndex);
+        }
 	}
 ]);

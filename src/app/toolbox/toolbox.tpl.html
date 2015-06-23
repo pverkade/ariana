@@ -43,10 +43,10 @@
         <i class="mdi mdi-select"></i>
 
         <div class="toolbox" ng-show="isActiveToolset('select')">
-            <!-- <rectangle tool></rectangle> -->
-            <!-- <elipse tool></elipse> -->
-            <curve tool></curve>
+            <rectangle tool></rectangle>
+            <elipse tool></elipse>
             <magic tool></magic>
+            <loose tool></loose>
         </div>
         
     </div>
@@ -72,7 +72,4 @@
     ng-class="{'fade-on': !checkVisible() && config.tools.activeTool != 'picker', 'scale-on': !checkVisible() && config.tools.activeTool == 'picker', 'fade-off scale-off': checkVisible()}">
     <div class="color-primary"   style="background-color: rgb({{config.tools.colors.primary.r}},   {{config.tools.colors.primary.g}},   {{config.tools.colors.primary.b}})"> </div>
     <div class="color-secondary" style="background-color: rgb({{config.tools.colors.secondary.r}}, {{config.tools.colors.secondary.g}}, {{config.tools.colors.secondary.b}})"> </div>
-
-</div>
-<!--<colorselector style="position:absolute; bottom: 0; left: 100px; height:100px; width:100px;">
-</colorselector>-->
+</div> 

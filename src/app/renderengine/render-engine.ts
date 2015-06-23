@@ -74,6 +74,13 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         return result;
     }
 
+    getWidth() {
+        return this.width;
+    }
+
+    getHeight() {
+        return this.height;
+    }
     public addLayer(layer : Layer) {
         /* Append layer to user array */
         this.insertLayer(layer, this.layers.length);
@@ -84,7 +91,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         this.createThumbnail(layer);
         this.layers.splice(index, 0, layer);
     }
- 
+
     public removeLayer(index : number) {
         var layer : Layer = this.layers[index];
         this.layers.splice(index, 1);
@@ -120,35 +127,6 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
             }
 
             layer.render();
-        }
-    }
-
-    public filterLayers(layerIndices : number[], filter : Filter) {
-        for (var i = 0; i < layerIndices.length; i ++) {
-            var layer = this.layers[layerIndices[i]];
-            if (layer.getLayerType() !== LayerType.ImageLayer) {
-                continue;
-            }
-
-            var imageLayer = <ImageLayer> layer;
-            var textureProgram = this.resourceManager.textureProgramInstance();
-
-            // FIXME: images that are larger than the canvas are downsized when a filter is applied
-            this.drawbuffer1.bind();
-            {
-                this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
-                filter.render(this.resourceManager, imageLayer.getWebGlTexture());
-
-                this.gl.bindTexture(this.gl.TEXTURE_2D, imageLayer.getWebGlTexture());
-                this.gl.copyTexImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 0, 0, this.width, this.height, 0);
-
-                this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
-                textureProgram.render(imageLayer.getWebGlTexture());
-
-                this.gl.bindTexture(this.gl.TEXTURE_2D, imageLayer.getWebGlTexture());
-                this.gl.copyTexImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 0, 0, this.width, this.height, 0);
-            }
-            this.drawbuffer1.unbind();
         }
     }
 
@@ -250,7 +228,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         return newLayer;
     }
 
-    public createImageLayer(image : ImageData) {
+    public createImageLayer(image : HTMLImageElement) : ImageLayer {
         return new ImageLayer(
             this.resourceManager,
             this.width,
@@ -259,10 +237,78 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         );
     }
 
+    public createSelectionImageLayer(bitmask: HTMLImageElement, layerIndex: number): ImageLayer {
+        var gl = this.gl;
+
+        if (this.layers[layerIndex].getLayerType() != LayerType.ImageLayer) {
+            return;
+        }
+        var layer = <ImageLayer>this.layers[layerIndex];
+        console.log("x of to select layer: " + layer.getPosX());
+
+        var width = bitmask.width;
+        var height = bitmask.height;
+        var selectedLayer = this.createImageLayer(layer.getImage());
+        //var invertedSelectedLayer = this.createImageLayer(layer.getImage());
+        //invertedSelectedLayer.setPos(layer.getPosX(), layer.getPosY());
+        //invertedSelectedLayer.setRotation(layer.getRotation());
+
+        var bitmaskProgram = this.resourceManager.bitmaskProgramInstance();
+        var texture = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, bitmask);
+
+        var drawbuffer = new DrawBuffer(gl, width, height);
+        drawbuffer.bind();
+        gl.viewport(0, 0, width, height);
+
+        gl.enable(this.gl.STENCIL_TEST);
+        gl.clear(gl.STENCIL_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
+        gl.stencilFunc(gl.ALWAYS, 1, 0xFF);
+        gl.stencilOp(gl.REPLACE, gl.REPLACE, gl.REPLACE);
+
+        /* Draw bitmask stencil */
+        bitmaskProgram.activate();
+        bitmaskProgram.setUniforms(texture);
+        gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
+
+        /* Draw the selected part of the image */
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.stencilFunc(gl.EQUAL, 1, 0xFF);
+        gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP);
+        layer.setupRender();
+        layer.renderFullscreen();
+        selectedLayer.copyFramebuffer(width, height);
+
+        /* Draw the not selected part of the image */
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.stencilFunc(gl.NOTEQUAL, 1, 0xFF);
+        gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP);
+        layer.setupRender();
+        layer.renderFullscreen();
+        layer.copyFramebuffer(width, height);
+
+        this.gl.disable(this.gl.STENCIL_TEST);
+        drawbuffer.unbind();
+        gl.viewport(0, 0, this.width, this.height);
+
+        selectedLayer.setPos(layer.getPosX(), layer.getPosY());
+        selectedLayer.setRotation(layer.getRotation());
+        selectedLayer.setDimensions(layer.getWidth(), layer.getHeight());
+        return selectedLayer;
+    }
+
     public resize(width : number, height : number) {
         this.width = width;
         this.height = height;
-        this.thumbnailHeight = Math.round(this.thumbnailWidth * (this.height / this.width)); 
+
+        this.thumbnailHeight = Math.round(this.thumbnailWidth * (this.height / this.width));
         this.thumbnailDrawbuffer = new DrawBuffer(this.gl, this.thumbnailWidth, this.thumbnailHeight);
                 
         for (var i = 0; i < this.layers.length; i++) {

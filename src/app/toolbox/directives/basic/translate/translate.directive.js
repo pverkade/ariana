@@ -3,11 +3,11 @@ app.directive('translate', function() {
         restrict: 'E',
         scope: true,
         templateUrl: 'app/toolbox/directives/basic/translate/translate.tpl.html',
-        controller: 'translateCtrl'
+        controller: 'TranslateCtrl'
     };
 });
 
-app.controller('translateCtrl', function($scope) {
+app.controller('TranslateCtrl', function($scope) {
     $scope.toolname = 'translate';
     $scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
@@ -15,6 +15,13 @@ app.controller('translateCtrl', function($scope) {
     $scope.init = function() {
         $scope.setCursor('move');
         $scope.translating = false;
+        
+        var currentLayer = $scope.config.layers.currentLayer;
+        if (currentLayer == -1) return;
+
+        var layer = $scope.renderEngine.layers[currentLayer];
+        $scope.editEngine.drawTranslateTool(layer);
+        window.requestAnimationFrame(function() {$scope.renderEngine.render();});  
     };
 
     /* onMouseDown */
@@ -47,8 +54,10 @@ app.controller('translateCtrl', function($scope) {
         var y = layer.getPosY();
 
         layer.setPos(x + dx, y + dy);
-        $scope.editEngine.drawTranslateTool(layer);
-        window.requestAnimationFrame(function() {$scope.renderEngine.render();});  
+        $scope.requestRenderEngineUpdate();
+
+        $scope.editEngine.setEditLayer(layer, EditMode.translate);
+        $scope.requestEditEngineUpdate();
     };
 
     /*
