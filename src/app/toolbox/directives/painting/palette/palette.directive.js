@@ -8,14 +8,14 @@ app.directive('palette', function() {
 });
 
 app.controller('PaletteCtrl', function($scope) {
-    $scope.toolname = 'palette'
+    $scope.toolname = 'palette';
     $scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
     $scope.color = {
         H: 0,
         S: 0,
         V: 0
-    }
+    };
     
     $scope.hex = "#000000";
 
