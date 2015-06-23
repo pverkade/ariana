@@ -35,8 +35,8 @@ body {
     cursor: pointer;
     
     svg, i, img {
-        margin:     0.2 * $blocksize;
-        padding:    0 !important; 
+        padding:     0.2 * $blocksize;
+        margin:    0 !important; 
         height:     0.6 * $blocksize;
         width:      0.6 * $blocksize; 
         font-size:  0.6 * $blocksize;
@@ -57,7 +57,7 @@ body {
         cursor: pointer;
 
         svg, i, img {
-            margin:     0.2 * $blocksize-tablet;
+            padding:     0.2 * $blocksize-tablet;
             height:     0.6 * $blocksize-tablet;
             width:      0.6 * $blocksize-tablet;
             font-size:  0.6 * $blocksize-tablet;
@@ -71,8 +71,8 @@ body {
     height: 0.5 * $blocksize;
     
     svg, i, img {
-        margin:     0.1 * $blocksize;
-        padding:    0 !important; 
+        padding:     0.1 * $blocksize;
+        margin:    0 !important; 
         height:     0.3 * $blocksize;
         width:      0.3 * $blocksize; 
         font-size:  0.3 * $blocksize;
@@ -83,7 +83,7 @@ body {
         height: 0.5 * $blocksize-tablet;
 
         svg, i, img {
-            margin:     0.1 * $blocksize-tablet;
+            padding:     0.1 * $blocksize-tablet;
             height:     0.3 * $blocksize-tablet;
             width:      0.3 * $blocksize-tablet;
             font-size:  0.3 * $blocksize-tablet;

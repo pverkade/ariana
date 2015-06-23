@@ -1,25 +1,45 @@
 .input-group {
-    height: 0.5 * $blocksize;
     
     * {
         border-radius: 0;
+    }
+    
+    @media screen and (max-width: $breakpoint-tablet) {
+        
+        * {
+            font-size: 8pt;
+        }
     }
 }
 
 .input-small {
     width: $blocksize !important;
+    
+    @media screen and (max-width: $breakpoint-tablet) {
+        width: $blocksize-tablet !important;
+    }
 }
 
 .input-small-medium {
     width: 1.5 * $blocksize !important;
+    
+    @media screen and (max-width: $breakpoint-tablet) {
+        width: 1.5 * $blocksize-tablet !important;
+    }
 }
 
 .input-medium {
     width: 2 * $blocksize !important;
+    @media screen and (max-width: $breakpoint-tablet) {
+        width: 2 * $blocksize-tablet !important;
+    }
 }
 
 .input-large {
     width: 4 * $blocksize !important;
+    @media screen and (max-width: $breakpoint-tablet) {
+        width: 4 * $blocksize-tablet !important;
+    }
 }
 
 .input-group-addon {
@@ -66,22 +86,32 @@
         .filter-name {
             min-width: 2 * $blocksize;
             width: 50%;
-            @media (max-width: 10 * $blocksize) {
+            @media (max-width: 10 * $blocksize-tablet) {
                 display: none;
             }
         }
         
         .filter-checkbox {
             min-width: 2 * $blocksize;
+            
+            @media screen and (max-width: $breakpoint-tablet) {
+                min-width: 2 * $blocksize-tablet;
+            }
+            
             width: 50%;
-            @media (max-width: 10 * $blocksize) {
+            @media (max-width: 10 * $blocksize-tablet) {
                 width: 100%;
             }
         }
         
         .input-group-addon, .number {
             width: 2 * $blocksize;
-            @media (max-width: 10 * $blocksize) {
+            
+            @media screen and (max-width: $breakpoint-tablet) {
+                width: 2 * $blocksize-tablet;
+            }
+            
+            @media (max-width: 10 * $blocksize-tablet) {
                 width: 50%;
             }
         }
@@ -89,15 +119,23 @@
         .slider {
             width: calc(100% - #{2 * $blocksize});
             
-            @media (max-width: 10 * $blocksize) {
+            @media screen and (max-width: $breakpoint-tablet) {
+                width: calc(100% - #{2 * $blocksize-tablet});
+            }
+            
+            @media (max-width: 10 * $blocksize-tablet) {
                 width: 100%;
             }
         }
         
         .number {
             width: 2 * $blocksize;
+            
+            @media screen and (max-width: $breakpoint-tablet) {
+                width: 2 * $blocksize-tablet;
+            }
            
-            @media (max-width: 10 * $blocksize) {
+            @media (max-width: 10 * $blocksize-tablet) {
                 display: none;
             }
         }
