@@ -1,14 +1,14 @@
 <div class="tool" ng-class="{active: active}" ng-click="toggle">
 	<i class="mdi mdi-pen" ></i>
 	<div class="tool-settings" ng-show="isActive('pencil') && expanded">
-		
-        <div class="input-group">
-			<span class="input-group-addon input-medium"> Line Thickness </span>
-			<input type="range" class="form-control input-medium" ng-model="thickness" ng-change="updateDrawEngine()" min="1" max="16" step="0.5"></input>
+
+		<div class="input-group">
+			<span class="input-group-addon input-medium"> Thickness </span>
+			<input type="range" class="form-control" ng-model="thickness" ng-change="updateDrawEngine()" min="1" max="16" step="0.5"></input>
 		</div>
-        <div class="input-group">
+		<div class="input-group">
 			<span class="input-group-addon input-medium"> Opacity </span>
-			<input type="range" class="form-control input-medium" ng-model="opacity" ng-change="updateDrawEngine()"  min="0" max="1" step="0.01"></input>
+			<input type="range" class="form-control" ng-model="opacity" ng-change="updateDrawEngine()" min="0" max="1" step="0.01"></input>
 		</div>
         
 	<div>

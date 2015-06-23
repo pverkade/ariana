@@ -127,7 +127,6 @@
 
     .tool-settings {
         margin-left: $blocksize-tablet;
-        /*width: 6 * $blocksize-tablet;*/
         min-height: 4 * $blocksize-tablet;
     }
 
@@ -164,5 +163,11 @@
             left: 0.125 * $blocksize-tablet;
             bottom: 0.125 * $blocksize-tablet;
         }
+    }
+}
+
+@media screen and (max-width: $breakpoint-phone) {
+    .tool-settings {
+        width: 192px;
     }
 }
