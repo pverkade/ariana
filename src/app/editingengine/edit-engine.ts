@@ -187,7 +187,7 @@ class EditEngine {
     }
 
     public render() : void {
-        // this.clear();
+        this.clear();
 
         var currentLayer : Layer = this.currentLayer;
         if (currentLayer) {

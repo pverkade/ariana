@@ -89,7 +89,8 @@ app.controller('AppCtrl', ['$scope',
         $scope.maskWand = null;
         $scope.maskBorder = null;
         $scope.marchingAnts = null;
-        
+        $scope.imgData = null;
+        $scope.selectionTool = null;        
         
         $scope.selection = {maskEnabled: false};
         
@@ -108,7 +109,15 @@ app.controller('AppCtrl', ['$scope',
                 $scope.maskBorder = new Uint8Array(width * height);
                 $scope.marchingAnts = new MarchingAnts(width, height);
                 $scope.marchingAnts.setMaskBorder($scope.maskBorder);
+
+                var canvas = document.createElement("canvas");
+                var context = canvas.getContext("2d");
+                $scope.imgData = context.createImageData(width, height);
             }
+        }
+
+        $scope.setSelectionTool = function(selectionTool) {
+            $scope.selectionTool = selectionTool;
         }
 
         /* This function creates a new layer from a given Image-object. The new

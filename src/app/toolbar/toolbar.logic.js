@@ -165,6 +165,30 @@ app.controller('ToolbarController', ['$scope', '$modal',
             var currentLayer = $scope.config.layers.currentLayer;
             var layer = $scope.renderEngine.layers[currentLayer];
 
+            $scope.editEngine.removeSelectionLayer();
+
+            var nrWands = $scope.selectionTool.maskWandParts.length;
+            var bitmask = $scope.selectionTool.maskWandParts[nrWands - 1];
+            console.log(nrWands);
+            console.log(bitmask);
+
+            for (var y = 0; y < $scope.selectionTool.height; y++) {
+                for (var x = 0; x < $scope.selectionTool.width; x++) {
+                    if (bitmask[y * $scope.selectionTool.width + x]) {
+                        var i = ($scope.selectionTool.height - y) * $scope.selectionTool.width + x;
+                        $scope.imgData.data[4 * i] = 0;
+                        $scope.imgData.data[4 * i + 1] = 0;
+                        $scope.imgData.data[4 * i + 2] = 0;
+                        $scope.imgData.data[4 * i + 3] = 255;
+                    }
+                }
+            }
+
+            var removed = $scope.selectionTool.clearLast();
+            if (removed == false) {
+                console.log("Selection tool clear Last returned false");
+            }
+            
             $scope.startSharedSelection(layer.getWidth(), layer.getHeight());
             // throw away selection bitmask
             console.log("DENIED!");

@@ -1,4 +1,4 @@
-class LooseSelection{
+class LooseSelection implements SelectionInterface{
 	points : Point[][];
 	maskBorder : Uint8Array;
 	maskWand : Uint8Array;
@@ -129,19 +129,22 @@ class LooseSelection{
 	}
 
 	/* Returns index of neighbor maskWandPart if exist within pixels distance of point. */
-	neighborMaskWand(point : Point) {
-		var size = 1;
+	neighborMaskWand(point : Point, size : number) {
+		var distance = size + 1;
+		var closestPoint = null;
+
 		for (var i = -size; i <= size; i++) {
-			for(var j = -size; j < size; j++) {
-				if (i != j) {
-					if (this.maskWand[(point.y + i) * this.width + point.x + j]) {
-						return true;
+			for(var j = -size; j <= size; j++) {
+				if (Math.max(i, j) < distance && i != 0 && j!= 0) {
+					if (this.maskWand[(point.y + i) * this.width + point.x + j] == 1) {
+						closestPoint = new Point(j, i);
 					}				
 				}
 
 			}
-		}	
-		return false;
+		}
+
+		return closestPoint;
 	}	
 
     getMaskBorder() {        
@@ -171,56 +174,90 @@ class LooseSelection{
         return this.maskBorder;
     }
 
+    fixHole(loosePoint : Point, deltaPoint : Point) {
+		var nrWands = this.points.length;
+		var nrPointsLast = this.points[nrWands - 1].length;
+    	var dX = deltaPoint.x;
+    	var dY = deltaPoint.y;
+    	var curPoint = new Point(loosePoint.x, loosePoint.y);
+
+    	while (dX != 0 && dY != 0) {
+    		curPoint.x += this.sign(dX);
+    		curPoint.y += this.sign(dY);
+
+    		this.maskBorder[curPoint.y * this.width + curPoint.x] = 1;
+
+    		dX -= this.sign(dX);
+    		dY -= this.sign(dY);
+
+    		if (Math.abs(dX) > 20) {
+    			console.log("error in fixHole");
+    			console.log(dX, dY);
+    		}
+    	}
+    }
+
 	getLastBoundingPath() {
 		var nrWands = this.points.length;
 		var nrPointsLast = this.points[nrWands - 1].length;
 		var curPoint : Point;
 		var lastAddedPoint : Point;
 		var insidePoint : Point;
+		var skipSize = 4;
 
-		if (nrPointsLast > 10 && this.neighborMaskWand(this.points[nrWands - 1][0]) &&
-			this.neighborMaskWand(this.points[nrWands - 1][nrPointsLast - 1])) { 
+		var deltaFirstPoint = this.neighborMaskWand(this.points[nrWands - 1][0], skipSize);
+		var deltaLastPoint = this.neighborMaskWand(this.points[nrWands - 1][nrPointsLast - 1], skipSize);
+		// console.log(deltaFirstPoint, deltaLastPoint);
+
+		if (nrPointsLast > 10 && deltaFirstPoint != null && deltaLastPoint != null) { 
 			var ccw = this.determineOrientation();
-
-			var dX = this.points[nrWands - 1][10].x - this.points[nrWands - 1][0].x
-			var dY = this.points[nrWands - 1][10].y - this.points[nrWands - 1][0].y
+			// var dX = this.points[nrWands - 1][1].x - this.points[nrWands - 1][0].x
+			// var dY = this.points[nrWands - 1][1].y - this.points[nrWands - 1][0].y
 			var dXAdj : number;
 			var dYAdj : number;
 
-			/* Points drawn in counter clockwise direction. */
-			if (ccw == true) {
-				dXAdj = dX + dY;
-				dYAdj = -dX + dY;
-			/* Points drawn in clockwise direction. */
-			} else {
-				dXAdj = -dY + dX;
-				dYAdj = dX + dY;
-				console.log("clockwise");
-			}
-
-			// maskborder bevat ook andere grenzen
 			for (var i = 0; i < this.points[nrWands - 1].length; i++) {
 				var indexPointMask = this.points[nrWands - 1][i].y * this.width + this.points[nrWands - 1][i].x;
 				this.maskBorder[indexPointMask] = 1;
 			}
 
+			this.fixHole(this.points[nrWands - 1][0], deltaFirstPoint);
+			this.fixHole(this.points[nrWands - 1][nrPointsLast - 1], deltaLastPoint);
+
+			var signX = this.sign(deltaLastPoint.x);
+			var signY = this.sign(deltaLastPoint.y);
+
+			/* Points drawn in counter clockwise direction. */
+			if (ccw == true) {
+				dXAdj = this.sign(signX + signY); // 2 * (deltaLastpoint.x + deltaLastpoint.y); // dX + dY;
+				dYAdj = this.sign(signY - signX);// 2 * (-deltaLastpoint.x + deltaLastpoint.y);// -dX + dY;
+			/* Points drawn in clockwise direction. */
+			} else {
+				dXAdj = this.sign(signX - signY); // (this.sign(deltaLastpoint.y) - deltaLastpoint.x); // -dY + dX;
+				dYAdj = this.sign(signX + signY); // (deltaLastpoint.x + deltaLastpoint.y); // dX + dY;
+				console.log("clockwise");
+			}
+
 			var mask = new MaskSelection(this.maskBorder, this.width, this.height);
-			insidePoint = new Point(this.points[nrWands - 1][0].x + dXAdj, this.points[nrWands - 1][0].y + dYAdj);
+			insidePoint = new Point(this.points[nrWands - 1][nrPointsLast - 1].x + 2 * dXAdj, this.points[nrWands - 1][nrPointsLast - 1].y + 2 * dYAdj);
 			// console.log(insidePoint.x, insidePoint.y)
 			this.maskWandParts[this.maskWandParts.length] = mask.getMaskWand(insidePoint.x, insidePoint.y);
 
-			// neem aangegeven grens mee (!)
+			/* Given border is part of the mask wand. */
 			for (var i = 0; i < this.points[nrWands - 1].length; i++) {
 				var indexPointMask = this.points[nrWands - 1][i].y * this.width + this.points[nrWands - 1][i].x;
 				this.maskWandParts[this.maskWandParts.length - 1][indexPointMask] = 1;
 			}
 
+			/* Mask wand part should only contain the area of one part. Remove possible 
+				borders from maskBorder in mask. */ 
 			for (var i = 0; i < this.maskWand.length; i++) {
 				if (this.maskWand[i]) {
 					this.maskWandParts[this.maskWandParts.length - 1][i] = 0;
 			 	}
 			} 
 
+			/* Both needed to get correct maskWand and maskBorder. */
 			this.mergeMaskWand();
 			this.getMaskBorder();
 
@@ -228,7 +265,7 @@ class LooseSelection{
             return this.points[nrWands - 1];
 		}
 
-        for (var i = this.points[nrWands - 1].length - 5; i >= 0; i--) {
+        for (var i = this.points[nrWands - 1].length - 20; i >= 0; i--) {
             /* Look if last added point is close enough to current point. */
             curPoint = this.points[nrWands - 1][i];
             lastAddedPoint = this.points[nrWands - 1][nrPointsLast - 1];
@@ -279,6 +316,8 @@ class LooseSelection{
 	mergeMaskWand() {
 		var nrWandParts = this.maskWandParts.length;
 
+		// this.maskWand = new Uint8Array(this.width * this.height);
+
 		if (nrWandParts > 0) {
 			for (var i = 0; i < this.maskWandParts[nrWandParts - 1].length; i++) {
 				this.maskWand[i] = this.maskWand[i] || this.maskWandParts[nrWandParts - 1][i];
@@ -322,15 +361,41 @@ class LooseSelection{
 	}
 
 	reset() {
-		var nrWands = this.points.length;
+		var nrPoints = this.points.length;
 		var indexPointMask;
 
-		for (var i = 0; i < this.points[nrWands - 1].length; i++) {
-			indexPointMask = this.points[nrWands - 1][i].y * this.width + this.points[nrWands - 1][i].x;
+		for (var i = 0; i < this.points[nrPoints - 1].length; i++) {
+			indexPointMask = this.points[nrPoints - 1][i].y * this.width + this.points[nrPoints - 1][i].x;
 			this.maskBorder[indexPointMask] = 0;
 		} 
 		
-		this.points[nrWands - 1] = [];
+		this.points[nrPoints - 1] = [];
+	}
+
+	clearLast() {
+		var nrWands = this.maskWandParts.length;
+		var nrPoints = this.points.length;
+		var indexPointMask;
+
+		if (nrWands < 1) {
+			return false;
+		}
+
+		for (var i = 0; i < this.points[nrPoints - 2].length; i++) {
+			indexPointMask = this.points[nrPoints - 2][i].y * this.width + this.points[nrPoints - 2][i].x;
+			this.maskBorder[indexPointMask] = 0;
+		} 
+
+		for (var i = 0; i < this.maskWandParts[nrWands - 1].length; i++) {
+			if (this.maskWandParts[nrWands - 1][i] == 1) {
+				this.maskWand[i] = 0;
+			}
+		}
+		this.maskWandParts[nrWands - 1] = new Uint8Array(0);
+		// this.mergeMaskWand();
+		
+		this.points[nrPoints - 2] = [];
+		return true;
 	}
 
 	setMaskBorder(maskBorder : Uint8Array) {

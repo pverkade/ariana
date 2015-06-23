@@ -14,6 +14,7 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
     /* init */
     $scope.init = function() {
         $scope.setCursor('default');
+        $scope.selection.maskEnabled = true;
 
         var currentLayer = $scope.config.layers.currentLayer;//$scope.config.layers.currentLayer;
         if (currentLayer == -1) {
@@ -30,13 +31,10 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
 
         $scope.loose = new LooseSelection($scope.image.width, $scope.image.height);
 
-        $scope.canvas = document.createElement("canvas");
-        $scope.context = $scope.canvas.getContext("2d");
-        $scope.imgData = $scope.context.createImageData($scope.loose.width, $scope.loose.height);
-
         $scope.mouseBTNDown = false;
 
         $scope.startSharedSelection($scope.image.width, $scope.image.height);
+        $scope.setSelectionTool($scope.loose);
         $scope.loose.setMaskWand($scope.maskWand);
         $scope.loose.setMaskBorder($scope.maskBorder);
 
@@ -52,7 +50,7 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
     };
 
     $scope.mouseDown = function() {
-        $scope.stop();
+        // $scope.stop();
         
         /* x and y coordinates in pixels relative to image. */
         xMouse = $scope.config.mouse.current.x;
