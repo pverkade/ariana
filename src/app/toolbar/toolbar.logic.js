@@ -102,6 +102,10 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 filter.setAttribute(key, value);
             }
 
+            forEachLayer(function(layer, index) {
+                $scope.updateThumbnail(index);
+            });
+
             $scope.requestRenderEngineUpdate();
         };
 
@@ -135,6 +139,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 else {
                     layer.discardFilter();
                 }
+                $scope.updateThumbnail(index);
             });
 
             $scope.requestRenderEngineUpdate();
