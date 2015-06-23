@@ -1,5 +1,17 @@
     <!-- Header -->
 <div class="landing">
+    
+    <script>
+    var pos = 0;
+
+    $(function(){
+        $(window).scroll(function(){
+            pos += 1;
+            $(".bg-cubes").css("background-position", pos + "px " + pos + "px");
+        });
+    });
+    </script>
+
     <header class="bg-cubes">
         <div class="container">
             <div class="intro-text">
