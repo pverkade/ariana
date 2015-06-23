@@ -72,7 +72,9 @@ class MaskSelection {
         if (startY < 0 || startY >= this.height || startX < 0 || startX >= this.width ) {
             return null;
         }
-
+        // console.log("testest5");
+       // console.log( this.maskWand.length);
+       // console.log( this.maskWand[startX + startY * this.width] );
         /* Check if point is marked in current maskWand as part of the selection. */ 
         if (this.maskWand[startX + startY * this.width] != 0) { // [this.maskWand.length - 1]
             return null;
@@ -83,6 +85,7 @@ class MaskSelection {
             return null;
         }
 
+        // console.log("testest");
         /* Search left from starting point. */
         for (var x = startX - 1; x >= 0; x--) {
             if (this.matchPoint(x, startY) == false) {
@@ -109,6 +112,7 @@ class MaskSelection {
         for (var x = left; x <= right; x++) {
             line.push(new Point(x, startY));
             this.maskWand[x + startY * this.width] = this.bmON; // [this.maskWand.length - 1]
+            // console.log("teo");
         }
 
         return line;

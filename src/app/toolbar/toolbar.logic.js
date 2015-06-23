@@ -190,6 +190,8 @@ app.controller('ToolbarController', ['$scope', '$modal',
             }
             
             $scope.startSharedSelection(layer.getWidth(), layer.getHeight());
+            $scope.selectionTool.setMaskWand($scope.maskWand);
+            $scope.selectionTool.setMaskBorder($scope.maskBorder);
             // throw away selection bitmask
             console.log("DENIED!");
         }
