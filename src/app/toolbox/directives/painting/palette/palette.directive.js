@@ -8,14 +8,14 @@ app.directive('palette', function() {
 });
 
 app.controller('PaletteCtrl', function($scope) {
-    $scope.toolname = 'palette'
+    $scope.toolname = 'palette';
     $scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
     $scope.color = {
-        H: 0,
-        S: 0,
-        V: 0
-    }
+        h: 0,
+        s: 0,
+        v: 0
+    };
     
     $scope.hex = "#000000";
 
@@ -39,13 +39,9 @@ app.controller('PaletteCtrl', function($scope) {
     $scope.init = function() {
         $scope.setCursor('default');
 
-        $scope.color = RGBtoHSV($scope.config.tools.colors.primary.r,
-                                $scope.config.tools.colors.primary.g,
-                                $scope.config.tools.colors.primary.b);
+        $scope.color = RGBtoHSV($scope.config.tools.colors.primary);
 
-        $scope.hex = RGBtoHEX($scope.config.tools.colors.primary.r,
-                              $scope.config.tools.colors.primary.g,
-                              $scope.config.tools.colors.primary.b);
+        $scope.hex = RGBtoHEX($scope.config.tools.colors.primary);
                               
         $scope.drawMarker();
         $scope.drawBar();
@@ -138,21 +134,21 @@ app.controller('PaletteCtrl', function($scope) {
     
     
     $scope.updateRGB = function() {
-        $scope.config.tools.colors.primary = HSVtoRGB($scope.color.H, $scope.color.S, $scope.color.V);
+        $scope.config.tools.colors.primary = HSVtoRGB($scope.color);
 
         $scope.drawMarker();
         $scope.drawBar();
     };
     
     $scope.updateHSV = function() {
-        $scope.color = RGBtoHSV($scope.config.tools.colors.primary.r, $scope.config.tools.colors.primary.g, $scope.config.tools.colors.primary.b);
+        $scope.color = RGBtoHSV($scope.config.tools.colors.primary);
         
         $scope.drawMarker();
         $scope.drawBar();
     };
     
     $scope.updateHEX = function() {
-        $scope.hex = RGBtoHEX($scope.config.tools.colors.primary.r, $scope.config.tools.colors.primary.g, $scope.config.tools.colors.primary.b);
+        $scope.hex = RGBtoHEX($scope.config.tools.colors.primary);
     };
     
     $scope.updateRGBfromHEX = function() {
@@ -164,9 +160,9 @@ app.controller('PaletteCtrl', function($scope) {
         context.clearRect(0, 0, $scope.paletteBox.right - $scope.paletteBox.left, $scope.paletteBox.bottom - $scope.paletteBox.top);
         context.drawImage($scope.paletteImage, 0, 0);
         context.beginPath();
-        locX =  $scope.color.S * 
+        locX =  $scope.color.s * 
                 ($scope.paletteBox.right - $scope.paletteBox.left) / 100;
-        locY =  (100 - $scope.color.V) * 
+        locY =  (100 - $scope.color.v) * 
                 ($scope.paletteBox.bottom - $scope.paletteBox.top) / 100;
         context.arc(locX, locY, 6, 0, 2 * Math.PI, false);
         context.fillStyle = "rgb("  + $scope.config.tools.colors.primary.r + "," 
@@ -186,7 +182,7 @@ app.controller('PaletteCtrl', function($scope) {
         context.clearRect(0, 0, $scope.hueBox.right - $scope.hueBox.left, $scope.hueBox.bottom - $scope.hueBox.top);
         context.drawImage($scope.hueImage , 0, 0, $scope.hueBox.right - $scope.hueBox.left, $scope.hueBox.bottom - $scope.hueBox.top);
         context.beginPath();
-        loc =   (360 - $scope.color.H) * 
+        loc =   (360 - $scope.color.h) * 
                 ($scope.hueBox.bottom - $scope.hueBox.top)/360;
         context.rect(0, loc - 4, $scope.hueBox.right - $scope.hueBox.left, 8);
         context.fillStyle = "hsl(" + $scope.color.H + ", 100%, 50%)";
@@ -215,9 +211,9 @@ app.controller('PaletteCtrl', function($scope) {
         $scope.config.tools.colors.primary.r = $scope.clamp($scope.config.tools.colors.primary.r, 0, 255);
         $scope.config.tools.colors.primary.g = $scope.clamp($scope.config.tools.colors.primary.g, 0, 255);
         $scope.config.tools.colors.primary.b = $scope.clamp($scope.config.tools.colors.primary.b, 0, 255);
-        $scope.color.H = $scope.clamp($scope.color.H, 0, 360);
-        $scope.color.S = $scope.clamp($scope.color.S, 0, 100);
-        $scope.color.V = $scope.clamp($scope.color.V, 0, 100);
+        $scope.color.h = $scope.clamp($scope.color.h, 0, 360);
+        $scope.color.s = $scope.clamp($scope.color.s, 0, 100);
+        $scope.color.v = $scope.clamp($scope.color.v, 0, 100);
         while (!(/^#?[0-9A-F]{0,6}$/i.test($scope.hex))) {
             $scope.hex = $scope.hex.substr(0, $scope.hex.length-1);
         }
@@ -233,14 +229,14 @@ app.controller('PaletteCtrl', function($scope) {
         if (!$scope.config.tools.colors.primary.b) {
             $scope.config.tools.colors.primary.b = 0;
         }
-        if (!$scope.color.H) {
-            $scope.color.H = 0;
+        if (!$scope.color.h) {
+            $scope.color.h = 0;
         }
-        if (!$scope.color.S) {
-            $scope.color.S = 0;
+        if (!$scope.color.s) {
+            $scope.color.s = 0;
         }
-        if (!$scope.color.V) {
-            $scope.color.V = 0;
+        if (!$scope.color.v) {
+            $scope.color.v = 0;
         }
         if ($scope.hex.charAt(0) == '#') {
             $scope.hex = $scope.hex + "#000000".substr($scope.hex.length, 7);
