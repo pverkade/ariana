@@ -60,22 +60,18 @@ app.controller('MagicCtrl', function($scope) {
             return;
         }
         
-        var x = layer.getPosX();
-        var y = layer.getPosY();
-        
-        console.log("before", mouseX, mouseY);
-        
         var transformation = layer.calculateTransformation();
         console.log(transformation);
         mat3.invert(transformation, transformation);
         var position = vec3.fromValues(mouseX, mouseY, 1);
+        transformation[7] = -1 * transformation[7];
         vec3.transformMat3(position, position, transformation);
         
         // FIXME only works in original state
         var xRelative = Math.round(0.5 * (position[0] + 1) * $scope.magic.getWidth()); 
-        var yRelative = Math.round(0.5 * (position[1] - 1) * $scope.magic.getHeight());
+        var yRelative = Math.round(0.5 * (position[1] + 1) * $scope.magic.getHeight());
 
-        console.log("after", xRelative, yRelative);
+        console.log("position on image", xRelative, yRelative);
         
 		/* Check wheter user has clicked inside of a selection. */
 		if ($scope.magic.isInSelection(xRelative, yRelative)) {
