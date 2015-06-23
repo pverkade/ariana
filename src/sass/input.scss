@@ -90,5 +90,79 @@
                 display: none;
             }
         }
-    }   
+    }
+}
+
+@media screen and (max-width: $breakpoint-tablet) {
+    .input-group {
+        height: 0.5 * $blocksize-tablet;
+    }
+    .input-small {
+        width: 36px !important;
+    }
+    .input-small-medium {
+        width: 84px !important;
+    }
+    .input-large {
+        width: 190px !important;
+    }
+
+    .filter-options {
+        left: 1.5 * $blocksize-tablet;
+        width: calc(100% - #{2 * $blocksize-tablet});
+        max-width: 12 * $blocksize-tablet;
+        min-width: 5.5 * $blocksize-tablet;
+        min-height: $blocksize-tablet;
+
+        .center-box {
+            width: calc(100% - #{2 * $blocksize-tablet});
+        }
+
+        .input-group {
+            .filter-name {
+                min-width: 2 * $blocksize-tablet;
+            }
+
+            .filter-checkbox {
+                min-width: 2 * $blocksize-tablet;
+            }
+
+            .input-group-addon, .number {
+                width: 2 * $blocksize-tablet;
+            }
+
+            .slider {
+                width: calc(100% - #{2 * $blocksize-tablet});
+            }
+
+            .number {
+                width: 2 * $blocksize-tablet;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: $breakpoint-phone) {
+    .input-small {
+        width: 30px !important;
+    }
+    .input-small.input-group-addon {
+        padding: 4px 8px;
+    }
+    .input-small-medium {
+        width: 48px !important;
+    }
+    .input-large {
+        width: 121px !important;
+    }
+    .input-medium{
+        width: 72px !important;
+    }
+
+    .input-medium.form-control {
+        width: 100% !important;
+    }
+    .input-group-addon {
+        font-size: 10px;
+    }
 }

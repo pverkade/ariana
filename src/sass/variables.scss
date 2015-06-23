@@ -34,3 +34,11 @@ $fade-speed : 100ms;
 
 $scale-amount: 2;
 $scale-speed: 100ms;
+
+
+/* Tablet */
+$breakpoint-tablet: 1024px;
+$blocksize-tablet: 48px;
+
+/* Phone (tablet with fixes) */
+$breakpoint-phone: 600px;
