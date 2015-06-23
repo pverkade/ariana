@@ -66,7 +66,7 @@ app.controller('ToolboxCtrl', function($scope) {
         
         $scope.config.tools.activeTool = name;
         return true;
-    }
+    };
 
     $scope.getActiveToolFunctions = function() {
         return $scope.config.tools.activeToolFunctions;

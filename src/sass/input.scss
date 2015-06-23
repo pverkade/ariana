@@ -90,5 +90,61 @@
                 display: none;
             }
         }
-    }   
+    }
+}
+
+@media screen and (max-width: $breakpoint-tablet) {
+    .input-group {
+        height: 0.5 * $blocksize-tablet;
+    }
+
+    .input-small {
+        width: $blocksize-tablet !important;
+    }
+
+    .input-small-medium {
+        width: 1.5 * $blocksize-tablet !important;
+    }
+
+    .input-medium {
+        width: 2 * $blocksize-tablet !important;
+    }
+
+    .input-large {
+        width: 4 * $blocksize-tablet !important;
+    }
+
+    .filter-options {
+        left: 1.5 * $blocksize-tablet;
+        width: calc(100% - #{2 * $blocksize-tablet});
+        max-width: 12 * $blocksize-tablet;
+        min-width: 5.5 * $blocksize-tablet;
+        min-height: $blocksize-tablet;
+
+        .center-box {
+            width: calc(100% - #{2 * $blocksize-tablet});
+        }
+
+        .input-group {
+            .filter-name {
+                min-width: 2 * $blocksize-tablet;
+            }
+
+            .filter-checkbox {
+                min-width: 2 * $blocksize-tablet;
+            }
+
+            .input-group-addon, .number {
+                width: 2 * $blocksize-tablet;
+            }
+
+            .slider {
+                width: calc(100% - #{2 * $blocksize-tablet});
+            }
+
+            .number {
+                width: 2 * $blocksize-tablet;
+            }
+        }
+    }
 }
