@@ -440,9 +440,15 @@ class DrawEngine {
 
         for (var i = nrLastDrawn + 1; i < points.length; i++) {
             var lastPoint : Position2D = points[i-1];
+            var nextPoint : Position2D;
             
-            while (lastPoint.distanceTo(points[i]) > 5 - this.dashedDistance % 5) {
-                var nextPoint : Position2D = lastPoint.pointInDirection(points[i], 5 - this.dashedDistance % 5);
+            while (lastPoint.distanceTo(points[i]) > 0) {
+                if (lastPoint.distanceTo(points[i]) > 5 - this.dashedDistance % 5) {
+                    nextPoint = lastPoint.pointInDirection(points[i], 5 - this.dashedDistance % 5);
+                }
+                else {
+                    nextPoint = points[i];
+                }
 
                 context.beginPath();
                 context.moveTo(lastPoint.x, lastPoint.y);
@@ -455,25 +461,11 @@ class DrawEngine {
                 context.lineTo(nextPoint.x, nextPoint.y);
                 context.stroke();
 
+                if (nextPoint == points[i]) {
+                    this.dashedDistance += lastPoint.distanceTo(points[i]);
+                    break;
+                }
                 this.dashedDistance += 5 - this.dashedDistance % 5;
-                lastPoint = nextPoint;
-            }
-
-            if (lastPoint.distanceTo(points[i]) > 0) {
-                var nextPoint : Position2D = points[i];
-
-                context.beginPath();
-                context.moveTo(lastPoint.x, lastPoint.y);
-                if (this.dashedDistance % 10 >= 5.0) {
-                    context.strokeStyle = 'rgba(0,0,0,255)';
-                }
-                else {
-                    context.strokeStyle = 'rgba(255,255,255,255)';
-                }
-                context.lineTo(nextPoint.x, nextPoint.y);
-                context.stroke();
-
-                this.dashedDistance += lastPoint.distanceTo(points[i]);
                 lastPoint = nextPoint;
             }
 
