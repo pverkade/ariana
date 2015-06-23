@@ -57,8 +57,7 @@
     top: 0;
     margin-left: $blocksize;
     width: 4 * $blocksize;
-    height: 4 * $blocksize;
-
+    min-height: 4 * $blocksize;
     z-index: 3;
     background-color: lighten($light, 2 * $active-lighten);
 }
@@ -128,8 +127,8 @@
 
     .tool-settings {
         margin-left: $blocksize-tablet;
-        width: 4 * $blocksize-tablet;
-        height: 4 * $blocksize-tablet;
+        /*width: 6 * $blocksize-tablet;*/
+        min-height: 4 * $blocksize-tablet;
     }
 
     .large-tool-settings {
