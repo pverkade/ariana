@@ -26,7 +26,6 @@ app.controller('ContentController', function($scope, $window) {
             mouseX = event.pageX;
             mouseY = event.pageY;
         }
-        console.log("Mouse: (" + mouseX + ", " + mouseY + ")");
         $scope.config.mouse.current.x = (mouseX - cx) / z;
         $scope.config.mouse.current.y = (mouseY - cy) / z;
         
@@ -55,8 +54,7 @@ app.controller('ContentController', function($scope, $window) {
             mouseX = event.pageX;
             mouseY = event.pageY;
         }
-        console.log("Mouse: (" + mouseX + ", " + mouseY + ")");
-        
+
         /* Store the mouse button. */
         $scope.config.mouse.button[event.originalEvent.touches ? 1 : event.which] = true;
 
@@ -93,13 +91,9 @@ app.controller('ContentController', function($scope, $window) {
         if ($scope.config.canvas.zoom >= 3.0) {
             $scope.config.canvas.zoom = 3.0;
             return;
-        } 
+        }
         
         /* Zoom on the current mouse location. */
-        var cx = $scope.config.canvas.x,
-            cy = $scope.config.canvas.y,
-            z  = $scope.config.canvas.zoom;
-               
         var widthDifference  = $scope.config.mouse.current.x * 0.05;
         var heightDifference = $scope.config.mouse.current.y * 0.05;
         
@@ -115,15 +109,24 @@ app.controller('ContentController', function($scope, $window) {
         }
 
         /* Zoom on the current mouse location. */
-        var cx = $scope.config.canvas.x,
-            cy = $scope.config.canvas.y,
-            z  = $scope.config.canvas.zoom;
-               
         var widthDifference  = $scope.config.mouse.current.x * 0.05;
         var heightDifference = $scope.config.mouse.current.y * 0.05;
         
         $scope.config.canvas.x += widthDifference;
         $scope.config.canvas.y += heightDifference;
+    };
+
+    $scope.pinchZoom = function(event) {
+        $scope.config.canvas.zoom += event.scale;
+        if ($scope.config.canvas.zoom <= 0.1) {
+            $scope.config.canvas.zoom = 0.1;
+            return;
+        }
+
+        if ($scope.config.canvas.zoom >= 3.0) {
+            $scope.config.canvas.zoom = 3.0;
+            return;
+        }
     };
 
     /* Get the canvas element and start the engine. */
