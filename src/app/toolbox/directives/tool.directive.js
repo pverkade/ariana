@@ -10,10 +10,10 @@ app.directive('tool', function() {
 				event.stopPropagation();
 				scope.config.tools.activeTool = scope.toolname;
 
-				if (event.target.className.indexOf('mdi') > -1) {
+				//if (event.target.className.indexOf('mdi') > -1) {
 					scope.expanded = !scope.expanded;
 					scope.$apply(scope.expanded);
-				}
+				//}
 
 				scope.$apply(scope.config.tools.activeTool);
 			});

@@ -49,6 +49,20 @@ body {
     &:hover {
         background-color: lighten($light, $hover-lighten);
     }
+    
+    @media screen and (max-width: $breakpoint-tablet) {
+        width: $blocksize-tablet;
+        height: $blocksize-tablet;
+
+        cursor: pointer;
+
+        svg, i, img {
+            margin:     0.2 * $blocksize-tablet;
+            height:     0.6 * $blocksize-tablet;
+            width:      0.6 * $blocksize-tablet;
+            font-size:  0.6 * $blocksize-tablet;
+        }
+    }
 }
 
 .small-tool {
@@ -62,6 +76,18 @@ body {
         height:     0.3 * $blocksize;
         width:      0.3 * $blocksize; 
         font-size:  0.3 * $blocksize;
+    }
+    
+    @media screen and (max-width: $breakpoint-tablet) {
+        width: 0.5 * $blocksize-tablet;
+        height: 0.5 * $blocksize-tablet;
+
+        svg, i, img {
+            margin:     0.1 * $blocksize-tablet;
+            height:     0.3 * $blocksize-tablet;
+            width:      0.3 * $blocksize-tablet;
+            font-size:  0.3 * $blocksize-tablet;
+        }
     }
 }
 

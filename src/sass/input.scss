@@ -37,6 +37,13 @@
     @extend .gui-element;
     min-height: $blocksize;
     
+    @media screen and (max-width: $breakpoint-tablet) {
+        width: calc(100% - #{2 * $blocksize-tablet});
+        max-width: 12 * $blocksize-tablet;
+        min-width: 5.5 * $blocksize-tablet;
+        left: 1.5 * $blocksize-tablet;
+    }
+    
     .float-left {
         float: left;
     }
@@ -47,6 +54,10 @@
     
     .center-box {
         width: calc(100% - #{2 * $blocksize});
+        
+        @media screen and (max-width: $breakpoint-tablet) {
+            width: calc(100% - #{2 * $blocksize-tablet});
+        }
     }
         
     .input-group {  
@@ -90,5 +101,5 @@
                 display: none;
             }
         }
-    }   
+    }
 }
