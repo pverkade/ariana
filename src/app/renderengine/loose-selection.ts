@@ -231,11 +231,11 @@ class LooseSelection implements SelectionInterface{
 		var lastAddedPoint : Point;
 		var insidePoint : Point;
 
-		var newArea = 0; // this.newAdjustedArea();
+		var newArea = this.newAdjustedArea();
 
-		// if (newArea.length > 0) {
-		// 	return newArea;
-		// }
+		if (newArea.length > 0) {
+		 	return newArea;
+		}
 
         for (var i = nrPointsLast - 10; i >= 0; i--) {
             /* Look if last added point is close enough to current point. */
@@ -358,6 +358,11 @@ class LooseSelection implements SelectionInterface{
 		// this.maskWandParts[nrWands - 1] = new Uint8Array(0);
 		// this.mergeMaskWand();
 		this.points.splice(nrPoints - 2, 1);
+
+		console.log("maskWandParsts:");
+		console.log(this.maskWandParts);
+		console.log("points");
+		console.log(this.points);
 		// this.points[nrPoints - 2] = [];
 		return true;
 	}

@@ -31,7 +31,7 @@ app.controller('MagicCtrl', function($scope) {
 			return;
 		}
 		var image = layer.getImage();
-		
+
 		$scope.magic = new MagicSelection(image);
 
 		$scope.startSharedSelection(image.width, image.height);

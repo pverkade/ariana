@@ -168,23 +168,31 @@ app.controller('ToolbarController', ['$scope', '$modal',
             $scope.editEngine.removeSelectionLayer();
 
             var nrWands = $scope.selectionTool.getNrWands();
+            console.log("in cancel selection");
+            console.log(nrWands);
 
             for (var i = 0; i < nrWands; i++) {
+                console.log(i);
+                if (i==1) {
+                    console.log("i is 1");
+                }
                 var bitmask = $scope.selectionTool.maskWandParts[nrWands - i - 1];
 
                 for (var y = 0; y < $scope.selectionTool.height; y++) {
                     for (var x = 0; x < $scope.selectionTool.width; x++) {
                         if (bitmask[y * $scope.selectionTool.width + x]) {
-                            var i = ($scope.selectionTool.height - y) * $scope.selectionTool.width + x;
-                            $scope.imgData.data[4 * i] = 0;
-                            $scope.imgData.data[4 * i + 1] = 0;
-                            $scope.imgData.data[4 * i + 2] = 0;
-                            $scope.imgData.data[4 * i + 3] = 255;
+                            var j = ($scope.selectionTool.height - y) * $scope.selectionTool.width + x;
+                            $scope.imgData.data[4 * j] = 0;
+                            $scope.imgData.data[4 * j + 1] = 0;
+                            $scope.imgData.data[4 * j + 2] = 0;
+                            $scope.imgData.data[4 * j + 3] = 255;
                         }
                     }
                 }
 
                 var removed = $scope.selectionTool.clearLast();
+                console.log("waarde removed");
+                console.log(removed);
                 if (removed == false) {
                     console.log("Selection tool clear Last returned false");
                 }                
