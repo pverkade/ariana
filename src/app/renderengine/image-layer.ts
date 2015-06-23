@@ -80,10 +80,11 @@ class ImageLayer extends Layer {
     }
 
     private renderWithFilter(filter : Filter) {
-        var oldWidth : number = this.gl.drawingBufferWidth;
-        var oldHeight : number = this.gl.drawingBufferHeight;
+        var oldViewport = this.gl.getParameter(this.gl.VIEWPORT);
+        var oldFramebuffer : WebGLFramebuffer = this.gl.getParameter(this.gl.FRAMEBUFFER_BINDING);
 
         this.gl.viewport(0, 0, this.originalWidth, this.originalHeight);
+
         this.drawbuffer.bind();
         {
             this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
@@ -91,7 +92,8 @@ class ImageLayer extends Layer {
         }
         this.drawbuffer.unbind();
 
-        this.gl.viewport(0, 0, oldWidth, oldHeight);
+        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, oldFramebuffer);
+        this.gl.viewport(oldViewport[0], oldViewport[1], oldViewport[2], oldViewport[3]);
 
         this.setupRender();
         this.renderTexture(this.drawbuffer.getWebGlTexture());
