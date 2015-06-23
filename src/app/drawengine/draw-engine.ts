@@ -8,7 +8,6 @@
 
 /*
  * Position2D class for addressing a point in the draw canvas.
- * TODO: pointInDirection should check if the distance != zero etc
  */
 class Position2D {
     constructor (public x : number, public y : number) {
@@ -30,6 +29,9 @@ class Position2D {
         var origDistance : number = this.distanceTo(otherpoint);
 
         if (distance == origDistance) {
+            return otherpoint;
+        }
+        if (distance == 0.0) {
             return otherpoint;
         }
 
