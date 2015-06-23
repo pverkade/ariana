@@ -114,6 +114,16 @@ app.controller('ContentController', function($scope, $window) {
     );
 
     if (false) {
+        var i = 1;
+        function done() {
+            if (i) {
+                i--;
+            }
+            else {
+                $scope.newLayerFromImage(img);
+                $scope.newLayerFromImage(img2);
+            }
+        }
         $scope.resizeCanvases(800, 600);
 
         var img = document.createElement("img");
@@ -128,15 +138,5 @@ app.controller('ContentController', function($scope, $window) {
         img2.src = "assets/img/logo.png";
         img2.onload = done;
 
-        var i = 1;
-        function done() {
-            if (i) {
-                i--;
-            }
-            else {
-                $scope.newLayerFromImage(img);
-                $scope.newLayerFromImage(img2);
-            }
-        }
     }
 });

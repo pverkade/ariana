@@ -2,8 +2,7 @@
     ng-right-click
     ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}">
 
-    <div class="layer-header"
-        ng-show="checkVisible()">
+    <div class="layer-header" ng-show="checkVisible()">
         <!-- <div class="tool float-left" ng-click="addLayer()" ng-hide="hidden"> <i class="mdi mdi-plus"> </i> </div> -->
         <div class="tool float-left" ng-click="hideLayers()" ng-hide="hidden"> <i class="mdi mdi-chevron-right"> </i> </div>
         <div class="tool float-left" ng-click="showLayers()" ng-show="hidden"> <i class="mdi mdi-chevron-left"> </i> </div>
@@ -17,7 +16,7 @@
             ng-repeat="index in getLayersIndices()"
             ng-click="selectLayer(index)"
             ng-class="{'active': index === getCurrentLayerIndex()}"
-            ng-hide="hidden">
+            ng-hide="hidden || isToBeRemoved(index)">
 
             <div class="crop">
                 <img class="preview" ng-src="{{getThumbnail(index)}}">

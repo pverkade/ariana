@@ -50,16 +50,37 @@ app.controller('layersCtrl', function($scope) {
 
     $scope.removeLayer = function(event, index) {
         event.stopPropagation();
-        $scope.config.layers.layerInfo.splice(index, 1);
-        $scope.config.layers.numberOfLayers = $scope.renderEngine.getNumberOfLayers();
-        
-        if ($scope.config.layers.currentLayer == $scope.renderEngine.getNumberOfLayers())
-            $scope.config.layers.currentLayer -= 1;
-        
-        $scope.renderEngine.removeLayer(index);
-        $scope.editEngine.clear();
 
-        $scope.requestRenderEngineUpdate();
+        var done = false;
+        function remove() {
+            if (done) {
+                return;
+            }
+
+            $scope.config.layers.layerInfo.splice(index, 1);
+            $scope.config.layers.numberOfLayers = $scope.renderEngine.getNumberOfLayers();
+
+            if ($scope.config.layers.currentLayer == $scope.renderEngine.getNumberOfLayers())
+                $scope.config.layers.currentLayer -= 1;
+
+            $scope.renderEngine.removeLayer(index);
+            $scope.editEngine.clear();
+
+            $scope.requestRenderEngineUpdate();
+            done = true;
+        }
+
+        $scope.config.layers.layerInfo[index].remove = true;
+        var layerElement = document.querySelectorAll(".layer")[$scope.renderEngine.getNumberOfLayers() - 1 - index];
+
+        layerElement.addEventListener("webkitTransitionEnd", remove, false);
+        layerElement.addEventListener("transitionend", remove, false);
+        layerElement.addEventListener("oTransitionEnd", remove, false);
+    };
+
+    $scope.isToBeRemoved = function(index) {
+        var r = $scope.config.layers.layerInfo[index].remove;
+        return r;
     };
 
     $scope.moveLayerUp = function(event, index) {
