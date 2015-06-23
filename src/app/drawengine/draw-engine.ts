@@ -124,24 +124,39 @@ class DrawEngine {
     memContext : CanvasRenderingContext2D;
     drawCanvas : HTMLCanvasElement;
     drawContext : CanvasRenderingContext2D;
+    tmpDrawCanvas : HTMLCanvasElement;
+    tmpDrawContext : CanvasRenderingContext2D;
+
+    width : number;
+    height : number;
 
     dottedDistance : number;
 
-    constructor(public canvas : HTMLCanvasElement) {
+    constructor(canvas : HTMLCanvasElement) {
+        this.width = canvas.width;
+        this.height = canvas.height;
+        console.log(this.width);
         this.drawCanvas = canvas;
 
         this.memCanvas = document.createElement('canvas');
-        this.memCanvas.width = this.canvas.width;
-        this.memCanvas.height = this.canvas.height;
+        this.memCanvas.width = this.width;
+        this.memCanvas.height = this.height;
         this.memContext = <CanvasRenderingContext2D>this.memCanvas.getContext('2d');
         this.drawContext = <CanvasRenderingContext2D>this.drawCanvas.getContext('2d');
 
+        this.tmpDrawCanvas = document.createElement('canvas');
+        this.tmpDrawCanvas.width = this.width;
+        this.tmpDrawCanvas.height = this.height;
+        this.tmpDrawContext = <CanvasRenderingContext2D>this.tmpDrawCanvas.getContext("2d");
         this.dottedDistance = 0.0;
     }
 
     resize (width : number, height : number) : void {
         this.memCanvas.width = width;
         this.memCanvas.height = height;
+        this.tmpDrawCanvas.width = width;
+        this.tmpDrawCanvas.height = height;
+        console.log("resize:" + width + ", " + height);
         this.clearCanvases();
     }
     
@@ -287,7 +302,7 @@ class DrawEngine {
      * Save the canvas (use this before drawing)
      */
     saveCanvas = () : void => {
-        this.memContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.memContext.clearRect(0, 0, this.width, this.height);
         this.memContext.drawImage(this.drawCanvas, 0, 0);
     };
 
@@ -326,7 +341,7 @@ class DrawEngine {
      * Draw the given path to the canvas using the selected drawType
      */
     draw (path : Path) : void {
-        var context = <CanvasRenderingContext2D>this.drawCanvas.getContext('2d');
+        var context = this.tmpDrawContext;
         if (context == null) {
             console.log("Can't draw path, canvas is already rendered in webgl mode.")
             return;
@@ -389,6 +404,9 @@ class DrawEngine {
         if (this.drawType == drawType.ERASE) {
             this.erasePath(points, path, context);
         }
+
+
+        this.drawContext.drawImage(this.tmpDrawCanvas, 0, 0);
 
         this.isCleared = false;
     }
@@ -527,21 +545,31 @@ class DrawEngine {
      * Function to draw brush..
      */
     drawBrushImage (points, path : Path, context : CanvasRenderingContext2D) {
+        var timingStart = performance.now();
         var halfBrushW = this.brushImage.width/2;
         var halfBrushH = this.brushImage.height/2;
         var i : number = path.lastDrawnItem - 2;
 
+        var brushCanvas = document.createElement("canvas");
+        brushCanvas.width = this.lineWidth;
+        brushCanvas.height = this.lineWidth;
+        var brushContext = brushCanvas.getContext("2d");
+        brushContext.drawImage(this.brushImage, 0, 0, this.lineWidth, this.lineWidth);
+
         if (path.path.length < 3)
         {
-            context.drawImage(this.brushImage, points[0].x - halfBrushW,
-                                               points[0].y - halfBrushH,
-                                               this.lineWidth,
-                                               this.lineWidth);
+            context.drawImage(
+                brushCanvas,
+                points[0].x - halfBrushW,
+                points[0].y - halfBrushH
+            );
         }
         if (i < 1) {
             i = 1;
         }
-        
+
+        var timing1 = performance.now() - timingStart;
+
         /* Iterate over the not-drawn points in the path */
         for (i; i < points.length - 2; i++) {
             var start = points[i - 1];
@@ -562,11 +590,13 @@ class DrawEngine {
             {
                 x = start.x + (Math.sin(angle) * z) - halfBrushW + 5;
                 y = start.y + (Math.cos(angle) * z) - halfBrushH + 5;
-                context.drawImage(this.brushImage, x, y,
-                                  this.lineWidth,
-                                  this.lineWidth);
+                context.drawImage(brushCanvas, x, y);
             }
         }
+
+        var timing2 = performance.now() - timingStart;
+        console.log("Timing 1: " + timing1);
+        console.log("Timing 2: " + timing2);
         path.lastDrawnItem = i;
     }
 

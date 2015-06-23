@@ -15,7 +15,6 @@ angular.module("ngTouch", [])
                 function onTouchMove($event) {
                     if ($event.originalEvent.touches.length == 1) {
                         var method = '$scope.' + $element.attr('ng-touchmove');
-                        console.log("ontouchmove");
                         $scope.$apply(function () {
                             eval(method);
                         });

@@ -28,7 +28,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
 
     constructor (canvas : HTMLCanvasElement) {
         this.width = canvas.width;
-        this.height = canvas.height;        
+        this.height = canvas.height;
         this.thumbnailHeight = Math.round(this.thumbnailWidth * (this.height / this.width)); 
         
         this.layers = new Array();
