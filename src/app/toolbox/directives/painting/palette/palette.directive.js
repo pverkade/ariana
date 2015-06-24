@@ -65,6 +65,11 @@ app.controller('PaletteCtrl', function($scope) {
     $scope.mouseMove = function() {
     };
 
+    $scope.$on('swapColorsBC', function (event, data) {
+         $scope.updateHSV();
+         $scope.updateHEX();
+    });
+
     $scope.paletteMouseDown = function(event) {
         $scope.selectingSaturationValue = true;
         $scope.paletteMouseMove(event);
