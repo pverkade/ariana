@@ -1,3 +1,11 @@
+/* 
+ * Project Ariana
+ * hotkey.js
+ * 
+ * This file descibes the hotkeys for the tools. 
+ *
+ */
+ 
 app.controller('HotkeyCtrl', function($scope, hotkeys) {
 
     hotkeys.add({
