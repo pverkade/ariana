@@ -6,7 +6,7 @@
  *
  */
  
-app.controller('HotkeyCtrl', function($scope, hotkeys) {
+app.controller('HotkeyCtrl', function($scope, hotkeys, tools) {
 
     hotkeys.add({
         combo: 'p',
