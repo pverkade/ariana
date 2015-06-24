@@ -1,3 +1,6 @@
+/*
+ * Typescript interface for external gl-matrix library
+ */
 
 interface glMatrix {
   setMatrixArrayType(type: any): void;
