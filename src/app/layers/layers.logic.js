@@ -10,7 +10,7 @@
 app.controller('layersCtrl', ['$scope', '$animate', 'mouse', 'layers', 
     function($scope, $animate, mouse, layers) {
 
-    $scope.checkVisible = function(){
+    $scope.checkVisible = function() {
         return !mouse.checkActive();
     };
     
