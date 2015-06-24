@@ -6,11 +6,6 @@
  *
  */
 
-.thumbnail:hover {
-    background-color: darken(#e5e5e5, 5%);
-}
-
-/* Upload modal */
 .modal-body {
     .drop-box {
         background: $white;
@@ -59,26 +54,6 @@
 .modal-content {
     border-radius: 0;
     background-color: $light;
-
-    .form-control:focus {
-        border-color: $white;
-        outline: 0px none;
-        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px $brand-color;
-    }
-
-    .btn-primary {
-        background-color: $brand-color;
-        border: $border-thickness solid $brand-color;
-        color: $dark;
-
-        &:hover {
-            color: $light;            
-        }
-    }
-
-    .btn-default {
-        background-color: $white;
-    }
 
     .thumbnail {
         background-color: $dark;
