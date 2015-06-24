@@ -55,5 +55,55 @@
     }
 }
 
+.modal-content {
+    border-radius: 0;
+    background-color: $light;
 
+    .form-control:focus {
+        border-color: $white;
+        outline: 0px none;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px $brand-color;
+    }
 
+    .btn-primary {
+        background-color: $brand-color;
+        border: $border-thickness solid $brand-color;
+        color: $dark;
+
+        &:hover {
+            color: $light;            
+        }
+    }
+
+    .btn-default {
+        background-color: $white;
+    }
+
+    .thumbnail {
+        background-color: $dark;
+        border: none;
+        border-radius: 0;
+
+        cursor: pointer;
+
+        h3 {
+            color: $white;
+        }
+
+        &:hover {
+            background-color: lighten($dark, 5%);
+        }
+    }
+
+    .modal-header {
+        border-color: $white;
+
+        h1 {
+            color: $white;
+        }
+    }
+
+    .modal-footer {
+        border-color: $white;
+    }
+}
