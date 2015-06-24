@@ -3,6 +3,14 @@ app.service('mouse', function() {
     this.getPos = function() {
         return {x: this._params.current.x, y: this._params.current.y};
     }
+    
+    this.getPosX = function() {
+        return this._params.current.x;
+    }
+    
+    this.getPosY = function() {
+        return this._params.current.y;
+    }
 
     this.getPosGlobal = function() {
         return {x: this._params.current.global.x, y: this._params.current.global.y};
@@ -44,6 +52,14 @@ app.service('mouse', function() {
     this.setY = function(y) {
         this._params.current.y = y;
     }
+    
+    this.setPosX = function(x) {
+        this._params.current.x = x;
+    }
+
+    this.setPosY = function(y) {
+        this._params.current.y = y;
+    }
 
     this.setGlobalPos = function(x, y) {
         this._params.current.global.x = x;
@@ -55,6 +71,14 @@ app.service('mouse', function() {
     }
 
     this.setGlobalY = function(y) {
+        this._params.current.global.y = y;
+    }
+    
+    this.setGlobalPosX = function(x) {
+        this._params.current.global.x = x;
+    }
+
+    this.setGlobalPosY = function(y) {
         this._params.current.global.y = y;
     }
 
@@ -70,6 +94,14 @@ app.service('mouse', function() {
     this.setOldY = function(y) {
         this._params.old.y = y;
     }
+    
+    this.setOldPosX = function(x) {
+        this._params.old.x = x;
+    }
+
+    this.setOldPosY = function(y) {
+        this._params.old.y = y;
+    }
 
     this.setOldGlobalPos = function(x, y) {
         this._params.old.global.x = x;
@@ -83,6 +115,14 @@ app.service('mouse', function() {
     this.setOldGlobalY = function(y) {
         this._params.old.global.y = y;
     }
+    
+    this.setOldGlobalPosX = function(x) {
+        this._params.old.global.x = x;
+    }
+
+    this.setOldGlobalPosY = function(y) {
+        this._params.old.global.y = y;
+    }
 
     this.setPrimary = function(state) {
         this._params.button.1 = state;
@@ -94,6 +134,10 @@ app.service('mouse', function() {
 
     this.setSecondary = function(state) {
         this._params.button.3 = state;
+    }
+    
+    this.checkActive = function() {
+        return (this._params.button.1 || return this._params.button.2);
     }
 
     this._params = {

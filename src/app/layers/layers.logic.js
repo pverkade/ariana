@@ -7,12 +7,13 @@
  *
  */
  
-app.controller('layersCtrl', ['$scope', '$animate', function($scope, $animate) {
+app.controller('layersCtrl', ['$scope', '$animate', 'mouse', 'layers', 
+    function($scope, $animate, mouse, layers) {
 
     /* This functions returns whether the toolbox should be visible. It is 
      * hidden when the user is clicking on the canvas/background. */
-    $scope.checkVisible = function() {
-        return (!($scope.config.mouse.button[1] || $scope.config.mouse.button[2] || $scope.config.mouse.button[3]));
+    $scope.checkVisible = function(){
+        return !mouse.checkActive()
     };
     
     $scope.hidden = false;
@@ -42,26 +43,22 @@ app.controller('layersCtrl', ['$scope', '$animate', function($scope, $animate) {
     };
 
     var allLayersIndex = 0;
+    
     $scope.addLayer = function(event) {
         //event.stopPropagation();
-        $scope.config.layers.numberOfLayers = $scope.renderEngine.getNumberOfLayers();
+        $scope.setNumberOfLayers = $scope.renderEngine.getNumberOfLayers();
         $scope.names.push('Layer ' + (allLayersIndex++ + 1));
     };
 
     $scope.removeLayer = function(event, index) {
         event.stopPropagation();
 
-        $scope.config.layers.layerInfo.splice(index, 1);
-        $scope.config.layers.numberOfLayers = $scope.renderEngine.getNumberOfLayers();
-
-        if ($scope.config.layers.currentLayer == $scope.renderEngine.getNumberOfLayers())
-            $scope.config.layers.currentLayer -= 1;
+        layers.setLayerInfo(layers.getLayerInfo.splice(index, 1));
+        layers.setNumberOfLayers = $scope.renderEngine.getNumberOfLayers();
 
         $scope.renderEngine.removeLayer(index);
-        // this might not select the expected layer.
         $scope.setCurrentLayerIndex(Math.max(0, index - 1));
 
-        // FIXME: does not clear the edit-engine bounding box.
         $scope.requestEditEngineUpdate();
         $scope.editEngine.clear();
         $scope.requestEditEngineUpdate();
@@ -69,7 +66,7 @@ app.controller('layersCtrl', ['$scope', '$animate', function($scope, $animate) {
     };
 
     $scope.isToBeRemoved = function(index) {
-        return $scope.config.layers.layerInfo[index].remove;
+        layers.setLayerInfo(layers.getLayerInfo[index].remove);
     };
 
     $scope.moveLayerUp = function(event, index) {
@@ -78,17 +75,9 @@ app.controller('layersCtrl', ['$scope', '$animate', function($scope, $animate) {
         if (index < $scope.renderEngine.getNumberOfLayers() - 1 && $scope.renderEngine.getNumberOfLayers() > 1) {
             $scope.renderEngine.reorder(index, index + 1);
             $scope.renderEngine.render();
-
-            swap($scope.config.layers.layerInfo, index, index + 1);
+            layers.getLayerInfo.swap(index, index + 1);
         }
-
     };
-
-    function swap(array, i, j) {
-        var temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
 
     $scope.moveLayerDown = function(event, index) {
         event.stopPropagation();
@@ -96,17 +85,15 @@ app.controller('layersCtrl', ['$scope', '$animate', function($scope, $animate) {
         if (index > 0) {
             $scope.renderEngine.reorder(index, index - 1);
             $scope.renderEngine.render();
-            swap($scope.config.layers.layerInfo, index, index - 1);
+            layers.getLayerInfo.swap(index, index - 1);
         }
     };
 
     /* This function selects a specific layer if possible. */
     $scope.selectLayer = function(newIndex) {
         if (0 <= newIndex && newIndex < $scope.renderEngine.getNumberOfLayers()) {
-            $scope.setCurrentLayerIndex(newIndex);
-            return true;
+            layers.setCurrentIndex(newIndex);
         }
-        return false;
     };
 
     $scope.getThumbnail = function(index) {
