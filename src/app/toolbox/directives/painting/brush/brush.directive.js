@@ -7,7 +7,9 @@ app.directive('brush', function() {
     };
 });
 
-app.controller('BrushCtrl', function($scope, tools, canvas) {
+app.controller('BrushCtrl', ['$scope', 'tools', 'canvas', 'layers', 'colors', 'mouse',
+    function($scope, tools, canvas, layers, colors, mouse) {
+
 	$scope.toolname = 'brush';
 	$scope.active = tools.getTool() == $scope.toolname;
     $scope.thickness = 2;
@@ -22,7 +24,7 @@ app.controller('BrushCtrl', function($scope, tools, canvas) {
         $scope.drawing = false;
         $scope.hasDrawn = false;
 		canvas.setCursor('default');
-        $scope.setColor($scope.config.tools.colors.primary);
+        $scope.setColor(colors.getPrimary());
         
         $scope.updateDrawEngine();
         $scope.updateBrushStyle();
@@ -34,8 +36,8 @@ app.controller('BrushCtrl', function($scope, tools, canvas) {
     $scope.paintTopCanvas = function() {
         /* TODO: do stop() and init() when another layer is selected? */
 
-        $scope.currentLayer = $scope.config.layers.currentLayer;
-        $scope.numberOfLayers = $scope.config.layers.numberOfLayers;
+        $scope.currentLayer = layers.getCurrentIndex();
+        $scope.numberOfLayers = layers.getNumLayers();
         if ($scope.currentLayer == $scope.numberOfLayers - 1) {
             return;
         }
@@ -115,28 +117,27 @@ app.controller('BrushCtrl', function($scope, tools, canvas) {
 	$scope.mouseDown = function() {
         $scope.drawing = true;
         
-        var buttons = $scope.config.mouse.button;
-        if (buttons[1] && buttons[3]) return;
+        if (mouse.getPrimary() && mouse.getSecondary()) return;
         
-        if (buttons[1]) 
-            $scope.setColor($scope.config.tools.colors.primary);
+        if (mouse.getPrimary()) 
+            $scope.setColor(colors.getPrimary());
         else 
-            $scope.setColor($scope.config.tools.colors.secondary);
+            $scope.setColor(colors.getSecondary());
         
-        $scope.drawEngine.onMousedown($scope.config.mouse.current.x, $scope.config.mouse.current.y);
+        $scope.drawEngine.onMousedown(mouse.getPosX(), mouse.getPosY());
 	};
 
 	/* onMouseUp */
 	$scope.mouseUp = function() {
         $scope.drawing = false;
-        $scope.drawEngine.onMouseup($scope.config.mouse.current.x, $scope.config.mouse.current.y);
+        $scope.drawEngine.onMouseup(mouse.getPosX(), mouse.getPosY());
 	};
 
 	/* onMouseMove */
 	$scope.mouseMove = function() {
         if (!$scope.drawing) return;
         $scope.hasDrawn = true;
-		$scope.drawEngine.onMousemove($scope.config.mouse.current.x, $scope.config.mouse.current.y);
+		$scope.drawEngine.onMousemove(mouse.getPosX(), mouse.getPosY());
 	};
 	/*
 	 * This will watch for this tools' "active" variable changes.
@@ -161,4 +162,4 @@ app.controller('BrushCtrl', function($scope, tools, canvas) {
             $scope.stop();
         }
 	}, true);
-});
+}]);
