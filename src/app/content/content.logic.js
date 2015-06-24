@@ -134,31 +134,4 @@ app.controller('ContentController', function($scope, $window) {
         document.getElementById("main-canvas"),
         document.getElementById("editing-canvas")
     );
-
-    if (false) {
-        $scope.resizeCanvases(800, 600);
-
-        var img = document.createElement("img");
-        img.width = 420;
-        img.height = 320;
-        img.src = "assets/img/snoop.jpg";
-        img.onload = done;
-
-        var img2 = document.createElement("img");
-        img2.width = 250;
-        img2.height = 250;
-        img2.src = "assets/img/logo.png";
-        img2.onload = done;
-
-        var i = 1;
-        function done() {
-            if (i) {
-                i--;
-            }
-            else {
-                $scope.newLayerFromImage(img);
-                $scope.newLayerFromImage(img2);
-            }
-        }
-    }
 });

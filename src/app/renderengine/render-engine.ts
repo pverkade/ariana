@@ -72,6 +72,11 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
     getHeight() {
         return this.height;
     }
+
+    public getNumberOfLayers() : number {
+        return this.layers.length;
+    }
+
     public addLayer(layer : Layer) {
         /* Append layer to user array */
         this.insertLayer(layer, this.layers.length);
@@ -147,12 +152,17 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
     }
 
     /* Render only a given set of indices, also when they're set to hidden */
-    private renderIndices(indices : number[]) {
+    private renderIndices(indices : number[], drawHiddenLayers = false) {
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
         var oldType = -1;
         for (var i = 0; i < indices.length; i++) {
             /* Take the old layer (one layer at a time) */
             var layer:Layer = this.layers[indices[i]];
+
+            if (!drawHiddenLayers && layer.isHidden()) {
+                continue;
+            }
+
             if (layer.getLayerType() != oldType) {
                 /*
                  * We're drawing a different type of layer then our previous one,
@@ -166,11 +176,11 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
     }
 
     /* Render indices to an image that is returned as base64 string */
-    public renderIndicesToImg(indices : number[]) : String {
+    public renderIndicesToImg(indices : number[], drawHiddenLayers = false) : String {
         this.drawbuffer1.bind();
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
 
-        this.renderIndices(indices);
+        this.renderIndices(indices, drawHiddenLayers);
 
         var data : String = this.drawbuffer1.getImage();
         this.drawbuffer1.unbind();

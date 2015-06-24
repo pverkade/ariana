@@ -83,9 +83,9 @@ class ImageLayer extends Layer {
 
     /* Render the current layer with a filter */
     private renderWithFilter(filter : Filter) {
-        /* Store the width and height of the current framebuffer */
-        var oldWidth : number = this.gl.drawingBufferWidth;
-        var oldHeight : number = this.gl.drawingBufferHeight;
+
+        var oldViewport = this.gl.getParameter(this.gl.VIEWPORT);
+        var oldFramebuffer : WebGLFramebuffer = this.gl.getParameter(this.gl.FRAMEBUFFER_BINDING);
 
         /* Resize the viewport to the original size of the image (that is stored in GPU memory) */
         this.gl.viewport(0, 0, this.originalWidth, this.originalHeight);
@@ -97,9 +97,8 @@ class ImageLayer extends Layer {
             filter.render(this.resourceManager, this.texture);
         }
 
-        /* Switch back to the onscreen drawbuffer and restore the viewport */
-        this.drawbuffer.unbind();
-        this.gl.viewport(0, 0, oldWidth, oldHeight);
+        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, oldFramebuffer);
+        this.gl.viewport(oldViewport[0], oldViewport[1], oldViewport[2], oldViewport[3]);
 
         /* Render this layer with the filtered image instead of the original image */
         this.setupRender();
@@ -141,10 +140,6 @@ class ImageLayer extends Layer {
 
     getImage() : HTMLImageElement {
         return this.image;
-    }
-
-    getWebGLTexture() : WebGLTexture {
-        return this.texture;
     }
 
     destroy() {
