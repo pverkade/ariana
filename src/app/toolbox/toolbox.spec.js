@@ -68,7 +68,7 @@ describe("The toolbox controller", function() {
     describe("selectToolSet", function() {
         it("should select a different toolset", function() {
             $scope.selectToolSet('test');
-            expect(tools.getTool()set).toEqual('test');
+            expect(tools.getTool()).toEqual('test');
 
             it("should return true for 'test'", function() {
                 expect($scope.isActiveToolset('test')).toBe('true');

@@ -7,7 +7,7 @@ app.directive('magic', function() {
     };
 });
 
-app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse'
+app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
 	function($scope, tools, canvas, layers, mouse) {
 
 	$scope.toolname = 'magic';
