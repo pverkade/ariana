@@ -5,7 +5,7 @@
  * This file contains the style definition for generic GUI elements.
  *
  */
- 
+
 * {
     margin: 0;
     padding: 0;
@@ -15,7 +15,7 @@ body {
     background-color: $dark;
     color: $white;
     font-family: $fonts;
-    width : 100%;
+    width: 100%;
     height: 100%;
     @include user-select(none);
 }
@@ -31,15 +31,14 @@ body {
     height: $blocksize;
     padding: 0 !important;
     margin: 0 !important;
-    
     cursor: pointer;
     
     svg, i, img {
-        padding:     0.2 * $blocksize;
-        margin:    0 !important; 
-        height:     0.6 * $blocksize;
-        width:      0.6 * $blocksize; 
-        font-size:  0.6 * $blocksize;
+        padding: 0.2 * $blocksize;
+        margin: 0 !important;
+        height: 0.6 * $blocksize;
+        width: 0.6 * $blocksize;
+        font-size: 0.6 * $blocksize;
     }
     
     svg path {
@@ -53,14 +52,12 @@ body {
     @media screen and (max-width: $breakpoint-tablet) {
         width: $blocksize-tablet;
         height: $blocksize-tablet;
-
         cursor: pointer;
-
         svg, i, img {
-            padding:     0.2 * $blocksize-tablet;
-            height:     0.6 * $blocksize-tablet;
-            width:      0.6 * $blocksize-tablet;
-            font-size:  0.6 * $blocksize-tablet;
+            padding: 0.2 * $blocksize-tablet;
+            height: 0.6 * $blocksize-tablet;
+            width: 0.6 * $blocksize-tablet;
+            font-size: 0.6 * $blocksize-tablet;
         }
     }
 }
@@ -71,22 +68,22 @@ body {
     height: 0.5 * $blocksize;
     
     svg, i, img {
-        padding:     0.1 * $blocksize;
-        margin:    0 !important; 
-        height:     0.3 * $blocksize;
-        width:      0.3 * $blocksize; 
-        font-size:  0.3 * $blocksize;
+        padding: 0.1 * $blocksize;
+        margin: 0 !important;
+        height: 0.3 * $blocksize;
+        width: 0.3 * $blocksize;
+        font-size: 0.3 * $blocksize;
     }
     
     @media screen and (max-width: $breakpoint-tablet) {
         width: 0.5 * $blocksize-tablet;
         height: 0.5 * $blocksize-tablet;
-
+        
         svg, i, img {
-            padding:     0.1 * $blocksize-tablet;
-            height:     0.3 * $blocksize-tablet;
-            width:      0.3 * $blocksize-tablet;
-            font-size:  0.3 * $blocksize-tablet;
+            padding: 0.1 * $blocksize-tablet;
+            height: 0.3 * $blocksize-tablet;
+            width: 0.3 * $blocksize-tablet;
+            font-size: 0.3 * $blocksize-tablet;
         }
     }
 }
@@ -100,7 +97,6 @@ body {
     
     .tool, .small-tool {
         background-color: lighten($light, $active-lighten);
-        
         &:hover {
             background-color: lighten($light, $active-lighten + $hover-lighten);
         }
