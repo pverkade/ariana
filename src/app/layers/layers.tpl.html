@@ -16,7 +16,7 @@
             ng-repeat="index in getLayersIndices()"
             ng-click="selectLayer(index)"
             ng-class="{'active': index === getCurrentLayerIndex()}"
-            ng-hide="hidden || isToBeRemoved(index)">
+            ng-hide="hidden">
 
             <div class="crop">
                 <img class="preview" ng-src="{{getThumbnail(index)}}">

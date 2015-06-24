@@ -31,13 +31,13 @@ app.service('layers', function() {
     this.setCurrentIndex = function(i) {
         this._params.currentLayer = i;
     }
-    
-    this.setLayerInfo = function(array) {
-        this._params.layerInfo = array;
-    }
 
     this.setLayerData = function(index, data) {
         this._params.layerInfo[index] = data;
+    }
+
+    this.addLayer = function(data) {
+        this._params.layerInfo.push(data);
     }
 
     this.overwriteLayers = function(data) {

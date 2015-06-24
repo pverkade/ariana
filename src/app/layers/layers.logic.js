@@ -62,10 +62,6 @@ app.controller('layersCtrl', ['$scope', '$animate', 'mouse', 'layers',
         $scope.requestRenderEngineUpdate();
     };
 
-    $scope.isToBeRemoved = function(index) {
-        layers.setLayerInfo(layers.getLayerInfo()[index].remove);
-    };
-
     $scope.moveLayerUp = function(event, index) {
         event.stopPropagation();
 

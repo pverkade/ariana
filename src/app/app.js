@@ -70,7 +70,7 @@ app.controller('AppCtrl', ['$scope', 'layers', 'canvas', 'tools',
             layers.setCurrentIndex(layers.getNumberOfLayers - 1);
 
             /* Store information about the layers in the config object. */
-            layers.setLayerData(layers.getCurrentIndex, {
+            layers.addLayer({
                 "name": 'Layer ' + layers.getNumCreatedLayers()
             });
 
