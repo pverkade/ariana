@@ -3,25 +3,22 @@
 <div class="toolbar"
     ng-right-click
     ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}">
+    
     <div class="brand float-left">
         ARIANA
     </div>
     
     <ul class="clearfix">
         <li class="tool float-left" ng-click="openNewFileModal()">
-            <!-- new canvas -->
             <i class="mdi mdi-file"></i>
         </li>
         <li class="tool float-left" ng-click="openUploadModal()">
-            <!-- import file -->
             <i class="mdi mdi-upload"></i>
         </li>
         <li class="tool float-left" ng-click="openSaveImageModal()">
-            <!-- export file --> 
             <i class="mdi mdi-download"></i>
         </li>
         <li class="tool float-left" ng-click="openFilterModal()">
-            <!-- filters and effects -->
             <i class="mdi mdi-star-outline"></i>
         </li>
     </ul>
@@ -33,6 +30,7 @@
     ng-right-click
     ng-show="filter.filterObject"
     ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}"> 
+    
     <div class="tool float-left" ng-click="cancelFilter()"> <i class="mdi mdi-close"> </i> </div>
     <div class="center-box float-left">
     
