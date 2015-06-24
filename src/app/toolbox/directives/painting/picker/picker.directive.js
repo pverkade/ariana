@@ -7,7 +7,9 @@ app.directive('picker', function() {
     };
 });
 
-app.controller('PickerCtrl', function($scope, tools, canvas) {
+app.controller('PickerCtrl', ['$scope', 'tools', 'canvas', 'mouse', 'color',
+    function($scope, tools, canvas, mouse, color) {
+        
     $scope.toolname = 'picker';
     $scope.active = tools.getTool() == $scope.toolname;
 
@@ -32,22 +34,22 @@ app.controller('PickerCtrl', function($scope, tools, canvas) {
     $scope.mouseMove = function() {
         if (!$scope.picking) return;
          
-        var x = Math.round($scope.config.mouse.current.x);
-        var y = Math.round($scope.config.mouse.current.y);
+        var x = Math.round(mouse.getPosX());
+        var y = Math.round(mouse.getPosY());
         
         var value = $scope.renderEngine.getPixelColor(x, y);
         
         /* Write color to config. */
-        if ($scope.config.mouse.button[1]) {
-            $scope.config.tools.colors.primary.r = value[0];
-            $scope.config.tools.colors.primary.g = value[1];
-            $scope.config.tools.colors.primary.b = value[2];
+        if (mouse.getPrimary()) {
+            color.setPrimaryR(value[0]);
+            color.setPrimaryG(value[1]);
+            color.setPrimaryB(value[2]);
         }
         
-        if ($scope.config.mouse.button[3]) {
-            $scope.config.tools.colors.secondary.r = value[0];
-            $scope.config.tools.colors.secondary.g = value[1];
-            $scope.config.tools.colors.secondary.b = value[2];
+        if (mouse.getSecondary()) {
+            color.setSecondaryR(value[0]);
+            color.setSecondaryG(value[1]);
+            color.setSecondaryB(value[2]);
         }
     };
 -
@@ -71,4 +73,4 @@ app.controller('PickerCtrl', function($scope, tools, canvas) {
             });
         }
     }, true);
-});
+}]);

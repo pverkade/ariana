@@ -7,21 +7,21 @@
  *
  */
 
-app.controller('ToolboxCtrl', function($scope, tools) {
+app.controller('ToolboxCtrl', ['$scope', 'canvas', 'colors', function($scope, canvas, colors) {
     
     $scope.setCursor = function(cursor) {
-        $scope.config.canvas.cursor = cursor;
+        canvas.setCursor(cursor);
     };
 
     $scope.getCursor = function() {
-        return $scope.config.canvas.cursor;
+        return canvas.getCursor();
     };
 
     /* This function swaps the primary and secondary color. */
     $scope.swapColors = function() {
-        var temp = $scope.config.tools.colors.primary;
-        $scope.config.tools.colors.primary = $scope.config.tools.colors.secondary;
-        $scope.config.tools.colors.secondary = temp;
+        var temp = colors.getPrimary();
+        colors.setPrimaryRGB(colors.getSecondary());
+        colors.setSecondaryRGB(colors.getPrimary());
         $scope.$broadcast('swapColorsBC', {});
     };
     
@@ -61,4 +61,4 @@ app.controller('ToolboxCtrl', function($scope, tools) {
     $scope.getActiveToolFunctions = function() {
         return tools.getToolFunctions;
     }
-});
+}]);
