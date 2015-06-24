@@ -15,7 +15,8 @@ var app = angular.module('ariana', [
     'cfp.hotkeys',
     'templates-ariana',
     'ngFileUpload',
-    'ngAnimate'
+    'ngAnimate',
+    'ngTouch'
 ]);
 
 /* The AppController is the main controller of the application. */
@@ -31,16 +32,16 @@ app.controller('AppCtrl', ['$scope',
                     y : 0,
                     global: {
                         x : 0,
-                        y : 0,
-                    },
+                        y : 0
+                    }
                 },
                 current: {
                     x: 0,
                     y: 0,
                     global: {
                         x : 0,
-                        y : 0,
-                    },
+                        y : 0
+                    }
                 },
                 button: {
                     1: false, // left button
@@ -106,7 +107,7 @@ app.controller('AppCtrl', ['$scope',
                 $scope.marchingAnts = new MarchingAnts(width, height);
                 $scope.marchingAnts.setMaskBorder($scope.maskBorder);
             }
-        }
+        };
 
         /* This function creates a new layer from a given Image-object. The new
          * layer is placed on top. */

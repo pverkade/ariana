@@ -55,7 +55,7 @@
     
         <div class="input-group">
             <span class="input-group-addon filter-name"> {{filter.filterName | titlecase}} Filter </span> 
-            <span class="input-group-addon filter-checkbox"> <input type="checkbox" ng-model="filter.currentlayerOnly" ng-change="applyFilterOnLayers()"> </input> apply to current layer only </span>
+            <span class="input-group-addon filter-checkbox"> <input type="checkbox" ng-model="filter.currentlayerOnly" ng-change="applyFilterOnLayers()"> </input> current layer only </span>
         </div>
     
         <div class="input-group" ng-repeat="(name, parameter) in filter.filterParameters">

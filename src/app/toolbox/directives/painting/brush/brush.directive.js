@@ -61,7 +61,7 @@ app.controller('BrushCtrl', function($scope) {
         var topCanvasContext = topCanvas.getContext('2d');
         topCanvasContext.scale(1, -1);
         topCanvasContext.drawImage(topCanvasImage, 0, -topCanvasImage.height);
-    }
+    };
     
     $scope.updateDrawEngine = function() {
         $scope.drawEngine.setLineWidth($scope.thickness);

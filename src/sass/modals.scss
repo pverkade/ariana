@@ -43,5 +43,17 @@
     }
 }
 
+@media screen and (max-width: $breakpoint-tablet) {
+    .drop-box {
+        min-height: 2.25 * $blocksize-tablet;
+        line-height: 2.25 * $blocksize-tablet;
+
+        img {
+            height: 2 * $blocksize-tablet;
+            margin: 0.125 * $blocksize-tablet;
+        }
+    }
+}
+
 
 
