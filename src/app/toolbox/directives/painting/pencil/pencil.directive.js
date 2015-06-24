@@ -7,8 +7,7 @@ app.directive('pencil', function() {
     };
 });
 
-app.controller('PencilCtrl', ['$scope', 'tools', 'canvas', 'layers', 'colors', 'mouse',
-    function($scope, tools, canvas, layers, colors, mouse) {
+app.controller('PencilCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colors', function($scope, tools, canvas, layers, mouse, colors) {
 	$scope.toolname = 'pencil';
 	$scope.active = (tools.getTool() == $scope.toolname);
     $scope.thickness = 2;

@@ -45,7 +45,7 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
         mouse.setGlobalPosY(mouseY);
         
         /* Call the appropriate tool functions. */
-        var toolFunctions = tools.getToolFunctions;
+        var toolFunctions = tools.getToolFunctions();
         if (toolFunctions) {
             toolFunctions.mouseMove();
         }
@@ -94,7 +94,7 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
         mouse.setOldGlobalPosY(mouseY);
         
         /* Call the appropriate tool functions. */
-        var toolFunctions = tools.getToolFunctions;
+        var toolFunctions = tools.getToolFunctions();
         if (toolFunctions) {
             toolFunctions.mouseDown();
         }
@@ -118,7 +118,7 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
         }
 
         /* Call the appropriate tool functions. */
-        var toolFunctions = tools.getToolFunctions;
+        var toolFunctions = tools.getToolFunctions();
         if (toolFunctions) {
             toolFunctions.mouseUp();
         }

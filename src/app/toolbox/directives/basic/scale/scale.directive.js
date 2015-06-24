@@ -7,7 +7,7 @@ app.directive('scale', function() {
     };
 });
 
-app.controller('ScaleCtrl', function($scope, tools, canvas, layers) {
+app.controller('ScaleCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colors', function($scope, tools, canvas, layers, mouse, colors) {
     $scope.toolname = 'scale';
     $scope.active = tools.getTool() == $scope.toolname;
     $scope.cursorTypes = ["e-resize", "ne-resize", "n-resize", "nw-resize", "w-resize",
@@ -179,4 +179,4 @@ app.controller('ScaleCtrl', function($scope, tools, canvas, layers) {
             $scope.updateThumbnail($scope.getCurrentLayerIndex());
         }
     }, true);
-});
+}]);

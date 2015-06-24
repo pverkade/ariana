@@ -7,7 +7,7 @@ app.directive('rectangle', function() {
     };
 });
 
-app.controller('RectangleCtrl', function($scope, tools, canvas) {
+app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colors', function($scope, tools, canvas, layers, mouse, colors) {
 	$scope.toolname = 'rectangle';
 	$scope.active = tools.getTool() == $scope.toolname;
 
@@ -50,4 +50,4 @@ app.controller('RectangleCtrl', function($scope, tools, canvas) {
 			});
 		}
 	}, true);
-});
+}]);

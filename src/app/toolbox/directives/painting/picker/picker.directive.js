@@ -7,8 +7,7 @@ app.directive('picker', function() {
     };
 });
 
-app.controller('PickerCtrl', ['$scope', 'tools', 'canvas', 'mouse', 'colors',
-    function($scope, tools, canvas, mouse, color) {
+app.controller('PickerCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colors', function($scope, tools, canvas, layers, mouse, colors) {
         
     $scope.toolname = 'picker';
     $scope.active = tools.getTool() == $scope.toolname;

@@ -7,7 +7,7 @@ app.directive('crop', function() {
     };
 });
 
-app.controller('CropCtrl', function($scope, tools, canvas) {
+app.controller('CropCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colors', function($scope, tools, canvas, layers, mouse, colors) {
 	$scope.toolname = 'crop'
 	$scope.active = (tools.getTool() == $scope.toolname);
 	
@@ -50,4 +50,4 @@ app.controller('CropCtrl', function($scope, tools, canvas) {
 			});
 		}
 	}, true);
-});
+}]);

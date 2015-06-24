@@ -7,7 +7,7 @@ app.directive('translate', function() {
     };
 });
 
-app.controller('TranslateCtrl', function($scope, tools, canvas, layers) {
+app.controller('TranslateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colors', function($scope, tools, canvas, layers, mouse, colors) {
     $scope.toolname = 'translate';
     $scope.active = tools.getTool() == $scope.toolname;
 
@@ -87,4 +87,4 @@ app.controller('TranslateCtrl', function($scope, tools, canvas, layers) {
 
         }
     }, true);
-});
+}]);

@@ -7,8 +7,7 @@ app.directive('brush', function() {
     };
 });
 
-app.controller('BrushCtrl', ['$scope', 'tools', 'canvas', 'layers', 'colors', 'mouse',
-    function($scope, tools, canvas, layers, colors, mouse) {
+app.controller('BrushCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colors', function($scope, tools, canvas, layers, mouse, colors) {
 
 	$scope.toolname = 'brush';
 	$scope.active = tools.getTool() == $scope.toolname;

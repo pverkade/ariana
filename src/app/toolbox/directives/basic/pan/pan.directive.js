@@ -7,7 +7,7 @@ app.directive('pan', function() {
     };
 });
 
-app.controller('PanCtrl', function($scope, tools, canvas) {
+app.controller('PanCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colors', function($scope, tools, canvas, layers, mouse, colors) {
 	$scope.toolname = 'pan'
 	$scope.active = tools.getTool() == $scope.toolname;
 
@@ -63,4 +63,4 @@ app.controller('PanCtrl', function($scope, tools, canvas) {
 			});
 		}
 	}, true);
-});
+}]);

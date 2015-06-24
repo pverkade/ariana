@@ -16,8 +16,7 @@ app.directive('palette', function() {
     };
 });
 
-app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'colors',
-    function($scope, tools, canvas, colors) {
+app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colors', function($scope, tools, canvas, layers, mouse, colors) {
 
     $scope.toolname = 'palette';
     $scope.active = tools.getTool() == $scope.toolname;

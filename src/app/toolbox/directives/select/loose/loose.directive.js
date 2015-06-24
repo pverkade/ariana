@@ -7,8 +7,7 @@ app.directive('loose', function() {
     };
 });
 
-app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
-    function($scope, tools, canvas, layers, mouse) {
+app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colors', function($scope, tools, canvas, layers, mouse, colors) {
 
     $scope.toolname = 'loose';
     $scope.active = tools.getTool() == $scope.toolname;

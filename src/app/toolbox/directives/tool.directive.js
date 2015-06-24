@@ -8,18 +8,18 @@ app.directive('tool', ['tools', function(tools) {
 
 			element.bind('click', function(event) {
 				event.stopPropagation();
-				tools.setActiveTool(scope.toolname);
+				tools.setTool(scope.toolname);
 
 				if (event.target.className.indexOf('mdi') > -1) {
 					scope.expanded = !scope.expanded;
 					scope.$apply(scope.expanded);
 				}
 
-				scope.$apply(tools.getActiveTool);
+				scope.$apply(tools.getTool());
 			});
 
 			scope.$watch('config.tools.activeTool', function(newValue, oldValue) {
-				scope.active = (tools.getActiveTool == scope.toolname);
+				scope.active = (tools.getTool() == scope.toolname);
 
 				if (!scope.active) scope.expanded = false;
 			}, true);
