@@ -7,7 +7,9 @@ app.directive('magic', function() {
     };
 });
 
-app.controller('MagicCtrl', function($scope, tools, canvas) {
+app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse'
+	function($scope, tools, canvas, layers, mouse) {
+
 	$scope.toolname = 'magic';
 	$scope.active = tools.getTool() == $scope.toolname;
 
@@ -17,7 +19,7 @@ app.controller('MagicCtrl', function($scope, tools, canvas) {
 	$scope.init = function() {
 		canvas.setCursor('crosshair');
 
-		var currentLayer = $scope.config.layers.currentLayer;
+		var currentLayer = layers.getCurrentIndex();
 		if (currentLayer == -1) {
 			console.log("No layer selected");
 			return;
@@ -48,11 +50,11 @@ app.controller('MagicCtrl', function($scope, tools, canvas) {
         $scope.stop();
 
 		/* x and y coordinates in pixels relative to canvas left top corner. */
-		var xRelative = $scope.config.mouse.current.x;
-		var yRelative = $scope.config.mouse.current.y;
+		var xRelative = mouse.getPosX();
+		var yRelative = mouse.getPosY();
 
         /* Calculate x and y coordinates in pixels of the original image */
-        var currentLayer = $scope.config.layers.currentLayer;
+        var currentLayer = layers.getCurrentIndex();
         var layer = $scope.renderEngine.layers[currentLayer];
         if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
             return;
@@ -156,4 +158,4 @@ app.controller('MagicCtrl', function($scope, tools, canvas) {
             $scope.stop();
         }
 	}, true);
-});
+}]);
