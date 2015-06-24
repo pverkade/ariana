@@ -304,19 +304,11 @@ module.exports = function(grunt) {
         },
 
         /*
-         * The delta tasks watches for changes and rebuilds the project in build.
+         * The delta task watches for changes and rebuilds the project in build.
          */
         delta: {
             options: {
                 livereload: true
-            },
-            startup: {
-                files: [], // This is redundant, but necessary
-                tasks: ['karma:continuous:start'],
-                options: {
-                    atBegin: true,
-                    spawn: false
-                }
             },
             html: {
                 files: ['<%= src_files.html %>'],
@@ -403,7 +395,8 @@ module.exports = function(grunt) {
 
     /* grunt watch task */
     grunt.renameTask('watch', 'delta');
-    grunt.registerTask('watch', ['build_dev', 'karmaconfig', 'karma:unit', 'delta']);
+    grunt.registerTask('watch', ['build_dev', 'karmaconfig', 'karma:unit', 'karma:continuous:start', 'delta']);
+    grunt.registerTask('watch_nt', ['build_dev', 'delta']);
 
     /*
      * Removes index.html and templates.js
