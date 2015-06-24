@@ -1,6 +1,5 @@
 module.exports = {
     build_dir: 'build',
-    prod_dir: 'prod',
 
     src_files: {
         tpl: 'src/**/*.tpl.html',
@@ -29,8 +28,9 @@ module.exports = {
             'vendor/bootstrap/dist/css/bootstrap.css.map'
         ],
         fonts: [
-            'src/assets/materialdesign/fonts/materialdesignicons-webfont.woff',
-            'src/assets/materialdesign/fonts/materialdesignicons-webfont.woff2'
+            'vendor/mdi/fonts/materialdesignicons-webfont.woff',
+            'vendor/mdi/fonts/materialdesignicons-webfont.woff2',
+            'vendor/mdi/fonts/materialdesignicons-webfont.ttf'
         ]
     },
     test_files: {

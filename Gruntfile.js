@@ -235,7 +235,7 @@ module.exports = function(grunt) {
                     sourceMap: true
                 },
                 src: ['<%=build_dir%>/**/*.css'],
-                dest: '<%=build_dir%>/style.css'
+                dest: '<%=build_dir%>/ariana.css'
             }
         },
 
@@ -268,7 +268,7 @@ module.exports = function(grunt) {
         cssmin: {
             target: {
                 files: {
-                    '<%= build_dir %>/ariana.css': '<%= build_dir %>/style.css'
+                    '<%= build_dir %>/ariana.css': '<%= build_dir %>/ariana.css'
                 }
             }
         },
@@ -369,6 +369,7 @@ module.exports = function(grunt) {
         'copy:build_html', // Copy index.html -> build/index.html
         'copy:build_assets', // Copy assets -> build/assets/
         'copy:build_vendorcss', // Copy bower css -> build/css/
+        'copy:fonts', // Copy the material design fonts
         'includeSource', // Link all js and css files to index.html
         'preprocess:dev' // Add some links to index.html
     ]);
