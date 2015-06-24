@@ -1,4 +1,4 @@
-app.service('color', function() {
+app.service('colors', function() {
 
     this.getPrimary = function() {
         return this._params.primary;

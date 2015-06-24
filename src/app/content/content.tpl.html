@@ -15,22 +15,22 @@
     
     <canvas rendertarget="rendertarget" 
         id="main-canvas"
-        width="{{config.canvas.width}}"
-        height="{{config.canvas.height}}"
+        width="{{getWidth()}}"
+        height="{{getHeight()}}"
         canvas-events
-        ng-show="{{config.canvas.visible}}">
+        ng-show="{{getVisibility()}}">
     </canvas>
     <canvas id="editing-canvas"
-        width="{{config.canvas.width}}"
-        height="{{config.canvas.height}}"
+        width="{{getWidth()}}"
+        height="{{getHeight()}}"
         canvas-events
-        ng-show="{{config.canvas.visible}}">
+        ng-show="{{getVisibility()}}">
     </canvas>
     <canvas id="top-canvas"
-        width="{{config.canvas.width}}"
-        height="{{config.canvas.height}}"
+        width="{{getWidth()}}"
+        height="{{getHeight()}}"
         canvas-events
-        ng-show="{{config.canvas.visible}}">
+        ng-show="{{getVisibility()}}">
     </canvas>
 </div>
 
