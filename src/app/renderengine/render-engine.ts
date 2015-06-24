@@ -1,5 +1,6 @@
-/**
- * Created by zeta on 6/2/15.
+/*
+ * The render engine is used for drawing most of the things you see on the screen
+ * The main uses are drawing layers, creating thumbnails and cutting out selections.
  */
 /// <reference path="render-helper"/>
 /// <reference path="layer"/>
@@ -64,16 +65,6 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         return this.layers[index];
     }
 
-    getLayers(indices : number[]) : Layer[] {
-        var result : Layer[] = [];
-
-        for (var i = 0; i < indices.length; i++) {
-            result.push(this.layers[indices[i]]);
-        }
-
-        return result;
-    }
-
     getWidth() {
         return this.width;
     }
@@ -81,6 +72,11 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
     getHeight() {
         return this.height;
     }
+
+    public getNumberOfLayers() : number {
+        return this.layers.length;
+    }
+
     public addLayer(layer : Layer) {
         /* Append layer to user array */
         this.insertLayer(layer, this.layers.length);
@@ -105,6 +101,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         this.layers[j] = temp;
     }
 
+    /* Render all layers that are not hidden */
     public render() {
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
         var oldType = -1;
@@ -130,22 +127,14 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         }
     }
 
+    /* Get the color at a given coordinate */
     public getPixelColor(x : number, y : number) : Uint8Array {
         var value = new Uint8Array(4);
         this.gl.readPixels(x, this.height-y-1, 1, 1, this.gl.RGBA, this.gl.UNSIGNED_BYTE, value);
         return value;
     }
 
-    public destroy() {
-
-        for (var i = 0; i < this.layers.length; i++) {
-            this.layers[i].destroy();
-        }
-
-        this.drawbuffer1.destroy();
-        this.drawbuffer2.destroy();
-    }
-
+    /* Create a thumbnail for a layer */
     private createThumbnail(layer : Layer) {
         this.thumbnailDrawbuffer.bind();
         this.gl.viewport(0, 0, this.thumbnailWidth, this.thumbnailHeight);
@@ -157,15 +146,17 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         this.gl.viewport(0, 0, this.width, this.height);
     }
 
+    /* When a layer changed we need to create new thumbnail */
     public propertyChanged(layer : Layer) {
         this.createThumbnail(layer);
     }
 
+    /* Render only a given set of indices, also when they're set to hidden */
     private renderIndices(indices : number[], drawHiddenLayers = false) {
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
         var oldType = -1;
         for (var i = 0; i < indices.length; i++) {
-            // Take the old layer (one layer at a time)
+            /* Take the old layer (one layer at a time) */
             var layer:Layer = this.layers[indices[i]];
 
             if (!drawHiddenLayers && layer.isHidden()) {
@@ -184,6 +175,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         }
     }
 
+    /* Render indices to an image that is returned as base64 string */
     public renderIndicesToImg(indices : number[], drawHiddenLayers = false) : String {
         this.drawbuffer1.bind();
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
@@ -196,36 +188,13 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         return data;
     }
 
+    /* Render all layers (hidden ones too) to an image and return base64 string */
     public renderToImg() : String {
         var indices : number[] = [];
         for (var i = 0; i < this.layers.length; i++) {
             indices.push(i);
         }
         return this.renderIndicesToImg(indices);
-    }
-
-    public rasterize(indices : number[]) : ImageLayer {
-        /* Draw the old layer in drawbuffer1 */
-        this.drawbuffer1.bind();
-        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
-
-        this.renderIndices(indices);
-
-        /* Create a new image layer that copies over the framebuffer */
-        var tmpLayer : ImageLayer = this.createImageLayer(null);
-        tmpLayer.copyFramebuffer(this.width, this.height);
-
-        /* Draw in drawbuffer 2 again so we dont flip vertically (fcking OpenGL again) */
-        this.drawbuffer2.bind();
-        tmpLayer.setupRender();
-        tmpLayer.render();
-
-        /* Copy over again from drawbuffer 2 */
-        var newLayer : ImageLayer = this.createImageLayer(null);
-        newLayer.copyFramebuffer(this.width, this.height);
-        this.drawbuffer2.unbind();
-
-        return newLayer;
     }
 
     public createImageLayer(image : HTMLImageElement) : ImageLayer {
@@ -237,23 +206,28 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         );
     }
 
-    public createSelectionImageLayer(bitmask: HTMLImageElement, layerIndex: number): ImageLayer {
+    /*
+     * Given a bitmask and an image layer (or at least the index) we:
+     *  - replace the image layer with the part that is not in the selection
+     *  - return a new image layer with the part that is in the selection
+     */
+    public createSelectionImageLayer(bitmask: HTMLImageElement, layerIndex: number) : ImageLayer {
         var gl = this.gl;
 
         if (this.layers[layerIndex].getLayerType() != LayerType.ImageLayer) {
             return;
         }
         var layer = <ImageLayer>this.layers[layerIndex];
-        console.log("x of to select layer: " + layer.getPosX());
 
         var width = bitmask.width;
         var height = bitmask.height;
-        var selectedLayer = this.createImageLayer(layer.getImage());
-        //var invertedSelectedLayer = this.createImageLayer(layer.getImage());
-        //invertedSelectedLayer.setPos(layer.getPosX(), layer.getPosY());
-        //invertedSelectedLayer.setRotation(layer.getRotation());
+
+        /* Create an image layer that will contain the selected part */
+        var selectedLayer = this.createImageLayer(null);
 
         var bitmaskProgram = this.resourceManager.bitmaskProgramInstance();
+
+        /* Copy the bitmask to GPU memory */
         var texture = gl.createTexture();
         gl.bindTexture(gl.TEXTURE_2D, texture);
 
@@ -264,6 +238,8 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
 
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, bitmask);
 
+
+        /* Draw the bitmask to the stencil buffre */
         var drawbuffer = new DrawBuffer(gl, width, height);
         drawbuffer.bind();
         gl.viewport(0, 0, width, height);
@@ -273,12 +249,12 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         gl.stencilFunc(gl.ALWAYS, 1, 0xFF);
         gl.stencilOp(gl.REPLACE, gl.REPLACE, gl.REPLACE);
 
-        /* Draw bitmask stencil */
         bitmaskProgram.activate();
         bitmaskProgram.setUniforms(texture);
         gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
 
-        /* Draw the selected part of the image */
+
+        /* Draw the selected part of the image and put it in the new image layer*/
         gl.clear(gl.COLOR_BUFFER_BIT);
         gl.stencilFunc(gl.EQUAL, 1, 0xFF);
         gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP);
@@ -286,7 +262,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         layer.renderFullscreen();
         selectedLayer.copyFramebuffer(width, height);
 
-        /* Draw the not selected part of the image */
+        /* Draw the not selected part of the image and put it in the original image layer */
         gl.clear(gl.COLOR_BUFFER_BIT);
         gl.stencilFunc(gl.NOTEQUAL, 1, 0xFF);
         gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP);
@@ -304,6 +280,9 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         return selectedLayer;
     }
 
+    /*
+     * Resize the drawbuffers and destroy all the layers (as we dont know what to do when the resolution changes)
+     */
     public resize(width : number, height : number) {
         this.width = width;
         this.height = height;

@@ -1,5 +1,17 @@
+/*
+ * Project Ariana
+ * render-helper.ts
+ *
+ * This file contains some common helper function for webgl.
+ *
+ */
+
 /// <reference path="shaders"/>
 
+/* This function compiles a shader program out of a vertex and a fragment shader.
+ *
+ * On error an alert will be shown.
+ */
 function compileProgram(gl : WebGLRenderingContext, vertexShader : WebGLShader, fragmentShader : WebGLShader) : WebGLProgram{
 	/* Create the shader program */
 	var shaderProgram : WebGLProgram = gl.createProgram();
@@ -17,6 +29,9 @@ function compileProgram(gl : WebGLRenderingContext, vertexShader : WebGLShader, 
 	return shaderProgram;
 }
 
+/* This function compiles a given shader. On client side, the shader source code is aggregated into one
+ * object by the grunt built system.
+ */
 function compileShaderFromScript(gl : WebGLRenderingContext, id : string) : WebGLShader {
     if (! (id in SHADERS)) {
         return null;

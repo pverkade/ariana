@@ -299,13 +299,7 @@ class DrawEngine {
      */
     getBrushImage (brush : brushType) : string {
         if (brush == brushType.THIN) {
-            return 'assets/draw/thin.svg';
-        }
-        if (brush == brushType.PEPPER) {
-            return 'assets/draw/pepper.png';
-        }
-        if (brush == brushType.DUNES) {
-            return 'assets/draw/dunes.svg';
+            return 'assets/img/thin.svg';
         }
         this.setDrawType(drawType.BRUSH);
         return null;
@@ -579,7 +573,7 @@ class DrawEngine {
      * Function to draw brush..
      */
     drawBrushImage (points, path : Path, context : CanvasRenderingContext2D) {
-        var timingStart = performance.now();
+        //var timingStart = performance.now();
         var halfBrushW = this.brushImage.width/2;
         var halfBrushH = this.brushImage.height/2;
         var i : number = path.lastDrawnItem - 2;
@@ -602,7 +596,7 @@ class DrawEngine {
             i = 1;
         }
 
-        var timing1 = performance.now() - timingStart;
+        //var timing1 = performance.now() - timingStart;
 
         /* Iterate over the not-drawn points in the path */
         for (i; i < points.length - 2; i++) {
@@ -628,9 +622,9 @@ class DrawEngine {
             }
         }
 
-        var timing2 = performance.now() - timingStart;
-        console.log("Timing 1: " + timing1);
-        console.log("Timing 2: " + timing2);
+        //var timing2 = performance.now() - timingStart;
+        //console.log("Timing 1: " + timing1);
+        //console.log("Timing 2: " + timing2);
         path.lastDrawnItem = i;
     }
 

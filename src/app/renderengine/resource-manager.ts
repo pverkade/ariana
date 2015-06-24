@@ -1,3 +1,10 @@
+/*
+ * Project Ariana
+ * resource-manager.ts
+ *
+ * This file contains a resource manager for a given webgl renderingcontext.
+ */
+
 /// <reference path="image-shader-program"/>
 /// <reference path="bitmask-shader-program"/>
 /// <reference path="filters/brightness-filter"/>

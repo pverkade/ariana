@@ -1,3 +1,12 @@
+/*
+ * Project Ariana
+ * canvasEvents.js
+ *
+ * This file contains an Angular directive for catching mouse input on the 
+ * canvas. 
+ *
+ */
+ 
 app.directive('canvasEvents', function() {
     return {
         restrict: 'A',

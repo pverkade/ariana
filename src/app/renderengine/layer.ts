@@ -1,8 +1,16 @@
+/*
+ * Base layer class from which every other type of layer is supposed to extend
+ */
 /// <reference path="gl-matrix"/>
 /// <reference path="resource-manager"/>
 
-enum LayerType {ImageLayer};
+enum LayerType {ImageLayer}
 
+/*
+ * Create an interface for letting a subscriber know that something has changed
+ * This is done from an module as a class cant contain a interface in typescript
+ * A module and a class cant have the same name
+ */
 module MLayer {
     export interface INotifyPropertyChanged {
         propertyChanged(layer : Layer);
@@ -52,7 +60,7 @@ class Layer {
 		this.translationMatrix = mat3.create();
         this.pixelConversionMatrix = mat3.create();
 
-        /* Apperently calling a function on this object from within the constructor crashes it */
+        /* Apperently calling a function on the "this" object from within the constructor causes crashes */
         this.posX = 0.0;
         this.posY = 0.0;
         this.flipX = false;
@@ -63,6 +71,7 @@ class Layer {
         this.hidden = false;
         this.transformHistory = [];
 
+        /* Set the matrix that converts pixel coordinates to -1 to +1 coordinate space */
         mat3.identity(this.sizeMatrix);
         mat3.identity(this.rotationMatrix);
         mat3.identity(this.translationMatrix);
@@ -86,6 +95,12 @@ class Layer {
         );
 	}
 
+    /*
+     * Notify the subscriber that a property changed
+     * We only use this for thumbnails so we set a delay of 300ms so we dont
+     *  create a new thumbnail every frame (when a user is moving the layer for example)
+     * This is done for performance purposes
+     */
     protected notifyPropertyChanged() {
         if (this.propertyChanged != null) {
             if (this.propertyChangedTimeout) {
