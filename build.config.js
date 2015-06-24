@@ -14,16 +14,6 @@ module.exports = {
     },
 
     vendor_files: {
-        js: [
-            'vendor/jquery/dist/jquery.js',
-            'vendor/bootstrap/dist/js/bootstrap.js',
-            'vendor/angular/angular.js',
-            'vendor/angular-animate/angular-animate.js',
-            'vendor/angular-ui-router/release/angular-ui-router.js',
-            'vendor/angular-bootstrap/ui-bootstrap-tpls.js',
-            'vendor/ng-file-upload/ng-file-upload-all.js',
-            'vendor/angular-hotkeys/build/hotkeys.js'
-        ],
         css: [
             'vendor/bootstrap/dist/css/bootstrap.css.map'
         ],
@@ -37,5 +27,10 @@ module.exports = {
         js: [
             'vendor/angular-mocks/angular-mocks.js'
         ]
+    },
+
+    build_files: {
+        js: ['<%= build_dir %>/js/bower.js', '<%= build_dir %>/js/*.js'],
+        css: ['<%= build_dir %>/css/*.css']
     }
 };

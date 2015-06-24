@@ -2,7 +2,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-bower-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
@@ -153,15 +152,6 @@ module.exports = function(grunt) {
                     flatten: true
                 }]
             },
-            build_vendorjs: {
-                files: [{
-                    src: ['<%= vendor_files.js %>'],
-                    dest: '<%= build_dir %>/vendor',
-                    cwd: '.',
-                    expand: true,
-                    flatten: true
-                }]
-            },
             build_html: {
                 files: [{
                     src: '<%= src_files.html %>',
@@ -202,13 +192,6 @@ module.exports = function(grunt) {
          * Copy and concatenate files from bower_components folder
          */
         bower_concat: {
-            all: {
-                dest: 'build/js/bower.js',
-                cssDest: 'build/css/bower.css',
-                bowerOptions: {
-                    relative: false
-                }
-            },
             js: {
                 dest: 'build/js/bower.js',
                 bowerOptions: {
@@ -220,23 +203,6 @@ module.exports = function(grunt) {
                 bowerOptions: {
                     relative: false
                 }
-            }
-        },
-
-        /*
-         * Concatenates js and/or css in the build folder
-         */
-        concat: {
-            js: {
-                src: ['<%= vendor_files.js %>', '<%=build_dir%>/js/*.js'],
-                dest: '<%=build_dir%>/ariana.js'
-            },
-            css: {
-                options: {
-                    sourceMap: true
-                },
-                src: ['<%=build_dir%>/**/*.css'],
-                dest: '<%=build_dir%>/ariana.css'
             }
         },
 
@@ -246,9 +212,12 @@ module.exports = function(grunt) {
          */
         ngAnnotate: {
             compile: {
-                files: {
-                    '<%= build_dir %>/ariana.js': '<%= build_dir %>/ariana.js'
-                }
+                files: [{
+                    src: ['<%= src_files.js %>'],
+                    dest: '<%= build_dir %>/js/',
+                    expand: true,
+                    flatten: true
+                }]
             }
         },
 
@@ -258,7 +227,7 @@ module.exports = function(grunt) {
         uglify: {
             compile: {
                 files: {
-                    '<%= build_dir %>/ariana.js': '<%= build_dir %>/ariana.js'
+                    '<%= build_dir %>/ariana.js': ['<%= build_files.js %>']
                 }
             }
         },
@@ -269,7 +238,7 @@ module.exports = function(grunt) {
         cssmin: {
             target: {
                 files: {
-                    '<%= build_dir %>/ariana.css': '<%= build_dir %>/ariana.css'
+                    '<%= build_dir %>/ariana.css': ['<%= build_files.css %>']
                 }
             }
         },
@@ -299,9 +268,9 @@ module.exports = function(grunt) {
                 noarg: true,
                 sub: true,
                 boss: true,
-                eqnull: true
-            },
-            globals: {}
+                eqnull: true,
+                force: true
+            }
         },
 
         /**
@@ -392,12 +361,11 @@ module.exports = function(grunt) {
     grunt.registerTask('build_dev', [
         'clean:build', // Remove build/
         'sass', // Compile sass -> build/css/ariana.css
-        'bower_concat:css', // Concatenate all bower css -> build/css/bower.css
+        'bower_concat', // Concatenate all bower files -> build/
         'build_renderengine', // Compile render engine -> build/js/renderengine.js
         'html2js', // Combine all tpl.html -> build/js/template.js
         'jshint', // Lint all javascript files
         'copy:build_js', // Copy all javascript -> build/js/
-        'copy:build_vendorjs', // Copy all javascript -> build/js/
         'copy:build_html', // Copy index.html -> build/index.html
         'copy:build_assets', // Copy assets -> build/assets/
         'copy:build_vendorcss', // Copy bower css -> build/css/
@@ -410,15 +378,13 @@ module.exports = function(grunt) {
     grunt.registerTask('build_prod', [
         'clean:build', // Remove build/
         'sass', // Compile sass -> build/css/ariana.css
-        'bower_concat:css', // Concatenate all bower css -> build/css/bower.css
+        'bower_concat', // Concatenate all bower files -> build/
         'build_renderengine', // Compile render engine -> build/js/renderengine.js
         'html2js', // Combine all tpl.html -> build/js/template.js
-        'copy:build_js', // Copy all javascript -> build/js/
         'copy:build_html', // Copy index.html -> build/index.html
         'copy:build_assets', // Copy assets -> build/assets/
         'copy:build_vendorcss', // Copy bower css -> build/css/
         'copy:fonts', // Copy the material design fonts
-        'concat', // Concat all js and css files
         'ngAnnotate', // Fix array annotation
         'uglify', // Uglify and minify javascript file
         'cssmin', // Minify css file
