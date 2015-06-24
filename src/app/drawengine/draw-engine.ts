@@ -47,8 +47,6 @@ class Position2D {
 
 /*
  * Class that defines a path
- * TODO: add function that generates a smooth path between the points using Bezier curves?
- * Maybe look at the canvas beginPath etc for inspiration (and use bitmaps to not overdraw itself)
  */
 
 class Path {
