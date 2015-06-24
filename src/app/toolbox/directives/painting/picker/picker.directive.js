@@ -64,11 +64,11 @@ app.controller('PickerCtrl', function($scope, tools, canvas) {
         if (nval)  {
             $scope.init();
 
-            tools.getTool()Functions = {
+            tools.setToolFunctions({
                 mouseDown: $scope.mouseDown,
                 mouseUp: $scope.mouseUp,
                 mouseMove: $scope.mouseMove
-            };
+            });
         }
     }, true);
 });

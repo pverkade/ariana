@@ -7,7 +7,7 @@
  *
  */
 
-app.controller('ToolboxCtrl', function($scope) {
+app.controller('ToolboxCtrl', function($scope, tools) {
     
     $scope.setCursor = function(cursor) {
         $scope.config.canvas.cursor = cursor;
@@ -34,19 +34,19 @@ app.controller('ToolboxCtrl', function($scope) {
     };
 
     $scope.isActiveToolset = function(name) {
-        return tools.getTool()set == name;
+        return tools.getToolset == name;
     };
 
     /* This function selects a toolset and therefore opens a toolbox. When
      * a toolset is already selected, it becomes unselected. The pan tool will
      * then be used. */
     $scope.selectToolSet = function(name) {
-        if (tools.getTool()set == name) {
-            tools.getTool()set = null;
+        if (tools.getToolset == name) {
+            tools.getToolset = null;
             return true;
         }
 
-        tools.getTool()set = name;
+        tools.getToolset = name;
     };
 
     $scope.selectTool = function(event, name) {
@@ -59,6 +59,6 @@ app.controller('ToolboxCtrl', function($scope) {
     };
 
     $scope.getActiveToolFunctions = function() {
-        return tools.getTool()Functions;
+        return tools.getToolFunctions;
     }
 });

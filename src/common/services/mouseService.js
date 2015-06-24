@@ -29,15 +29,15 @@ app.service('mouse', function() {
     }
 
     this.getPrimary = function() {
-        return this._params.button.1;
+        return this._params.button.primary;
     }
 
     this.getMiddle = function() {
-        return this._params.button.2;
+        return this._params.button.middle;
     }
 
     this.getSecondary = function() {
-        return this._params.button.3;
+        return this._params.button.secondary;
     }
 
     this.setPos = function(x, y) {
@@ -125,19 +125,19 @@ app.service('mouse', function() {
     }
 
     this.setPrimary = function(state) {
-        this._params.button.1 = state;
+        this._params.button.primary = state;
     }
 
     this.setMiddle = function(state) {
-        this._params.button.2 = state;
+        this._params.button.middle = state;
     }
 
     this.setSecondary = function(state) {
-        this._params.button.3 = state;
+        this._params.button.secondary = state;
     }
     
     this.checkActive = function() {
-        return (this._params.button.1 || return this._params.button.2);
+        return (this._params.button.primary || this._params.button.middle);
     }
 
     this._params = {
@@ -158,9 +158,9 @@ app.service('mouse', function() {
             }
         },
         button: {
-            1: false, // left button
-            2: false, // middle button
-            3: false // right button
+            primary: false, // left button
+            middle: false, // middle button
+            secondary: false // right button
         }
     }
 });

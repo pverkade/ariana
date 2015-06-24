@@ -7,7 +7,7 @@
  *
  */
  
-app.controller('UploadModalController', ['$scope', '$modalInstance', 'Upload', 'canvas'
+app.controller('UploadModalController', ['$scope', '$modalInstance', 'Upload', 'canvas',
     function ($scope, $modalInstance, Upload, canvas) {
         $scope.imageUrls = [];
 

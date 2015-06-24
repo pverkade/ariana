@@ -68,7 +68,7 @@ app.controller('ContentController', ["canvas", "mouse", "tools",
         else if (mouseIndex == 2) {
             mouse.setMiddle(true);
         }
-        else (mouseIndex == 3) {
+        else if (mouseIndex == 3) {
             mouse.setSecondary(true);
         }
 
@@ -103,7 +103,7 @@ app.controller('ContentController', ["canvas", "mouse", "tools",
         else if (mouseIndex == 2) {
             mouse.setMiddle(false);
         }
-        else (mouseIndex == 3) {
+        else if (mouseIndex == 3) {
             mouse.setSecondary(false);
         }
 

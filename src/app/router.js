@@ -18,10 +18,6 @@ app.config(function($stateProvider, $locationProvider) {
                     templateUrl: "app/content/content.tpl.html",
                     controller: 'ContentController'
                 },
-                "content-menu": {
-                    templateUrl: "app/content/menu/menu.content.tpl.html",
-                    controller: 'MenuContentCtrl'
-                },
                 "toolbar": {
                     templateUrl: "app/toolbar/toolbar.tpl.html",
                     controller: 'ToolbarController'

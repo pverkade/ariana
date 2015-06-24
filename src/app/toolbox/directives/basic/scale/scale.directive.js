@@ -161,11 +161,11 @@ app.controller('ScaleCtrl', function($scope, tools, canvas, layers) {
         if (nval) {
             $scope.init();
 
-            tools.getTool()Functions = {
+            tools.setToolFunctions({
                 mouseDown: $scope.mouseDown,
-                mouseUp:   $scope.mouseUp,
+                mouseUp: $scope.mouseUp,
                 mouseMove: $scope.mouseMove
-            };
+            });
         }
         else {
             $scope.editEngine.clear();
