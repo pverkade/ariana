@@ -44,7 +44,6 @@ app.controller('RectangleCtrl', function($scope) {
 	};
 
     $scope.stop = function() {
-        // var scope = angular.element($("#main-canvas")).scope();
         $scope.editEngine.removeSelectionLayer();
         $scope.requestEditEngineUpdate();
     };
@@ -56,6 +55,12 @@ app.controller('RectangleCtrl', function($scope) {
         yMouse = $scope.config.mouse.current.y;  
 
         $scope.point1 = new Point(xMouse, yMouse);
+
+        /* Check wheter user has clicked inside of a selection. */
+        if ($scope.rect.isInSelection(xMouse, yMouse)) {
+            $scope.rect.removeSelection(xMouse, yMouse);
+        }
+
         $scope.drawEngine.onMousedown(xMouse, yMouse);   
         $scope.mouseBTNDown = true; 
 	};
@@ -66,26 +71,15 @@ app.controller('RectangleCtrl', function($scope) {
         xMouse = $scope.config.mouse.current.x;
         yMouse = $scope.config.mouse.current.y; 
 
-        $scope.point2 = new Point(xMouse, yMouse);
-        var bitmask = $scope.rect.addRect($scope.point1, $scope.point2);
+        $scope.rect.addRect($scope.point1, $scope.point2);
 
-        for (var y = 0; y < $scope.rect.height; y++) {
-            for (var x = 0; x < $scope.rect.width; x++) {
-                if (bitmask[y * $scope.rect.width + x]) {
-                    var i = ($scope.rect.height - y) * $scope.rect.width + x;
-                    $scope.imgData.data[4 * i] = 255;
-                    $scope.imgData.data[4 * i + 1] = 0;
-                    $scope.imgData.data[4 * i + 2] = 0;
-                    $scope.imgData.data[4 * i + 3] = 255;
-                }
-            }
+        if ($scope.maskWand) {
+            $scope.setMaskSelectedArea($scope.rect.width, $scope.rect.height);    
+            var currentLayer = $scope.config.layers.currentLayer;
+            var layer = $scope.renderEngine.layers[currentLayer];
+            $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
+            $scope.requestEditEngineUpdate();      
         }
-
-        var currentLayer = $scope.config.layers.currentLayer;
-        var layer = $scope.renderEngine.layers[currentLayer];
-
-        $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
-        $scope.requestEditEngineUpdate();
 
         $scope.drawEngine.onMouseup(xMouse, yMouse);
         $scope.drawEngine.clearCanvases();
@@ -105,7 +99,21 @@ app.controller('RectangleCtrl', function($scope) {
         }
 
         if ($scope.mouseBTNDown) {
-        	$scope.drawEngine.onMousemove(xMouse, yMouse);
+            var point2 = new Point(xMouse, yMouse);
+            if ($scope.rect.validRect($scope.point1, point2)) {
+                $scope.point2 = point2;
+                $scope.drawEngine.onMousemove(xMouse, yMouse);
+            } else { 
+                var dX = $scope.rect.sign(point2.x - $scope.point1.x);
+                var dY = $scope.rect.sign(point2.y - $scope.point1.y);
+                point2 = new Point($scope.point2.x + dX, $scope.point2.y + dY);
+                if ($scope.rect.validRect($scope.point1, point2)) {
+                    $scope.point2 = point2;
+                    $scope.drawEngine.onMousemove(xMouse, yMouse)
+                }
+            }
+
+            // if (..) // kijk of groter dan / kleiner dan om bug te fixxen dat mouse coors 1 pixel overslaan.
         }
 	};
 

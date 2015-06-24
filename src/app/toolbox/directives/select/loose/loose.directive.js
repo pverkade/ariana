@@ -43,19 +43,19 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
     };
     
     $scope.stop = function() {
-        // var scope = angular.element($("#main-canvas")).scope();
         $scope.editEngine.removeSelectionLayer();
         $scope.requestEditEngineUpdate();
     };
 
     $scope.mouseDown = function() {
-        // $scope.stop();
-        
         /* x and y coordinates in pixels relative to image. */
         xMouse = $scope.config.mouse.current.x;
         yMouse = $scope.config.mouse.current.y;  
 
-        console.log(xMouse, yMouse);
+        /* Check wheter user has clicked inside of a selection. */
+        if ($scope.loose.isInSelection(xMouse, yMouse)) {
+            $scope.loose.removeSelection(xMouse, yMouse);
+        } 
 
         $scope.drawEngine.onMousedown(xMouse, yMouse);   
         $scope.mouseBTNDown = true; 
@@ -89,41 +89,14 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
 
                 /* A new bounding path has been found. */
                 if (boundingPath.length != 0) {
-                    var bitmask = $scope.loose.getLastMaskWand();
-                    /*
-                    for (var i = 0; i < bitmask.length; i++) {
-                        if (bitmask[i]) {
-                            $scope.imgData.data[4 * i] = 255;
-                            $scope.imgData.data[4 * i + 1] = 0;
-                            $scope.imgData.data[4 * i + 2] = 0;
-                            $scope.imgData.data[4 * i + 3] = 255;
-                        }
-                    } */
-                    for (var y = 0; y < $scope.loose.height; y++) {
-                        for (var x = 0; x < $scope.loose.width; x++) {
-                            if (bitmask[y * $scope.loose.width + x]) {
-                                var i = ($scope.loose.height - y) * $scope.loose.width + x;
-                                $scope.imgData.data[4 * i] = 255;
-                                $scope.imgData.data[4 * i + 1] = 0;
-                                $scope.imgData.data[4 * i + 2] = 0;
-                                $scope.imgData.data[4 * i + 3] = 255;
-                            }
-                        }
+
+                    if ($scope.maskWand) {
+                        $scope.setMaskSelectedArea($scope.loose.width, $scope.loose.height);    
+                        var currentLayer = $scope.config.layers.currentLayer;
+                        var layer = $scope.renderEngine.layers[currentLayer];
+                        $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
+                        $scope.requestEditEngineUpdate();      
                     }
-
-                    /* Add new layer for bounding path and set selection. */
-                    // var newLayer = $scope.renderEngine.createSelectionImageLayer($scope.imgData, 0);
-                    // $scope.addLayer(newLayer);
-
-                    var currentLayer = $scope.config.layers.currentLayer;//$scope.config.layers.currentLayer;
-
-                    var layer = $scope.renderEngine.layers[currentLayer];
-
-                    $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
-                    $scope.requestEditEngineUpdate();
-
-                    // $scope.editEngine.setSelection($scope.marchingAnts);
-                    // $scope.requestRenderEngineUpdate();
 
                     $scope.loose.reset();
 

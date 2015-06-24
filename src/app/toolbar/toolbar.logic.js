@@ -158,6 +158,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
             // throw away selection bitmask
             var newLayer = $scope.renderEngine.createSelectionImageLayer($scope.imgData, 0);
             $scope.addLayer(newLayer);
+
             $scope.maskEnabled = false;
             console.log("DONE!");
         }
@@ -165,33 +166,31 @@ app.controller('ToolbarController', ['$scope', '$modal',
         $scope.cancelSelection = function() {
             $scope.maskEnabled = false;
 
-            var currentLayer = $scope.config.layers.currentLayer;
-            var layer = $scope.renderEngine.layers[currentLayer];
+            // var currentLayer = $scope.config.layers.currentLayer;
+            // var layer = $scope.renderEngine.layers[currentLayer];
 
             $scope.drawEngine.clearCanvases();
             $scope.editEngine.removeSelectionLayer();
 
             var nrWands = $scope.selectionTool.getNrWands();
 
+            console.log("nrWands");
+            console.log(nrWands);
+
             for (var i = 0; i < nrWands; i++) {
-                var bitmask = $scope.selectionTool.maskWandParts[nrWands - i - 1];
-
-                for (var y = 0; y < $scope.selectionTool.height; y++) {
-                    for (var x = 0; x < $scope.selectionTool.width; x++) {
-                        if (bitmask[y * $scope.selectionTool.width + x]) {
-                            var j = ($scope.selectionTool.height - y) * $scope.selectionTool.width + x;
-                            $scope.imgData.data[4 * j] = 0;
-                            $scope.imgData.data[4 * j + 1] = 0;
-                            $scope.imgData.data[4 * j + 2] = 0;
-                            $scope.imgData.data[4 * j + 3] = 255;
-                        }
-                    }
-                }
-
+                // var bitmask = $scope.selectionTool.maskWandParts[nrWands - i - 1];
                 var removed = $scope.selectionTool.clearLast();
                 if (removed == false) {
                     console.log("Selection tool clear Last returned false");
                 }                
+            }
+
+            if ($scope.maskWand) {
+                $scope.setMaskSelectedArea($scope.selectionTool.width, $scope.selectionTool.height);    
+                var currentLayer = $scope.config.layers.currentLayer;
+                var layer = $scope.renderEngine.layers[currentLayer];
+                $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
+                $scope.requestEditEngineUpdate();      
             }
 
             // throw away selection bitmask

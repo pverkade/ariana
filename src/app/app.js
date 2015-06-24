@@ -104,7 +104,6 @@ app.controller('AppCtrl', ['$scope',
         };
 
         $scope.startSharedSelection = function(width, height) {
-            console.log(width, height);
             if ($scope.maskWand == null) {
                 console.log("shared selection started");
                 $scope.maskWand = new Uint8Array(width * height);
@@ -120,7 +119,29 @@ app.controller('AppCtrl', ['$scope',
 
         $scope.setSelectionTool = function(selectionTool) {
             $scope.selectionTool = selectionTool;
-        }
+        };
+
+        $scope.setMaskSelectedArea = function(width, height) {
+            var index = 0;
+
+            for (var y = 0; y < height; y++) {
+                for (var x = 0; x < width; x++) {
+                    index = (height - y) * width + x;
+                    if ($scope.maskWand[y * width + x]) {
+                        $scope.imgData.data[4 * index] = 255;
+                        $scope.imgData.data[4 * index + 1] = 0;
+                        $scope.imgData.data[4 * index + 2] = 0;
+                        $scope.imgData.data[4 * index + 3] = 255;
+                    } else {
+                        $scope.imgData.data[4 * index] = 0;
+                        $scope.imgData.data[4 * index + 1] = 0;
+                        $scope.imgData.data[4 * index + 2] = 0;
+                        $scope.imgData.data[4 * index + 3] = 255;                        
+                    }
+                }
+            }  
+        };
+
 
         /* This function creates a new layer from a given Image-object. The new
          * layer is placed on top. */

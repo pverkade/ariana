@@ -16,7 +16,7 @@ app.controller('MagicCtrl', function($scope) {
 	/* init */
 	$scope.init = function() {
 		$scope.setCursor('crosshair');
-        console.log($scope.selection.maskEnabled);
+        // console.log($scope.selection.maskEnabled);
         $scope.selection.maskEnabled = true;
 
 		var currentLayer = $scope.config.layers.currentLayer;
@@ -32,7 +32,7 @@ app.controller('MagicCtrl', function($scope) {
 		}
 		var image = layer.getImage();
 
-		$scope.magic = new MagicSelection(image);
+		$scope.magic = new MagicSelection2(image);
 
 		$scope.startSharedSelection(image.width, image.height);
        	$scope.setSelectionTool($scope.magic);
@@ -41,8 +41,7 @@ app.controller('MagicCtrl', function($scope) {
 	};
     
     $scope.stop = function() {
-        // var scope = angular.element($("#main-canvas")).scope();
-         $scope.editEngine.removeSelectionLayer();
+        $scope.editEngine.removeSelectionLayer();
         $scope.requestEditEngineUpdate();
     };
 
@@ -84,35 +83,17 @@ app.controller('MagicCtrl', function($scope) {
 		if ($scope.magic.isInSelection(xRelative, yRelative)) {
 			$scope.magic.removeSelection(xRelative, yRelative)
 		} else {
-			var bitmask = $scope.magic.getMaskWand(xRelative, yRelative, $scope.threshold);
+			$scope.magic.getMaskWand(xRelative, yRelative, $scope.threshold);
 		}
 
-		$scope.magic.getMaskBorder();
+		// $scope.magic.getMaskBorder();
 
-		var width = $scope.magic.imageData.width;
-		var height = $scope.magic.imageData.height;
-
-		var canvas = document.getElementById("editing-canvas");
-		var context = canvas.getContext("2d");
-		var imgData = context.createImageData(width, height);
-
-		if (bitmask) {
-            for (var y = 0; y < height; y++) {
-                for (var x = 0; x < width; x++) {
-                    if (bitmask[y*width+x]) {
-                        var i = (height-y)*width+x;
-                        $scope.imgData.data[4 * i] = 255;
-                        $scope.imgData.data[4 * i + 1] = 0;
-                        $scope.imgData.data[4 * i + 2] = 0;
-                        $scope.imgData.data[4 * i + 3] = 255;
-                    }
-                }
-            }            
-
+		if ($scope.maskWand) {
+			$scope.setMaskSelectedArea($scope.magic.width, $scope.magic.height);    
             var currentLayer = $scope.config.layers.currentLayer;
             var layer = $scope.renderEngine.layers[currentLayer];
             $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
-            $scope.requestEditEngineUpdate();          
+            $scope.requestEditEngineUpdate();      
 		}
 	};
 

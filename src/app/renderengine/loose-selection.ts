@@ -1,4 +1,4 @@
-class LooseSelection extends AbstractSelection implements SelectionInterface{
+class LooseSelection extends AbstractSelection {
 	points : Point[][];
 
 	constructor(width : number, height : number) {
@@ -7,8 +7,6 @@ class LooseSelection extends AbstractSelection implements SelectionInterface{
 		this.points = [];
 		this.points[0] = [];
 	}
-
-    sign(x : number) { return x > 0 ? 1 : x < 0 ? -1 : 0; }
 
 	addPoint(point : Point) {
 		var nrPoints = this.points.length;
@@ -28,8 +26,8 @@ class LooseSelection extends AbstractSelection implements SelectionInterface{
                 var y = this.points[nrPoints - 1][nrPointsLast - 1].y; 
 
 				for (var i = 0; i < maxDif; i++) {
-                    x += this.sign(difX);
-                    y += this.sign(difY);
+                    x += super.sign(difX);
+                    y += super.sign(difY);
 
                     if (this.maskWand[y * this.width + x] == 0) {
 	                    this.points[nrPoints - 1].push(new Point(x, y));
@@ -38,8 +36,8 @@ class LooseSelection extends AbstractSelection implements SelectionInterface{
                     	return false;
                     }
 
-                    difX -= this.sign(difX);
-                    difY -= this.sign(difY);
+                    difX -= super.sign(difX);
+                    difY -= super.sign(difY);
                 }
 
 				return true;
@@ -103,13 +101,13 @@ class LooseSelection extends AbstractSelection implements SelectionInterface{
     	var curPoint = new Point(loosePoint.x, loosePoint.y);
 
     	while (dX != 0 && dY != 0) {
-    		curPoint.x += this.sign(dX);
-    		curPoint.y += this.sign(dY);
+    		curPoint.x += super.sign(dX);
+    		curPoint.y += super.sign(dY);
 
     		this.maskBorder[curPoint.y * this.width + curPoint.x] = 1;
 
-    		dX -= this.sign(dX);
-    		dY -= this.sign(dY);
+    		dX -= super.sign(dX);
+    		dY -= super.sign(dY);
     	}
     }
 
@@ -184,11 +182,11 @@ class LooseSelection extends AbstractSelection implements SelectionInterface{
 		var lastAddedPoint : Point;
 		var insidePoint : Point;
 
-		var newArea = this.newAdjustedArea();
+		// var newArea = this.newAdjustedArea();
 
-		if (newArea.length > 0) {
-		 	return newArea;
-		}
+		// if (newArea.length > 0) {
+		//  	return newArea;
+		// }
 
         for (var i = nrPointsLast - 10; i >= 0; i--) {
             /* Look if last added point is close enough to current point. */
@@ -197,6 +195,7 @@ class LooseSelection extends AbstractSelection implements SelectionInterface{
             if (this.comparePoints(curPoint, lastAddedPoint)) {
                 this.points[nrPoints - 1].splice(0, i);
 
+                // j = 0??
                 for (var j = 0; j < this.points[nrPoints - 1].length; j++) {
                 	this.maskBorder[this.points[nrPoints - 1][j].y * this.width + this.points[nrPoints - 1][j].x] = 1;
                 }
@@ -205,12 +204,13 @@ class LooseSelection extends AbstractSelection implements SelectionInterface{
 				insidePoint = this.getInsidePoint();
 				this.maskWandParts[this.maskWandParts.length] = mask.getMaskWand(insidePoint.x, insidePoint.y);
 
+				/* Points added by user are part of the mask wand! */
 				for (var j = 0; j < this.points[nrPoints - 1].length; j++) {
 					var indexPointMask = this.points[nrPoints - 1][j].y * this.width + this.points[nrPoints - 1][j].x;
 					this.maskWandParts[this.maskWandParts.length - 1][indexPointMask] = 1;
 				}	
 				this.mergeMaskWand();
-				// this.getMaskBorder();
+				this.getMaskBorder();
 
                 this.points[nrPoints] = [];
                 return this.points[nrPoints - 1];
@@ -218,31 +218,6 @@ class LooseSelection extends AbstractSelection implements SelectionInterface{
         }
 
 		return [];
-	}
-
-	removeSelection(x : number, y : number) {
-		var indexSelection = this.getSelectionNr(x, y);
-
-		if (indexSelection != -1) {
-			/* Remove from total mask wand. */
-			for (var i = 0; i < this.maskWandParts[indexSelection].length; i++) {
-				if (this.maskWandParts[indexSelection][i] == 1) {
-					this.maskWand[i] = 0;
-				}
-			}
-			/* Remove mask wand part. */
-			this.maskWandParts[indexSelection] = null;
-
-			/* Remove from border. */
-			for (var i = 0; i < this.points[indexSelection].length; i++) {
-				this.maskBorder[this.points[indexSelection][i].y * this.width + this.points[indexSelection][i].x] = 0;
-			}
-
-			/* Remove points. */
-			this.points[indexSelection] = [];		
-		}
-		
-		return indexSelection;		
 	}
 
 	reset() {
@@ -258,32 +233,13 @@ class LooseSelection extends AbstractSelection implements SelectionInterface{
 	}
 
 	clearLast() {
-		var nrWands = this.maskWandParts.length;
 		var nrPoints = this.points.length;
-		var indexPointMask;
 
-		if (nrWands < 1) {
+		if (super.clearLast() == false) {
 			return false;
 		}
 
-		for (var i = 0; i < this.points[nrPoints - 2].length; i++) {
-			indexPointMask = this.points[nrPoints - 2][i].y * this.width + this.points[nrPoints - 2][i].x;
-			this.maskBorder[indexPointMask] = 0;
-		} 
-
-
-		for (var i = 0; i < this.maskWandParts[nrWands - 1].length; i++) {
-			if (this.maskWandParts[nrWands - 1][i] == 1) {
-				this.maskWand[i] = 0;
-				this.maskWandParts[nrWands - 1][i] = 0;
-			}
-		}
-
-		this.maskWandParts.splice(nrWands - 1, 1);
-
-		// this.mergeMaskWand();
 		this.points.splice(nrPoints - 2, 1);
-
 		return true;
 	}
 }
