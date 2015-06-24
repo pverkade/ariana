@@ -10,10 +10,8 @@
 app.controller('layersCtrl', ['$scope', '$animate', 'mouse', 'layers', 
     function($scope, $animate, mouse, layers) {
 
-    /* This functions returns whether the toolbox should be visible. It is 
-     * hidden when the user is clicking on the canvas/background. */
-    $scope.checkVisible = function(){
-        return !mouse.checkActive()
+    $scope.checkVisible = function() {
+        return !mouse.checkActive();
     };
     
     $scope.hidden = false;
@@ -31,7 +29,7 @@ app.controller('layersCtrl', ['$scope', '$animate', 'mouse', 'layers',
         var layer = $scope.renderEngine.getLayer(index);
         layer.setHidden(!layer.isHidden());
 
-        $scope.renderEngine.render();
+        $scope.requestRenderEngineUpdate();
     };
     
     $scope.isHidden = function(index) {
@@ -45,7 +43,6 @@ app.controller('layersCtrl', ['$scope', '$animate', 'mouse', 'layers',
     var allLayersIndex = 0;
     
     $scope.addLayer = function(event) {
-        //event.stopPropagation();
         $scope.setNumberOfLayers = $scope.renderEngine.getNumberOfLayers();
         $scope.names.push('Layer ' + (allLayersIndex++ + 1));
     };
@@ -74,7 +71,7 @@ app.controller('layersCtrl', ['$scope', '$animate', 'mouse', 'layers',
 
         if (index < $scope.renderEngine.getNumberOfLayers() - 1 && $scope.renderEngine.getNumberOfLayers() > 1) {
             $scope.renderEngine.reorder(index, index + 1);
-            $scope.renderEngine.render();
+            $scope.requestRenderEngineUpdate();
             layers.getLayerInfo.swap(index, index + 1);
         }
     };
@@ -84,7 +81,7 @@ app.controller('layersCtrl', ['$scope', '$animate', 'mouse', 'layers',
 
         if (index > 0) {
             $scope.renderEngine.reorder(index, index - 1);
-            $scope.renderEngine.render();
+            $scope.requestRenderEngineUpdate();
             layers.getLayerInfo.swap(index, index - 1);
         }
     };

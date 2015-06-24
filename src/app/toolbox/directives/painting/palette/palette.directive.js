@@ -16,7 +16,9 @@ app.directive('palette', function() {
     };
 });
 
-app.controller('PaletteCtrl', function($scope, tools, canvas) {
+app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'colors',
+    function($scope, tools, canvas, colors) {
+
     $scope.toolname = 'palette';
     $scope.active = tools.getTool() == $scope.toolname;
 
@@ -48,9 +50,9 @@ app.controller('PaletteCtrl', function($scope, tools, canvas) {
     $scope.init = function() {
         canvas.setCursor('default');
 
-        $scope.color = RGBtoHSV($scope.config.tools.colors.primary);
+        $scope.color = RGBtoHSV(colors.getPrimary());
 
-        $scope.hex = RGBtoHEX($scope.config.tools.colors.primary);
+        $scope.hex = RGBtoHEX(colors.getPrimary());
                               
         $scope.drawMarker();
         $scope.drawBar();
@@ -182,25 +184,25 @@ app.controller('PaletteCtrl', function($scope, tools, canvas) {
     
     
     $scope.updateRGB = function() {
-        $scope.config.tools.colors.primary = HSVtoRGB($scope.color);
+        colors.setPrimaryRGB(HSVtoRGB($scope.color));
 
         $scope.drawMarker();
         $scope.drawBar();
     };
     
     $scope.updateHSV = function() {
-        $scope.color = RGBtoHSV($scope.config.tools.colors.primary);
+        $scope.color = RGBtoHSV(colors.getPrimary());
         
         $scope.drawMarker();
         $scope.drawBar();
     };
     
     $scope.updateHEX = function() {
-        $scope.hex = RGBtoHEX($scope.config.tools.colors.primary);
+        $scope.hex = RGBtoHEX(colors.getPrimary());
     };
     
     $scope.updateRGBfromHEX = function() {
-        $scope.config.tools.colors.primary = HEXtoRGB($scope.hex);
+        colors.setPrimaryRGB(HEXtoRGB($scope.hex));
     };
 
     $scope.drawMarker = function() {
@@ -213,9 +215,9 @@ app.controller('PaletteCtrl', function($scope, tools, canvas) {
         locX =  $scope.color.s * width / 100;
         locY =  (100 - $scope.color.v) * height / 100;
         context.arc(locX, locY, 6, 0, 2 * Math.PI, false);
-        context.fillStyle = "rgb("  + $scope.config.tools.colors.primary.r + "," 
-                                    + $scope.config.tools.colors.primary.g + "," 
-                                    + $scope.config.tools.colors.primary.b + ")";
+        context.fillStyle = "rgb("  + colors.getPrimaryR() + "," 
+                                    + colors.getPrimaryG() + "," 
+                                    + colors.getPrimaryB() + ")";
         context.fill();
         context.lineWidth = 3;
         context.strokeStyle = "black";
@@ -257,9 +259,9 @@ app.controller('PaletteCtrl', function($scope, tools, canvas) {
     };
 
     $scope.validate = function() {
-        $scope.config.tools.colors.primary.r = $scope.clamp($scope.config.tools.colors.primary.r, 0, 255);
-        $scope.config.tools.colors.primary.g = $scope.clamp($scope.config.tools.colors.primary.g, 0, 255);
-        $scope.config.tools.colors.primary.b = $scope.clamp($scope.config.tools.colors.primary.b, 0, 255);
+        color.setPrimaryR($scope.clamp(colors.getPrimaryR(), 0, 255));
+        color.setPrimaryG($scope.clamp(colors.getPrimaryG(), 0, 255));
+        color.setPrimaryB($scope.clamp(colors.getPrimaryB(), 0, 255));
         $scope.color.h = $scope.clamp($scope.color.h, 0, 360);
         $scope.color.s = $scope.clamp($scope.color.s, 0, 100);
         $scope.color.v = $scope.clamp($scope.color.v, 0, 100);
@@ -269,14 +271,14 @@ app.controller('PaletteCtrl', function($scope, tools, canvas) {
     }
 
     $scope.blur = function() {
-        if (!$scope.config.tools.colors.primary.r) {
-            $scope.config.tools.colors.primary.r = 0;
+        if (!colors.getPrimaryR()) {
+            color.setPrimaryR(0);
         }
-        if (!$scope.config.tools.colors.primary.g) {
-            $scope.config.tools.colors.primary.g = 0;
+        if (!colors.getPrimaryG()) {
+            color.setPrimaryG(0);
         }
-        if (!$scope.config.tools.colors.primary.b) {
-            $scope.config.tools.colors.primary.b = 0;
+        if (!colors.getPrimaryB()) {
+            color.setPrimaryB(0);
         }
         if (!$scope.color.h) {
             $scope.color.h = 0;
@@ -293,4 +295,4 @@ app.controller('PaletteCtrl', function($scope, tools, canvas) {
             $scope.hex = '#' + $scope.hex + "000000".substr($scope.hex.length, 6);
         }
     }
-});
+}]);

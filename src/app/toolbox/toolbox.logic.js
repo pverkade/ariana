@@ -26,7 +26,7 @@ app.controller('ToolboxCtrl', function($scope, tools) {
     };
     
     $scope.checkVisible = function() {
-        return (!($scope.config.mouse.button[1] || $scope.config.mouse.button[2] || $scope.config.mouse.button[3]));
+        return !mouse.checkActive()
     };
 
     $scope.isActive = function(name) {

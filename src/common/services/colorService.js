@@ -49,6 +49,12 @@ app.service('color', function() {
     this.setPrimaryB = function(b) {
         this._params.primary.b = b;
     }
+
+    this.setPrimaryRGB = function(rgb) {
+        this._params.primary.r = rgb.r;
+        this._params.primary.g = rgb.g;
+        this._params.primary.b = rgb.b;
+    }
     
     this.setSecondary = function(r, g, b) {
         this._params.Secondary.r = r;
