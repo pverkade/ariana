@@ -1,13 +1,19 @@
 .input-group {
     
-    * {
+    .input-group-addon, .form-control {
         border-radius: 0;
+        height: 0.5 * $blocksize;
     }
     
     @media screen and (max-width: $breakpoint-tablet) {
         
+        .input-group-addon, .form-control {
+            height: 0.5 * $blocksize-tablet;
+        }
+        
         * {
             font-size: 8pt;
+            
         }
     }
 }
