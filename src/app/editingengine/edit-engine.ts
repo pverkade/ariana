@@ -130,6 +130,10 @@ class EditEngine {
         context.restore();
     }
 
+    public getEditMode() : EditMode {
+        return this.currentMode;
+    }
+
     public setEditLayer(layer : Layer, mode : EditMode) {
         this.currentLayer = layer;
         this.currentMode = mode;
