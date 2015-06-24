@@ -151,7 +151,6 @@ class EditEngine {
         this.selectionTmpCanvas.height = imageData.height;
         this.selectionTmpContext = this.selectionTmpCanvas.getContext("2d");
 
-        console.log(marchingAnts);
         this.selectionAntsInterval = setInterval(function() {
             var tmpContext = thisPtr.selectionTmpContext;
             marchingAnts.writeData(imageData, 5.0, ++offset);
