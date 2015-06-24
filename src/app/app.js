@@ -116,12 +116,10 @@ app.controller('AppCtrl', ['$scope',
             var layer = $scope.renderEngine.createImageLayer(image);
             $scope.addLayer(layer);
 
-            var height = layer.getHeight();
-            var width  = layer.getWidth();
-            layer.setPos(0.5 * width, 0.5 * height);
+            var dimensions = layer.getTransformedDimensions();
+            layer.setPos(0.5 * dimensions[0], 0.5 * dimensions[1]);
         };
 
-        var numberLayers = 0;
         $scope.addLayer = function (layer) {
             var height = layer.getHeight();
             var width = layer.getWidth();
