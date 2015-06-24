@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * scale.directive.js
+ * 
+ * This file contains the ScaleController and directive, 
+ * which control the scale tool in the toolbox.
+ *
+ */
+ 
 app.directive('scale', function() {
     return {
         restrict: 'E',

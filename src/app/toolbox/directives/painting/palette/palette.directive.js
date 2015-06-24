@@ -3,7 +3,7 @@
  * palette.directive.js
  * 
  * This file contains the PaletteController and directive, 
- * which controls the palette in the toolbox.
+ * which control the palette in the toolbox.
  *
  */
 

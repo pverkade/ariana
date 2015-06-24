@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * pencil.directive.js
+ * 
+ * This file contains the PencilController and directive, 
+ * which control the pencil tool in the toolbox.
+ *
+ */
+ 
 app.directive('pencil', function() {
     return {
         restrict: 'E',
@@ -16,7 +25,6 @@ app.controller('PencilCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'c
     $scope.currentLayer = -1;
     $scope.numberOfLayers = 0;
     
-	/* init */
 	$scope.init = function() {
         $scope.drawing = false;
         $scope.hasDrawn = false;
@@ -70,7 +78,7 @@ app.controller('PencilCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'c
     $scope.updateDrawEngine = function() {
         $scope.drawEngine.setLineWidth($scope.thickness);
         $scope.drawEngine.setOpacity($scope.opacity);
-    }
+    };
     
     $scope.setColor = function(color) {
         $scope.drawEngine.setColor(
@@ -98,7 +106,7 @@ app.controller('PencilCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'c
             console.log(topCanvas);
             console.log(topCanvas.width, topCanvas.height);
         }
-    }
+    };
 
 	/* onMouseDown */
     $scope.mouseDown = function() {
@@ -126,6 +134,7 @@ app.controller('PencilCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'c
         $scope.hasDrawn = true;
         $scope.drawEngine.onMousemove(mouse.getPosX(), mouse.getPosY());
     };
+    
 	/*
 	 * This will watch for this tools' "active" variable changes.
 	 * When "active" changes to "true", this tools functions need to

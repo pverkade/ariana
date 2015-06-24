@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * pan.directive.js
+ * 
+ * This file contains the PanController and directive, 
+ * which control the pan tool in the toolbox.
+ *
+ */
+ 
 app.directive('pan', function() {
     return {
         restrict: 'E',
@@ -37,12 +46,10 @@ app.controller('PanCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colo
         var dx = mouse.getPosGlobal().x - mouse.getPosOldGlobal().x;
         var dy = mouse.getPosGlobal().y - mouse.getPosOldGlobal().y;
         
-        // mouse.setPosOldGlobal(mouse.getPosGlobal().x, mouse.getPosGlobal().y);
-        
         canvas.setX(canvas.getX() + dx);
         canvas.setY(canvas.getY() + dy);
     };
--
+
 	/*
 	 * This will watch for this tools' "active" variable changes.
 	 * When "active" changes to "true", this tools functions need to

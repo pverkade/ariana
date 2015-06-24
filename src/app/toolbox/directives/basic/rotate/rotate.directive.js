@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * rotate.directive.js
+ * 
+ * This file contains the RotateController and directive, 
+ * which control the rotate tool in the toolbox.
+ *
+ */
+ 
 app.directive('rotate', function() {
     return {
         restrict: 'E',
