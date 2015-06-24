@@ -1,4 +1,4 @@
-angular.module('ariana').directive('loose', function() {
+app.directive('loose', function() {
     return {
         restrict: 'E',
         scope: true,
@@ -7,7 +7,9 @@ angular.module('ariana').directive('loose', function() {
     };
 });
 
-angular.module('ariana').controller('LooseCtrl', function($scope, tools, canvas) {
+app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
+    function($scope, tools, canvas, layers, mouse) {
+
     $scope.toolname = 'loose';
     $scope.active = tools.getTool() == $scope.toolname;
 
@@ -15,7 +17,7 @@ angular.module('ariana').controller('LooseCtrl', function($scope, tools, canvas)
     $scope.init = function() {
         canvas.setCursor('default');
 
-        var currentLayer = $scope.config.layers.currentLayer;//$scope.config.layers.currentLayer;
+        var currentLayer = layers.getCurrentIndex();
         if (currentLayer == -1) {
             console.log("No layer selected");
             return;
@@ -54,8 +56,8 @@ angular.module('ariana').controller('LooseCtrl', function($scope, tools, canvas)
         $scope.stop();
         
         /* x and y coordinates in pixels relative to image. */
-        xMouse = $scope.config.mouse.current.x;
-        yMouse = $scope.config.mouse.current.y;  
+        xMouse = mouse.getPosX();
+        yMouse = mouse.getPosY();
 
         $scope.drawEngine.onMousedown(xMouse, yMouse);   
         $scope.mouseBTNDown = true; 
@@ -73,11 +75,11 @@ angular.module('ariana').controller('LooseCtrl', function($scope, tools, canvas)
     /* onMouseMove */
     $scope.mouseMove = function() {
         /* x and y coordinates in pixels relative to image. */
-        xMouse = $scope.config.mouse.current.x;
-        yMouse = $scope.config.mouse.current.y;    
+        xMouse = mouse.getPosX();
+        yMouse = mouse.getPosY();    
 
         /* Calculate x and y coordinates in pixels of the original image */
-        var currentLayer = $scope.config.layers.currentLayer;
+        var currentLayer = layers.getCurrentIndex();
         var layer = $scope.renderEngine.layers[currentLayer];
         if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
             return;
@@ -141,4 +143,4 @@ angular.module('ariana').controller('LooseCtrl', function($scope, tools, canvas)
             $scope.stop();
         }
     }, true);
-});
+}]);
