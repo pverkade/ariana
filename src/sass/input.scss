@@ -1,25 +1,51 @@
 .input-group {
-    height: 0.5 * $blocksize;
     
-    * {
+    .input-group-addon, .form-control {
         border-radius: 0;
+        height: 0.5 * $blocksize;
+    }
+    
+    @media screen and (max-width: $breakpoint-tablet) {
+        
+        .input-group-addon, .form-control {
+            height: 0.5 * $blocksize-tablet;
+        }
+        
+        * {
+            font-size: 8pt;
+            
+        }
     }
 }
 
 .input-small {
     width: $blocksize !important;
+    
+    @media screen and (max-width: $breakpoint-tablet) {
+        width: $blocksize-tablet !important;
+    }
 }
 
 .input-small-medium {
     width: 1.5 * $blocksize !important;
+    
+    @media screen and (max-width: $breakpoint-tablet) {
+        width: 1.5 * $blocksize-tablet !important;
+    }
 }
 
 .input-medium {
     width: 2 * $blocksize !important;
+    @media screen and (max-width: $breakpoint-tablet) {
+        width: 2 * $blocksize-tablet !important;
+    }
 }
 
 .input-large {
     width: 4 * $blocksize !important;
+    @media screen and (max-width: $breakpoint-tablet) {
+        width: 4 * $blocksize-tablet !important;
+    }
 }
 
 .input-group-addon {
@@ -37,6 +63,13 @@
     @extend .gui-element;
     min-height: $blocksize;
     
+    @media screen and (max-width: $breakpoint-tablet) {
+        width: calc(100% - #{2 * $blocksize-tablet});
+        max-width: 12 * $blocksize-tablet;
+        min-width: 5.5 * $blocksize-tablet;
+        left: 1.5 * $blocksize-tablet;
+    }
+    
     .float-left {
         float: left;
     }
@@ -47,6 +80,10 @@
     
     .center-box {
         width: calc(100% - #{2 * $blocksize});
+        
+        @media screen and (max-width: $breakpoint-tablet) {
+            width: calc(100% - #{2 * $blocksize-tablet});
+        }
     }
         
     .input-group {  
@@ -55,22 +92,32 @@
         .filter-name {
             min-width: 2 * $blocksize;
             width: 50%;
-            @media (max-width: 10 * $blocksize) {
+            @media (max-width: 10 * $blocksize-tablet) {
                 display: none;
             }
         }
         
         .filter-checkbox {
             min-width: 2 * $blocksize;
+            
+            @media screen and (max-width: $breakpoint-tablet) {
+                min-width: 2 * $blocksize-tablet;
+            }
+            
             width: 50%;
-            @media (max-width: 10 * $blocksize) {
+            @media (max-width: 10 * $blocksize-tablet) {
                 width: 100%;
             }
         }
         
         .input-group-addon, .number {
             width: 2 * $blocksize;
-            @media (max-width: 10 * $blocksize) {
+            
+            @media screen and (max-width: $breakpoint-tablet) {
+                width: 2 * $blocksize-tablet;
+            }
+            
+            @media (max-width: 10 * $blocksize-tablet) {
                 width: 50%;
             }
         }
@@ -78,23 +125,25 @@
         .slider {
             width: calc(100% - #{2 * $blocksize});
             
-            @media (max-width: 10 * $blocksize) {
+            @media screen and (max-width: $breakpoint-tablet) {
+                width: calc(100% - #{2 * $blocksize-tablet});
+            }
+            
+            @media (max-width: 10 * $blocksize-tablet) {
                 width: 100%;
             }
         }
         
         .number {
             width: 2 * $blocksize;
+            
+            @media screen and (max-width: $breakpoint-tablet) {
+                width: 2 * $blocksize-tablet;
+            }
            
-            @media (max-width: 10 * $blocksize) {
+            @media (max-width: 10 * $blocksize-tablet) {
                 display: none;
             }
         }
-    }   
-}
-
-.selection-options {
-    @extend .filter-options;
-    width: 2 * $blocksize;
-    min-width: 2 * $blocksize;
+    }
 }

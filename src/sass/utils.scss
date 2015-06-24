@@ -28,3 +28,10 @@
 .float-right {
     float: right;
 }
+
+@media screen and (max-width: $breakpoint-tablet) {
+    .scale-on {
+        @include transition(transform $scale-speed ease);
+        @include transform(scale($scale-amount, $scale-amount) translate(0.25 * $blocksize-tablet, -0.25 * $blocksize-tablet));
+    }
+}

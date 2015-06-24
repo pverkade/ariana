@@ -17,7 +17,7 @@ var gm = require('gm').subClass({ imageMagick: true });
 var app = connect();
 var server;
 var indexPage;
-var host = 'localhost';
+var host = '0.0.0.0';
 var port = 3000;
 
 // Handle POSIX signals

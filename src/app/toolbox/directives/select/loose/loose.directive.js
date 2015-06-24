@@ -39,7 +39,7 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
         $scope.loose.setMaskBorder($scope.maskBorder);
 
         $scope.drawEngine.setLineWidth(2);
-        $scope.drawEngine.setDrawType(drawType.DOTTED);
+        $scope.drawEngine.setDrawType(drawType.DASHED);
     };
     
     $scope.stop = function() {
