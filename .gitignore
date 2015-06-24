@@ -16,3 +16,5 @@ src/*/Thumbs.db
 .tscache/*
 src/app/drawengine/*.js
 src/app/editingengine/*.js
+"C:\\nppdf32Log\\debuglog.txt"
+C:\\nppdf32Log\\debuglog.txt

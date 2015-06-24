@@ -7,8 +7,6 @@
  *
  */
 
-"use strict";
-
 var app = angular.module('ariana', [
     'ui.router',
     'ui.bootstrap',
