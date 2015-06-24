@@ -15,6 +15,10 @@ app.service('layers', function() {
     this.getLayers = function() {
         return this._params.layerInfo;
     }
+    
+    this.getLayerInfo = function() {
+        return this._params.layerInfo;
+    }
 
     this.setNumCreatedLayers = function(i) {
         this._params.numberOfLayersCreated = i;
@@ -26,6 +30,10 @@ app.service('layers', function() {
 
     this.setCurrentIndex = function(i) {
         this._params.currentLayer = i;
+    }
+    
+    this.setLayerInfo = function(array) {
+        this._params.layerInfo = array;
     }
 
     this._params = {
