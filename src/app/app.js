@@ -25,66 +25,6 @@ app.controller('AppCtrl', ['$scope',
 
         /* The config object contains the current state of the layers, tools, 
          * canvas and the mouse. It is accessed by all kinds of controllers. */
-        $scope.config = {
-            mouse: {
-                old: {
-                    x : 0,
-                    y : 0,
-                    global: {
-                        x : 0,
-                        y : 0
-                    }
-                },
-                current: {
-                    x: 0,
-                    y: 0,
-                    global: {
-                        x : 0,
-                        y : 0
-                    }
-                },
-                button: {
-                    1: false, // left button
-                    2: false, // middle button
-                    3: false // right button
-                }
-            },
-            canvas: {
-                cursor: 'default',
-                x: 160,
-                y: 96,
-                xr: 1,
-                yr: 1,
-                zoom: 1,
-                width: 800,
-                height: 600,
-                visible: false
-            },
-            tools: {
-                activeTool: 'pan',
-                activeToolFunctions: null,
-                activeToolset: null,
-                colors: {
-                    primary: {
-                        r: 0,
-                        g: 0,
-                        b: 0
-                    },
-                    secondary: {
-                        r: 255,
-                        g: 255,
-                        b: 255
-                    }
-                }
-            },
-            layers: {
-                numberOfLayersCreated: 0,
-                numberOfLayers: 0,
-                currentLayer: -1,
-                layerInfo: []
-            }
-        };
-
         $scope.renderEngine = null;
         $scope.drawEngine = null;
         $scope.editEngine = null;
