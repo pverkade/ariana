@@ -20,8 +20,8 @@ var app = angular.module('ariana', [
 ]);
 
 /* The AppController is the main controller of the application. */
-app.controller('AppCtrl', ['$scope', 'layer'
-    function($scope) {
+app.controller('AppCtrl', ['$scope', 'layer', 'canvas', 'tools'
+    function($scope, layer, canvas, tools) {
 
         /* The config object contains the current state of the layers, tools, 
          * canvas and the mouse. It is accessed by all kinds of controllers. */
@@ -69,38 +69,34 @@ app.controller('AppCtrl', ['$scope', 'layer'
 
             /* set the correct layer info in config. The new layer comes on top
              * and is immediately selected. */
-            layers.setNumLayersCreated(layers.)
-            $scope.config.layers.numberOfLayersCreated++;
-            $scope.config.layers.numberOfLayers = $scope.renderEngine.getNumberOfLayers();
-            $scope.config.layers.currentLayer = $scope.config.layers.numberOfLayers - 1;
+            layers.setNumLayersCreated(layers.getNumLayersCreated() + 1);
+            layers.setNumLayers($scope.renderEngine.getNumberOfLayers());
+            layers.setCurrentIndex($scope.config.layers.numberOfLayers - 1);
 
             /* Store information about the layers in the config object. */
-            $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {
+            layers.setLayerData(layers.getCurrentIndex, {
                 "name": 'Layer ' + $scope.config.layers.numberOfLayersCreated
-            };
+            });
 
             $scope.requestRenderEngineUpdate();
         };
 
         $scope.resizeCanvases = function (width, height) {
-            var toolFunctions = $scope.config.tools.activeToolFunctions;
+            canvas.setDim(width, height);
+            $scope.renderEngine.resize(canvas.getWidth(), canvas.getHeight());
+            $scope.drawEngine.resize(canvas.getWidth(), canvas.getHeight());
+            $scope.editEngine.resize(canvas.getWidth(), canvas.getHeight());
 
-            $scope.config.canvas.width = width;
-            $scope.config.canvas.height = height;
-            $scope.renderEngine.resize($scope.config.canvas.width, $scope.config.canvas.height);
-            $scope.drawEngine.resize($scope.config.canvas.width, $scope.config.canvas.height);
-            $scope.editEngine.resize($scope.config.canvas.width, $scope.config.canvas.height);
-
-            if (toolFunctions && toolFunctions.init) {
-                toolFunctions.init();
+            if (tools.getToolFunctions() && tools.getToolFunctions().init) {
+                tools.getToolFunctions().init();
             }
 
-            $scope.config.layers.numberOfLayers = 0;
-            $scope.config.layers.currentLayer = -1;
-            $scope.config.layers.layerInfo = [];
+            layers.setNumLayers(0);
+            layers.setCurrentIndex(-1);
+            layers.overwriteLayers([]);
 
-            if (!$scope.config.canvas.visible) {
-                $scope.config.canvas.visible = true;
+            if (!canvas.getVisibility()) {
+                canvas.setVisibility(true);
             }
             
             $scope.requestRenderEngineUpdate();
@@ -140,7 +136,7 @@ app.controller('AppCtrl', ['$scope', 'layer'
             }
         };
 
-        $scope.requestEditEngineUpdate = function () {
+        $scope.requestEditEngineUpdate = function() {
             $scope.updates.editEngine = true;
             if (!$scope.updates.animationFrameCallback) {
                 $scope.updates.animationFrameCallback =
@@ -148,12 +144,8 @@ app.controller('AppCtrl', ['$scope', 'layer'
             }
         };
 
-        $scope.getCurrentLayerIndex = function () {
-            return $scope.config.layers.currentLayer;
-        };
-
-        $scope.getCurrentLayer = function () {
-            var index = $scope.config.layers.currentLayer;
+        $scope.getCurrentLayer = function() {
+            var index = layers.getCurrentIndex();
             if (index === -1) {
                 return null;
             }
@@ -161,15 +153,15 @@ app.controller('AppCtrl', ['$scope', 'layer'
             return $scope.renderEngine.getLayer(index);
         };
 
-        $scope.setCurrentLayerIndex = function (layerIndex) {
-            $scope.config.layers.currentLayer = layerIndex;
+        $scope.setCurrentLayerIndex = function(layerIndex) {
+            layers.setCurrentIndex(layerIndex);
             $scope.$broadcast('newCurrentLayer', layerIndex);
 
             $scope.editEngine.setEditLayer($scope.renderEngine.getLayer(layerIndex), $scope.editEngine.getEditMode());
             $scope.requestEditEngineUpdate();
         };
 
-        $scope.updateThumbnail = function (index) {
+        $scope.updateThumbnail = function(index) {
             if (0 <= index && index < $scope.renderEngine.getNumberOfLayers()) {
                 var layer = $scope.renderEngine.getLayer(index);
                 $scope.renderEngine.createThumbnail(layer);

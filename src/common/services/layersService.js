@@ -28,6 +28,14 @@ app.service('layers', function() {
         this._params.currentLayer = i;
     }
 
+    this.setLayerData = function(index, data) {
+        this._params.layerInfo[index] = data;
+    }
+
+    this.overwriteLayers = function(data) {
+        this._params.layerInfo = data;
+    }
+
     this._params = {
         numberOfLayersCreated: 0,
         numberOfLayers: 0,
