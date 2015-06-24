@@ -15,7 +15,8 @@ var app = angular.module('ariana', [
     'cfp.hotkeys',
     'templates-ariana',
     'ngFileUpload',
-    'ngAnimate'
+    'ngAnimate',
+    'ngTouch'
 ]);
 
 /* The AppController is the main controller of the application. */
@@ -31,16 +32,16 @@ app.controller('AppCtrl', ['$scope',
                     y : 0,
                     global: {
                         x : 0,
-                        y : 0,
-                    },
+                        y : 0
+                    }
                 },
                 current: {
                     x: 0,
                     y: 0,
                     global: {
                         x : 0,
-                        y : 0,
-                    },
+                        y : 0
+                    }
                 },
                 button: {
                     1: false, // left button
@@ -96,10 +97,10 @@ app.controller('AppCtrl', ['$scope',
         
         /* This function creates the RenderEngine. It requires the canvas to
          * render on. */
-        $scope.startEngines = function(renderCanvas, drawCanvas) {
+        $scope.startEngines = function(renderCanvas, drawCanvas, topCanvas) {
             $scope.renderEngine = new RenderEngine(renderCanvas);
             $scope.drawEngine = new DrawEngine(drawCanvas);
-            $scope.editEngine = new EditEngine(drawCanvas);
+            $scope.editEngine = new EditEngine(topCanvas);
         };
 
         $scope.startSharedSelection = function(width, height) {
@@ -114,7 +115,7 @@ app.controller('AppCtrl', ['$scope',
                 var context = canvas.getContext("2d");
                 $scope.imgData = context.createImageData(width, height);
             }
-        }
+        };
 
         $scope.setSelectionTool = function(selectionTool) {
             $scope.selectionTool = selectionTool;

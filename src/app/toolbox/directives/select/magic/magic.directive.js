@@ -32,9 +32,10 @@ app.controller('MagicCtrl', function($scope) {
 		}
 		var image = layer.getImage();
 
-		$scope.startSharedSelection(image.width, image.height);
-		
 		$scope.magic = new MagicSelection(image);
+
+		$scope.startSharedSelection(image.width, image.height);
+       	$scope.setSelectionTool($scope.magic);
         $scope.magic.setMaskWand($scope.maskWand);
         $scope.magic.setMaskBorder($scope.maskBorder);
 	};
@@ -111,28 +112,28 @@ app.controller('MagicCtrl', function($scope) {
                 for (var x = 0; x < width; x++) {
                     if (bitmask[y*width+x]) {
                         var i = (height-y)*width+x;
-                        imgData.data[4 * i] = 255;
-                        imgData.data[4 * i + 1] = 0;
-                        imgData.data[4 * i + 2] = 0;
-                        imgData.data[4 * i + 3] = 255;
+                        $scope.imgData.data[4 * i] = 255;
+                        $scope.imgData.data[4 * i + 1] = 0;
+                        $scope.imgData.data[4 * i + 2] = 0;
+                        $scope.imgData.data[4 * i + 3] = 255;
                     }
                 }
             }
             
-			var newLayer = $scope.renderEngine.createSelectionImageLayer(imgData, 0);
-            $scope.addLayer(newLayer);
+			// var newLayer = $scope.renderEngine.createSelectionImageLayer(imgData, 0);
+            // $scope.addLayer(newLayer);
 
-            console.log("scope marchingAnts is: ");
-            console.log($scope.marchingAnts);
+            // console.log("scope marchingAnts is: ");
+            // console.log($scope.marchingAnts);
 
-            $scope.editEngine.setSelectionLayer($scope.marchingAnts, newLayer);
-            $scope.requestRenderEngineUpdate();
-            if ($scope.marchingAnts == null) {
-                $scope.marchingAnts = new MarchingAnts($scope.magic.getWidth(), $scope.magic.getHeight());
-                $scope.marchingAnts.setMaskBorder($scope.maskBorder);
-                $scope.editEngine.setSelectionLayer($scope.marchingAnts, newLayer);
-                $scope.requestRenderEngineUpdate();
-            }            
+            var currentLayer = $scope.config.layers.currentLayer;//$scope.config.layers.currentLayer;
+
+            var layer = $scope.renderEngine.layers[currentLayer];
+
+            $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
+            $scope.requestEditEngineUpdate();
+
+          
 		}
 	};
 

@@ -16,8 +16,15 @@ app.controller('ToolbarController', ['$scope', '$modal',
             return (!($scope.config.mouse.button[1] || $scope.config.mouse.button[2] || $scope.config.mouse.button[3]));
         };
         
+        $scope.stopTool = function() {
+            $scope.config.tools.activeTool = "pan";
+            $scope.config.tools.activeToolset = null;
+        }
+        
         /* This function opens the newfile modal. */
         $scope.openNewFileModal = function() {
+            $scope.stopTool();
+            
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/newfile/newfile.tpl.html',
                 controller:  'NewFileModalController',
@@ -28,6 +35,8 @@ app.controller('ToolbarController', ['$scope', '$modal',
         
         /* This function opens the upload modal. */
         $scope.openUploadModal = function() {
+            $scope.stopTool();
+            
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/upload/upload.tpl.html',
                 controller:  'UploadModalController',
@@ -35,18 +44,10 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 size: 'lg'
             });
         };
-        
-        /* This function opens the transformation modal. */
-        $scope.openTransformationModal = function() {
-            var modalInstance = $modal.open({
-                templateUrl: 'app/toolbar/transformations/transformations.tpl.html',
-                controller:  'TransformationModalController',
-                scope: $scope,
-                size: 'lg'
-            });
-        };
 
         $scope.openSaveImageModal = function() {
+            $scope.stopTool();
+            
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/save-image/save-image.tpl.html',
                 controller: 'SaveImageModalController',
@@ -63,6 +64,8 @@ app.controller('ToolbarController', ['$scope', '$modal',
     
         /* This function opens the filters modal. */
         $scope.openFilterModal = function() {
+            $scope.stopTool();
+            
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/filters/filters.tpl.html',
                 controller:  'FilterModalController',
@@ -167,29 +170,40 @@ app.controller('ToolbarController', ['$scope', '$modal',
 
             $scope.editEngine.removeSelectionLayer();
 
-            var nrWands = $scope.selectionTool.maskWandParts.length;
-            var bitmask = $scope.selectionTool.maskWandParts[nrWands - 1];
+            var nrWands = $scope.selectionTool.getNrWands();
+            console.log("in cancel selection");
             console.log(nrWands);
-            console.log(bitmask);
 
-            for (var y = 0; y < $scope.selectionTool.height; y++) {
-                for (var x = 0; x < $scope.selectionTool.width; x++) {
-                    if (bitmask[y * $scope.selectionTool.width + x]) {
-                        var i = ($scope.selectionTool.height - y) * $scope.selectionTool.width + x;
-                        $scope.imgData.data[4 * i] = 0;
-                        $scope.imgData.data[4 * i + 1] = 0;
-                        $scope.imgData.data[4 * i + 2] = 0;
-                        $scope.imgData.data[4 * i + 3] = 255;
+            for (var i = 0; i < nrWands; i++) {
+                console.log(i);
+                if (i==1) {
+                    console.log("i is 1");
+                }
+                var bitmask = $scope.selectionTool.maskWandParts[nrWands - i - 1];
+
+                for (var y = 0; y < $scope.selectionTool.height; y++) {
+                    for (var x = 0; x < $scope.selectionTool.width; x++) {
+                        if (bitmask[y * $scope.selectionTool.width + x]) {
+                            var j = ($scope.selectionTool.height - y) * $scope.selectionTool.width + x;
+                            $scope.imgData.data[4 * j] = 0;
+                            $scope.imgData.data[4 * j + 1] = 0;
+                            $scope.imgData.data[4 * j + 2] = 0;
+                            $scope.imgData.data[4 * j + 3] = 255;
+                        }
                     }
                 }
-            }
 
-            var removed = $scope.selectionTool.clearLast();
-            if (removed == false) {
-                console.log("Selection tool clear Last returned false");
+                var removed = $scope.selectionTool.clearLast();
+                console.log("waarde removed");
+                console.log(removed);
+                if (removed == false) {
+                    console.log("Selection tool clear Last returned false");
+                }                
             }
             
-            $scope.startSharedSelection(layer.getWidth(), layer.getHeight());
+            // $scope.startSharedSelection(layer.getWidth(), layer.getHeight());
+            // $scope.selectionTool.setMaskWand($scope.maskWand);
+            // $scope.selectionTool.setMaskBorder($scope.maskBorder);
             // throw away selection bitmask
             console.log("DENIED!");
         }
