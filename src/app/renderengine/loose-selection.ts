@@ -111,6 +111,7 @@ class LooseSelection extends AbstractSelection {
     	}
     }
 
+    /* Get inside point by calculating mass punt of wand. */
     getInsidePoint() {
     	var nrPoints = this.points.length;
 		var nrPointsLast = this.points[nrPoints - 1].length;
@@ -126,6 +127,41 @@ class LooseSelection extends AbstractSelection {
     	var y = Math.round(sumY / nrPointsLast);
     	return new Point(x, y);
     }
+
+    /* Get inside point bij calculating orientation (clockwise or counter clockwise) and
+    	choosing a random point and its successor and turn left or right according to orrientation. */
+    getInsidePoint2() {
+    	var magicNr = 10;
+    	var curPoints = this.points[this.points.length-1];
+    	var startPoint = curPoints[curPoints.length - magicNr];		
+		var ccw = this.determineOrientation();
+		var dXAdj : number;
+		var dYAdj : number;
+ 
+		var deltaPoint = new Point(curPoints[curPoints.length - magicNr + 1].x - startPoint.x,
+								curPoints[curPoints.length - magicNr + 1].y - startPoint.y);
+
+		var signX = this.sign(deltaPoint.x);
+		var signY = this.sign(deltaPoint.y);
+
+
+		/* Points drawn in counter clockwise direction. */
+		if (ccw == true) {
+			dXAdj = super.sign(signX + signY); 
+			dYAdj = super.sign(signY - signX);
+		/* Points drawn in clockwise direction. */
+		} else {
+			dXAdj = super.sign(signX - signY); 
+			dYAdj = super.sign(signX + signY); 
+		}
+
+		if (this.maskBorder[(startPoint.y + dYAdj) * this.width + startPoint.x + dXAdj] == 0) {
+			return new Point(startPoint.x + dXAdj, startPoint.y + dYAdj);
+		} else {
+			console.log("hopelijk gaat dit goed");
+			return new Point(startPoint.x + 2 * dXAdj, startPoint.y + 2 * dYAdj);
+		}
+    }    
 
     newAdjustedArea() {
     	var nrPoints = this.points.length;
@@ -200,7 +236,7 @@ class LooseSelection extends AbstractSelection {
                 }
 
 				var mask = new MaskSelection(this.maskBorder, this.width, this.height);
-				insidePoint = this.getInsidePoint();
+				insidePoint = this.getInsidePoint2();
 				this.maskWandParts[this.maskWandParts.length] = mask.getMaskWand(insidePoint.x, insidePoint.y);
 
 				/* Points added by user are part of the mask wand! */
