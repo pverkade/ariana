@@ -35,6 +35,7 @@ app.controller('ScaleCtrl', function($scope) {
     /* onMouseUp */
     $scope.mouseUp = function() {
         $scope.scaling = false;
+        $scope.updateThumbnail($scope.getCurrentLayerIndex());
     };
 
     /* onMouseMove */
@@ -172,9 +173,11 @@ app.controller('ScaleCtrl', function($scope) {
         }
 
         if (oval) {
+            $scope.editEngine.removeEditLayer();
             var layer = $scope.getCurrentLayer();
             layer.commitTransformations();
             $scope.editEngine.clear();
+            $scope.updateThumbnail($scope.getCurrentLayerIndex());
         }
     }, true);
 });

@@ -112,7 +112,7 @@ enum drawType { NORMAL, DASHED, QUADRATIC_BEZIER, BRUSH, LINE, RECTANGLE };
  * NEIGHBOR : stroke nearby lines
  * FUR : fur effect with nearby points
  */
-enum brushType { THIN, PEN, NEIGHBOR, FUR, MULTISTROKE }
+enum brushType { THIN, PEN, NEIGHBOR, FUR, MULTISTROKE };
 
 /*
  * Drawing class
@@ -193,7 +193,7 @@ class DrawEngine {
         if (this.drawType == drawType.LINE) {
             this.currentPath.addPosition(new Position2D(x, y));
         }
-    };
+    }
 
     /*
      * Funtion that is called when the mouse is moved
@@ -209,7 +209,7 @@ class DrawEngine {
             }
             this.draw(this.currentPath);
         }
-    };
+    }
 
     /*
      * Function being called when the mouse is no longer being pressed
@@ -229,7 +229,7 @@ class DrawEngine {
 
         this.draw(this.currentPath);
         this.currentPath = null;
-    };
+    }
 
     /*
      * Set the size of the brush/line
@@ -307,7 +307,7 @@ class DrawEngine {
      */
     brushLoaded = () : void => {
         this.setDrawType(drawType.BRUSH);
-    };
+    }
 
     /*
      * Save the canvas (use this before drawing)
@@ -315,7 +315,7 @@ class DrawEngine {
     saveCanvas = () : void => {
         this.memContext.clearRect(0, 0, this.width, this.height);
         this.memContext.drawImage(this.drawCanvas, 0, 0);
-    };
+    }
 
     /*
      * Reset the canvas to its original state (the saved state)
@@ -331,7 +331,7 @@ class DrawEngine {
         if (this.currentPath) {
             this.currentPath.lastDrawnItem = 0;
         }
-    };
+    }
 
     clearCanvases() : void {
         this.memContext.clearRect(0, 0, this.memCanvas.width, this.memCanvas.height);
@@ -532,7 +532,6 @@ class DrawEngine {
      * Function to draw using a brush image.
      */
     drawBrushImage(points, path : Path, context : CanvasRenderingContext2D) {
-        var timingStart = performance.now();
         var halfBrushW = this.brushImage.width/2;
         var halfBrushH = this.brushImage.height/2;
         var i : number = path.lastDrawnItem - 2;
@@ -554,8 +553,6 @@ class DrawEngine {
         if (i < 1) {
             i = 1;
         }
-
-        var timing1 = performance.now() - timingStart;
 
         /* Iterate over the not-drawn points in the path */
         for (i; i < points.length - 2; i++) {
@@ -580,10 +577,6 @@ class DrawEngine {
                 context.drawImage(brushCanvas, x, y);
             }
         }
-
-        var timing2 = performance.now() - timingStart;
-        console.log("Timing 1: " + timing1);
-        console.log("Timing 2: " + timing2);
         path.lastDrawnItem = i;
     }
 

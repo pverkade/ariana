@@ -74,7 +74,7 @@
     
     position: relative;
     transition: transform 200ms ease;
-    
+
     .crop {
         float: left;
         width: 3 * $blocksize;
@@ -146,5 +146,11 @@
             height: 0.5 * $blocksize-tablet;
             width: 3 * $blocksize-tablet;
         }
+
+        &.delete-animation {
+            @include transform(translate(4 * $blocksize, 0px));
+        }
     }
+
 }
+
