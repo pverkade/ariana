@@ -33,12 +33,11 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
 
         var mouseX, mouseY;
         
-        if (event.originalEvent.touches) {
+        mouseX = event.pageX;
+        mouseY = event.pageY;
+        if (isNaN(event.pageX) || isNaN(event.pageY)) {
             mouseX = event.originalEvent.touches[0].pageX;
             mouseY = event.originalEvent.touches[0].pageY;
-        } else {
-            mouseX = event.pageX;
-            mouseY = event.pageY;
         }
         
         mouse.setPosX((mouseX - cx) / zoom);
@@ -63,16 +62,20 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
         var zoom  = canvas.getZoom();
 
         var mouseX, mouseY;
-        if (event.originalEvent.touches) {
+
+        mouseX = event.pageX;
+        mouseY = event.pageY;
+        if (isNaN(event.pageX) || isNaN(event.pageY)) {
             mouseX = event.originalEvent.touches[0].pageX;
             mouseY = event.originalEvent.touches[0].pageY;
-        } else {
-            mouseX = event.pageX;
-            mouseY = event.pageY;
         }
 
         /* Store the mouse button. */
-        var mouseIndex = event.originalEvent.touches ? 1 : event.which;
+        if (isNaN(event.touches)) {
+            var mouseIndex = event.originalEvent.touches ? 1 : event.which;
+        } else {
+            var mouseIndex = event.touches ? 1 : event.which;
+        }
         
         if (mouseIndex == 1) {
             mouse.setPrimary(true);
@@ -107,7 +110,11 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
         event.preventDefault();
 
         /* Store the mouse button. */
-        var mouseIndex = event.originalEvent.touches ? 1 : event.which;
+        if (isNaN(event.touches)) {
+            var mouseIndex = event.originalEvent.touches ? 1 : event.which;
+        } else {
+            var mouseIndex = event.touches ? 1 : event.which;
+        }
         
         if (mouseIndex == 1) {
             mouse.setPrimary(false);
