@@ -43,8 +43,8 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
     };
     
     $scope.stop = function() {
-        var scope = angular.element($("#main-canvas")).scope();
-        scope.editEngine.removeSelectionLayer();
+        // var scope = angular.element($("#main-canvas")).scope();
+        $scope.editEngine.removeSelectionLayer();
         $scope.requestEditEngineUpdate();
     };
 

@@ -344,7 +344,7 @@ class DrawEngine {
 
     clearCanvases() : void {
         this.memContext.clearRect(0, 0, this.memCanvas.width, this.memCanvas.height);
-        this.tmpDrawContext.clearRect(0, 0, this.memCanvas.width, this.memCanvas.height);
+        this.tmpDrawContext.clearRect(0, 0, this.tmpDrawCanvas.width, this.tmpDrawCanvas.height);
         this.clearCanvas();
     }
 
@@ -542,7 +542,7 @@ class DrawEngine {
      */
     drawRectangle (points : Array<Position2D>, context : CanvasRenderingContext2D) {
         if (!this.isCleared) {
-            this.clearCanvas();
+            this.clearCanvases();
         }
 
         context.beginPath();

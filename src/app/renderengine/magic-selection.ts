@@ -55,15 +55,7 @@ class MagicSelection implements SelectionInterface{
     }
 
     /* Return borders (bitmask) of magic wand mask. */
-    getMaskBorder() {
-        /* Check whether a maskwand has been created. */
-        // if (this.maskWand == undefined) {
-        //     this.maskBorder = new Uint8Array(this.imageData.width * this.imageData.height);
-        //    return undefined;
-        //}
-
-        // this.maskBorder = new Uint8Array(this.imageData.width * this.imageData.height);
-        
+    getMaskBorder() {        
         for (var i = 0; i < this.maskWand.length; i++) {
             if (this.maskWand[i] == 1) {
                 /* Check for borders of image (pixel on border of image is edge). */
@@ -94,9 +86,7 @@ class MagicSelection implements SelectionInterface{
     /* Given pixel and treshold value (1-100) a bitmask for the borders of the magic wand is returned. 
         Algorithm checks for lines horizontally and adds line elements above and below to the 
         stack when they match the color of the given point. */
-    getMaskWand(x : number, y : number, treshold : number) {
-        console.log("magic " + x + " " + y);
-    
+    getMaskWand(x : number, y : number, treshold : number) {    
         var stack = [];
         var curLine = [];
         var newLine = [];
@@ -281,8 +271,6 @@ class MagicSelection implements SelectionInterface{
             console.log("Magic Maskborder set");
             this.maskBorder = maskBorder;
         }
-
-        // this.mergeMaskWand();
     }
 
     setMaskWand(maskWand : Uint8Array) {
@@ -293,8 +281,6 @@ class MagicSelection implements SelectionInterface{
             console.log("Magic: Maskwand set");
             this.maskWand = maskWand;
         }
-
-        this.mergeMaskWand();
     }
 
     getNrWands() {

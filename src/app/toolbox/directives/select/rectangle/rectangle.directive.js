@@ -38,10 +38,16 @@ app.controller('RectangleCtrl', function($scope) {
         $scope.rect.setMaskWand($scope.maskWand);
         $scope.rect.setMaskBorder($scope.maskBorder);
 
-        $scope.drawEngine.setColor(0, 0, 0, 128);
+        $scope.drawEngine.setColor(0, 0, 0, 256);
         $scope.drawEngine.setLineWidth(2);
         $scope.drawEngine.setDrawType(drawType.RECTANGLE);
 	};
+
+    $scope.stop = function() {
+        // var scope = angular.element($("#main-canvas")).scope();
+        $scope.editEngine.removeSelectionLayer();
+        $scope.requestEditEngineUpdate();
+    };
 
 	/* onMouseDown */
 	$scope.mouseDown = function() {
@@ -49,17 +55,13 @@ app.controller('RectangleCtrl', function($scope) {
         xMouse = $scope.config.mouse.current.x;
         yMouse = $scope.config.mouse.current.y;  
 
-        console.log(xMouse, yMouse);
         $scope.point1 = new Point(xMouse, yMouse);
-
         $scope.drawEngine.onMousedown(xMouse, yMouse);   
         $scope.mouseBTNDown = true; 
 	};
 
 	/* onMouseUp */
 	$scope.mouseUp = function() {
-		// $scope.stop();
-
         /* x and y coordinates in pixels relative to image. */
         xMouse = $scope.config.mouse.current.x;
         yMouse = $scope.config.mouse.current.y; 
@@ -79,8 +81,7 @@ app.controller('RectangleCtrl', function($scope) {
             }
         }
 
-        var currentLayer = $scope.config.layers.currentLayer;//$scope.config.layers.currentLayer;
-
+        var currentLayer = $scope.config.layers.currentLayer;
         var layer = $scope.renderEngine.layers[currentLayer];
 
         $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
@@ -96,13 +97,13 @@ app.controller('RectangleCtrl', function($scope) {
 		/* x and y coordinates in pixels relative to image. */
         xMouse = $scope.config.mouse.current.x;
         yMouse = $scope.config.mouse.current.y; 
-        /* Calculate x and y coordinates in pixels of the original image */
+
         var currentLayer = $scope.config.layers.currentLayer;
         var layer = $scope.renderEngine.layers[currentLayer];
         if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
             return;
         }
-        // console.log($scope.mouseBTNDown);
+
         if ($scope.mouseBTNDown) {
         	$scope.drawEngine.onMousemove(xMouse, yMouse);
         }
@@ -126,6 +127,9 @@ app.controller('RectangleCtrl', function($scope) {
 				mouseUp: $scope.mouseUp,
 				mouseMove: $scope.mouseMove
 			};
-		}
+		} 
+        else if (oval) {
+            $scope.stop();
+        }
 	}, true);
 });

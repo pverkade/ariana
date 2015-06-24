@@ -41,9 +41,9 @@ app.controller('MagicCtrl', function($scope) {
 	};
     
     $scope.stop = function() {
-        var scope = angular.element($("#main-canvas")).scope();
-        scope.editEngine.removeSelectionLayer();
-        // $scope.requestEditEngineUpdate();
+        // var scope = angular.element($("#main-canvas")).scope();
+         $scope.editEngine.removeSelectionLayer();
+        $scope.requestEditEngineUpdate();
     };
 
 	/* onMouseDown */
@@ -97,17 +97,6 @@ app.controller('MagicCtrl', function($scope) {
 		var imgData = context.createImageData(width, height);
 
 		if (bitmask) {
-            /*var x = 0;
-			for (var i = 0; i < bitmask.length; i++) {
-				if (bitmask[i]) {
-					imgData.data[4 * i] = 255;
-					imgData.data[4 * i + 1] = 0;
-					imgData.data[4 * i + 2] = 0;
-					imgData.data[4 * i + 3] = 255;
-                    x++;
-				}
-			}
-            console.log("Bitmask size: " + x);*/
             for (var y = 0; y < height; y++) {
                 for (var x = 0; x < width; x++) {
                     if (bitmask[y*width+x]) {
@@ -118,22 +107,12 @@ app.controller('MagicCtrl', function($scope) {
                         $scope.imgData.data[4 * i + 3] = 255;
                     }
                 }
-            }
-            
-			// var newLayer = $scope.renderEngine.createSelectionImageLayer(imgData, 0);
-            // $scope.addLayer(newLayer);
+            }            
 
-            // console.log("scope marchingAnts is: ");
-            // console.log($scope.marchingAnts);
-
-            var currentLayer = $scope.config.layers.currentLayer;//$scope.config.layers.currentLayer;
-
+            var currentLayer = $scope.config.layers.currentLayer;
             var layer = $scope.renderEngine.layers[currentLayer];
-
             $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
-            $scope.requestEditEngineUpdate();
-
-          
+            $scope.requestEditEngineUpdate();          
 		}
 	};
 
