@@ -1,7 +1,11 @@
+/*
+ * A shader program for drawing a "bitmask"
+ * It is used for cutting out a selections
+ */
+
 /// <reference path="render-helper"/>
 /// <reference path="shader-program"/>
 /// <reference path="base-program"/>
-
 class BitmaskShaderProgram extends BaseProgram {
     program : WebGLProgram;
 

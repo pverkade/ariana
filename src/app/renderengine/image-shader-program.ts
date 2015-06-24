@@ -1,3 +1,5 @@
+/* A shader program for drawing an image layer */
+
 /// <reference path="render-helper"/>
 /// <reference path="gl-matrix"/>
 /// <reference path="shader-program"/>
