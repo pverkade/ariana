@@ -32,7 +32,7 @@ app.controller('PanCtrl', function($scope, tools, canvas) {
 	/* onMouseMove */
 	$scope.mouseMove = function() {
         if (!$scope.panning) return;
-        var z = $scope.config.canvas.zoom;
+        var z = canvas.getZoom();
          
         var dx = mouse.getPosGlobal().x - mouse.getPosOldGlobal().x;
         var dy = mouse.getPosGlobal().y - mouse.getPosOldGlobal().y;

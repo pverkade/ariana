@@ -42,7 +42,7 @@ app.controller('RotateCtrl', function($scope, tools, canvas, layers) {
 	$scope.mouseMove = function() {
 		if (!$scope.rotating) return;
 		 
-		var currentLayer = $scope.config.layers.currentLayer;
+		var currentLayer = layers.getCurrentLayerIndex();
         if (currentLayer == -1) return;
 
         var layer = $scope.getCurrentLayer();
