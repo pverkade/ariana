@@ -65,6 +65,6 @@ app.controller('SaveImageModalController', ['$scope', '$modalInstance', '$modal'
         myForm.submit();
         document.body.removeChild(myForm);
         
-        closeSaveImageModal();
+        $scope.closeSaveImageModal();
     };
 }]);
