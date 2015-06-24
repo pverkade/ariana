@@ -174,11 +174,11 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'colors',
         if (nval) {
             $scope.init();
 
-            tools.getTool()Functions = {
+            tools.setToolFunctions({
                 mouseDown: $scope.mouseDown,
                 mouseUp: $scope.mouseUp,
                 mouseMove: $scope.mouseMove
-            };
+            });
         }
     }, true);
     

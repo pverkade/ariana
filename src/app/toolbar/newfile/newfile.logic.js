@@ -7,7 +7,7 @@
  *
  */
  
-app.controller('NewFileModalController', ['$scope', '$modalInstance', '$modal', 'canvas' 
+app.controller('NewFileModalController', ['$scope', '$modalInstance', '$modal', 'canvas',
     function ($scope, $modalInstance, $modal, canvas) {
 
         $scope.inputWidth = 800;

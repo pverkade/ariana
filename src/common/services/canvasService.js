@@ -80,7 +80,7 @@ app.service('canvas', function() {
         zoom: 1,
         width: 800,
         height: 600,
-        visible: false
-        cursor: 'default',
+        visible: false,
+        cursor: 'default'
     }
 });

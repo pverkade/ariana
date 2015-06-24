@@ -7,7 +7,7 @@
  *
  */
  
-app.controller('FilterModalController', ['$scope', '$modalInstance', 'tools'
+app.controller('FilterModalController', ['$scope', '$modalInstance', 'tools',
     function ($scope, $modalInstance, tools) {
         
         $scope.filters = {

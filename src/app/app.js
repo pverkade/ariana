@@ -20,7 +20,7 @@ var app = angular.module('ariana', [
 ]);
 
 /* The AppController is the main controller of the application. */
-app.controller('AppCtrl', ['$scope', 'layer', 'canvas', 'tools'
+app.controller('AppCtrl', ['$scope', 'layers', 'canvas', 'tools',
     function($scope, layer, canvas, tools) {
 
         /* The config object contains the current state of the layers, tools, 

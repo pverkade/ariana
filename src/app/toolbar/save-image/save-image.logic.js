@@ -2,7 +2,7 @@
  * Created by zeta on 6/18/15.
  */
 
-app.controller('SaveImageModalController', ['$scope', '$modalInstance', '$modal', 'tools' 
+app.controller('SaveImageModalController', ['$scope', '$modalInstance', '$modal', 'tools',
     function($scope, $modalInstance, $modal, tools) {
 
         $scope.format = "png";
