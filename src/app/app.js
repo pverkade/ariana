@@ -20,7 +20,7 @@ var app = angular.module('ariana', [
 ]);
 
 /* The AppController is the main controller of the application. */
-app.controller('AppCtrl', ['$scope',
+app.controller('AppCtrl', ['$scope', 'layer'
     function($scope) {
 
         /* The config object contains the current state of the layers, tools, 
@@ -41,7 +41,6 @@ app.controller('AppCtrl', ['$scope',
         };
 
         $scope.startSharedSelection = function(width, height) {
-            console.log(width, height);
             if ($scope.maskWand == null) {
                 $scope.maskWand = new Uint8Array(width * height);
                 $scope.maskBorder = new Uint8Array(width * height);
@@ -70,6 +69,7 @@ app.controller('AppCtrl', ['$scope',
 
             /* set the correct layer info in config. The new layer comes on top
              * and is immediately selected. */
+            layers.setNumLayersCreated(layers.)
             $scope.config.layers.numberOfLayersCreated++;
             $scope.config.layers.numberOfLayers = $scope.renderEngine.getNumberOfLayers();
             $scope.config.layers.currentLayer = $scope.config.layers.numberOfLayers - 1;
