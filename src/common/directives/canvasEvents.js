@@ -7,10 +7,10 @@
  *
  */
  
-app.directive('canvasEvents', function() {
+app.directive('canvasEvents', ['canvas', function(canvas) {
     return {
         restrict: 'A',
-        link: function(scope, element, attrs, canvas) {
+        link: function(scope, element, attrs) {
             
             /* Watches canvas zoom changes  */
             scope.$watch(canvas.getZoom(), function(nval, oval) {
@@ -23,7 +23,7 @@ app.directive('canvasEvents', function() {
             }, true);
 
             /* Watches canvas visibility changes  */
-            scope.$watch(canvas.getVisible(), function(nval, oval) {
+            scope.$watch(canvas.getVisibility(), function(nval, oval) {
                 element.removeClass("ng-hide");
                 element.css('display', nval ? "block" : "none");
             }, true);
@@ -41,4 +41,4 @@ app.directive('canvasEvents', function() {
             }, true);
         }
     }
-});
+}]);

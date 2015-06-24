@@ -7,7 +7,7 @@
  *
  */
 
-app.controller('ToolboxCtrl', ['$scope', 'canvas', 'colors', function($scope, canvas, colors) {
+app.controller('ToolboxCtrl', ['$scope', 'canvas', 'colors', 'tools', 'mouse', function($scope, canvas, colors, tools, mouse) {
     
     $scope.setCursor = function(cursor) {
         canvas.setCursor(cursor);

@@ -41,7 +41,7 @@ app.controller('TranslateCtrl', function($scope, tools, canvas, layers) {
     /* onMouseUp */
     $scope.mouseUp = function() {
         $scope.translating = false;
-        $scope.updateThumbnail($scope.getCurrentLayerIndex());
+        $scope.updateThumbnail(layers.getCurrentIndex());
     };
 
     /* onMouseMove */
@@ -92,7 +92,7 @@ app.controller('TranslateCtrl', function($scope, tools, canvas, layers) {
             $scope.editEngine.removeEditLayer();
             $scope.editEngine.clear();
 
-            $scope.updateThumbnail($scope.getCurrentLayerIndex());
+            $scope.updateThumbnail(layers.getCurrentIndex());
 
         }
     }, true);

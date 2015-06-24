@@ -16,7 +16,7 @@ app.directive('picker', function() {
     };
 });
 
-app.controller('PickerCtrl', ['$scope', 'tools', 'canvas', 'mouse', 'color',
+app.controller('PickerCtrl', ['$scope', 'tools', 'canvas', 'mouse', 'colors',
     function($scope, tools, canvas, mouse, color) {
         
     $scope.toolname = 'picker';
@@ -50,15 +50,15 @@ app.controller('PickerCtrl', ['$scope', 'tools', 'canvas', 'mouse', 'color',
         
         /* Write color to config. */
         if (mouse.getPrimary()) {
-            color.setPrimaryR(value[0]);
-            color.setPrimaryG(value[1]);
-            color.setPrimaryB(value[2]);
+            colors.setPrimaryR(value[0]);
+            colors.setPrimaryG(value[1]);
+            colors.setPrimaryB(value[2]);
         }
         
         if (mouse.getSecondary()) {
-            color.setSecondaryR(value[0]);
-            color.setSecondaryG(value[1]);
-            color.setSecondaryB(value[2]);
+            colors.setSecondaryR(value[0]);
+            colors.setSecondaryG(value[1]);
+            colors.setSecondaryB(value[2]);
         }
     };
 -

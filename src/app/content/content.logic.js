@@ -8,8 +8,18 @@
  */
 
 /* The ContenController contains the behaviour of the main content. */
-app.controller('ContentCtrl', ["canvas", "mouse", "tools",
+app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
     function($scope, $window, canvas, mouse, tools) {
+
+    $scope.getWidth = function() {
+        return canvas.getWidth();
+    }
+    $scope.getHeight = function() {
+        return canvas.getHeight();
+    }
+    $scope.getVisibility = function() {
+        return canvas.getVisibility();
+    }
 
     /* This function is triggered when the mouse is moved. */
     $scope.mouseMove = function(event) {
@@ -115,7 +125,7 @@ app.controller('ContentCtrl', ["canvas", "mouse", "tools",
     };
 
     $scope.mwheelUp = function() {
-        var zoom = canvas.getzoom() + 0.05;
+        var zoom = canvas.getZoom() + 0.05;
         if (zoom >= 3.0) {
             zoom = 3.0;
             canvas.setZoom(zoom);
@@ -132,7 +142,7 @@ app.controller('ContentCtrl', ["canvas", "mouse", "tools",
     };
 
     $scope.mwheelDown = function() {
-        var zoom = canvas.getzoom() - 0.05;
+        var zoom = canvas.getZoom() - 0.05;
         if (zoom <= 0.05) {
             zoom = 0.05;
             canvas.setZoom(zoom);
