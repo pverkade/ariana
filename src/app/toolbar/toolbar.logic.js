@@ -6,16 +6,16 @@
  *
  */
  
-app.controller('ToolbarController', ['$scope', '$modal',
-    function ($scope, $modal) {
+app.controller('ToolbarController', ['$scope', '$modal', 'mouse', 'tools', 'layers'
+    function ($scope, $modal, mouse, tools, layers) {
       
         $scope.checkVisible = function() {
-            return (!($scope.config.mouse.button[1] || $scope.config.mouse.button[2] || $scope.config.mouse.button[3]));
+            return (!(mouse.getPrimary() || mouse.getMiddle() || mouse.getSecondary()));
         };
         
         $scope.stopTool = function() {
-            $scope.config.tools.activeTool = "pan";
-            $scope.config.tools.activeToolset = null;
+            tools.setTool("pan");
+            tools.setToolset(null);
         }
         
         /* This function opens the newfile modal. */
@@ -125,7 +125,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
         $scope.applyFilterOnLayers = function() {
             var filter = $scope.filter.filterObject;
 
-            if ($scope.config.layers.numberOfLayers == 0 || !filter) {
+            if (layers.getNumLayers() == 0 || !filter) {
                 $scope.cancel();
                 return;
             }
@@ -135,7 +135,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
                     return;
                 }
 
-                if (index === $scope.config.layers.currentLayer || !$scope.filter.currentlayerOnly) {
+                if (index === layers.getCurrentIndex() || !$scope.filter.currentlayerOnly) {
                     layer.applyFilter(filter);
                 }
                 else {

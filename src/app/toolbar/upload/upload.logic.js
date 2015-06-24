@@ -7,8 +7,8 @@
  *
  */
  
-app.controller('UploadModalController', ['$scope', '$modalInstance', 'Upload', 
-    function ($scope, $modalInstance, Upload) {
+app.controller('UploadModalController', ['$scope', '$modalInstance', 'Upload', 'canvas'
+    function ($scope, $modalInstance, Upload, canvas) {
         $scope.imageUrls = [];
 
         $scope.close = function () {
@@ -17,7 +17,7 @@ app.controller('UploadModalController', ['$scope', '$modalInstance', 'Upload',
  
         $scope.upload = function () {
 
-            if (!$scope.config.canvas.visible) {
+            if (!canvas.getVisibility()) {
                 var image = new Image();
                 image.onload = function() {
                     $scope.resizeCanvases(image.width, image.height);
