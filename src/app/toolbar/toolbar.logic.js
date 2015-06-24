@@ -16,8 +16,15 @@ app.controller('ToolbarController', ['$scope', '$modal',
             return (!($scope.config.mouse.button[1] || $scope.config.mouse.button[2] || $scope.config.mouse.button[3]));
         };
         
+        $scope.stopTool = function() {
+            $scope.config.tools.activeTool = "pan";
+            $scope.config.tools.activeToolset = null;
+        }
+        
         /* This function opens the newfile modal. */
         $scope.openNewFileModal = function() {
+            $scope.stopTool();
+            
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/newfile/newfile.tpl.html',
                 controller:  'NewFileModalController',
@@ -28,6 +35,8 @@ app.controller('ToolbarController', ['$scope', '$modal',
         
         /* This function opens the upload modal. */
         $scope.openUploadModal = function() {
+            $scope.stopTool();
+            
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/upload/upload.tpl.html',
                 controller:  'UploadModalController',
@@ -35,18 +44,10 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 size: 'lg'
             });
         };
-        
-        /* This function opens the transformation modal. */
-        $scope.openTransformationModal = function() {
-            var modalInstance = $modal.open({
-                templateUrl: 'app/toolbar/transformations/transformations.tpl.html',
-                controller:  'TransformationModalController',
-                scope: $scope,
-                size: 'lg'
-            });
-        };
 
         $scope.openSaveImageModal = function() {
+            $scope.stopTool();
+            
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/save-image/save-image.tpl.html',
                 controller: 'SaveImageModalController',
@@ -63,6 +64,8 @@ app.controller('ToolbarController', ['$scope', '$modal',
     
         /* This function opens the filters modal. */
         $scope.openFilterModal = function() {
+            $scope.stopTool();
+            
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/filters/filters.tpl.html',
                 controller:  'FilterModalController',
@@ -71,22 +74,24 @@ app.controller('ToolbarController', ['$scope', '$modal',
             });
         };
 
+        function forEachLayer(f) {
+            for (var i = 0; i < $scope.renderEngine.getNumberOfLayers(); i ++) {
+                f($scope.renderEngine.getLayer(i), i);
+            }
+        }
+
         $scope.cancel = function() {
             $scope.filter.filterObject = null;
             $scope.filter.currentlayerOnly = false;
 
-            for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) {
-                var layer = $scope.renderEngine.getLayer(i);
+            forEachLayer(function(layer) {
                 if (layer.getLayerType() === LayerType.ImageLayer) {
                     layer.discardFilter();
                 }
-            }
-            window.requestAnimationFrame(function() {
-                $scope.renderEngine.render();
             });
+
+            $scope.requestRenderEngineUpdate();
         };
-        
-        $scope.allLayers = true;
 
         /* Set all filter parameters into the filter object. */
         $scope.applyFilterChanges = function () {
@@ -100,22 +105,22 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 filter.setAttribute(key, value);
             }
 
-            window.requestAnimationFrame(function() {
-                $scope.renderEngine.render();
+            forEachLayer(function(layer, index) {
+                $scope.updateThumbnail(index);
             });
+
+            $scope.requestRenderEngineUpdate();
         };
 
         $scope.commitFilterOnLayers = function () {
-            for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) {
-                var layer = $scope.renderEngine.getLayer(i);
+            forEachLayer(function(layer, index) {
                 if (layer.getLayerType() === LayerType.ImageLayer) {
                     layer.commitFilter();
+                    $scope.updateThumbnail(index);
                 }
-            }
-
-            window.requestAnimationFrame(function() {
-                $scope.renderEngine.render();
             });
+
+            $scope.requestRenderEngineUpdate();
         };
         
         $scope.applyFilterOnLayers = function() {
@@ -126,24 +131,21 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 return;
             }
 
-            for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) {
-                var layer = $scope.renderEngine.getLayer(i);
+            forEachLayer(function(layer, index) {
                 if (layer.getLayerType() !== LayerType.ImageLayer || layer.isHidden()) {
-                    continue;
+                    return;
                 }
 
-                if (i === $scope.config.layers.currentLayer || !$scope.filter.currentlayerOnly) {
+                if (index === $scope.config.layers.currentLayer || !$scope.filter.currentlayerOnly) {
                     layer.applyFilter(filter);
                 }
                 else {
                     layer.discardFilter();
                 }
-            }
-
-            window.requestAnimationFrame(function () {
-                $scope.renderEngine.render();
+                $scope.updateThumbnail(index);
             });
 
+            $scope.requestRenderEngineUpdate();
         };
 
         $scope.$on("newCurrentLayer", function() {

@@ -4,6 +4,7 @@
     <base href="/">
     <meta charset="UTF-8">
     <meta description="Project Ariana">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <title> Project Ariana </title>
 
     <!-- @ifdef DEV -->
@@ -17,13 +18,15 @@
 
     <!-- @ifdef PROD -->
     <script src="ariana.js"></script>
-    <link rel="stylesheet" type="text/css" href="ariana.css"></link>
+    <link rel="stylesheet" type="text/css" href="ariana.css"/>
     <!-- @endif -->
 </head>
 
 <body ng-controller="HotkeyCtrl">
-    <div ui-view="toolbar"></div>
+    <!-- Note: the order of the ui-elements makes sure thigns slide over each 
+     !-- other in the right order. --> 
     <div ui-view="layers"></div>
+    <div ui-view="toolbar"></div>
     <div ui-view="toolbox"></div>
     <div ui-view="content"></div>
 </body>
