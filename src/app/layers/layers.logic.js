@@ -50,7 +50,7 @@ app.controller('layersCtrl', ['$scope', '$animate', 'mouse', 'layers',
     $scope.removeLayer = function(event, index) {
         event.stopPropagation();
 
-        layers.setLayerInfo(layers.getLayerInfo.splice(index, 1));
+        layers.setLayerInfo(layers.getLayerInfo().splice(index, 1));
         layers.setNumberOfLayers = $scope.renderEngine.getNumberOfLayers();
 
         $scope.renderEngine.removeLayer(index);
@@ -63,7 +63,7 @@ app.controller('layersCtrl', ['$scope', '$animate', 'mouse', 'layers',
     };
 
     $scope.isToBeRemoved = function(index) {
-        layers.setLayerInfo(layers.getLayerInfo[index].remove);
+        layers.setLayerInfo(layers.getLayerInfo()[index].remove);
     };
 
     $scope.moveLayerUp = function(event, index) {
@@ -72,7 +72,7 @@ app.controller('layersCtrl', ['$scope', '$animate', 'mouse', 'layers',
         if (index < $scope.renderEngine.getNumberOfLayers() - 1 && $scope.renderEngine.getNumberOfLayers() > 1) {
             $scope.renderEngine.reorder(index, index + 1);
             $scope.requestRenderEngineUpdate();
-            layers.getLayerInfo.swap(index, index + 1);
+            layers.setLayerInfo(layers.getLayerInfo().swap(index, index + 1));
         }
     };
 
@@ -82,7 +82,7 @@ app.controller('layersCtrl', ['$scope', '$animate', 'mouse', 'layers',
         if (index > 0) {
             $scope.renderEngine.reorder(index, index - 1);
             $scope.requestRenderEngineUpdate();
-            layers.getLayerInfo.swap(index, index - 1);
+            layers.setLayerInfo(layers.getLayerInfo().swap(index, index - 1));
         }
     };
 
@@ -108,5 +108,9 @@ app.controller('layersCtrl', ['$scope', '$animate', 'mouse', 'layers',
     
     $scope.getCurrentLayerIndex = function() {
         return layers.getCurrentIndex();
-    }
+    };
+    
+    $scope.getlayerName = function(index) {
+        return layers.getLayerInfo()[index].name;
+    };
 }]);

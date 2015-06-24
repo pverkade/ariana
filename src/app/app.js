@@ -69,13 +69,13 @@ app.controller('AppCtrl', ['$scope', 'layers', 'canvas', 'tools',
 
             /* set the correct layer info in config. The new layer comes on top
              * and is immediately selected. */
-            layers.setNumLayersCreated(layers.getNumLayersCreated() + 1);
+            layers.setNumCreatedLayers(layers.getNumCreatedLayers() + 1);
             layers.setNumLayers($scope.renderEngine.getNumberOfLayers());
-            layers.setCurrentIndex($scope.config.layers.numberOfLayers - 1);
+            layers.setCurrentIndex(layers.getNumberOfLayers - 1);
 
             /* Store information about the layers in the config object. */
             layers.setLayerData(layers.getCurrentIndex, {
-                "name": 'Layer ' + $scope.config.layers.numberOfLayersCreated
+                "name": 'Layer ' + layers.getNumCreatedLayers()
             });
 
             $scope.requestRenderEngineUpdate();
