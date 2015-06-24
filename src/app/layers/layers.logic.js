@@ -10,10 +10,8 @@
 app.controller('layersCtrl', ['$scope', '$animate', 'mouse', 'layers', 
     function($scope, $animate, mouse, layers) {
 
-    /* This functions returns whether the toolbox should be visible. It is 
-     * hidden when the user is clicking on the canvas/background. */
     $scope.checkVisible = function(){
-        return !mouse.checkActive()
+        return !mouse.checkActive();
     };
     
     $scope.hidden = false;
