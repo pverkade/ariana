@@ -22,12 +22,6 @@ app.directive('canvasEvents', ['canvas', function(canvas) {
                 
             }, true);
 
-            /* Watches canvas visibility changes  */
-            scope.$watch(canvas.getVisibility(), function(nval, oval) {
-                element.removeClass("ng-hide");
-                element.css('display', nval ? "block" : "none");
-            }, true);
-
             /* Watches canvas coordinate changes  */
             scope.$watchGroup([canvas.getX(), canvas.getY()], function(nval, oval) {
                 element.css('transform', "translate(" + canvas.getX() + 

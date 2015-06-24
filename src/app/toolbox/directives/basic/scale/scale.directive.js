@@ -21,7 +21,7 @@ app.controller('ScaleCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'co
     $scope.active = tools.getTool() == $scope.toolname;
     $scope.cursorTypes = ["e-resize", "ne-resize", "n-resize", "nw-resize", "w-resize",
         "sw-resize", "s-resize", "se-resize", "e-resize"];
-    $scope.keepAR = true;
+    $scope.keepAR = false;
 
     /* init */
     $scope.init = function() {
@@ -121,16 +121,13 @@ app.controller('ScaleCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'co
                 }
             }
 
-            layer.setWidth(newWidth);
+            layer.setWidth(newWidth );
             layer.setHeight(newHeight);
-
-            window.requestAnimationFrame(function() {
-                $scope.renderEngine.render();
-            });
 
             $scope.editEngine.setEditLayer(layer, EditMode.scale);
             $scope.editEngine.drawScaleTool(layer);
             $scope.requestEditEngineUpdate();
+            $scope.requestRenderEngineUpdate();
 
         }
         else {
@@ -183,7 +180,7 @@ app.controller('ScaleCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'co
         if (oval) {
             $scope.editEngine.removeEditLayer();
             var layer = $scope.getCurrentLayer();
-            layer.commitTransformations();
+            layer.commitDimensions();
             $scope.editEngine.clear();
             $scope.updateThumbnail($scope.getCurrentLayerIndex());
         }
