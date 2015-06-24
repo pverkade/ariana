@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * magic.directive.js
+ * 
+ * This file contains the MagicController and directive, 
+ * which control the magic selection tool in the toolbox.
+ *
+ */
+ 
 app.directive('magic', function() {
     return {
         restrict: 'E',

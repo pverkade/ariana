@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * brush.directive.js
+ * 
+ * This file contains the BrushController and directive, 
+ * which control the brush in the toolbox.
+ *
+ */
+ 
 app.directive('brush', function() {
     return {
         restrict: 'E',

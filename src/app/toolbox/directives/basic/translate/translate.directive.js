@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * translate.directive.js
+ * 
+ * This file contains the TranslateController and directive, 
+ * which control the translate tool in the toolbox.
+ *
+ */
+ 
 app.directive('translate', function() {
     return {
         restrict: 'E',

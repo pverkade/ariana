@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * rectangle.directive.js
+ * 
+ * This file contains the RectangleController and directive, 
+ * which control the rectangle selection tool in the toolbox.
+ *
+ */
+ 
 app.directive('rectangle', function() {
     return {
         restrict: 'E',

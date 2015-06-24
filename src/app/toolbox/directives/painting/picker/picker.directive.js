@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * picker.directive.js
+ * 
+ * This file contains the PickerController and directive, 
+ * which control the eyedrop tool in the toolbox.
+ *
+ */
+ 
 app.directive('picker', function() {
     return {
         restrict: 'E',
