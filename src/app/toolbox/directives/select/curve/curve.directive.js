@@ -7,13 +7,13 @@ app.directive('curve', function() {
     };
 });
 
-app.controller('CurveCtrl', function($scope) {
+app.controller('CurveCtrl', function($scope, tools, canvas) {
 	$scope.toolname = 'curve';
-	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
+	$scope.active = tools.getTool() == $scope.toolname;
 
 	/* init */
 	$scope.init = function() {
-		$scope.setCursor('default');
+		canvas.setCursor('default');
 	};
 
 	/* onMouseDown */
@@ -43,11 +43,11 @@ app.controller('CurveCtrl', function($scope) {
 		if (nval) {
 			$scope.init();
 
-			$scope.config.tools.activeToolFunctions = {
+			tools.setToolFunctions({
 				mouseDown: $scope.mouseDown,
 				mouseUp: $scope.mouseUp,
 				mouseMove: $scope.mouseMove
-			};
+			});
 		}
 	}, true);
 });

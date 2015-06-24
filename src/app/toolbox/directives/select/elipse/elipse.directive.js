@@ -7,13 +7,13 @@ app.directive('elipse', function() {
     };
 });
 
-app.controller('elipseCtrl', function($scope) {
+app.controller('elipseCtrl', function($scope, tools, canvas) {
 	$scope.toolname = 'elipse';
-	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
+	$scope.active = tools.getTool() == $scope.toolname;
 
 	/* init */
 	$scope.init = function() {
-		$scope.setCursor('default');
+		canvas.setCursor('default');
 	};
 
 	/* onMouseDown */
@@ -43,11 +43,11 @@ app.controller('elipseCtrl', function($scope) {
 		if (nval) {
 			$scope.init();
 
-			$scope.config.tools.activeToolFunctions = {
+			tools.setToolFunctions({
 				mouseDown: $scope.mouseDown,
 				mouseUp: $scope.mouseUp,
 				mouseMove: $scope.mouseMove
-			};
+			});
 		}
 	}, true);
 });

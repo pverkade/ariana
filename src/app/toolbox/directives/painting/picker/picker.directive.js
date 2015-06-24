@@ -7,13 +7,13 @@ app.directive('picker', function() {
     };
 });
 
-app.controller('PickerCtrl', function($scope) {
+app.controller('PickerCtrl', function($scope, tools, canvas) {
     $scope.toolname = 'picker';
-    $scope.active = $scope.config.tools.activeTool == $scope.toolname;
+    $scope.active = tools.getTool() == $scope.toolname;
 
     /* init */
     $scope.init = function() {
-        $scope.setCursor('crosshair');
+        canvas.setCursor('crosshair');
         $scope.picking = false;
     };
 
@@ -64,7 +64,7 @@ app.controller('PickerCtrl', function($scope) {
         if (nval)  {
             $scope.init();
 
-            $scope.config.tools.activeToolFunctions = {
+            tools.getTool()Functions = {
                 mouseDown: $scope.mouseDown,
                 mouseUp: $scope.mouseUp,
                 mouseMove: $scope.mouseMove

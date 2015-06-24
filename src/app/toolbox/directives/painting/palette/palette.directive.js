@@ -16,9 +16,9 @@ app.directive('palette', function() {
     };
 });
 
-app.controller('PaletteCtrl', function($scope) {
+app.controller('PaletteCtrl', function($scope, tools, canvas) {
     $scope.toolname = 'palette';
-    $scope.active = $scope.config.tools.activeTool == $scope.toolname;
+    $scope.active = tools.getTool() == $scope.toolname;
 
     $scope.color = {
         h: 0,
@@ -46,7 +46,7 @@ app.controller('PaletteCtrl', function($scope) {
     
     /* init */
     $scope.init = function() {
-        $scope.setCursor('default');
+        canvas.setCursor('default');
 
         $scope.color = RGBtoHSV($scope.config.tools.colors.primary);
 
@@ -172,7 +172,7 @@ app.controller('PaletteCtrl', function($scope) {
         if (nval) {
             $scope.init();
 
-            $scope.config.tools.activeToolFunctions = {
+            tools.getTool()Functions = {
                 mouseDown: $scope.mouseDown,
                 mouseUp: $scope.mouseUp,
                 mouseMove: $scope.mouseMove

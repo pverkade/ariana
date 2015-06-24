@@ -7,13 +7,13 @@ app.directive('fill', function() {
     };
 });
 
-app.controller('FillCtrl', function($scope) {
+app.controller('FillCtrl', function($scope, tools, canvas) {
 	$scope.toolname = 'fill';
-	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
+	$scope.active = tools.getTool() == $scope.toolname;
 
 	/* init */
 	$scope.init = function() {
-		$scope.setCursor('default');
+		canvas.setCursor('default');
 	};
 
 	/* onMouseDown */
@@ -43,11 +43,11 @@ app.controller('FillCtrl', function($scope) {
 		if (nval) {
 			$scope.init();
 
-			$scope.config.tools.activeToolFunctions = {
+			tools.setToolFunctions({
 				mouseDown: $scope.mouseDown,
 				mouseUp: $scope.mouseUp,
 				mouseMove: $scope.mouseMove
-			};
+			});
 		}
 	}, true);
 });

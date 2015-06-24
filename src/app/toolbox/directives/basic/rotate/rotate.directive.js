@@ -7,16 +7,16 @@ app.directive('rotate', function() {
     };
 });
 
-app.controller('RotateCtrl', function($scope) {
+app.controller('RotateCtrl', function($scope, tools, canvas, layers) {
 	$scope.toolname = 'rotate';
-	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
+	$scope.active = tools.getTool() == $scope.toolname;
 
 	/* init */
 	$scope.init = function() {
-		$scope.setCursor('grab');
+		canvas.setCursor('grab');
 		$scope.rotating = false;
         
-        var currentLayer = $scope.config.layers.currentLayer;
+        var currentLayer = layers.getCurrentIndex();
         if (currentLayer == -1) return;
 
         var layer = $scope.renderEngine.layers[currentLayer];
@@ -27,13 +27,13 @@ app.controller('RotateCtrl', function($scope) {
 
 	/* onMouseDown */
 	$scope.mouseDown = function() {
-		$scope.setCursor('grabbing');
+		canvas.setCursor('grabbing');
 		$scope.rotating = true;
 	};
 
 	/* onMouseUp */
 	$scope.mouseUp = function() {
-		$scope.setCursor('grab');
+		canvas.setCursor('grab');
 		$scope.rotating = false;
         $scope.updateThumbnail($scope.getCurrentLayerIndex());
     };
@@ -52,16 +52,15 @@ app.controller('RotateCtrl', function($scope) {
         var y = layer.getPosY();
         
         /* Get the mouse current location and the one before it. */
-        var mouseCurrentX = $scope.config.mouse.current.x;
-        var mouseCurrentY = $scope.config.mouse.current.y; 
-        var mouseOldX = $scope.config.mouse.old.x;
-        var mouseOldY = $scope.config.mouse.old.y;
+        var mouseCurrentX = mouse.getPos().x;
+        var mouseCurrentY = mouse.getPos().y; 
+        var mouseOldX = mouse.getPosOld().x;
+        var mouseOldY = mouse.getPosOld().y;
         
         /* Update the old mouse position. */
-        var dx = $scope.config.mouse.current.x - $scope.config.mouse.old.x;
-        var dy = $scope.config.mouse.current.y - $scope.config.mouse.old.y;
-        $scope.config.mouse.old.x += dx;
-        $scope.config.mouse.old.y += dy;
+        var dx = mouse.getPos().x - mouse.getPosOld().x;
+        var dy = mouse.getPos().y - mouse.getPosOld().y;
+        mouse.setPosOld(mouse.getPosOld().x + dx, mouse.getPosOld().y + dy);
         
         /* Calculate the angle from the center to both points and add the
          * difference to the rotation. */
@@ -91,11 +90,11 @@ app.controller('RotateCtrl', function($scope) {
 		if (nval)  {
 			$scope.init();
 
-			$scope.config.tools.activeToolFunctions = {
+			tools.setToolFunctions({
 				mouseDown: $scope.mouseDown,
 				mouseUp: $scope.mouseUp,
 				mouseMove: $scope.mouseMove
-			};
+			});
 		} else {
 			$scope.editEngine.clear();
 		}

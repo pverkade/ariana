@@ -7,9 +7,9 @@ app.directive('scale', function() {
     };
 });
 
-app.controller('ScaleCtrl', function($scope) {
+app.controller('ScaleCtrl', function($scope, tools, canvas, layers) {
     $scope.toolname = 'scale';
-    $scope.active = $scope.config.tools.activeTool == $scope.toolname;
+    $scope.active = tools.getTool() == $scope.toolname;
     $scope.cursorTypes = ["e-resize", "ne-resize", "n-resize", "nw-resize", "w-resize",
         "sw-resize", "s-resize", "se-resize", "e-resize"];
     $scope.keepAR = true;
@@ -18,7 +18,7 @@ app.controller('ScaleCtrl', function($scope) {
     $scope.init = function() {
         $scope.scaling = false;
         
-        var currentLayer = $scope.config.layers.currentLayer;
+        var currentLayer = layers.getCurrentIndex();
         if (currentLayer == -1) return;
 
         var layer = $scope.renderEngine.layers[currentLayer];
@@ -41,11 +41,11 @@ app.controller('ScaleCtrl', function($scope) {
     /* onMouseMove */
     $scope.mouseMove = function() {
 
-        var mouseCurrentX = $scope.config.mouse.current.x;
-        var mouseCurrentY = $scope.config.mouse.current.y;
+        var mouseCurrentX = mouse.getPos().x;
+        var mouseCurrentY = mouse.getPos().y;
 
-        var mouseOldX = $scope.config.mouse.old.x;
-        var mouseOldY = $scope.config.mouse.old.y;
+        var mouseOldX = mouse.getPosOld().x;
+        var mouseOldY = mouse.getPosOld().y;
 
         var layer = $scope.getCurrentLayer();
         if (!layer) {
@@ -129,12 +129,12 @@ app.controller('ScaleCtrl', function($scope) {
             var differenceY = y - mouseCurrentY;
 
             /* Update the index and the cursor. */
-            if (!($scope.config.mouse.button[1] || $scope.config.mouse.button[3])) {
+            if (!(mouse.getMiddle() || mouse.getSecondary())) {
 
                 var ratio = Math.abs(differenceY) / Math.abs(differenceX);
 
                 $scope.scaleToolIndex = Math.round(8 * (angle / (2 * Math.PI)));
-                $scope.setCursor($scope.cursorTypes[$scope.scaleToolIndex]);
+                canvas.setCursor($scope.cursorTypes[$scope.scaleToolIndex]);
 
                 if ($scope.scaleToolIndex === 8) {
                     $scope.scaleToolIndex = 0;
@@ -145,8 +145,7 @@ app.controller('ScaleCtrl', function($scope) {
         }
 
         /* Update old mouse. */
-        $scope.config.mouse.old.x = $scope.config.mouse.current.x;
-        $scope.config.mouse.old.y = $scope.config.mouse.current.y;
+        mouse.setPosOld(mouse.getPos().x, mouse.getPos().y);
     };
 
     /*
@@ -162,7 +161,7 @@ app.controller('ScaleCtrl', function($scope) {
         if (nval) {
             $scope.init();
 
-            $scope.config.tools.activeToolFunctions = {
+            tools.getTool()Functions = {
                 mouseDown: $scope.mouseDown,
                 mouseUp:   $scope.mouseUp,
                 mouseMove: $scope.mouseMove

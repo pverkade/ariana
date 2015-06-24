@@ -30,23 +30,23 @@ app.controller('ToolboxCtrl', function($scope) {
     };
 
     $scope.isActive = function(name) {
-        return $scope.config.tools.activeTool == name;
+        return tools.getTool() == name;
     };
 
     $scope.isActiveToolset = function(name) {
-        return $scope.config.tools.activeToolset == name;
+        return tools.getTool()set == name;
     };
 
     /* This function selects a toolset and therefore opens a toolbox. When
      * a toolset is already selected, it becomes unselected. The pan tool will
      * then be used. */
     $scope.selectToolSet = function(name) {
-        if ($scope.config.tools.activeToolset == name) {
-            $scope.config.tools.activeToolset = null;
+        if (tools.getTool()set == name) {
+            tools.getTool()set = null;
             return true;
         }
 
-        $scope.config.tools.activeToolset = name;
+        tools.getTool()set = name;
     };
 
     $scope.selectTool = function(event, name) {
@@ -54,11 +54,11 @@ app.controller('ToolboxCtrl', function($scope) {
             event.stopPropagation();
         }
         
-        $scope.config.tools.activeTool = name;
+        tools.getTool() = name;
         return true;
     };
 
     $scope.getActiveToolFunctions = function() {
-        return $scope.config.tools.activeToolFunctions;
+        return tools.getTool()Functions;
     }
 });
