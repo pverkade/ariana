@@ -112,8 +112,6 @@ app.controller('RectangleCtrl', function($scope) {
                     $scope.drawEngine.onMousemove(xMouse, yMouse)
                 }
             }
-
-            // if (..) // kijk of groter dan / kleiner dan om bug te fixxen dat mouse coors 1 pixel overslaan.
         }
 	};
 

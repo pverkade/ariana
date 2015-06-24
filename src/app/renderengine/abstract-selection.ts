@@ -80,7 +80,11 @@ class AbstractSelection {
 
         if (nrWandParts > 0) {
             for (var i = 0; i < this.maskWandParts[nrWandParts - 1].length; i++) {
-                this.maskWand[i] = this.maskWand[i] || this.maskWandParts[nrWandParts - 1][i];
+                // if (this.maskWand[i] && this.maskWandParts[nrWandParts - 1][i]) {
+                //   this.maskWand[i] = 0;
+                //} else {
+                    this.maskWand[i] = this.maskWand[i] || this.maskWandParts[nrWandParts - 1][i];
+                //}
             }           
         }
     }

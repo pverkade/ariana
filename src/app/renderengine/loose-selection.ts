@@ -195,7 +195,6 @@ class LooseSelection extends AbstractSelection {
             if (this.comparePoints(curPoint, lastAddedPoint)) {
                 this.points[nrPoints - 1].splice(0, i);
 
-                // j = 0??
                 for (var j = 0; j < this.points[nrPoints - 1].length; j++) {
                 	this.maskBorder[this.points[nrPoints - 1][j].y * this.width + this.points[nrPoints - 1][j].x] = 1;
                 }

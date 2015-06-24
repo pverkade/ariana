@@ -166,19 +166,11 @@ app.controller('ToolbarController', ['$scope', '$modal',
         $scope.cancelSelection = function() {
             $scope.maskEnabled = false;
 
-            // var currentLayer = $scope.config.layers.currentLayer;
-            // var layer = $scope.renderEngine.layers[currentLayer];
-
             $scope.drawEngine.clearCanvases();
             $scope.editEngine.removeSelectionLayer();
 
             var nrWands = $scope.selectionTool.getNrWands();
-
-            console.log("nrWands");
-            console.log(nrWands);
-
             for (var i = 0; i < nrWands; i++) {
-                // var bitmask = $scope.selectionTool.maskWandParts[nrWands - i - 1];
                 var removed = $scope.selectionTool.clearLast();
                 if (removed == false) {
                     console.log("Selection tool clear Last returned false");
