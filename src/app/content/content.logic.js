@@ -8,7 +8,7 @@
  */
 
 /* The ContenController contains the behaviour of the main content. */
-app.controller('ContentController', ["canvas", "mouse", "tools",
+app.controller('ContentCtrl', ["canvas", "mouse", "tools",
     function($scope, $window, canvas, mouse, tools) {
 
     /* This function is triggered when the mouse is moved. */
