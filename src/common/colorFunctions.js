@@ -7,8 +7,9 @@
  */
 
 /* This functions converts an HSV object to an RGB object. */
-function HSVtoRGB(hsv) {
-    var c, h_a, x, m, s, v;
+/* exported hsvToRgb */
+function hsvToRgb(hsv) {
+    var c, x, m, s, v;
     s = hsv.s / 100;
     v = hsv.v / 100;
 
@@ -19,6 +20,7 @@ function HSVtoRGB(hsv) {
     c += m;
     x += m;
 
+    /* jshint ignore:start */
     switch (Math.floor(hueIndex)) {
         case 6:
         case 0: r = c, g = x, b = m; break;
@@ -28,6 +30,7 @@ function HSVtoRGB(hsv) {
         case 4: r = x, g = m, b = c; break;
         case 5: r = c, g = m, b = x; break;
     }
+    /* jshint ignore:end */
     
     return {
         r: Math.round(r * 255),
@@ -37,7 +40,8 @@ function HSVtoRGB(hsv) {
 }
 
 /* This functions converts an RGB object to an HSV object. */
-function RGBtoHSV(rgb) {
+/* exported rgbToHsv */
+function rgbToHsv(rgb) {
     var r, g, b, max, min, h, s, v;
     r = rgb.r / 255;
     g = rgb.g / 255;
@@ -73,15 +77,17 @@ function RGBtoHSV(rgb) {
 }
 
 /* This functions returns the corresponding hexcode from a given RGB object. */
-function RGBtoHEX(rgb) {
+/* exported rgbToHex */
+function rgbToHex(rgb) {
     return "#" + ((1 << 24) + (rgb.r << 16) + (rgb.g << 8) + rgb.b).toString(16).slice(1).toUpperCase();
 }
 
 /* This functions creates an RGB object for a hexcode string. */
-function HEXtoRGB(hex) {
+/* exported hexToRgb */
+function hexToRgb(hex) {
     /* Cut away any leading '#'. */
     if (hex.charAt(0) == "#") {
-        hex = hex.substring(1,7)
+        hex = hex.substring(1,7);
     }
     
     return {

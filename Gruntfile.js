@@ -92,7 +92,7 @@ module.exports = function(grunt) {
          */
         includeSource: {
             options: {
-                rename: function (dest, matchedSrcPath, options) {
+                rename: function (dest, matchedSrcPath) {
                     // Strip build/ from path
                     return matchedSrcPath.replace('build/', '');
                 },
@@ -262,13 +262,17 @@ module.exports = function(grunt) {
                 'Gruntfile.js'
             ],
             options: {
-                curly: true,
                 immed: true,
                 newcap: true,
                 noarg: true,
+                noempty: true,
+                notypeof: true,
                 sub: true,
-                boss: true,
                 eqnull: true,
+                indent: true,
+                // quotmark: true,
+                unused: true,
+                evil: true,
                 force: true
             }
         },
@@ -457,7 +461,7 @@ module.exports = function(grunt) {
                 type = "x-shader/x-vertex";
             }
             else if (typeName == ".frag") {
-                type = "x-shader/x-fragment"
+                type = "x-shader/x-fragment";
             }
             else {
                 return false;
@@ -502,7 +506,7 @@ module.exports = function(grunt) {
         var jsFiles = filterForJS(this.filesSrc);
 
         grunt.file.copy('karma/karma-unit.tpl.js', grunt.config('build_dir') + '/karma-unit.js', {
-            process: function(contents, path) {
+            process: function(contents) {
                 return grunt.template.process(contents, {
                     data: {
                         scripts: jsFiles

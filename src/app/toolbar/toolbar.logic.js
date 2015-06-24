@@ -16,13 +16,13 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
         $scope.stopTool = function() {
             tools.setTool("pan");
             tools.setToolset(null);
-        }
+        };
         
         /* This function opens the newfile modal. */
         $scope.openNewFileModal = function() {
             $scope.stopTool();
             
-            var modalInstance = $modal.open({
+            $modal.open({
                 templateUrl: 'app/toolbar/newfile/newfile.tpl.html',
                 controller:  'NewFileModalController',
                 scope: $scope,
@@ -34,7 +34,7 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
         $scope.openUploadModal = function() {
             $scope.stopTool();
             
-            var modalInstance = $modal.open({
+            $modal.open({
                 templateUrl: 'app/toolbar/upload/upload.tpl.html',
                 controller:  'UploadModalController',
                 scope: $scope,
@@ -46,11 +46,11 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
         $scope.openSaveImageModal = function() {
             $scope.stopTool();
             
-            var modalInstance = $modal.open({
+            $modal.open({
                 templateUrl: 'app/toolbar/save-image/save-image.tpl.html',
                 controller: 'SaveImageModalController',
                 scope: $scope
-            })
+            });
         };
         
         /* This object contains the currently selected filter. */
@@ -65,7 +65,7 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
         $scope.openFilterModal = function() {
             $scope.stopTool();
             
-            var modalInstance = $modal.open({
+            $modal.open({
                 templateUrl: 'app/toolbar/filters/filters.tpl.html',
                 controller:  'FilterModalController',
                 scope: $scope,
@@ -125,7 +125,7 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
         $scope.applyFilterOnLayers = function() {
             var filter = $scope.filter.filterObject;
 
-            if (layers.getNumLayers() == 0 || !filter) {
+            if (layers.getNumLayers() === 0 || !filter) {
                 $scope.cancel();
                 return;
             }

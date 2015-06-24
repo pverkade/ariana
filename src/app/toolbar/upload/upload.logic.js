@@ -40,12 +40,11 @@ app.controller('UploadModalController', ['$scope', '$modalInstance', 'Upload', '
         };
 
         $scope.$watch('files', function () {
-            if (!$scope.files)
-            return;
+            if (!$scope.files) {return;}
 
             $scope.files.forEach(function (file) {
                 $scope.imageUrls.push(URL.createObjectURL(file));
-            })
-        })
+            });
+        });
     }
 ]);

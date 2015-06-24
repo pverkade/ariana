@@ -37,12 +37,12 @@ app.controller('layersCtrl', ['$scope', '$animate', 'mouse', 'layers',
     };
 
     $scope.setLayerName = function(index, name) {
-        $scope.renderEngine.getLayer(index).setName(name)
+        $scope.renderEngine.getLayer(index).setName(name);
     };
 
     var allLayersIndex = 0;
     
-    $scope.addLayer = function(event) {
+    $scope.addLayer = function() {
         $scope.setNumberOfLayers = $scope.renderEngine.getNumberOfLayers();
         $scope.names.push('Layer ' + (allLayersIndex++ + 1));
     };

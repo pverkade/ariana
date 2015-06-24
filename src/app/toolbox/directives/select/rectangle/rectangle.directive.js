@@ -16,7 +16,7 @@ app.directive('rectangle', function() {
     };
 });
 
-app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colors', function($scope, tools, canvas, layers, mouse, colors) {
+app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', function($scope, tools, canvas) {
 	$scope.toolname = 'rectangle';
 	$scope.active = tools.getTool() == $scope.toolname;
 
@@ -48,7 +48,7 @@ app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
 	 * to the "activeToolFunctions" object.
 	 * Always call "init" first;
 	 */
-	$scope.$watch('active', function(nval, oval) {
+	$scope.$watch('active', function(nval) {
 		if (nval) {
 			$scope.init();
 

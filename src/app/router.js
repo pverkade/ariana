@@ -40,5 +40,5 @@ app.config(function($stateProvider, $locationProvider) {
                     controller: 'LandingContentCtrl'
                 }
             }
-        })
+        });
 });

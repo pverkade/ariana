@@ -16,7 +16,7 @@ app.directive('magic', function() {
     };
 });
 
-app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colors', function($scope, tools, canvas, layers, mouse, colors) {
+app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', function($scope, tools, canvas, layers, mouse) {
 
 	$scope.toolname = 'magic';
 	$scope.active = tools.getTool() == $scope.toolname;
@@ -78,10 +78,11 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'co
         yRelative = Math.round(0.5 * (position[1] - 1) * $scope.magic.getHeight());
 
 		/* Check wheter user has clicked inside of a selection. */
+        var bitmask = null;
 		if ($scope.magic.isInSelection(xRelative, yRelative)) {
-			$scope.magic.removeSelection(xRelative, yRelative)
+			$scope.magic.removeSelection(xRelative, yRelative);
 		} else {
-			var bitmask = $scope.magic.getMaskWand(xRelative, yRelative, $scope.threshold);
+			bitmask = $scope.magic.getMaskWand(xRelative, yRelative, $scope.threshold);
 		}
 
 		$scope.magic.getMaskBorder();

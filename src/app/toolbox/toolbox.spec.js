@@ -15,7 +15,7 @@ describe("The toolbox controller", function() {
     describe("initial state", function() {
         it("should not be undefined", function() {
             expect($controller).not.toBeUndefined();
-        })
+        });
     });
 
     describe("checkVisible", function() {
@@ -25,21 +25,21 @@ describe("The toolbox controller", function() {
             it("should be false for mocked active", function() {
                 $scope.config.mouse.button[1] = true;
                 expect($scope.checkVisible()).toBe('false');
-            })
-        })
+            });
+        });
     });
 
     describe("getCursor", function() {
         it("should return the cursor", function() {
             expect($scope.getCursor()).toEqual('default');
-        })
+        });
     });
 
     describe("setCursor", function() {
         it("should change the cursor", function() {
             $scope.setCursor('test');
             expect($scope.getCursor()).toEqual('test');
-        })
+        });
     });
 
     describe("swapColors", function() {
@@ -50,7 +50,7 @@ describe("The toolbox controller", function() {
             $scope.swapColors();
             expect($scope.config.tools.colors.primary).toEqual(s);
             expect($scope.config.tools.colors.secondary).toEqual(p);
-        })
+        });
     });
 
     describe("selectTool", function() {
@@ -60,9 +60,8 @@ describe("The toolbox controller", function() {
             
             it("should return true for 'test'", function() {
                 expect($scope.isActive('test')).toBe('true');
-            })
-        })
-
+            });
+        });
     });
 
     describe("selectToolSet", function() {
@@ -72,14 +71,14 @@ describe("The toolbox controller", function() {
 
             it("should return true for 'test'", function() {
                 expect($scope.isActiveToolset('test')).toBe('true');
-            })
-        })
+            });
+        });
     });
 
     describe("getActiveToolFunctions", function() {
         it("should not be undefined", function() {
             expect($scope.getActiveToolFunctions()).not.toBeUndefined();
-        })
+        });
     });
 
 });

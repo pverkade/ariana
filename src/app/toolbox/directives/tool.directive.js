@@ -2,7 +2,7 @@ app.directive('tool', ['tools', function(tools) {
 	return {
 		restrict: 'A',
 		scope: true,
-		link: function(scope, element, attrs) {
+		link: function(scope, element) {
 
 			scope.expanded = true;
 
@@ -18,11 +18,11 @@ app.directive('tool', ['tools', function(tools) {
 				scope.$apply(tools.getTool());
 			});
 
-			scope.$watch('config.tools.activeTool', function(newValue, oldValue) {
+			scope.$watch('config.tools.activeTool', function() {
 				scope.active = (tools.getTool() == scope.toolname);
 
 				if (!scope.active) scope.expanded = false;
 			}, true);
 		}
-	}
+	};
 }]);

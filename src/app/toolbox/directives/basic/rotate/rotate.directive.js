@@ -16,7 +16,7 @@ app.directive('rotate', function() {
     };
 });
 
-app.controller('RotateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colors', function($scope, tools, canvas, layers, mouse, colors) {
+app.controller('RotateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', function($scope, tools, canvas, layers, mouse) {
 	$scope.toolname = 'rotate';
 	$scope.active = tools.getTool() == $scope.toolname;
 
@@ -114,5 +114,5 @@ app.controller('RotateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'c
             layer.commitRotation();
             $scope.updateThumbnail($scope.getCurrentLayerIndex());
 		}
-	}, true);
+	}, true); // jshint ignore:line
 }]);

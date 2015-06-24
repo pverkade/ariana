@@ -18,7 +18,7 @@ app.controller('NewFileModalController', ['$scope', '$modalInstance', '$modal', 
         };
 
         $scope.$watch('inputWidth', function (newValue, oldValue) {
-            if (newValue.length === 0) return;
+            if (newValue.length === 0) {return;}
             if (isNaN(newValue)) {
                 $scope.inputWidth = oldValue;
                 return;
@@ -35,7 +35,7 @@ app.controller('NewFileModalController', ['$scope', '$modalInstance', '$modal', 
         });
 
         $scope.$watch('inputHeight', function (newValue, oldValue) {
-            if (newValue.length === 0) return;
+            if (newValue.length === 0) {return;}
             if (isNaN(newValue)) {
                 $scope.inputHeight = oldValue;
                 return;
@@ -52,7 +52,7 @@ app.controller('NewFileModalController', ['$scope', '$modalInstance', '$modal', 
         });
 
         $scope.openNoticeModal = function() {
-            var modalInstance = $modal.open({
+            $modal.open({
                 templateUrl: 'app/toolbar/newfile/notice.tpl.html',
                 controller:  'NewFileNoticeModalController',
                 scope: $scope,

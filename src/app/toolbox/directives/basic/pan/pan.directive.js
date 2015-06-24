@@ -16,8 +16,8 @@ app.directive('pan', function() {
     };
 });
 
-app.controller('PanCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colors', function($scope, tools, canvas, layers, mouse, colors) {
-	$scope.toolname = 'pan'
+app.controller('PanCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', function($scope, tools, canvas, layers, mouse) {
+	$scope.toolname = 'pan';
 	$scope.active = tools.getTool() == $scope.toolname;
 
 	/* init */
@@ -40,8 +40,7 @@ app.controller('PanCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colo
 
 	/* onMouseMove */
 	$scope.mouseMove = function() {
-        if (!$scope.panning) return;
-        var z = canvas.getZoom();
+        if (!$scope.panning) {return;}
          
         var dx = mouse.getPosGlobal().x - mouse.getPosOldGlobal().x;
         var dy = mouse.getPosGlobal().y - mouse.getPosOldGlobal().y;
@@ -59,7 +58,7 @@ app.controller('PanCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colo
 	 * to the "activeToolFunctions" object.
 	 * Always call "init" first;
 	 */
-	$scope.$watch('active', function(nval, oval) {
+	$scope.$watch('active', function(nval) {
 		if (nval)  {
 			$scope.init();
 
