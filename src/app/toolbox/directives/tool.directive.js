@@ -25,4 +25,4 @@ app.directive('tool', ['tools', function(tools) {
 			}, true);
 		}
 	}
-});
+}]);
