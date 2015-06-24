@@ -32,13 +32,13 @@
         position: relative;
         float: left;
     }
-
+ 
     .ng-hide {
         @include transform(translate(4 * $blocksize, 0px));
     }
-
+    
     .layer-header, .layer, .scroll {
-        transition: transform 200ms ease;
+        transition: transform $move-speed ease;
     }
 }
 
@@ -99,7 +99,55 @@
 
         background-color: darken($light, 5%);
     }
+}
 
+@media screen and (max-width: $breakpoint-tablet) {
+    .layers {
+        top: 1.5 * $blocksize-tablet;
+
+        width: 4 * $blocksize-tablet;
+        height: calc(100% - #{2 * $blocksize-tablet});
+
+        .scroll {
+            height: calc(100% - #{$blocksize-tablet});
+            width: 4 * $blocksize-tablet;
+        }
+
+        .ng-hide {
+            @include transform(translate(4 * $blocksize-tablet, 0px));
+        }
+    }
+
+    .layer-header {
+        h2 {
+            width: 3 * $blocksize-tablet;
+            padding-left: 0.5 * $blocksize-tablet;
+            height: $blocksize-tablet;
+            line-height: $blocksize-tablet;
+            font-size: 11pt;
+        }
+    }
+
+    .layer {
+        width: 4 * $blocksize-tablet;
+        padding: 0.25 * $blocksize-tablet !important;
+
+        .crop {
+            width: 3 * $blocksize-tablet;
+            height: 2 * $blocksize-tablet;
+        }
+
+        .preview {
+            max-width: 3 * $blocksize-tablet;
+            max-height: 2 * $blocksize-tablet;
+        }
+
+        .layer-name {
+            height: 0.5 * $blocksize-tablet;
+            width: 3 * $blocksize-tablet;
+        }
+    }
+}
     &.delete-animation {
         @include transform(translate(4 * $blocksize, 0px));
     }

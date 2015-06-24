@@ -18,6 +18,10 @@ app.controller('SaveImageModalController', ['$scope', '$modalInstance', '$modal'
         if (toolFunctions && toolFunctions.stop) {
             toolFunctions.stop();
         }
+        
+        if (!$scope.filename){
+            return;
+        }
 
         /* Receive image data in base64 encoding. */
         var image = $scope.renderEngine.renderToImg();
@@ -60,5 +64,7 @@ app.controller('SaveImageModalController', ['$scope', '$modalInstance', '$modal'
         document.body.appendChild(myForm);
         myForm.submit();
         document.body.removeChild(myForm);
+        
+        closeSaveImageModal();
     };
 }]);

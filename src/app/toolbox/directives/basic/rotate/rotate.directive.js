@@ -20,8 +20,9 @@ app.controller('RotateCtrl', function($scope) {
         if (currentLayer == -1) return;
 
         var layer = $scope.renderEngine.layers[currentLayer];
-        $scope.editEngine.drawRotateTool(layer);
-        window.requestAnimationFrame(function() {$scope.renderEngine.render();});  
+		$scope.requestRenderEngineUpdate();
+		$scope.editEngine.setEditLayer(layer, EditMode.rotate);
+		$scope.requestEditEngineUpdate();
 	};
 
 	/* onMouseDown */

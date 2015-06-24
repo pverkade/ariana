@@ -28,7 +28,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
 
     constructor (canvas : HTMLCanvasElement) {
         this.width = canvas.width;
-        this.height = canvas.height;        
+        this.height = canvas.height;
         this.thumbnailHeight = Math.round(this.thumbnailWidth * (this.height / this.width)); 
         
         this.layers = new Array();
@@ -166,12 +166,17 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         this.createThumbnail(layer);
     }
 
-    private renderIndices(indices : number[]) {
+    private renderIndices(indices : number[], drawHiddenLayers = false) {
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
         var oldType = -1;
         for (var i = 0; i < indices.length; i++) {
             // Take the old layer (one layer at a time)
             var layer:Layer = this.layers[indices[i]];
+
+            if (!drawHiddenLayers && layer.isHidden()) {
+                continue;
+            }
+
             if (layer.getLayerType() != oldType) {
                 /*
                  * We're drawing a different type of layer then our previous one,
@@ -184,11 +189,11 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         }
     }
 
-    public renderIndicesToImg(indices : number[]) : String {
+    public renderIndicesToImg(indices : number[], drawHiddenLayers = false) : String {
         this.drawbuffer1.bind();
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
 
-        this.renderIndices(indices);
+        this.renderIndices(indices, drawHiddenLayers);
 
         var data : String = this.drawbuffer1.getImage();
         this.drawbuffer1.unbind();

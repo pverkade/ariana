@@ -16,8 +16,15 @@ app.controller('ToolbarController', ['$scope', '$modal',
             return (!($scope.config.mouse.button[1] || $scope.config.mouse.button[2] || $scope.config.mouse.button[3]));
         };
         
+        $scope.stopTool = function() {
+            $scope.config.tools.activeTool = "pan";
+            $scope.config.tools.activeToolset = null;
+        }
+        
         /* This function opens the newfile modal. */
         $scope.openNewFileModal = function() {
+            $scope.stopTool();
+            
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/newfile/newfile.tpl.html',
                 controller:  'NewFileModalController',
@@ -28,6 +35,8 @@ app.controller('ToolbarController', ['$scope', '$modal',
         
         /* This function opens the upload modal. */
         $scope.openUploadModal = function() {
+            $scope.stopTool();
+            
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/upload/upload.tpl.html',
                 controller:  'UploadModalController',
@@ -35,18 +44,10 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 size: 'lg'
             });
         };
-        
-        /* This function opens the transformation modal. */
-        $scope.openTransformationModal = function() {
-            var modalInstance = $modal.open({
-                templateUrl: 'app/toolbar/transformations/transformations.tpl.html',
-                controller:  'TransformationModalController',
-                scope: $scope,
-                size: 'lg'
-            });
-        };
 
         $scope.openSaveImageModal = function() {
+            $scope.stopTool();
+            
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/save-image/save-image.tpl.html',
                 controller: 'SaveImageModalController',
@@ -63,6 +64,8 @@ app.controller('ToolbarController', ['$scope', '$modal',
     
         /* This function opens the filters modal. */
         $scope.openFilterModal = function() {
+            $scope.stopTool();
+            
             var modalInstance = $modal.open({
                 templateUrl: 'app/toolbar/filters/filters.tpl.html',
                 controller:  'FilterModalController',

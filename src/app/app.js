@@ -15,7 +15,8 @@ var app = angular.module('ariana', [
     'cfp.hotkeys',
     'templates-ariana',
     'ngFileUpload',
-    'ngAnimate'
+    'ngAnimate',
+    'ngTouch'
 ]);
 
 /* The AppController is the main controller of the application. */
@@ -27,19 +28,19 @@ app.controller('AppCtrl', ['$scope',
         $scope.config = {
             mouse: {
                 old: {
-                    x: 0,
-                    y: 0,
+                    x : 0,
+                    y : 0,
                     global: {
-                        x: 0,
-                        y: 0
+                        x : 0,
+                        y : 0
                     }
                 },
                 current: {
                     x: 0,
                     y: 0,
                     global: {
-                        x: 0,
-                        y: 0
+                        x : 0,
+                        y : 0
                     }
                 },
                 button: {
@@ -50,8 +51,8 @@ app.controller('AppCtrl', ['$scope',
             },
             canvas: {
                 cursor: 'default',
-                x: 128,
-                y: 128,
+                x: 160,
+                y: 96,
                 xr: 1,
                 yr: 1,
                 zoom: 1,
@@ -93,13 +94,13 @@ app.controller('AppCtrl', ['$scope',
 
         /* This function creates the RenderEngine. It requires the canvas to
          * render on. */
-        $scope.startEngines = function (renderCanvas, drawCanvas) {
+        $scope.startEngines = function(renderCanvas, drawCanvas) {
             $scope.renderEngine = new RenderEngine(renderCanvas);
             $scope.drawEngine = new DrawEngine(drawCanvas);
             $scope.editEngine = new EditEngine(drawCanvas);
         };
 
-        $scope.startSharedSelection = function (width, height) {
+        $scope.startSharedSelection = function(width, height) {
             console.log(width, height);
             if ($scope.maskWand == null) {
                 $scope.maskWand = new Uint8Array(width * height);
@@ -111,12 +112,12 @@ app.controller('AppCtrl', ['$scope',
 
         /* This function creates a new layer from a given Image-object. The new
          * layer is placed on top. */
-        $scope.newLayerFromImage = function (image) {
+        $scope.newLayerFromImage = function(image) {
             var layer = $scope.renderEngine.createImageLayer(image);
             $scope.addLayer(layer);
 
             var height = layer.getHeight();
-            var width = layer.getWidth();
+            var width  = layer.getWidth();
             layer.setPos(0.5 * width, 0.5 * height);
         };
 
@@ -161,7 +162,7 @@ app.controller('AppCtrl', ['$scope',
             if (!$scope.config.canvas.visible) {
                 $scope.config.canvas.visible = true;
             }
-
+            
             $scope.requestRenderEngineUpdate();
         };
 
@@ -170,7 +171,7 @@ app.controller('AppCtrl', ['$scope',
             drawEngine: false,
             editEngine: false,
             animationFrameCallback: null,
-            animationFrameFunction: function () {
+            animationFrameFunction: function() {
                 if ($scope.updates.renderEngine) {
                     $scope.renderEngine.render();
                     $scope.updates.renderEngine = false;
@@ -191,7 +192,7 @@ app.controller('AppCtrl', ['$scope',
             }
         };
 
-        $scope.requestRenderEngineUpdate = function () {
+        $scope.requestRenderEngineUpdate = function() {
             $scope.updates.renderEngine = true;
             if (!$scope.updates.animationFrameCallback) {
                 $scope.updates.animationFrameCallback =
