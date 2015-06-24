@@ -105,4 +105,8 @@ app.controller('layersCtrl', ['$scope', '$animate', 'mouse', 'layers',
 
         return indices;
     };
+    
+    $scope.getCurrentLayerIndex = function() {
+        return layers.getCurrentIndex();
+    }
 }]);

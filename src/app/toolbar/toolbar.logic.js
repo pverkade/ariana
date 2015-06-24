@@ -10,7 +10,7 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
     function ($scope, $modal, mouse, tools, layers) {
       
         $scope.checkVisible = function() {
-            return (!(mouse.getPrimary() || mouse.getMiddle() || mouse.getSecondary()));
+            return !mouse.checkActive();
         };
         
         $scope.stopTool = function() {

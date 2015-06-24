@@ -7,10 +7,12 @@
 /// <reference path="drawbuffer"/>
 /// <reference path="filters/filter"/>
 /// <reference path="image-layer"/>
+/// <reference path="background-shader-program"/>
 /// <reference path="resource-manager"/>
 
 class RenderEngine implements MLayer.INotifyPropertyChanged {
     private gl : WebGLRenderingContext;
+    private backgroundShaderProgram : BackgroundShaderProgram;
 
     /* Array of layers in the order that the user sees them */
     public layers : Array<Layer>;
@@ -37,8 +39,8 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         try {
             /* Try to grab the standard context. If it fails, fallback to experimental. */
             this.gl = <WebGLRenderingContext> (
-                canvas.getContext("webgl", {stencil:true, preserveDrawingBuffer: true}) ||
-                canvas.getContext("experimental-webgl", {stencil:true, preserveDrawingBuffer: true})
+                canvas.getContext("webgl", {stencil:true, preserveDrawingBuffer: true, alpha: false}) ||
+                canvas.getContext("experimental-webgl", {stencil:true, preserveDrawingBuffer: true, alpha: false})
             );
             var contextAttributes = this.gl.getContextAttributes();
             var haveStencilBuffer = contextAttributes.stencil;
@@ -49,6 +51,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
 
             this.gl.enable(this.gl.BLEND);
             this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+            this.gl.blendEquation(this.gl.FUNC_ADD);
         }
         catch(e) {
             alert("Your device/browser doesnt support WebGL!\ncheck console for stacktrace.");
@@ -59,6 +62,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         this.drawbuffer2 = new DrawBuffer(this.gl, this.width, this.height);
         this.thumbnailDrawbuffer = new DrawBuffer(this.gl, this.thumbnailWidth, this.thumbnailHeight);
         this.resourceManager = new ResourceManager(this.gl);
+        this.backgroundShaderProgram = new BackgroundShaderProgram(this.gl);
     }
 
     getLayer(index : number) {
@@ -103,7 +107,12 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
 
     /* Render all layers that are not hidden */
     public render() {
+        /* Draw background */
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
+        this.backgroundShaderProgram.activate();
+        this.backgroundShaderProgram.setUniforms(this.width, this.height);
+        this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
+
         var oldType = -1;
         var numItems = this.layers.length;
 
@@ -223,7 +232,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         var height = bitmask.height;
 
         /* Create an image layer that will contain the selected part */
-        var selectedLayer = this.createImageLayer(null);
+        var selectedLayer = this.createImageLayer(layer.getImage());
 
         var bitmaskProgram = this.resourceManager.bitmaskProgramInstance();
 

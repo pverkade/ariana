@@ -11,7 +11,6 @@ app.controller('FilterModalController', ['$scope', '$modalInstance', 'tools',
     function ($scope, $modalInstance, tools) {
         
         $scope.filters = {
-            
             "noise": {
                 image: "/assets/img/noisesample.jpg", 
                 constructor: NoiseFilter
@@ -45,6 +44,11 @@ app.controller('FilterModalController', ['$scope', '$modalInstance', 'tools',
             "colorize": {
                 image: "/assets/img/colorizesample.jpg",
                 constructor: ColorizeFilter
+            },
+
+            "threshold" : {
+                image: "samples",
+                constructor: ThresholdFilter
             }
         };
         
