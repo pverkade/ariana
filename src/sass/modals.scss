@@ -13,13 +13,14 @@
 /* Upload modal */
 .modal-body {
     .drop-box {
-        background: #F8F8F8;
-        border: 4px dashed #DDD;
+        background: $white;
+        border: 4px dashed $light;
         height: auto;
         min-height: 2.25 * $blocksize;
         line-height: 2.25 * $blocksize;
         text-align: center;
         margin: 10px;
+        color: $light;
         
         img {
             float: left;
