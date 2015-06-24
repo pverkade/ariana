@@ -12,7 +12,7 @@ function normalize100(x, low, high) {
     return clamp(x, 0, 100) / 100 * (high - low) + low;
 }
 
-enum FilterType {Brightness, Contrast, Sepia, InvertColors, Saturation, Noise, Colorize}
+enum FilterType {Brightness, Contrast, Sepia, InvertColors, Saturation, Noise, Colorize, Threshold}
 enum FilterValueType {Slider}
 
 class FilterProgram extends BaseProgram {

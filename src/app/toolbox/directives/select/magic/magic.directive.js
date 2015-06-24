@@ -119,9 +119,6 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'co
 			var newLayer = $scope.renderEngine.createSelectionImageLayer(imgData, 0);
             $scope.addLayer(newLayer);
 
-            console.log("scope marchingAnts is: ");
-            console.log($scope.marchingAnts);
-
             $scope.editEngine.setSelectionLayer($scope.marchingAnts, newLayer);
             $scope.requestRenderEngineUpdate();
             if ($scope.marchingAnts == null) {

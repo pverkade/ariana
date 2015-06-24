@@ -8,7 +8,9 @@ module.exports = function(karma) {
         /**
          * This is the list of file patterns to load into the browser during testing.
          */
-        files: [ <% scripts.forEach(function(file) { %> '<%= file %>', <%
+        files: [ 
+            'build/js/bower.js',
+            <% scripts.forEach(function(file) { %> '<%= file %>', <%
             }); %>
             'build/js/**/*.js',
         ],
