@@ -1,5 +1,6 @@
-/**
- * Created by zeta on 6/3/15.
+/*
+ * Shader program for square geometry
+ * This class is currently used as abstract class, it contains code that is necessary in all of its children
  */
 /// <reference path="render-helper"/>
 /// <reference path="shader-program"/>
@@ -20,6 +21,12 @@ class BaseProgram implements ShaderProgram {
 
         this.program = compileProgram(gl, vertexShader, fragmentShader);
 
+        /*
+         * Create an array of vertex data on the GPU
+         * Every vertex contains 4 floats:
+         *  2 floats for the vertex position
+         *  2 floats for the texture position
+         */
         var positionLocation = this.gl.getAttribLocation(this.program, "a_position");
 
         this.vertexBuffer = this.gl.createBuffer();

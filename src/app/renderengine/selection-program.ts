@@ -1,6 +1,11 @@
-/**
- * Created by zeta on 6/4/15.
+/*
+ * Project Ariana
+ * selection-program.ts
+ *
+ * This file contains a program to draw a bitmask. If the bitmask has 1 a pixel will be drawn,
+ * otherwise nothing will be drawn.
  */
+
 /// <reference path="base-program"/>
 
 class SelectionProgram extends BaseProgram {
@@ -21,6 +26,11 @@ class SelectionProgram extends BaseProgram {
         gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 16, 8);
     }
 
+    /* This function sets the bitmask that must be rendered. In addition the width and the
+     * height of the bitmask must be specified.
+     *
+     * The bitmask must be stored in a row-major order.
+     */
     setBitmask(bitmask : Uint8Array, width: number, height: number) : void {
         if (!this.bitmask) {
             this.gl.deleteTexture(this.bitmask);
