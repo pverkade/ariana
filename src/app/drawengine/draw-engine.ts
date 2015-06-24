@@ -422,7 +422,7 @@ class DrawEngine {
     }
 
     /*
-     * Draw a dashed line (black and white) for the magic selection
+     * Draw a dashed line (black and white) for the loose selection
      */
     drawDashedLine (points : Array<Position2D>, path : Path, context : CanvasRenderingContext2D) {
         var nrLastDrawn : number = path.lastDrawnItem;
