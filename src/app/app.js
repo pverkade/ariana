@@ -224,6 +224,9 @@ app.controller('AppCtrl', ['$scope',
         $scope.setCurrentLayerIndex = function (layerIndex) {
             $scope.config.layers.currentLayer = layerIndex;
             $scope.$broadcast('newCurrentLayer', layerIndex);
+
+            $scope.editEngine.setEditLayer($scope.renderEngine.getLayer(layerIndex), $scope.editEngine.getEditMode());
+            $scope.requestEditEngineUpdate();
         };
 
         $scope.updateThumbnail = function (index) {

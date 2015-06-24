@@ -101,6 +101,7 @@ app.controller('RotateCtrl', function($scope) {
 		}
 
 		if (oval) {
+            $scope.editEngine.removeEditLayer();
 			var layer = $scope.getCurrentLayer();
             layer.commitTransformations();
             $scope.updateThumbnail($scope.getCurrentLayerIndex());

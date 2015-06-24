@@ -58,8 +58,13 @@ app.controller('layersCtrl', ['$scope', '$animate', function($scope, $animate) {
             $scope.config.layers.currentLayer -= 1;
 
         $scope.renderEngine.removeLayer(index);
+        // this might not select the expected layer.
+        $scope.setCurrentLayerIndex(Math.max(0, index - 1));
 
+        // FIXME: does not clear the edit-engine bounding box.
+        $scope.requestEditEngineUpdate();
         $scope.editEngine.clear();
+        $scope.requestEditEngineUpdate();
         $scope.requestRenderEngineUpdate();
     };
 

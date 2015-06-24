@@ -79,9 +79,13 @@ app.controller('TranslateCtrl', function($scope) {
                 mouseUp: $scope.mouseUp,
                 mouseMove: $scope.mouseMove
             };
-        } else {
+        }
+        else {
+            $scope.editEngine.removeEditLayer();
             $scope.editEngine.clear();
+
             $scope.updateThumbnail($scope.getCurrentLayerIndex());
+
         }
     }, true);
 });

@@ -173,6 +173,7 @@ app.controller('ScaleCtrl', function($scope) {
         }
 
         if (oval) {
+            $scope.editEngine.removeEditLayer();
             var layer = $scope.getCurrentLayer();
             layer.commitTransformations();
             $scope.editEngine.clear();
