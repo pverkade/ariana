@@ -223,7 +223,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         var height = bitmask.height;
 
         /* Create an image layer that will contain the selected part */
-        var selectedLayer = this.createImageLayer(null);
+        var selectedLayer = this.createImageLayer(layer.getImage());
 
         var bitmaskProgram = this.resourceManager.bitmaskProgramInstance();
 

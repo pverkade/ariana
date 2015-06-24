@@ -153,7 +153,6 @@ class DrawEngine {
     constructor(canvas : HTMLCanvasElement) {
         this.width = canvas.width;
         this.height = canvas.height;
-        console.log(this.width);
         this.drawCanvas = canvas;
 
         this.memCanvas = document.createElement('canvas');
