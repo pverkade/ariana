@@ -17,13 +17,15 @@ class AbstractSelection {
 
     sign(x : number) { return x > 0 ? 1 : x < 0 ? -1 : 0; }
 
+    /* Removes last added mask wand from maskWandParts and maskWand. After that 
+        calculate borders from new mask wand. */
     clearLast() : boolean {
-        console.log("test");
         var nrWands = this.maskWandParts.length;
+
         if (nrWands < 1) {
             return false;
         }
-        console.log("test2");
+
         for (var i = 0; i < this.maskWandParts[nrWands - 1].length; i++) {
             if (this.maskWandParts[nrWands-1][i] == 1) {
                 this.maskWand[i] = 0;
@@ -36,6 +38,7 @@ class AbstractSelection {
         return true;
     }
 
+    /* Function assumes maskWand so borders can be determined from area in maskwand. */
     getMaskBorder() {        
         for (var i = 0; i < this.maskWand.length; i++) {
             if (this.maskWand[i] == 1) {

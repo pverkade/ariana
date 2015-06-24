@@ -11,7 +11,7 @@ class MaskSelection {
         this.bmON =1;
 
         this.maskBorder = maskBorder;
-        this.maskWand = new Uint8Array(width * height); // [];
+        this.maskWand = new Uint8Array(width * height);
     }
 
     getMaskWand(x : number, y : number) {
