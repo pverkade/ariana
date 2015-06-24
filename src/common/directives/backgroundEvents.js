@@ -1,3 +1,12 @@
+/*
+ * Project Ariana
+ * backgroundEvents.js
+ *
+ * This file contains an Angular directive for catching mouse input on the 
+ * background. 
+ *
+ */
+ 
 app.directive('backgroundEvents', function() {
     return {
         restrict: 'A',

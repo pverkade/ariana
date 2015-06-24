@@ -299,13 +299,7 @@ class DrawEngine {
      */
     getBrushImage (brush : brushType) : string {
         if (brush == brushType.THIN) {
-            return 'assets/draw/thin.svg';
-        }
-        if (brush == brushType.PEPPER) {
-            return 'assets/draw/pepper.png';
-        }
-        if (brush == brushType.DUNES) {
-            return 'assets/draw/dunes.svg';
+            return 'assets/img/thin.svg';
         }
         this.setDrawType(drawType.BRUSH);
         return null;

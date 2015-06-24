@@ -1,22 +1,25 @@
-/* input:
- * H = [0,360] 
- * S,V = [0,100]
- * output:
- * R,G,B = [0,255]
+/*
+ * Project Ariana
+ * colorFunctions.js
+ *
+ * This file contains a function for transforming different color formats. 
+ *
  */
+
+/* This functions converts an HSV object to an RGB object. */
 function HSVtoRGB(hsv) {
     var c, h_a, x, m, s, v;
     s = hsv.s / 100;
     v = hsv.v / 100;
 
     c = v * s;
-    h_a = hsv.h / 60;
-    x = c * (1 - Math.abs(h_a % 2 - 1));
+    hueIndex = hsv.h / 60;
+    x = c * (1 - Math.abs(hueIndex % 2 - 1));
     m = v - c;
     c += m;
     x += m;
 
-    switch (Math.floor(h_a)) {
+    switch (Math.floor(hueIndex)) {
         case 6:
         case 0: r = c, g = x, b = m; break;
         case 1: r = x, g = c, b = m; break;
@@ -25,6 +28,7 @@ function HSVtoRGB(hsv) {
         case 4: r = x, g = m, b = c; break;
         case 5: r = c, g = m, b = x; break;
     }
+    
     return {
         r: Math.round(r * 255),
         g: Math.round(g * 255),
@@ -32,12 +36,7 @@ function HSVtoRGB(hsv) {
     };
 }
 
-/* input:
- * R,G,B = [0,255] 
- * output:
- * H = [0,360]
- * S,V = [0,100]
- */
+/* This functions converts an RGB object to an HSV object. */
 function RGBtoHSV(rgb) {
     var r, g, b, max, min, h, s, v;
     r = rgb.r / 255;
@@ -45,6 +44,7 @@ function RGBtoHSV(rgb) {
     b = rgb.b / 255;
     max = Math.max(r, g, b);
     min = Math.min(r, g, b);
+    
     if (r == max) {
         h = (Math.round(((g - b) / (max - min)) * 60) + 360) % 360;
     }
@@ -54,32 +54,36 @@ function RGBtoHSV(rgb) {
     else {
         h = Math.round((4 + (r - g) / (max - min)) * 60); 
     }
+    
     s = (max - min) / max;
     v = max;
+    
     if (isNaN(h)) {
         h = 0;
     }
     if (isNaN(s)) {
         s = 0;
     }
+    
     return {
-        h: h, s: Math.round(s * 100), v: Math.round(v * 100)
+        h: h, 
+        s: Math.round(s * 100), 
+        v: Math.round(v * 100)
     };
 }
 
-/* input: RGB = [0,255] */
-/* output: "#hexcode" */
+/* This functions returns the corresponding hexcode from a given RGB object. */
 function RGBtoHEX(rgb) {
     return "#" + ((1 << 24) + (rgb.r << 16) + (rgb.g << 8) + rgb.b).toString(16).slice(1).toUpperCase();
 }
 
-/* input: "(#)hexcode" */
-/* output: R,G,B = [0,255] */
+/* This functions creates an RGB object for a hexcode string. */
 function HEXtoRGB(hex) {
-    //cut away '#', if any.
-    if (hex.charAt(0)=="#") {
+    /* Cut away any leading '#'. */
+    if (hex.charAt(0) == "#") {
         hex = hex.substring(1,7)
     }
+    
     return {
         r: parseInt(hex.substring(0,2), 16),
         g: parseInt(hex.substring(2,4), 16),

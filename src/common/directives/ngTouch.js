@@ -1,3 +1,11 @@
+/*
+ * Project Ariana
+ * ngTouch.js
+ *
+ * This file contains an Angular directive for catching touch events.
+ *
+ */
+ 
 "use strict";
 
 angular.module("ngTouch", [])
