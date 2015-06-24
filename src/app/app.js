@@ -7,8 +7,6 @@
  *
  */
 
-"use strict";
-
 var app = angular.module('ariana', [
     'ui.router',
     'ui.bootstrap',
@@ -106,7 +104,7 @@ app.controller('AppCtrl', ['$scope',
                 $scope.marchingAnts = new MarchingAnts(width, height);
                 $scope.marchingAnts.setMaskBorder($scope.maskBorder);
             }
-        }
+        };
 
         /* This function creates a new layer from a given Image-object. The new
          * layer is placed on top. */
@@ -226,6 +224,6 @@ app.controller('AppCtrl', ['$scope',
         $scope.setCurrentLayerIndex = function (layerIndex) {
             $scope.config.layers.currentLayer = layerIndex;
             $scope.$broadcast('newCurrentLayer', layerIndex);
-        }
+        };
 	}
 ]);

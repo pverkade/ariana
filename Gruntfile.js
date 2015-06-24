@@ -6,6 +6,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-bower-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-ts');
     grunt.loadNpmTasks('grunt-html2js');
@@ -274,6 +275,36 @@ module.exports = function(grunt) {
         },
 
         /**
+         * `jshint` defines the rules of our linter as well as which files we
+         * should check. This file, all javascript sources, and all our unit tests
+         * are linted based on the policies listed in `options`. But we can also
+         * specify exclusionary patterns by prefixing them with an exclamation
+         * point (!); this is useful when code comes from a third party but is
+         * nonetheless inside `src/`.
+         */
+        jshint: {
+            src: [ 
+                '<%= src_files.js %>'
+            ],
+            test: [
+                '<%= src_files.jsunit %>'
+            ],
+            gruntfile: [
+                'Gruntfile.js'
+            ],
+            options: {
+                curly: true,
+                immed: true,
+                newcap: true,
+                noarg: true,
+                sub: true,
+                boss: true,
+                eqnull: true
+            },
+            globals: {}
+        },
+
+        /**
          * The Karma configurations.
          */
         karma: {
@@ -329,11 +360,11 @@ module.exports = function(grunt) {
             },
             js: {
                 files: ['<%= src_files.js %>'],
-                tasks: ['chain_js']
+                tasks: ['jshint:src', 'chain_js']
             },
             jsunit: {
                 files: ['<%= src_files.jsunit %>'],
-                tasks: ['karmaconfig', 'karma:continuous:run']
+                tasks: ['jshint:test', 'karmaconfig', 'karma:continuous:run']
             },
             ts: {
                 files: ['<%= src_files.ts %>'],
@@ -364,6 +395,7 @@ module.exports = function(grunt) {
         'bower_concat:css', // Concatenate all bower css -> build/css/bower.css
         'build_renderengine', // Compile render engine -> build/js/renderengine.js
         'html2js', // Combine all tpl.html -> build/js/template.js
+        'jshint', // Lint all javascript files
         'copy:build_js', // Copy all javascript -> build/js/
         'copy:build_vendorjs', // Copy all javascript -> build/js/
         'copy:build_html', // Copy index.html -> build/index.html
