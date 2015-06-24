@@ -297,7 +297,6 @@ module.exports = function(grunt) {
             unit: {
                 dir: '<%= build_dir %>',
                 src: [
-                    '<%= vendor_files.js %>',
                     '<%= test_files.js %>',
                     '<%= src_files.jsunit %>'
                 ]
