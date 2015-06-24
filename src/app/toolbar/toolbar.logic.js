@@ -6,12 +6,9 @@
  *
  */
  
-/* The ToolbarController contains the behaviour of the toolbar. */
 app.controller('ToolbarController', ['$scope', '$modal',
     function ($scope, $modal) {
       
-        /* This functions returns whether the toolbox should be visible. It is 
-         * hidden when the user is clicking on the canvas/background. */
         $scope.checkVisible = function() {
             return (!($scope.config.mouse.button[1] || $scope.config.mouse.button[2] || $scope.config.mouse.button[3]));
         };
@@ -45,6 +42,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
             });
         };
 
+        /* This function opens the save image modal. */
         $scope.openSaveImageModal = function() {
             $scope.stopTool();
             
@@ -55,6 +53,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
             })
         };
         
+        /* This object contains the currently selected filter. */
         $scope.filter = {
             filterName: "",
             filterObject: null,
@@ -80,7 +79,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
             }
         }
 
-        $scope.cancel = function() {
+        $scope.cancelFilter= function() {
             $scope.filter.filterObject = null;
             $scope.filter.currentlayerOnly = false;
 
