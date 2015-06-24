@@ -56,7 +56,7 @@ describe("The toolbox controller", function() {
     describe("selectTool", function() {
         it("should select a different tool", function() {
             $scope.selectTool(null, 'test');
-            expect($scope.config.tools.activeTool).toEqual('test');
+            expect(tools.getTool()).toEqual('test');
             
             it("should return true for 'test'", function() {
                 expect($scope.isActive('test')).toBe('true');
@@ -68,7 +68,7 @@ describe("The toolbox controller", function() {
     describe("selectToolSet", function() {
         it("should select a different toolset", function() {
             $scope.selectToolSet('test');
-            expect($scope.config.tools.activeToolset).toEqual('test');
+            expect(tools.getTool()set).toEqual('test');
 
             it("should return true for 'test'", function() {
                 expect($scope.isActiveToolset('test')).toBe('true');

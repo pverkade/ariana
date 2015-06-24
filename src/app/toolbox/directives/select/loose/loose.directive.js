@@ -7,13 +7,13 @@ angular.module('ariana').directive('loose', function() {
     };
 });
 
-angular.module('ariana').controller('LooseCtrl', function($scope) {
+angular.module('ariana').controller('LooseCtrl', function($scope, tools, canvas) {
     $scope.toolname = 'loose';
-    $scope.active = $scope.config.tools.activeTool == $scope.toolname;
+    $scope.active = tools.getTool() == $scope.toolname;
 
     /* init */
     $scope.init = function() {
-        $scope.setCursor('default');
+        canvas.setCursor('default');
 
         var currentLayer = $scope.config.layers.currentLayer;//$scope.config.layers.currentLayer;
         if (currentLayer == -1) {
@@ -131,7 +131,7 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
         if (nval) {
             $scope.init();
 
-            $scope.config.tools.activeToolFunctions = {
+            tools.getTool()Functions = {
                 mouseDown: $scope.mouseDown,
                 mouseUp: $scope.mouseUp,
                 mouseMove: $scope.mouseMove

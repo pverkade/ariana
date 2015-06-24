@@ -7,9 +7,9 @@ app.directive('pencil', function() {
     };
 });
 
-app.controller('PencilCtrl', function($scope) {
+app.controller('PencilCtrl', function($scope, tools, canvas) {
 	$scope.toolname = 'pencil';
-	$scope.active = ($scope.config.tools.activeTool == $scope.toolname);
+	$scope.active = (tools.getTool() == $scope.toolname);
     $scope.thickness = 2;
     $scope.opacity = 1;
     
@@ -20,7 +20,7 @@ app.controller('PencilCtrl', function($scope) {
 	$scope.init = function() {
         $scope.drawing = false;
         $scope.hasDrawn = false;
-		$scope.setCursor('default');
+		canvas.setCursor('default');
         $scope.drawEngine.setDrawType(drawType.NORMAL);
         $scope.setColor($scope.config.tools.colors.primary);
         $scope.updateDrawEngine();
@@ -140,11 +140,11 @@ app.controller('PencilCtrl', function($scope) {
 		if (nval) {
 			$scope.init();
 
-			$scope.config.tools.activeToolFunctions = {
+			tools.setToolFunctions({
 				mouseDown: $scope.mouseDown,
 				mouseUp: $scope.mouseUp,
 				mouseMove: $scope.mouseMove
-			};
+			});
 		}
         else if (oval) {
             $scope.stop();

@@ -7,15 +7,15 @@ app.directive('magic', function() {
     };
 });
 
-app.controller('MagicCtrl', function($scope) {
+app.controller('MagicCtrl', function($scope, tools, canvas) {
 	$scope.toolname = 'magic';
-	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
+	$scope.active = tools.getTool() == $scope.toolname;
 
 	$scope.threshold = 35;
 
 	/* init */
 	$scope.init = function() {
-		$scope.setCursor('crosshair');
+		canvas.setCursor('crosshair');
 
 		var currentLayer = $scope.config.layers.currentLayer;
 		if (currentLayer == -1) {
@@ -146,11 +146,11 @@ app.controller('MagicCtrl', function($scope) {
 		if (nval) {
 			$scope.init();
 
-			$scope.config.tools.activeToolFunctions = {
+			tools.setToolFunctions({
 				mouseDown: $scope.mouseDown,
 				mouseUp: $scope.mouseUp,
 				mouseMove: $scope.mouseMove
-			};
+			});
 		}
         else if (oval) {
             $scope.stop();
