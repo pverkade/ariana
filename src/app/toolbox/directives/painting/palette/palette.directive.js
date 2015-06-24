@@ -80,6 +80,8 @@ app.controller('PaletteCtrl', function($scope) {
 
             /* Update the S and V value based on the mouse position inside the 
              * palette. */
+
+            /* Discriminate mouse inputs and touch inputs */
             if (/^mouse/i.test(event.type)) {
                 locX = event.pageX;
                 locY = event.pageY;
@@ -102,16 +104,12 @@ app.controller('PaletteCtrl', function($scope) {
             }
 
             $scope.color.s = Math.floor(
-                ((locX - $scope.paletteBox.left) * 100) /
-                ($scope.paletteBox.right - $scope.paletteBox.left)
+                ((locX - $scope.paletteBox.left) * 100) / $scope.palette.width
             );
             $scope.color.v = Math.floor(
-                100 - ((locY - $scope.paletteBox.top) * 100) /
-                ($scope.paletteBox.bottom - $scope.paletteBox.top)
+                100 - ((locY - $scope.paletteBox.top) * 100) / $scope.palette.height
             );
-            
-            $scope.drawMarker();
-            $scope.drawBar();
+
             $scope.updateRGB();
             $scope.updateHEX();
         }
@@ -121,7 +119,6 @@ app.controller('PaletteCtrl', function($scope) {
         $scope.selectingHue= true;
         $scope.hueMouseMove(event);
     };
-    
     
     $scope.hueMouseUp = function() {
         $scope.selectingHue = false;
@@ -152,8 +149,6 @@ app.controller('PaletteCtrl', function($scope) {
                 ($scope.hueBox.bottom - $scope.hueBox.top)
             );
             
-            $scope.drawMarker();
-            $scope.drawBar();
             $scope.updateRGB();
             $scope.updateHEX();
         }
