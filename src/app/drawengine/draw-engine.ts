@@ -344,6 +344,7 @@ class DrawEngine {
 
     clearCanvases() : void {
         this.memContext.clearRect(0, 0, this.memCanvas.width, this.memCanvas.height);
+        this.tmpDrawContext.clearRect(0, 0, this.memCanvas.width, this.memCanvas.height);
         this.clearCanvas();
     }
 

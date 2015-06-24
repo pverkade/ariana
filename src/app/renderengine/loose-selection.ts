@@ -1,11 +1,5 @@
 class LooseSelection extends AbstractSelection implements SelectionInterface{
 	points : Point[][];
-	maskBorder : Uint8Array;
-	maskWand : Uint8Array;
-	maskWandParts : Uint8Array[];
-
-	width : number;
-	height : number;
 
 	constructor(width : number, height : number) {
 		super(width, height);

@@ -15,6 +15,14 @@ class AbstractSelection {
 		this.maskWand = null;
 	}
 
+    getWidth() {
+        return this.width;
+    }
+    
+    getHeight() {
+        return this.height;
+    }
+
     getNrWands() {
     	return this.maskWandParts.length;
     }
@@ -22,33 +30,6 @@ class AbstractSelection {
 	getLastMaskWand() {
 		return this.maskWandParts[this.maskWandParts.length - 1];			
 	}
-
-    getMaskBorder() {        
-        for (var i = 0; i < this.maskWand.length; i++) {
-            if (this.maskWand[i] == 1) {
-                /* Check for borders of image (pixel on border of image is edge). */
-                if (i % this.width == 0 ||
-                  Math.floor( i / this.width) == 0 || 
-                  Math.floor( i / this.width) >= this.height - 1) { /// aanpassing <--
-                    this.maskBorder[i] = 1;
-                /* Check if one 8 neighbor pixels is off then it is an "inside" pixel. */
-                } else if ( this.maskWand[i - this.width - 1] == 0 ||
-                    this.maskWand[i - this.width ] == 0 ||
-                    this.maskWand[i - this.width + 1] == 0 ||
-                    this.maskWand[i - 1] == 0 ||
-                    this.maskWand[i + 1] == 0 ||
-                    this.maskWand[i + this.width - 1] == 0 ||
-                    this.maskWand[i + this.width] == 0 ||
-                    this.maskWand[i + this.width + 1] == 0 ) {
-                    this.maskBorder[i] = 1;
-                } else {
-                    this.maskBorder[i] = 0;
-                }
-            }
-        }
-
-        return this.maskBorder;
-    }	
 
 	getMaskWandPart(index : number) {
 		return this.maskWandParts[index];
@@ -91,4 +72,31 @@ class AbstractSelection {
             this.maskWand = maskWand;
         }
     }
+
+    getMaskBorder() {        
+        for (var i = 0; i < this.maskWand.length; i++) {
+            if (this.maskWand[i] == 1) {
+                /* Check for borders of image (pixel on border of image is edge). */
+                if (i % this.width == 0 ||
+                  Math.floor( i / this.width) == 0 || 
+                  Math.floor( i / this.width) >= this.height - 1) { /// aanpassing <--
+                    this.maskBorder[i] = 1;
+                /* Check if one 8 neighbor pixels is off then it is an "inside" pixel. */
+                } else if ( this.maskWand[i - this.width - 1] == 0 ||
+                    this.maskWand[i - this.width ] == 0 ||
+                    this.maskWand[i - this.width + 1] == 0 ||
+                    this.maskWand[i - 1] == 0 ||
+                    this.maskWand[i + 1] == 0 ||
+                    this.maskWand[i + this.width - 1] == 0 ||
+                    this.maskWand[i + this.width] == 0 ||
+                    this.maskWand[i + this.width + 1] == 0 ) {
+                    this.maskBorder[i] = 1;
+                } else {
+                    this.maskBorder[i] = 0;
+                }
+            }
+        }
+
+        return this.maskBorder;
+    }   
 }
