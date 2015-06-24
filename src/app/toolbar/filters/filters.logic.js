@@ -7,8 +7,8 @@
  *
  */
  
-app.controller('FilterModalController', ['$scope', '$modalInstance', 
-    function ($scope, $modalInstance) {
+app.controller('FilterModalController', ['$scope', '$modalInstance', 'tools'
+    function ($scope, $modalInstance, tools) {
         
         $scope.filters = {
             
@@ -60,7 +60,7 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
                 $scope.applyFilterOnLayers();
             }
             
-            $scope.config.tools.activeTool = 'pan';
+            tools.setTool('pan');
             $scope.close();
         };
 
