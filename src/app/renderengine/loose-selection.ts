@@ -47,17 +47,16 @@ class LooseSelection extends AbstractSelection {
 		return false;
 	}
 
-    /* Returns true when points are within 1 pixel distance of each other. */
-    comparePoints(point1 : Point, point2 : Point) {
-        var difX = point1.x - point2.x;
-        var difY = point1.y - point2.y; 
+	clearLast() {
+		var nrPoints = this.points.length;
 
-        if (Math.abs(difX) <= 1 && Math.abs(difY) <= 1) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+		if (super.clearLast() == false) {
+			return false;
+		}
+
+		this.points.splice(nrPoints - 2, 1);
+		return true;
+	}
 
 	determineOrientation() {
 		var nrPoints = this.points.length;
@@ -163,66 +162,12 @@ class LooseSelection extends AbstractSelection {
 		}
     }    
 
-    newAdjustedArea() {
-    	var nrPoints = this.points.length;
-		var nrPointsLast = this.points[nrPoints - 1].length;
-		var skipSize = 4;
-
-		var deltaFirstPoint = this.neighborBorder(this.points[nrPoints - 1][0], skipSize);
-		var deltaLastPoint = this.neighborBorder(this.points[nrPoints - 1][nrPointsLast - 1], skipSize); 
-
-		if (nrPointsLast > 10 && deltaFirstPoint != null && deltaLastPoint != null) { 
-
-			for (var i = 0; i < nrPointsLast; i++) {
-				var indexPointMask = this.points[nrPoints - 1][i].y * this.width + this.points[nrPoints - 1][i].x;
-				this.maskBorder[indexPointMask] = 1;
-			}
-
-			this.fixHole(this.points[nrPoints - 1][0], deltaFirstPoint);
-			this.fixHole(this.points[nrPoints - 1][nrPointsLast - 1], deltaLastPoint);
-
-			var mask = new MaskSelection(this.maskBorder, this.width, this.height);
-			var insidePoint = this.getInsidePoint();
-
-			this.maskWandParts[this.maskWandParts.length] = mask.getMaskWand(insidePoint.x, insidePoint.y);
-
-			/* Given border is part of the mask wand. */
-			for (var i = 0; i < nrPointsLast; i++) {
-				var indexPointMask = this.points[nrPoints - 1][i].y * this.width + this.points[nrPoints - 1][i].x;
-				this.maskWandParts[this.maskWandParts.length - 1][indexPointMask] = 1;
-			}
-
-			/* Mask wand part should only contain the area of one part. Remove possible 
-				borders from maskBorder in mask. */ 
-			for (var i = 0; i < this.maskWand.length; i++) {
-				if (this.maskWand[i]) {
-					this.maskWandParts[this.maskWandParts.length - 1][i] = 0;
-			 	}
-			} 
-
-			/* Both needed to get correct maskWand and maskBorder. */
-			this.mergeMaskWand();
-			this.getMaskBorder();
-
-            this.points[nrPoints] = [];
-            return this.points[nrPoints - 1];
-		}
-
-		return [];   	
-    }
-
 	getLastBoundingPath() {
 		var nrPoints = this.points.length;
 		var nrPointsLast = this.points[nrPoints - 1].length;
 		var curPoint : Point;
 		var lastAddedPoint : Point;
 		var insidePoint : Point;
-
-		// var newArea = this.newAdjustedArea();
-
-		// if (newArea.length > 0) {
-		//  	return newArea;
-		// }
 
         for (var i = nrPointsLast - 10; i >= 0; i--) {
             /* Look if last added point is close enough to current point. */
@@ -255,6 +200,18 @@ class LooseSelection extends AbstractSelection {
 		return [];
 	}
 
+    /* Returns true when points are within 1 pixel distance of each other. */
+    comparePoints(point1 : Point, point2 : Point) {
+        var difX = point1.x - point2.x;
+        var difY = point1.y - point2.y; 
+
+        if (Math.abs(difX) <= 1 && Math.abs(difY) <= 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 	reset() {
 		var nrPoints = this.points.length;
 		var indexPointMask;
@@ -265,16 +222,5 @@ class LooseSelection extends AbstractSelection {
 		} 
 		
 		this.points[nrPoints - 1] = [];
-	}
-
-	clearLast() {
-		var nrPoints = this.points.length;
-
-		if (super.clearLast() == false) {
-			return false;
-		}
-
-		this.points.splice(nrPoints - 2, 1);
-		return true;
 	}
 }
