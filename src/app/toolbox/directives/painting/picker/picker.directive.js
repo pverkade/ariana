@@ -20,6 +20,7 @@ app.controller('PickerCtrl', function($scope) {
     /* onMouseDown */
     $scope.mouseDown = function() {
         $scope.picking = true;
+        $scope.renderEngine.startColorPicking();
         $scope.mouseMove();
     };
 
@@ -69,6 +70,9 @@ app.controller('PickerCtrl', function($scope) {
                 mouseUp: $scope.mouseUp,
                 mouseMove: $scope.mouseMove
             };
+        }
+        else {
+            $scope.renderEngine.endColorPicking();
         }
     }, true);
 });
