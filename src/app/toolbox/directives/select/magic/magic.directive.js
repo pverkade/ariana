@@ -33,7 +33,7 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
 			return;
 		}
 
-		var layer = $scope.renderEngine.layers[currentLayer];
+		var layer = $scope.renderEngine.getLayer(currentLayer);
 		if (layer.layerType != LayerType.ImageLayer) {
 			console.log("Layer is not of type ImageLayer");
 			return;
@@ -63,7 +63,7 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
 
         /* Calculate x and y coordinates in pixels of the original image */
         var currentLayer = layers.getCurrentIndex();
-        var layer = $scope.renderEngine.layers[currentLayer];
+        var layer = $scope.renderEngine.getLayer(currentLayer);
         if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
             return;
         }

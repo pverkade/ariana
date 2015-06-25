@@ -28,7 +28,7 @@ app.controller('RotateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fu
         var currentLayer = layers.getCurrentIndex();
         if (currentLayer == -1) return;
 
-        var layer = $scope.renderEngine.layers[currentLayer];
+        var layer = $scope.renderEngine.getLayer(currentLayer);
 		$scope.requestRenderEngineUpdate();
 		$scope.editEngine.setEditLayer(layer, EditMode.rotate);
 		$scope.requestEditEngineUpdate();

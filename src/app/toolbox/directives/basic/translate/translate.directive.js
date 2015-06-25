@@ -28,7 +28,7 @@ app.controller('TranslateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
         var currentLayer = layers.getCurrentIndex();
         if (currentLayer == -1) return;
 
-        var layer = $scope.renderEngine.layers[currentLayer];
+        var layer = $scope.renderEngine.getLayer(currentLayer);
         $scope.editEngine.drawTranslateTool(layer);
         window.requestAnimationFrame(function() {$scope.renderEngine.render();});  
     };
@@ -50,7 +50,7 @@ app.controller('TranslateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
          
         var currentLayer = layers.getCurrentIndex();
         if (currentLayer == -1) return;
-        var layer = $scope.renderEngine.layers[currentLayer];
+        var layer = $scope.renderEngine.getLayer(currentLayer);
         
         var dx = mouse.getPosGlobal().x - mouse.getOldPosGlobal().x;
         var dy = mouse.getPosGlobal().y - mouse.getOldPosGlobal().y;

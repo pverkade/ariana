@@ -19,12 +19,12 @@ function start() {
     var renderEngine = new RenderEngine(canvas);
 
     function enterDrawMode(index : number) {
-        var numLayers : number = renderEngine.layers.length;
+        var numLayers : number = renderEngine.getNumberOfLayers();
 
         var upperIndices : number[] = [];
         for (var i = index; i < numLayers; i++) {
             upperIndices.push(i);
-            renderEngine.layers[i].setHidden(true);
+            renderEngine.getLayer(i).setHidden(true);
         }
 
         var topLayers : String = renderEngine.renderIndicesToImg(upperIndices);
@@ -45,9 +45,9 @@ function start() {
     function closeDrawMode() {
         topContext.clearRect(0, 0, canvas.width, canvas.height);
 
-        var numLayers : number = renderEngine.layers.length;
+        var numLayers : number = renderEngine.getNumberOfLayers();
         for (var i = 0; i < numLayers; i++) {
-            renderEngine.layers[i].setHidden(false);
+            renderEngine.getLayer(i).setHidden(false);
         }
         renderEngine.render();
     }
