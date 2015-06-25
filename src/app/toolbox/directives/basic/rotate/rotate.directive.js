@@ -44,14 +44,14 @@ app.controller('RotateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fu
 	$scope.mouseUp = function() {
 		canvas.setCursor('grab');
 		$scope.rotating = false;
-        $scope.updateThumbnail($scope.getCurrentLayerIndex());
+        $scope.updateThumbnail(layers.getCurrentIndex());
     };
 
 	/* onMouseMove */
 	$scope.mouseMove = function() {
 		if (!$scope.rotating) return;
 		 
-		var currentLayer = layers.getCurrentLayerIndex();
+		var currentLayer = layers.getCurrentIndex();
         if (currentLayer == -1) return;
 
         var layer = $scope.getCurrentLayer();
@@ -110,7 +110,7 @@ app.controller('RotateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fu
             $scope.editEngine.removeEditLayer();
 			var layer = $scope.getCurrentLayer();
             layer.commitRotation();
-            $scope.updateThumbnail($scope.getCurrentLayerIndex());
+            $scope.updateThumbnail(layers.getCurrentIndex());
 		}
 	}, true); // jshint ignore:line
 }]);

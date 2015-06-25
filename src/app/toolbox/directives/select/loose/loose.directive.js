@@ -32,7 +32,7 @@ app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
         }
 
         var layer = $scope.renderEngine.getLayer(currentLayer);
-        if (layer.layerType != LayerType.ImageLayer) {
+        if (layer.getLayerType() != LayerType.ImageLayer) {
             console.log("Layer is not of type ImageLayer");
             return;
         }
