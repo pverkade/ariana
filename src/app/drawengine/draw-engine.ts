@@ -483,14 +483,53 @@ class DrawEngine {
         if (!this.isCleared) {
             this.clearCanvas();
         }
+        this.dashedDistance = 0.0;
 
-        context.beginPath();
-        context.moveTo(points[0].x, points[0].y);
-        context.lineTo(points[0].x, points[1].y);
-        context.lineTo(points[1].x, points[1].y);
-        context.lineTo(points[1].x, points[0].y);
-        context.lineTo(points[0].x, points[0].y);
-        context.stroke();
+        var corners: Array<Position2D> = [];
+        corners.push(new Position2D(points[0].x, points[0].y));
+        corners.push(new Position2D(points[0].x, points[1].y));
+        corners.push(new Position2D(points[1].x, points[1].y));
+        corners.push(new Position2D(points[1].x, points[0].y));
+
+        this.drawDashedLineParticle(corners[0], corners[1], context);
+        this.dashedDistance = 0.0;
+        this.drawDashedLineParticle(corners[1], corners[2], context);
+        this.dashedDistance = 0.0;
+        this.drawDashedLineParticle(corners[3], corners[2], context);
+        this.dashedDistance = 0.0;
+        this.drawDashedLineParticle(corners[0], corners[3], context);
+    }
+
+    drawDashedLineParticle(start : Position2D, end : Position2D, context : CanvasRenderingContext2D) {
+        var lastPoint : Position2D = start;
+        var nextPoint : Position2D;
+
+        while (lastPoint.distanceTo(end) > 0) {
+            if (lastPoint.distanceTo(end) > 5 - this.dashedDistance % 5) {
+                nextPoint = lastPoint.pointInDirection(end, 5 - this.dashedDistance % 5);
+            }
+            else {
+                nextPoint = end;
+            }
+
+            context.beginPath();
+            context.moveTo(lastPoint.x, lastPoint.y);
+            if (this.dashedDistance % 10 >= 5.0) {
+                context.strokeStyle = 'rgba(0,0,0,255)';
+            }
+            else {
+                context.strokeStyle = 'rgba(255,255,255,255)';
+            }
+            context.lineTo(nextPoint.x, nextPoint.y);
+            context.stroke();
+
+            if (nextPoint == end) {
+                this.dashedDistance += lastPoint.distanceTo(end);
+                break;
+            }
+            this.dashedDistance += 5 - this.dashedDistance % 5;
+            lastPoint = nextPoint;
+        }
     }
 
     /*
