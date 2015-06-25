@@ -30,12 +30,9 @@
     ng-right-click
     ng-show="filter.filterObject && renderEngine.getNumberOfLayers()"
     ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}"> 
-<<<<<<< HEAD
-    <div class="tool float-left" ng-click="cancelFilters()"> <i class="mdi mdi-close"> </i> </div>
-=======
     
     <div class="tool float-left" ng-click="cancelFilter()"> <i class="mdi mdi-close"> </i> </div>
->>>>>>> cleanup
+    
     <div class="center-box float-left">
     
         <div class="input-group">
@@ -52,7 +49,6 @@
         </div>
     
     </div>
-<<<<<<< HEAD
     <div class="tool float-right" ng-click="commitFilterOnLayers(); cancelFilters()">  <i class="mdi mdi-check"> </i> </div>
 </div>
 
@@ -63,7 +59,4 @@
 
     <div class="tool float-left" ng-click="cancelSelection()"> <i class="mdi mdi-close"> </i> </div>
     <div class="tool float-left" ng-click="applySelection()"> <i class="mdi mdi-check"> </i> </div>
-=======
-    <div class="tool float-right" ng-click="commitFilterOnLayers(); cancelFilter()">  <i class="mdi mdi-check"> </i> </div>
->>>>>>> cleanup
 </div>
