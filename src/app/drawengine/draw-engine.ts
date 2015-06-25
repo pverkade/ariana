@@ -107,7 +107,7 @@ enum drawType { NORMAL, DASHED, QUADRATIC_BEZIER, BRUSH, LINE, RECTANGLE };
 /*
  * Brushes
  *
- * THIN : thin line,
+ * THIN : thin line
  * PEN : line with changing width
  * NEIGHBOR : stroke nearby lines
  * FUR : fur effect with nearby points
@@ -264,12 +264,12 @@ class DrawEngine {
      * Set the opacity
      */
     setOpacity(opacity : number) : void {
-    	if (opacity < 0.8) {
-    		this.opacity = opacity / 8;
-    	}
-    	else {
-    		this.opacity = 4.5 * opacity - 3.5;
-    	}
+        if (opacity < 0.8) {
+            this.opacity = opacity / 8;
+        }
+        else {
+            this.opacity = 4.5 * opacity - 3.5;
+        }
     }
 
     /*
@@ -323,6 +323,9 @@ class DrawEngine {
         context.globalAlpha = 1.0;
         context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
         context.drawImage(this.memCanvas, 0, 0);
+
+        this.tmpDrawContext.globalAlpha = 1.0;
+        this.tmpDrawContext.clearRect(0, 0, this.tmpDrawCanvas.width, this.tmpDrawCanvas.height);
 
         this.isCleared = true;
 
