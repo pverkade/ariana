@@ -29,12 +29,7 @@ class LooseSelection extends AbstractSelection {
                     x += super.sign(difX);
                     y += super.sign(difY);
 
-                    if (this.maskWand[y * this.width + x] == 0) {
-	                    this.points[nrPoints - 1].push(new Point(x, y));
-                    } else {
-                    	this.reset();
-                    	return false;
-                    }
+	                this.points[nrPoints - 1].push(new Point(x, y));
 
                     difX -= super.sign(difX);
                     difY -= super.sign(difY);
@@ -126,7 +121,7 @@ class LooseSelection extends AbstractSelection {
 			console.log("hopelijk gaat dit goed");
 			return new Point(startPoint.x + 2 * dXAdj, startPoint.y + 2 * dYAdj);
 		}
-    }    
+    }
 
 	getLastBoundingPath() {
 		var nrPoints = this.points.length;
@@ -142,11 +137,12 @@ class LooseSelection extends AbstractSelection {
             if (this.comparePoints(curPoint, lastAddedPoint)) {
                 this.points[nrPoints - 1].splice(0, i);
 
+                var maskBorder = new Uint8Array(this.maskWand.length);
                 for (var j = 0; j < this.points[nrPoints - 1].length; j++) {
-                	this.maskBorder[this.points[nrPoints - 1][j].y * this.width + this.points[nrPoints - 1][j].x] = 1;
+                	maskBorder[this.points[nrPoints - 1][j].y * this.width + this.points[nrPoints - 1][j].x] = 1;
                 }
 
-				var mask = new MaskSelection(this.maskBorder, this.width, this.height);
+				var mask = new MaskSelection(maskBorder, this.width, this.height);
 				insidePoint = this.getInsidePoint2();
 				this.maskWandParts[this.maskWandParts.length] = mask.getMaskWand(insidePoint.x, insidePoint.y);
 
