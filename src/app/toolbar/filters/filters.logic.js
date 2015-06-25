@@ -56,7 +56,7 @@ app.controller('FilterModalController', ['$scope', '$modalInstance', 'tools',
             var constructor = $scope.filters[name].constructor;
             
             if (constructor) {
-                var filterObject = new Constructor();
+                var filterObject = new constructor();
                 $scope.filter.filterName = name;
                 $scope.filter.filterObject = filterObject;
                 $scope.filter.filterParameters = filterObject.getAttributesObject();
