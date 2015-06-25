@@ -66,7 +66,7 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'la
         if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
             return;
         }
-        
+
         var transformedPoint = $scope.magic.transform(layer, mouseX, mouseY);
         var xRelative = transformedPoint.x;
         var yRelative = transformedPoint.y;
