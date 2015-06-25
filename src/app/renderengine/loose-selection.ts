@@ -184,8 +184,8 @@ class LooseSelection extends AbstractSelection {
 		var indexPointMask;
 
 		for (var i = 0; i < this.points[nrPoints - 1].length; i++) {
-			indexPointMask = this.points[nrPoints - 1][i].y * this.width + this.points[nrPoints - 1][i].x;
-			this.maskBorder[indexPointMask] = 0;
+		 	indexPointMask = this.points[nrPoints - 1][i].y * this.width + this.points[nrPoints - 1][i].x;
+		 	this.maskBorder[indexPointMask] = 0;
 		} 
 		
 		this.points[nrPoints - 1] = [];
