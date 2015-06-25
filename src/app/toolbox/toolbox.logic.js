@@ -7,57 +7,59 @@
  *
  */
 
-app.controller('ToolboxCtrl', ['$scope', 'canvas', 'colors', 'tools', 'mouse', function($scope, canvas, colors, tools, mouse) {
+app.controller('ToolboxCtrl', ['$scope', 'canvas', 'colors', 'tools', 'mouse', 
+    function($scope, canvas, colors, tools, mouse) {
     
-    $scope.setCursor = function(cursor) {
-        canvas.setCursor(cursor);
-    };
+        $scope.setCursor = function(cursor) {
+            canvas.setCursor(cursor);
+        };
 
-    $scope.getCursor = function() {
-        return canvas.getCursor();
-    };
+        $scope.getCursor = function() {
+            return canvas.getCursor();
+        };
 
-    /* This function swaps the primary and secondary color. */
-    $scope.swapColors = function() {
-        colors.setPrimaryRgb(colors.getSecondary());
-        colors.setSecondaryRgb(colors.getPrimary());
-        $scope.$broadcast('swapColorsBC', {});
-    };
-    
-    $scope.checkVisible = function() {
-        return !mouse.checkActive();
-    };
-
-    $scope.isActive = function(name) {
-        return tools.getTool() == name;
-    };
-
-    $scope.isActiveToolset = function(name) {
-        return tools.getToolset == name;
-    };
-
-    /* This function selects a toolset and therefore opens a toolbox. When
-     * a toolset is already selected, it becomes unselected. The pan tool will
-     * then be used. */
-    $scope.selectToolSet = function(name) {
-        if (tools.getToolset == name) {
-            tools.getToolset = null;
-            return true;
-        }
-
-        tools.getToolset = name;
-    };
-
-    $scope.selectTool = function(event, name) {
-        if (event) {
-            event.stopPropagation();
-        }
+        /* This function swaps the primary and secondary color. */
+        $scope.swapColors = function() {
+            colors.setPrimaryRgb(colors.getSecondary());
+            colors.setSecondaryRgb(colors.getPrimary());
+            $scope.$broadcast('swapColorsBC', {});
+        };
         
-        tools.setTool(name);
-        return true;
-    };
+        $scope.checkVisible = function() {
+            return !mouse.checkActive();
+        };
 
-    $scope.getActiveToolFunctions = function() {
-        return tools.getToolFunctions;
-    };
-}]);
+        $scope.isActive = function(name) {
+            return tools.getTool() == name;
+        };
+
+        $scope.isActiveToolset = function(name) {
+            return tools.getToolset() == name;
+        };
+
+        /* This function selects a toolset and therefore opens a toolbox. When
+         * a toolset is already selected, it becomes unselected. The pan tool will
+         * then be used. */
+        $scope.selectToolSet = function(name) {
+            if (tools.getToolset() == name) {
+                tools.getToolset() = null;
+                return true;
+            }
+
+            tools.setToolset(name);
+        };
+
+        $scope.selectTool = function(event, name) {
+            if (event) {
+                event.stopPropagation();
+            }
+            
+            tools.setTool(name);
+            return true;
+        };
+
+        $scope.getActiveToolFunctions = function() {
+            return tools.getToolFunctions;
+        };
+    }
+]);

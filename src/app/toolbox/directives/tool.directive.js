@@ -18,8 +18,16 @@ app.directive('tool', ['tools', function(tools) {
 				scope.$apply(tools.getTool());
 			});
 
-			scope.$watch('config.tools.activeTool', function() {
-				scope.active = (tools.getTool() == scope.toolname);
+			function getTool() {
+				return tools.getTool();
+			}
+
+			scope.$watch(getTool, function(nval, oval) {
+				scope.active = (nval == scope.toolname);
+
+				if (nval == scope.toolname) {
+					console.log(scope.toolname + " is now active!");
+				}
 
 				if (!scope.active) scope.expanded = false;
 			}, true);

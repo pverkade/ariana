@@ -30,14 +30,15 @@ app.service('layers', function() {
 
     this.setCurrentIndex = function(i) {
         this._params.currentLayer = i;
-
+    };
+    
     this.setLayerData = function(index, data) {
         this._params.layerInfo[index] = data;
     };
 
     this.addLayer = function(data) {
         this._params.layerInfo.push(data);
-    }
+    };
 
     this.overwriteLayers = function(data) {
         this._params.layerInfo = data;
