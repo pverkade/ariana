@@ -144,6 +144,8 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
         
         canvas.setX(canvas.getX() - widthDifference);
         canvas.setY(canvas.getY() - heightDifference);
+        
+        $scope.requestRenderEngineUpdate();
     };
 
     $scope.mwheelDown = function() {
@@ -161,6 +163,8 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
         
         canvas.setX(canvas.getX() + widthDifference);
         canvas.setY(canvas.getY() + heightDifference);
+        
+        $scope.requestRenderEngineUpdate();
     };
 
     $scope.pinchZoom = function(event) {
