@@ -67,6 +67,9 @@ function saveImageAsBuffer(inputBuffer, format, handler, quality) {
 
     if (format === 'jpeg') {
         newImage = newImage
+            .out("-background")
+            .out("white")
+            .flatten()
             .compress('JPEG')
             .quality(quality)
     }
