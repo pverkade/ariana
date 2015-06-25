@@ -41,6 +41,11 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
 
     $scope.paletteImage = new Image();
     $scope.paletteImage.src = "assets/img/bgGradient.png";
+
+    $scope.getPrimary = function() {
+        return colors.getPrimary();
+    }
+
     /* Create canvas from image */
     $scope.paletteImage.onload = function() {
         $scope.paletteOverlay = document.createElement('canvas');
