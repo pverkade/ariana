@@ -1,6 +1,5 @@
 /// <reference path="../renderengine/layer"/>
 /// <reference path="../renderengine/image-layer"/>
-/// <reference path="../renderengine/magic-selection"/>
 
 enum EditMode {
     translate,
