@@ -11,22 +11,20 @@ app.controller('RectangleCtrl', function($scope) {
 	$scope.toolname = 'rectangle';
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
-	/* init */
 	$scope.init = function() {
 		$scope.setCursor('default');
         $scope.selection.maskEnabled = true;
 
         var currentLayer = $scope.config.layers.currentLayer;
         if (currentLayer == -1) {
-            console.log("No layer selected");
             return;
         }
 
         var layer = $scope.renderEngine.layers[currentLayer];
         if (layer.layerType != LayerType.ImageLayer) {
-            console.log("Layer is not of type ImageLayer");
             return;
         }
+        
         $scope.image = layer.getImage();
 
         $scope.rect = new RectangleSelection($scope.image.width, $scope.image.height);
@@ -38,9 +36,12 @@ app.controller('RectangleCtrl', function($scope) {
         $scope.rect.setMaskWand($scope.maskWand);
         $scope.rect.setMaskBorder($scope.maskBorder);
 
-        $scope.drawEngine.setColor(0, 0, 0, 256);
+        $scope.drawEngine.setColor(0, 0, 0, 255);
         $scope.drawEngine.setLineWidth(2);
         $scope.drawEngine.setDrawType(drawType.RECTANGLE);
+        
+        $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
+        $scope.requestEditEngineUpdate();     
 	};
 
     $scope.stop = function() {

@@ -11,22 +11,20 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
     $scope.toolname = 'loose';
     $scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
-    /* init */
     $scope.init = function() {
         $scope.setCursor('default');
         $scope.selection.maskEnabled = true;
 
         var currentLayer = $scope.config.layers.currentLayer;
         if (currentLayer == -1) {
-            console.log("No layer selected");
             return;
         }
 
         var layer = $scope.renderEngine.layers[currentLayer];
         if (layer.layerType != LayerType.ImageLayer) {
-            console.log("Layer is not of type ImageLayer");
             return;
         }
+        
         $scope.image = layer.getImage();
 
         $scope.loose = new LooseSelection($scope.image.width, $scope.image.height);
@@ -40,6 +38,9 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
 
         $scope.drawEngine.setLineWidth(2);
         $scope.drawEngine.setDrawType(drawType.DASHED);
+        
+        $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
+        $scope.requestEditEngineUpdate();     
     };
     
     $scope.stop = function() {

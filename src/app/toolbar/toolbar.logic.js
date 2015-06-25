@@ -154,13 +154,10 @@ app.controller('ToolbarController', ['$scope', '$modal',
         });
         
         $scope.applySelection = function() {
-            // cut out selection from texture -> move to new layer
-            // throw away selection bitmask
             var newLayer = $scope.renderEngine.createSelectionImageLayer($scope.imgData, 0);
             $scope.addLayer(newLayer);
 
-            $scope.maskEnabled = false;
-            console.log("DONE!");
+            $scope.cancelSelection();
         }
         
         $scope.cancelSelection = function() {
@@ -184,9 +181,11 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
                 $scope.requestEditEngineUpdate();      
             }
-
-            // throw away selection bitmask
-            console.log("DENIED!");
+            
+            $scope.maskWand = null;
+            $scope.maskBorder = null;
+            $scope.marchingAnts = null;
+            $scope.imgData = null;    
         }
     }
 ]);
