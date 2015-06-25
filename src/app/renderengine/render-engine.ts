@@ -286,6 +286,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         selectedLayer.setPos(layer.getPosX(), layer.getPosY());
         selectedLayer.setRotation(layer.getRotation());
         selectedLayer.setDimensions(layer.getWidth(), layer.getHeight());
+        selectedLayer.setTransformHistory(layer.getTransformHistory());
         return selectedLayer;
     }
 
