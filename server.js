@@ -172,7 +172,7 @@ function staticServe(host, port) {
                 return;
             }
 
-            if (req.url != "/" && req.url != "/index.html" && req.url != "/landing" && req.url != "/drawtest") {
+            if (req.url != "/" && req.url != "/index.html" && req.url != "/ariana" && req.url != "/drawtest") {
                 plainTextResponse(res, 404, "File not Found.");
                 return;
             }
