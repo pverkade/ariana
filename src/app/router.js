@@ -39,5 +39,5 @@ app.config(function($stateProvider, $locationProvider) {
                     controller: 'ToolboxCtrl'
                 }
             }
-        })
+        });
 });

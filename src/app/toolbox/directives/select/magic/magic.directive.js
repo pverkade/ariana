@@ -88,8 +88,8 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
 		/* Draw shared mask variables to image. */
 		if ($scope.maskWand) {
 			$scope.setMaskSelectedArea($scope.magic.width, $scope.magic.height);    
-            var currentLayer = $scope.config.layers.currentLayer;
-            var layer = $scope.renderEngine.layers[currentLayer];
+            //var currentLayer = $scope.config.layers.currentLayer;
+            //var layer = $scope.renderEngine.layers[currentLayer];
             $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
             $scope.requestEditEngineUpdate();      
 		}

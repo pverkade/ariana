@@ -101,7 +101,7 @@ class Color {
  * RECTANGLE : draw rectangles
  * 
  */
-enum drawType { NORMAL, DASHED, BRUSH, LINE, RECTANGLE };
+enum drawType { NORMAL, DASHED, BRUSH, LINE, RECTANGLE }
 
 /*
  * Brushes
@@ -111,7 +111,7 @@ enum drawType { NORMAL, DASHED, BRUSH, LINE, RECTANGLE };
  * NEIGHBOR : stroke nearby lines
  * FUR : fur effect with nearby points
  */
-enum brushType { THIN, PEN, NEIGHBOR, FUR, MULTISTROKE };
+enum brushType { THIN, PEN, NEIGHBOR, FUR, MULTISTROKE }
 
 /*
  * Drawing class
@@ -355,7 +355,7 @@ class DrawEngine {
     draw(path : Path) : void {
         var context = this.tmpDrawContext;
         if (context == null) {
-            console.log("Can't draw path, canvas context could not be rendered.")
+            console.log("Can't draw path, canvas context could not be rendered.");
             return;
         }
 

@@ -1,3 +1,4 @@
+/* jshint ignore:start */
 app.directive('tool', ['tools', function(tools) {
     return {
         restrict: 'A',
@@ -22,6 +23,7 @@ app.directive('tool', ['tools', function(tools) {
                 return tools.getTool();
             }
 
+
             scope.$watch(getTool, function(nval, oval) {
                 scope.active = (nval == scope.toolname);
 
@@ -30,3 +32,4 @@ app.directive('tool', ['tools', function(tools) {
         }
     };
 }]);
+/* jshint ignore:end */

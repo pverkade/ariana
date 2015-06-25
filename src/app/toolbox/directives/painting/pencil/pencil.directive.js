@@ -54,7 +54,7 @@ app.controller('PencilCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'c
         }
         
         $scope.hasDrawn = false;
-    }
+    };
 
 	/* onMouseDown */
     $scope.mouseDown = function() {

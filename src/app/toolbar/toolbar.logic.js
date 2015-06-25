@@ -156,7 +156,7 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
             $scope.addLayer(newLayer);
 
             $scope.cancelSelection();
-        }
+        };
         
         $scope.cancelSelection = function() {
             $scope.maskEnabled = false;
@@ -168,7 +168,7 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
             var nrWands = $scope.selectionTool.getNrWands();
             for (var i = 0; i < nrWands; i++) {
                 var removed = $scope.selectionTool.clearLast();
-                if (removed == false) {
+                if (removed === false) {
                     console.log("Selection tool clear Last returned false");
                 }                
             }

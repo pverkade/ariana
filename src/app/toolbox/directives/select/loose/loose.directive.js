@@ -120,9 +120,9 @@ app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
 
                     /* Draw shared mask variables to image. */
                     if ($scope.maskWand) {
-                        $scope.setMaskSelectedArea($scope.loose.width, $scope.loose.height);    
-                        var currentLayer = $scope.config.layers.currentLayer;
-                        var layer = $scope.renderEngine.layers[currentLayer];
+                        $scope.setMaskSelectedArea($scope.loose.width, $scope.loose.height);
+                        //currentLayer = $scope.config.layers.currentLayer;
+                        //layer = $scope.renderEngine.layers[currentLayer];
                         $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
                         $scope.requestEditEngineUpdate();      
                     }

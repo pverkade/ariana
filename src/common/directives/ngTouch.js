@@ -38,12 +38,14 @@ angular.module("ngTouch", [])
     .directive("ngTouchstart", function () {
         return {
             controller: function ($scope, $element) {
+                /* jshint ignore:start */
                 function onTouchStart($event) {
                     var method = '$scope.' + $element.attr('ng-touchstart');
                     $scope.$apply(function () {
                         eval(method);
                     });
                 }
+                /* jshint ignore:end */
 
                 $element.bind('touchstart', onTouchStart);
             }
@@ -54,12 +56,14 @@ angular.module("ngTouch", [])
             controller: function ($scope, $element) {
                 $element.bind('touchend', onTouchEnd);
 
+                /* jshint ignore:start */
                 function onTouchEnd($event) {
                     var method = '$scope.' + $element.attr('ng-touchend');
                     $scope.$apply(function () {
                         eval(method);
                     });
                 }
+                /* jshint ignore:end */
             }
         };
     })
