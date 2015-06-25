@@ -41,7 +41,7 @@ class Layer {
     private propertyChanged : MLayer.INotifyPropertyChanged;
     private propertyChangedTimeout;
 
-    transformHistory : Float32Array[];
+    private transformHistory : Float32Array[];
     private transformed = true;
     private transformedDimensions : number[];
 
@@ -322,6 +322,14 @@ class Layer {
 
     public isHidden() : boolean {
         return this.hidden;
+    }
+    
+    public getTransformHistory() : Float32Array[] {
+        return this.transformHistory;
+    }
+    
+    public setTransformHistory(history : Float32Array[]) {
+        this.transformHistory = history;
     }
 
 	public setupRender() { }
