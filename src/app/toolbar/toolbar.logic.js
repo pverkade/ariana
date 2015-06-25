@@ -155,11 +155,14 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
             var newLayer = $scope.renderEngine.createSelectionImageLayer($scope.imgData, 0);
             $scope.addLayer(newLayer);
 
-            $scope.cancelSelection();
+            //$scope.cancelSelection();
+            $scope.selection.maskEnabled = false;
+            $scope.drawEngine.clearCanvases();
+            $scope.editEngine.removeSelectionLayer();
         };
         
         $scope.cancelSelection = function() {
-            $scope.maskEnabled = false;
+            $scope.selection.maskEnabled = false;
 
             $scope.drawEngine.clearCanvases();
             $scope.editEngine.removeSelectionLayer();
