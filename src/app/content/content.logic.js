@@ -65,15 +65,10 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
         if (event.originalEvent) {
             mouseX = event.originalEvent.touches[0].pageX;
             mouseY = event.originalEvent.touches[0].pageY;
+            var mouseIndex = event.originalEvent.touches ? 1 : event.which;
         } else {
             mouseX = event.pageX;
             mouseY = event.pageY;
-        }
-
-        /* Store the mouse button. */
-        if (isNaN(event.touches)) {
-            var mouseIndex = event.originalEvent.touches ? 1 : event.which;
-        } else {
             var mouseIndex = event.touches ? 1 : event.which;
         }
         
@@ -110,7 +105,7 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
         event.preventDefault();
 
         /* Store the mouse button. */
-        if (isNaN(event.touches)) {
+        if (event.originalEvent) {
             var mouseIndex = event.originalEvent.touches ? 1 : event.which;
         } else {
             var mouseIndex = event.touches ? 1 : event.which;
