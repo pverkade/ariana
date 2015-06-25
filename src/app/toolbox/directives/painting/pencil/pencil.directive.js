@@ -48,11 +48,20 @@ app.controller('PencilCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'c
     $scope.stop = function() {
         if ($scope.hasDrawn) {
             var image = $scope.drawEngine.getCanvasImageData();
-            $scope.newLayerFromImage(image);
-            
+
+            $scope.newLayerFromImage(image, $scope.currentLayer + 1);
             $scope.drawEngine.clearCanvases();
         }
-    };
+
+        /* clear the top-canvas */
+        if ($scope.currentLayer < $scope.numberOfLayers - 1) {
+            var topCanvas = document.getElementById('top-canvas');
+            var topCanvasContext = topCanvas.getContext('2d');
+            topCanvasContext.clearRect(0, 0, topCanvas.width, topCanvas.height);
+        }
+        
+        $scope.hasDrawn = false;
+    }
 
 	/* onMouseDown */
     $scope.mouseDown = function() {

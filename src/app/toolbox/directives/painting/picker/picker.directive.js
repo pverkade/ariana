@@ -30,6 +30,7 @@ app.controller('PickerCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'c
     /* onMouseDown */
     $scope.mouseDown = function() {
         $scope.picking = true;
+        $scope.renderEngine.startColorPicking();
         $scope.mouseMove();
     };
 
@@ -79,6 +80,9 @@ app.controller('PickerCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'c
                 mouseUp: $scope.mouseUp,
                 mouseMove: $scope.mouseMove
             });
+        }
+        else {
+            $scope.renderEngine.endColorPicking();
         }
     }, true);
     

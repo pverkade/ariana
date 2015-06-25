@@ -12,7 +12,7 @@ app.directive('pan', function() {
         restrict: 'E',
         scope: true,
         templateUrl: 'app/toolbox/directives/basic/pan/pan.tpl.html',
-        controller: 'PanCtrl',
+        controller: 'PanCtrl'
     };
 });
 
