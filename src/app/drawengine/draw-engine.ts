@@ -324,6 +324,9 @@ class DrawEngine {
         context.clearRect(0, 0, this.drawCanvas.width, this.drawCanvas.height);
         context.drawImage(this.memCanvas, 0, 0);
 
+        this.tmpDrawContext.globalAlpha = 1.0;
+        this.tmpDrawContext.clearRect(0, 0, this.tmpDrawCanvas.width, this.tmpDrawCanvas.height);
+
         this.isCleared = true;
 
         if (this.currentPath) {
