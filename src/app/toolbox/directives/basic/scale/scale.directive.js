@@ -27,10 +27,10 @@ app.controller('ScaleCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
     $scope.init = function() {
         $scope.scaling = false;
         
-        var currentLayer = layers.getCurrentIndex();
-        if (currentLayer == -1) return;
-
-        var layer = $scope.renderEngine.getLayer(currentLayer);
+        var layer = $scope.getCurrentLayer();
+        if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
+            return;
+        }
         $scope.editEngine.setEditLayer(layer, EditMode.scale);
         $scope.editEngine.drawScaleTool(layer);
         $scope.requestEditEngineUpdate();

@@ -19,18 +19,16 @@ app.directive('rectangle', function() {
 app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', 'mouse', 'layers', function($scope, tools, canvas, mouse, layers) {
 	$scope.toolname = 'rectangle';
 	$scope.active = tools.getTool() == $scope.toolname;
+    $scope.rect = null;
 
     $scope.init = function() {
         $scope.setCursor('default');
         $scope.selection.maskEnabled = true;
 
-        var currentLayer = layers.getCurrentIndex();
-        if (currentLayer == -1) {
-            return;
-        }
+        var layer = $scope.getCurrentLayer();
+        if (layer == null) return;
 
-        var layer = $scope.renderEngine.getLayer(currentLayer);
-        if (layer.layerType != LayerType.ImageLayer) {
+        if (layer.getLayerType() != LayerType.ImageLayer) {
             return;
         }
         
@@ -86,8 +84,10 @@ app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', 'mouse', 'layers',
         /* Draw shared mask variables to image. */
         if ($scope.maskWand) {
             $scope.setMaskSelectedArea($scope.rect.width, $scope.rect.height);    
-            var currentLayer = layers.getCurrentIndex();
-            var layer = $scope.renderEngine.getLayer(currentLayer);
+            var layer = $scope.getCurrentLayer();
+            if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
+                return;
+            }
             $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
             $scope.requestEditEngineUpdate();      
         }
@@ -103,8 +103,7 @@ app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', 'mouse', 'layers',
         xMouse = mouse.getPosX();
         yMouse = mouse.getPosY(); 
 
-        var currentLayer = layers.getCurrentIndex();
-        var layer = $scope.renderEngine.getLayer(currentLayer);
+        var layer = $scope.getCurrentLayer();
         if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
             return;
         }

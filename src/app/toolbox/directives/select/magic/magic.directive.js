@@ -27,12 +27,9 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'la
         $scope.selection.maskEnabled = true;
 		canvas.setCursor('crosshair');
 
-		var currentLayer = layers.getCurrentIndex();
-		if (currentLayer == -1) {
-			return;
-		}
+        var layer = $scope.getCurrentLayer();
+        if (layer == null) return;
 
-		var layer = $scope.renderEngine.getLayer(currentLayer);
 		if (layer.getLayerType() != LayerType.ImageLayer) {
 			return;
 		}
@@ -63,8 +60,8 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'la
 		var mouseY = mouse.getPosY();
 
         /* Calculate x and y coordinates in pixels of the original image */
-        var currentLayer = layers.getCurrentIndex();
-        var layer = $scope.renderEngine.getLayer(currentLayer);
+
+        var layer = $scope.getCurrentLayer();
         if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
             return;
         }
@@ -84,9 +81,13 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'la
 
 		/* Draw shared mask variables to image. */
 		if ($scope.maskWand) {
-			$scope.setMaskSelectedArea($scope.magic.width, $scope.magic.height);    
-            var currentLayer = layers.getCurrentIndex();
-            var layer = $scope.renderEngine.getLayer(currentLayer);
+			$scope.setMaskSelectedArea($scope.magic.width, $scope.magic.height);
+
+			var layer = $scope.getCurrentLayer();
+			if (layer == null) {
+				console.log ("layer is null");
+				return;
+			}
             $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
             $scope.requestEditEngineUpdate();      
 		}
