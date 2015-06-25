@@ -148,8 +148,6 @@ class EditEngine {
         this.selectionLayer = selectionLayer;
 
         var imageData = this.context.createImageData(selectionLayer.getImage().width, selectionLayer.getImage().height);
-        console.log(marchingAnts);
-        console.log(selectionLayer);
         var offset = 0;
         var thisPtr = this;
         this.selectionTmpCanvas = document.createElement("canvas");
@@ -160,7 +158,6 @@ class EditEngine {
         this.selectionAntsInterval = setInterval(function() {
             var tmpContext = thisPtr.selectionTmpContext;
             marchingAnts.writeData(imageData, 5.0, ++offset);
-            console.log("update marching ants");
             tmpContext.clearRect(0, 0, selectionLayer.getWidth(), selectionLayer.getHeight());
             tmpContext.putImageData(imageData, 0, 0);
         }, 500);
