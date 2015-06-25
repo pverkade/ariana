@@ -82,4 +82,26 @@
     .modal-footer {
         border-color: $white;
     }
+    
+    .btn-primary {
+        background-color: $brand-color;
+        border: $border-thickness solid $brand-color;
+        color: $light;
+
+        &:hover {
+            background-color: lighten($brand-color, $hover-lighten);           
+        }
+        
+        &:focus {
+            background-color: lighten($brand-color, $active-lighten);
+        }
+        
+        &.disabled {
+            background-color: desaturate($brand-color, $disabled-desaturate);
+        }
+    }
+
+    .btn-default {
+        background-color: $white;
+    }
 }
