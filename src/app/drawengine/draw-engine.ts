@@ -96,13 +96,12 @@ class Color {
  * Draw Types
  *
  * NORMAL : normal line (or a dot)
- * QUADRATIC_BEZIER : line using quadratic Bezier curves
  * BRUSH : Draw lines using a brush image
  * LINE : draw lines
  * RECTANGLE : draw rectangles
  * 
  */
-enum drawType { NORMAL, DASHED, QUADRATIC_BEZIER, BRUSH, LINE, RECTANGLE };
+enum drawType { NORMAL, DASHED, BRUSH, LINE, RECTANGLE };
 
 /*
  * Brushes
@@ -237,7 +236,7 @@ class DrawEngine {
     }
 
     /*
-     * Set the draw type (normal, quadratic_bezier, brush, line)..
+     * Set the draw type
      */
     setDrawType(drawType : drawType) : void {
         this.drawType = drawType;
@@ -377,11 +376,6 @@ class DrawEngine {
             this.drawDashedLine(points, path, context);
         }
 
-        /* Smoother draw by using quadratic Bézier curves */
-        if (this.drawType == drawType.QUADRATIC_BEZIER) {
-            this.drawQuadraticBezierCurves(points, context);
-        }
-
         /*
          * Paint brush 
          */
@@ -464,36 +458,6 @@ class DrawEngine {
         }
 
         path.lastDrawnItem = points.length - 1;
-    }
-
-    /*
-     * Smoother draw by using quadratic Bézier curves
-     */
-    drawQuadraticBezierCurves(points : Array<Position2D>, context : CanvasRenderingContext2D) {
-        if (!this.isCleared) {
-            this.clearCanvas();
-        }
-
-        if (points.length < 2) {
-            var b = points[0];
-            context.beginPath();
-            context.arc(b.x, b.y, context.lineWidth / 2, 0, Math.PI * 2, !0);
-            context.closePath();
-            context.fill();
-            return;
-        }
-        context.beginPath();
-        context.moveTo(points[0].x, points[0].y);
-        
-        /* Draw quadratic curves between each point */
-        for (var i : number = 1; i < points.length - 2; i++) {
-            var c = (points[i].x + points[i + 1].x) / 2,
-                d = (points[i].y + points[i + 1].y) / 2;
-            context.quadraticCurveTo(points[i].x, points[i].y, c, d);
-        }
-        context.quadraticCurveTo(points[points.length-2].x, points[points.length-2].y,
-                                 points[points.length-1].x, points[points.length-1].y);
-        context.stroke();
     }
 
     /*
