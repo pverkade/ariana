@@ -7,15 +7,14 @@
  *
  */
 
-"use strict";
-
 var app = angular.module('ariana', [
     'ui.router',
     'ui.bootstrap',
     'cfp.hotkeys',
     'templates-ariana',
     'ngFileUpload',
-    'ngAnimate'
+    'ngAnimate',
+    'ngTouch'
 ]);
 
 /* The AppController is the main controller of the application. */
@@ -31,16 +30,16 @@ app.controller('AppCtrl', ['$scope',
                     y : 0,
                     global: {
                         x : 0,
-                        y : 0,
-                    },
+                        y : 0
+                    }
                 },
                 current: {
                     x: 0,
                     y: 0,
                     global: {
                         x : 0,
-                        y : 0,
-                    },
+                        y : 0
+                    }
                 },
                 button: {
                     1: false, // left button
@@ -77,6 +76,7 @@ app.controller('AppCtrl', ['$scope',
                 }
             },
             layers: {
+                numberOfLayersCreated: 0,
                 numberOfLayers: 0,
                 currentLayer: -1,
                 layerInfo: []
@@ -106,7 +106,7 @@ app.controller('AppCtrl', ['$scope',
                 $scope.marchingAnts = new MarchingAnts(width, height);
                 $scope.marchingAnts.setMaskBorder($scope.maskBorder);
             }
-        }
+        };
 
         /* This function creates a new layer from a given Image-object. The new
          * layer is placed on top. */
@@ -114,38 +114,31 @@ app.controller('AppCtrl', ['$scope',
             var layer = $scope.renderEngine.createImageLayer(image);
             $scope.addLayer(layer);
 
-            var height = layer.getHeight();
-            var width  = layer.getWidth();
-            layer.setPos(0.5 * width, 0.5 * height);
+            var dimensions = layer.getTransformedDimensions();
+            layer.setPos(0.5 * dimensions[0], 0.5 * dimensions[1]);
         };
 
-        $scope.addLayer = function(layer) {
+        $scope.addLayer = function (layer) {
             var height = layer.getHeight();
-            var width  = layer.getWidth();
+            var width = layer.getWidth();
 
             $scope.renderEngine.addLayer(layer);
 
             /* set the correct layer info in config. The new layer comes on top
              * and is immediately selected. */
-            $scope.config.layers.numberOfLayers += 1;
+            $scope.config.layers.numberOfLayersCreated++;
+            $scope.config.layers.numberOfLayers = $scope.renderEngine.getNumberOfLayers();
             $scope.config.layers.currentLayer = $scope.config.layers.numberOfLayers - 1;
 
             /* Store information about the layers in the config object. */
             $scope.config.layers.layerInfo[$scope.config.layers.currentLayer] = {
-                "name": 'Layer ' + $scope.config.layers.numberOfLayers,
-                "x": layer.getPosX(),
-                "y": layer.getPosY(),
-                "originalWidth": width,
-                "originalHeight": height,
-                "width": width,
-                "height": height,
-                "rotation": layer.getRotation()
+                "name": 'Layer ' + $scope.config.layers.numberOfLayersCreated
             };
 
             $scope.requestRenderEngineUpdate();
         };
 
-        $scope.resizeCanvases = function(width, height) {
+        $scope.resizeCanvases = function (width, height) {
             var toolFunctions = $scope.config.tools.activeToolFunctions;
 
             $scope.config.canvas.width = width;
@@ -202,7 +195,8 @@ app.controller('AppCtrl', ['$scope',
                     requestAnimationFrame($scope.updates.animationFrameFunction);
             }
         };
-        $scope.requestEditEngineUpdate = function() {
+
+        $scope.requestEditEngineUpdate = function () {
             $scope.updates.editEngine = true;
             if (!$scope.updates.animationFrameCallback) {
                 $scope.updates.animationFrameCallback =
@@ -226,6 +220,16 @@ app.controller('AppCtrl', ['$scope',
         $scope.setCurrentLayerIndex = function (layerIndex) {
             $scope.config.layers.currentLayer = layerIndex;
             $scope.$broadcast('newCurrentLayer', layerIndex);
-        }
-	}
+
+            $scope.editEngine.setEditLayer($scope.renderEngine.getLayer(layerIndex), $scope.editEngine.getEditMode());
+            $scope.requestEditEngineUpdate();
+        };
+
+        $scope.updateThumbnail = function (index) {
+            if (0 <= index && index < $scope.renderEngine.getNumberOfLayers()) {
+                var layer = $scope.renderEngine.getLayer(index);
+                $scope.renderEngine.createThumbnail(layer);
+            }
+        };
+    }
 ]);

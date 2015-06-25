@@ -28,3 +28,40 @@
 .float-right {
     float: right;
 }
+
+@media screen and (max-width: $breakpoint-tablet) {
+    .scale-on {
+        @include transition(transform $scale-speed ease);
+        @include transform(scale($scale-amount, $scale-amount) translate(0.25 * $blocksize-tablet, -0.25 * $blocksize-tablet));
+    }
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    background: $brand-color;
+}
+
+input[type=range]::-moz-range-track {
+    background: $brand-color;
+}
+
+input[type=range]::-ms-track {
+    background: $brand-color;
+}
+
+input[type=range]::-webkit-slider-runnable-thumb {
+    background: $white;
+    border: none;
+    border-radius: 50%;
+}
+
+input[type=range]::-moz-range-thumb {
+    background: $white;
+    border: none;
+    border-radius: 50%;
+}
+
+input[type=range]::-ms-thumb {
+    background: $white;
+    border: none;
+    border-radius: 50%;
+}

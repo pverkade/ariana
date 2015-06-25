@@ -25,7 +25,7 @@ $border-thickness: 2px;
 
 $hover-lighten: 8%;
 $active-lighten: 16%;
-$seperator-darken: 2%;
+$seperator-darken: 10%;
 
 $move-speed: 200ms;
 
@@ -34,3 +34,8 @@ $fade-speed : 100ms;
 
 $scale-amount: 2;
 $scale-speed: 100ms;
+
+
+/* Tablet */
+$breakpoint-tablet: 1024px;
+$blocksize-tablet: 48px;

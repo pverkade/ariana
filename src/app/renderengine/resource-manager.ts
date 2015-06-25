@@ -1,3 +1,10 @@
+/*
+ * Project Ariana
+ * resource-manager.ts
+ *
+ * This file contains a resource manager for a given webgl renderingcontext.
+ */
+
 /// <reference path="image-shader-program"/>
 /// <reference path="bitmask-shader-program"/>
 /// <reference path="filters/brightness-filter"/>
@@ -7,6 +14,7 @@
 /// <reference path="filters/noise-filter"/>
 /// <reference path="filters/sepia-filter"/>
 /// <reference path="filters/colorize-filter"/>
+/// <reference path="filters/threshold-filter"/>
 /// <reference path="texture-program"/>
 /// <reference path="drawbuffer"/>
 
@@ -23,6 +31,7 @@ class ResourceManager {
     private saturationProgram : SaturationProgram;
     private noiseProgram : NoiseProgram;
     private colorizeProgram : ColorizeProgram;
+    private thresholdProgram : ThresholdProgram;
 
     constructor(gl : WebGLRenderingContext) {
         this.gl = gl;
@@ -108,5 +117,13 @@ class ResourceManager {
         }
 
         return this.textureProgram;
+    }
+
+    thresholdProgramInstance() : ThresholdProgram {
+        if (!this.thresholdProgram) {
+            this.thresholdProgram = new ThresholdProgram(this.gl);
+        }
+
+        return this.thresholdProgram;
     }
 }

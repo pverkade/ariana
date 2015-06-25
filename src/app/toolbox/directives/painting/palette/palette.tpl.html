@@ -1,15 +1,18 @@
 <div class="tool" ng-class="{active: active}">
 	<i class="mdi mdi-palette" ></i>
-	<div class="tool-settings large-tool-settings" ng-show="isActive('palette')">
+	<div class="palette-settings clearfix" ng-show="isActive('palette')">
 		
         <canvas 
             id="palette" 
             width="256px" 
             height="256px" 
-            style="background: hsl({{color.H}}, 100%, 50%)" 
+            ng-style="{'background' : 'hsl(' + color.h + ', 100%, 50%)'}"
             ng-mousedown="paletteMouseDown($event)" 
             ng-mousemove="paletteMouseMove($event)" 
-            ng-mouseup="paletteMouseUp()"></canvas>
+            ng-mouseup="paletteMouseUp()"
+            ng-touchstart="paletteMouseDown($event)"
+            ng-touchend="paletteMouseUp()"
+            ng-touchmove="paletteMouseMove($event)"></canvas>
 		
         <canvas 
             id="hue" 
@@ -17,7 +20,10 @@
             height="256px" 
             ng-mousedown="hueMouseDown($event)" 
             ng-mousemove="hueMouseMove($event)" 
-            ng-mouseup="hueMouseUp()"></canvas>
+            ng-mouseup="hueMouseUp()"
+            ng-touchstart="hueMouseDown($event)"
+            ng-touchend="hueMouseUp()"
+            ng-touchmove="hueMouseMove($event)"></canvas>
             
         <div class="float-left">
             <div class="input-group">
@@ -41,17 +47,17 @@
             <div class="input-group">
                 <span class="input-group-addon input-small"> H </span>
                 <input type="number" class="form-control number input-small-medium" 
-                    ng-model="color.H" ng-change="validate(event); updateRGB(); updateHEX();" ng-blur="blur()"></input>
+                    ng-model="color.h" ng-change="validate(event); updateRGB(); updateHEX();" ng-blur="blur()"></input>
             </div>
             <div class="input-group">
                 <span class="input-group-addon input-small"> S </span>
                 <input type="number" class="form-control number input-small-medium" 
-                    ng-model="color.S" ng-change="validate(event); updateRGB(); updateHEX();" ng-blur="blur()"></input>
+                    ng-model="color.s" ng-change="validate(event); updateRGB(); updateHEX();" ng-blur="blur()"></input>
             </div>
             <div class="input-group">
                 <span class="input-group-addon input-small"> V </span>
                 <input type="number" class="form-control number input-small-medium" 
-                    ng-model="color.V" ng-change="validate(event); updateRGB(); updateHEX();" ng-blur="blur()"></input>
+                    ng-model="color.v" ng-change="validate(event); updateRGB(); updateHEX();" ng-blur="blur()"></input>
             </div>
         </div>
         

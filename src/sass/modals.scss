@@ -6,20 +6,16 @@
  *
  */
 
-.thumbnail:hover {
-    background-color: darken(#e5e5e5, 5%);
-}
-
-/* Upload modal */
 .modal-body {
     .drop-box {
-        background: #F8F8F8;
-        border: 4px dashed #DDD;
+        background: $white;
+        border: 4px dashed $light;
         height: auto;
         min-height: 2.25 * $blocksize;
         line-height: 2.25 * $blocksize;
         text-align: center;
         margin: 10px;
+        color: $light;
         
         img {
             float: left;
@@ -43,5 +39,47 @@
     }
 }
 
+@media screen and (max-width: $breakpoint-tablet) {
+    .drop-box {
+        min-height: 2.25 * $blocksize-tablet;
+        line-height: 2.25 * $blocksize-tablet;
 
+        img {
+            height: 2 * $blocksize-tablet;
+            margin: 0.125 * $blocksize-tablet;
+        }
+    }
+}
 
+.modal-content {
+    border-radius: 0;
+    background-color: $light;
+
+    .thumbnail {
+        background-color: $dark;
+        border: none;
+        border-radius: 0;
+
+        cursor: pointer;
+
+        h3 {
+            color: $white;
+        }
+
+        &:hover {
+            background-color: lighten($dark, 5%);
+        }
+    }
+
+    .modal-header {
+        border-color: $white;
+
+        h1 {
+            color: $white;
+        }
+    }
+
+    .modal-footer {
+        border-color: $white;
+    }
+}

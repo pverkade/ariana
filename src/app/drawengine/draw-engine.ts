@@ -107,7 +107,7 @@ enum drawType { NORMAL, DASHED, QUADRATIC_BEZIER, BRUSH, LINE, RECTANGLE };
 /*
  * Brushes
  *
- * THIN : thin line,
+ * THIN : thin line
  * PEN : line with changing width
  * NEIGHBOR : stroke nearby lines
  * FUR : fur effect with nearby points
@@ -172,7 +172,6 @@ class DrawEngine {
         this.memCanvas.height = height;
         this.tmpDrawCanvas.width = width;
         this.tmpDrawCanvas.height = height;
-        console.log("resize:" + width + ", " + height);
         this.clearCanvases();
     }
     
