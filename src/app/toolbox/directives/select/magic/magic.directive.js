@@ -55,7 +55,6 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'la
         $scope.requestEditEngineUpdate();
     };
 
-	/* onMouseDown */
 	$scope.mouseDown = function() {
         $scope.stop();
 
@@ -73,8 +72,6 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'la
         var transformedPoint = $scope.magic.transform(layer, mouseX, mouseY);
         var xRelative = transformedPoint.x;
         var yRelative = transformedPoint.y;
-
-        console.log("position on image", xRelative, yRelative);
         
 		/* Check wheter user has clicked inside of a selection. */
         var bitmask = null;
@@ -95,14 +92,10 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'la
 		}
 	};
 
-	/* onMouseUp */
 	$scope.mouseUp = function() {
-
 	};
 
-	/* onMouseMove */
 	$scope.mouseMove = function() {
-		
 	};
     
 	/*

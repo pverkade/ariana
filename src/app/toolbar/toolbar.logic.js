@@ -182,5 +182,10 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
                 $scope.requestEditEngineUpdate();       
             }
         };
+        
+        $scope.isSelectionEnabled = function() {
+            var tool = tools.getTool();
+            return (tool == "magic" || tool == "loose" || tool == "rectangle");
+        }
     }
 ]);
