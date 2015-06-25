@@ -148,8 +148,6 @@ class EditEngine {
         this.selectionLayer = selectionLayer;
 
         var imageData = this.context.createImageData(selectionLayer.getImage().width, selectionLayer.getImage().height);
-        console.log(marchingAnts);
-        console.log(selectionLayer);
         var offset = 0;
         var thisPtr = this;
         this.selectionTmpCanvas = document.createElement("canvas");
@@ -160,7 +158,6 @@ class EditEngine {
         this.selectionAntsInterval = setInterval(function() {
             var tmpContext = thisPtr.selectionTmpContext;
             marchingAnts.writeData(imageData, 5.0, ++offset);
-            console.log("update marching ants");
             tmpContext.clearRect(0, 0, selectionLayer.getWidth(), selectionLayer.getHeight());
             tmpContext.putImageData(imageData, 0, 0);
         }, 500);
@@ -194,35 +191,18 @@ class EditEngine {
         var selectionLayer : ImageLayer = this.selectionLayer;
         if (selectionLayer) {
             this.context.save();
-            this.context.translate(
-                selectionLayer.getPosX(),
-                selectionLayer.getPosY()
-            );
-            this.context.rotate(-selectionLayer.getRotation());
-            /*this.context.scale(
-                selectionLayer.isFlippedX() ? -1.0 : 1.0,
-                selectionLayer.isFlippedY() ? -1.0 : 1.0
-            );
+            
+            var transformation = this.selectionLayer.calculateTransformation();
+            console.log(transformation);
+            
+            this.context.transform(transformation[0], transformation[3], transformation[1], transformation[4], transformation[6], -transformation[7]);
+            
             this.context.drawImage(
                 this.selectionTmpCanvas,
-                0,
-                0,
-                this.selectionTmpCanvas.width,
-                this.selectionTmpCanvas.height,
-                -selectionLayer.getWidth()/2.0,
-                -selectionLayer.getHeight()/2.0,
-                selectionLayer.getWidth(),
-                selectionLayer.getHeight()
-            );*/
-            var dimensions = selectionLayer.getTransformedDimensions();
-            var width = dimensions[0];
-            var height = dimensions[1];
-            this.context.drawImage(
-                this.selectionTmpCanvas,
-                width/-2.0,
-                height/-2.0,
-                width,
-                height);
+                -1,
+                -1,
+                2,
+                2);
             this.context.restore();
         }
     }
