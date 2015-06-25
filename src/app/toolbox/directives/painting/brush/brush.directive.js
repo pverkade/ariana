@@ -24,8 +24,6 @@ app.controller('BrushCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'co
     $scope.opacity = 1;
     $scope.brush = "thin";
 
- 
-        
 	/* init */
 	$scope.init = function() {
         $scope.drawing = false;
@@ -35,9 +33,6 @@ app.controller('BrushCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'co
         
         $scope.updateDrawEngine();
         $scope.updateBrushStyle();
-
-        /* If the last layer is not selected, draw between other layers. */
-        $scope.paintTopCanvas();
 	};
     
     $scope.updateDrawEngine = function() {
