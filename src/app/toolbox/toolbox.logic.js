@@ -23,6 +23,7 @@ app.controller('ToolboxCtrl', function($scope) {
         var temp = $scope.config.tools.colors.primary;
         $scope.config.tools.colors.primary = $scope.config.tools.colors.secondary;
         $scope.config.tools.colors.secondary = temp;
+        $scope.$broadcast('swapColorsBC', {});
     };
     
     /* 

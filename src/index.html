@@ -9,18 +9,8 @@
 
     <!-- @ifdef DEV -->
 
-    <!-- bower -->
-    <script src="vendor/jquery.js"></script>
-    <script src="vendor/bootstrap.js"></script>
-    <script src="vendor/angular.js"></script>
-    <script src="vendor/angular-ui-router.js"></script>
-    <script src="vendor/ui-bootstrap-tpls.js"></script>
-    <script src="vendor/ng-file-upload-all.js"></script>
-    <script src="vendor/angular-animate.js"></script>
-    <script src="vendor/hotkeys.js"></script>
-
     <!-- ariana -->
-    <!-- include: "type": "js", "files": "build/js/*.js" -->
+    <!-- include: "type": "js", "files": ["build/js/bower.js", "build/js/*.js"] -->
     
     <!-- style -->
     <!-- include: "type": "css", "files": "build/**/*.css" -->
@@ -33,8 +23,10 @@
 </head>
 
 <body ng-controller="HotkeyCtrl">
-    <div ui-view="toolbar"></div>
+    <!-- Note: the order of the ui-elements makes sure thigns slide over each 
+     !-- other in the right order. --> 
     <div ui-view="layers"></div>
+    <div ui-view="toolbar"></div>
     <div ui-view="toolbox"></div>
     <div ui-view="content"></div>
 </body>

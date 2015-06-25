@@ -1,25 +1,79 @@
+/*
+ * Project Ariana
+ * modals.scss
+ * 
+ * This file contains the style definitions for input fields.
+ *
+ */
+ 
 .input-group {
-    height: 0.5 * $blocksize;
     
-    * {
+    .input-group-addon, .form-control {
         border-radius: 0;
+        height: 0.5 * $blocksize;
     }
+    
+    @media screen and (max-width: $breakpoint-tablet) {
+        
+        .input-group-addon, .form-control {
+            height: 0.5 * $blocksize-tablet;
+        }
+        
+        * {
+            font-size: 8pt;
+            
+        }
+    }
+}
+
+.form-control:focus {
+    border-color: $white;
+    outline: 0px none;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px $brand-color;
+}
+
+.btn-primary {
+    background-color: $brand-color;
+    border: $border-thickness solid $brand-color;
+    color: $dark;
+
+    &:hover {
+        color: $light;            
+    }
+}
+
+.btn-default {
+    background-color: $white;
 }
 
 .input-small {
     width: $blocksize !important;
+    
+    @media screen and (max-width: $breakpoint-tablet) {
+        width: $blocksize-tablet !important;
+    }
 }
 
 .input-small-medium {
     width: 1.5 * $blocksize !important;
+    
+    @media screen and (max-width: $breakpoint-tablet) {
+        width: 1.5 * $blocksize-tablet !important;
+    }
 }
 
 .input-medium {
     width: 2 * $blocksize !important;
+    @media screen and (max-width: $breakpoint-tablet) {
+        width: 2 * $blocksize-tablet !important;
+    }
 }
 
 .input-large {
     width: 4 * $blocksize !important;
+    @media screen and (max-width: $breakpoint-tablet) {
+        width: 4 * $blocksize-tablet !important;
+    }
 }
 
 .input-group-addon {
@@ -66,22 +120,32 @@
         .filter-name {
             min-width: 2 * $blocksize;
             width: 50%;
-            @media (max-width: 10 * $blocksize) {
+            @media (max-width: 10 * $blocksize-tablet) {
                 display: none;
             }
         }
         
         .filter-checkbox {
             min-width: 2 * $blocksize;
+            
+            @media screen and (max-width: $breakpoint-tablet) {
+                min-width: 2 * $blocksize-tablet;
+            }
+            
             width: 50%;
-            @media (max-width: 10 * $blocksize) {
+            @media (max-width: 10 * $blocksize-tablet) {
                 width: 100%;
             }
         }
         
         .input-group-addon, .number {
             width: 2 * $blocksize;
-            @media (max-width: 10 * $blocksize) {
+            
+            @media screen and (max-width: $breakpoint-tablet) {
+                width: 2 * $blocksize-tablet;
+            }
+            
+            @media (max-width: 10 * $blocksize-tablet) {
                 width: 50%;
             }
         }
@@ -89,15 +153,23 @@
         .slider {
             width: calc(100% - #{2 * $blocksize});
             
-            @media (max-width: 10 * $blocksize) {
+            @media screen and (max-width: $breakpoint-tablet) {
+                width: calc(100% - #{2 * $blocksize-tablet});
+            }
+            
+            @media (max-width: 10 * $blocksize-tablet) {
                 width: 100%;
             }
         }
         
         .number {
             width: 2 * $blocksize;
+            
+            @media screen and (max-width: $breakpoint-tablet) {
+                width: 2 * $blocksize-tablet;
+            }
            
-            @media (max-width: 10 * $blocksize) {
+            @media (max-width: 10 * $blocksize-tablet) {
                 display: none;
             }
         }

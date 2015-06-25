@@ -12,7 +12,7 @@ app.controller('ScaleCtrl', function($scope) {
     $scope.active = $scope.config.tools.activeTool == $scope.toolname;
     $scope.cursorTypes = ["e-resize", "ne-resize", "n-resize", "nw-resize", "w-resize",
         "sw-resize", "s-resize", "se-resize", "e-resize"];
-    $scope.keepAR = true;
+    $scope.keepAR = false;
 
     /* init */
     $scope.init = function() {
@@ -35,6 +35,7 @@ app.controller('ScaleCtrl', function($scope) {
     /* onMouseUp */
     $scope.mouseUp = function() {
         $scope.scaling = false;
+        $scope.updateThumbnail($scope.getCurrentLayerIndex());
     };
 
     /* onMouseMove */
@@ -111,16 +112,13 @@ app.controller('ScaleCtrl', function($scope) {
                 }
             }
 
-            layer.setWidth(newWidth);
+            layer.setWidth(newWidth );
             layer.setHeight(newHeight);
-
-            window.requestAnimationFrame(function() {
-                $scope.renderEngine.render();
-            });
 
             $scope.editEngine.setEditLayer(layer, EditMode.scale);
             $scope.editEngine.drawScaleTool(layer);
             $scope.requestEditEngineUpdate();
+            $scope.requestRenderEngineUpdate();
 
         }
         else {
@@ -172,9 +170,11 @@ app.controller('ScaleCtrl', function($scope) {
         }
 
         if (oval) {
+            $scope.editEngine.removeEditLayer();
             var layer = $scope.getCurrentLayer();
-            layer.commitTransformations();
+            layer.commitDimensions();
             $scope.editEngine.clear();
+            $scope.updateThumbnail($scope.getCurrentLayerIndex());
         }
     }, true);
 });

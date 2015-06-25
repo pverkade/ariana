@@ -2,13 +2,16 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-bower-concat');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-ts');
     grunt.loadNpmTasks('grunt-html2js');
     grunt.loadNpmTasks('grunt-include-source');
     grunt.loadNpmTasks('grunt-preprocess');
+    grunt.loadNpmTasks('grunt-ng-annotate');
     grunt.loadNpmTasks('grunt-karma');
 
     var glob = require('glob');
@@ -149,15 +152,6 @@ module.exports = function(grunt) {
                     flatten: true
                 }]
             },
-            build_vendorjs: {
-                files: [{
-                    src: ['<%= vendor_files.js %>'],
-                    dest: '<%= build_dir %>/vendor',
-                    cwd: '.',
-                    expand: true,
-                    flatten: true
-                }]
-            },
             build_html: {
                 files: [{
                     src: '<%= src_files.html %>',
@@ -182,6 +176,15 @@ module.exports = function(grunt) {
                     cwd: 'src/assets/',
                     expand: true
                 }]
+            },
+            fonts: {
+                files: [{
+                    src: ['<%= vendor_files.fonts %>'],
+                    dest: '<%= build_dir %>/fonts/',
+                    cwd: '.',
+                    expand: true,
+                    flatten: true
+                }]
             }
         },
 
@@ -189,13 +192,6 @@ module.exports = function(grunt) {
          * Copy and concatenate files from bower_components folder
          */
         bower_concat: {
-            all: {
-                dest: 'build/js/bower.js',
-                cssDest: 'build/css/bower.css',
-                bowerOptions: {
-                    relative: false
-                }
-            },
             js: {
                 dest: 'build/js/bower.js',
                 bowerOptions: {
@@ -210,20 +206,70 @@ module.exports = function(grunt) {
             }
         },
 
-        /*
-         * Concatenates js and/or css in the build folder
+        /**
+         * `ngAnnotate` annotates the sources before minifying. That is, it allows us
+         * to code without the array syntax.
          */
-        concat: {
-            js: {
-                src: ['<%= vendor_files.js %>', '<%=build_dir%>/js/*.js'],
-                dest: '<%=build_dir%>/ariana.js'
-            },
-            css: {
-                options: {
-                    sourceMap: true
-                },
-                src: ['<%=build_dir%>/**/*.css'],
-                dest: '<%=build_dir%>/style.css'
+        ngAnnotate: {
+            compile: {
+                files: [{
+                    src: ['<%= src_files.js %>'],
+                    dest: '<%= build_dir %>/js/',
+                    expand: true,
+                    flatten: true
+                }]
+            }
+        },
+
+        /**
+         * Minify and uglify javascript file
+         */
+        uglify: {
+            compile: {
+                files: {
+                    '<%= build_dir %>/ariana.js': ['<%= build_files.js %>']
+                }
+            }
+        },
+
+        /**
+         * Minify css file
+         */
+        cssmin: {
+            target: {
+                files: {
+                    '<%= build_dir %>/ariana.css': ['<%= build_files.css %>']
+                }
+            }
+        },
+
+        /**
+         * `jshint` defines the rules of our linter as well as which files we
+         * should check. This file, all javascript sources, and all our unit tests
+         * are linted based on the policies listed in `options`. But we can also
+         * specify exclusionary patterns by prefixing them with an exclamation
+         * point (!); this is useful when code comes from a third party but is
+         * nonetheless inside `src/`.
+         */
+        jshint: {
+            src: [ 
+                '<%= src_files.js %>'
+            ],
+            test: [
+                '<%= src_files.jsunit %>'
+            ],
+            gruntfile: [
+                'Gruntfile.js'
+            ],
+            options: {
+                curly: true,
+                immed: true,
+                newcap: true,
+                noarg: true,
+                sub: true,
+                boss: true,
+                eqnull: true,
+                force: true
             }
         },
 
@@ -251,7 +297,6 @@ module.exports = function(grunt) {
             unit: {
                 dir: '<%= build_dir %>',
                 src: [
-                    '<%= vendor_files.js %>',
                     '<%= test_files.js %>',
                     '<%= src_files.jsunit %>'
                 ]
@@ -259,19 +304,11 @@ module.exports = function(grunt) {
         },
 
         /*
-         * The delta tasks watches for changes and rebuilds the project in build.
+         * The delta task watches for changes and rebuilds the project in build.
          */
         delta: {
             options: {
                 livereload: true
-            },
-            startup: {
-                files: [], // This is redundant, but necessary
-                tasks: ['karma:continuous:start'],
-                options: {
-                    atBegin: true,
-                    spawn: false
-                }
             },
             html: {
                 files: ['<%= src_files.html %>'],
@@ -283,11 +320,11 @@ module.exports = function(grunt) {
             },
             js: {
                 files: ['<%= src_files.js %>'],
-                tasks: ['chain_js']
+                tasks: ['jshint:src', 'chain_js']
             },
             jsunit: {
                 files: ['<%= src_files.jsunit %>'],
-                tasks: ['karmaconfig', 'karma:continuous:run']
+                tasks: ['jshint:test', 'karmaconfig', 'karma:continuous:run']
             },
             ts: {
                 files: ['<%= src_files.ts %>'],
@@ -315,39 +352,40 @@ module.exports = function(grunt) {
     grunt.registerTask('build_dev', [
         'clean:build', // Remove build/
         'sass', // Compile sass -> build/css/ariana.css
-        'bower_concat:css', // Concatenate all bower css -> build/css/bower.css
+        'bower_concat', // Concatenate all bower files -> build/
         'build_renderengine', // Compile render engine -> build/js/renderengine.js
         'html2js', // Combine all tpl.html -> build/js/template.js
+        'jshint', // Lint all javascript files
         'copy:build_js', // Copy all javascript -> build/js/
-        'copy:build_vendorjs', // Copy all javascript -> build/js/
         'copy:build_html', // Copy index.html -> build/index.html
         'copy:build_assets', // Copy assets -> build/assets/
         'copy:build_vendorcss', // Copy bower css -> build/css/
+        'copy:fonts', // Copy the material design fonts
         'includeSource', // Link all js and css files to index.html
-        'preprocess:dev', // Add some links to index.html
-        'karmaconfig', // Configure karma test
-        'karma:unit' // Run karma tests
+        'preprocess:dev' // Add some links to index.html
     ]);
 
     /* The build_prod task completely builds, concats and (SOON) minifies the src */
     grunt.registerTask('build_prod', [
         'clean:build', // Remove build/
         'sass', // Compile sass -> build/css/ariana.css
-        'bower_concat:css', // Concatenate all bower css -> build/css/bower.css
+        'bower_concat', // Concatenate all bower files -> build/
         'build_renderengine', // Compile render engine -> build/js/renderengine.js
         'html2js', // Combine all tpl.html -> build/js/template.js
-        'copy:build_js', // Copy all javascript -> build/js/
         'copy:build_html', // Copy index.html -> build/index.html
         'copy:build_assets', // Copy assets -> build/assets/
         'copy:build_vendorcss', // Copy bower css -> build/css/
-        'concat', // Concat all js and css files
-        'clean:prod', // remove redundant folders
+        'copy:fonts', // Copy the material design fonts
+        'ngAnnotate', // Fix array annotation
+        'uglify', // Uglify and minify javascript file
+        'cssmin', // Minify css file
+        'clean:prod', // Remove redundant folders
         'includeSource', // Link ariana.js and ariana.css to index.html
         'preprocess:prod' // Remove redundant links in index.html
     ]);
 
     /* grunt */
-    grunt.registerTask('default', 'build_dev');
+    grunt.registerTask('default', ['build_dev', 'karmaconfig', 'karma:unit']);
 
     /* grunt dev */
     grunt.registerTask('dev', 'build_dev');
@@ -357,7 +395,8 @@ module.exports = function(grunt) {
 
     /* grunt watch task */
     grunt.renameTask('watch', 'delta');
-    grunt.registerTask('watch', ['build_dev', 'delta']);
+    grunt.registerTask('watch', ['build_dev', 'karmaconfig', 'karma:unit', 'karma:continuous:start', 'delta']);
+    grunt.registerTask('watch_nt', ['build_dev', 'delta']);
 
     /*
      * Removes index.html and templates.js

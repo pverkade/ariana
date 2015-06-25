@@ -6,8 +6,6 @@
  * Preview elements.
  *
  */
- 
-//fixed
 
 .toolset {
     position : absolute;
@@ -68,12 +66,16 @@
     top: 0;
     margin-left: $blocksize;
     width: 4 * $blocksize;
-    min-height: 4 * $blocksize;
+    min-height: 3 * $blocksize;
+    padding: 0.25 * $blocksize;
     z-index: 3;
     background-color: lighten($light, 2 * $active-lighten);
     
     @media screen and (max-width: $breakpoint-tablet) {
+        width: 4 * $blocksize-tablet;
+        min-height: 4 * $blocksize-tablet;
         margin-left: $blocksize-tablet;
+        padding: 0.25 * $blocksize-tablet;
     }
 }
 
@@ -165,5 +167,5 @@
             left:  0.125 * $blocksize-tablet;
             bottom: 0.125 * $blocksize-tablet;
         }
-    }   
+    }
 }

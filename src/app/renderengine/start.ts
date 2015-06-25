@@ -1,3 +1,11 @@
+/*
+ * Project Ariana
+ * start.ts
+ *
+ * This file contains functions to debug the renderengine, without the angular interface.
+ *
+ */
+
 /// <reference path="render-engine"/>
 
 function start() {

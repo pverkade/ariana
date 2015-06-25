@@ -1,5 +1,5 @@
-/**
- * Created by zeta on 6/1/15.
+/*
+ * A drawbuffer is a container of a framebuffer including a stencilbuffer
  */
 /// <reference path="render-helper" />
 
@@ -23,10 +23,13 @@ class DrawBuffer {
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MIN_FILTER, this.gl.NEAREST);
         this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
 
-        // typescript doens't have signature for this function.
-        // is a bug of typescript 1.5 beta.
+        /*
+         * typescript doens't have signature for this function
+         * is a bug of typescript 1.5 beta
+         */
         (<any>gl).texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, width, height, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, null);
 
+        /* Create renderbuffer as stencil buffer and a framebuffer for the colors */
         this.renderbuffer = this.gl.createRenderbuffer();
         this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, this.renderbuffer);
         this.gl.renderbufferStorage(this.gl.RENDERBUFFER, this.gl.STENCIL_INDEX8, width, height);
@@ -40,9 +43,9 @@ class DrawBuffer {
         this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, null);
     }
 
-    /* This function returns an image data url.
-     *
-     * The image is flipped upside down.
+    /*
+     * This function returns an image data url
+     * The image is flipped upside down
      */
     getImage() : String {
         /* Read the contents of the framebuffer */
@@ -62,6 +65,7 @@ class DrawBuffer {
         return canvas.toDataURL();
     }
 
+    /* Get the content of the currently bound framebuffer as Uint8Array */
     getData() : Uint8Array {
         var data = new Uint8Array(this.width * this.height * 4);
         this.gl.readPixels(0, 0, this.width, this.height, this.gl.RGBA, this.gl.UNSIGNED_BYTE, data);
@@ -92,11 +96,11 @@ class DrawBuffer {
         this.width = width;
         this.height = height;
 
-        // Resize texture
+        /* Resize texture */
         this.gl.bindTexture(this.gl.TEXTURE_2D, this.texture);
         (<any>this.gl).texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, width, height, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, null);
 
-        // Resize render buffer
+        /* Resize render buffer */
         this.gl.bindRenderbuffer(this.gl.RENDERBUFFER, this.renderbuffer);
         this.gl.renderbufferStorage(this.gl.RENDERBUFFER, this.gl.DEPTH_COMPONENT16, width, height);
     }
