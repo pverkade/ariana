@@ -32,9 +32,9 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
         var zoom  = canvas.getZoom();
 
         var mouseX, mouseY;
-        if (event.originalEvent) {
-            mouseX = event.originalEvent.touches[0].pageX;
-            mouseY = event.originalEvent.touches[0].pageY;
+        if (event.touches) {
+            mouseX = event.touches[0].pageX;
+            mouseY = event.touches[0].pageY;
         } else {
             mouseX = event.pageX;
             mouseY = event.pageY;
@@ -63,10 +63,10 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
         var zoom  = canvas.getZoom();
 
         var mouseX, mouseY;
-        if (event.originalEvent) {
-            mouseX = event.originalEvent.touches[0].pageX;
-            mouseY = event.originalEvent.touches[0].pageY;
-            var mouseIndex = event.originalEvent.touches ? 1 : event.which;
+        if (event.touches) {
+            mouseX = event.touches[0].pageX;
+            mouseY = event.touches[0].pageY;
+            var mouseIndex = event.touches ? 1 : event.which;
         } else {
             mouseX = event.pageX;
             mouseY = event.pageY;
@@ -106,8 +106,8 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
         event.preventDefault();
 
         /* Store the mouse button. */
-        if (event.originalEvent) {
-            var mouseIndex = event.originalEvent.touches ? 1 : event.which;
+        if (event.touches) {
+            var mouseIndex = event.touches ? 1 : event.which;
         } else {
             var mouseIndex = event.touches ? 1 : event.which;
         }
@@ -163,8 +163,8 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
         canvas.setY(canvas.getY() + heightDifference);
     };
 
-    $scope.pinchZoom = function(event) {
-        var zoom = canvas.getZoom() + event.scale;
+    $scope.pinchZoom = function(event, scale) {
+        var zoom = canvas.getZoom() + scale;
         if (zoom <= 0.05) {
             zoom = 0.05;
             canvas.setZoom(zoom);
