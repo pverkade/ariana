@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * loose.directive.js
+ * 
+ * This file contains the LooseController and directive, 
+ * which controls the loose selection tool in the toolbox.
+ *
+ */
+
 angular.module('ariana').directive('loose', function() {
     return {
         restrict: 'E',
