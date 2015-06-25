@@ -5,7 +5,6 @@
  * This file contains the style definition for the Layer Selector.
  *
  */
-
 .layers {
     position: absolute;
     top: 1.5 * $blocksize;
@@ -26,7 +25,8 @@
         position: relative;
         
         height: calc(100% - #{$blocksize});
-        overflow-y: auto;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
         overflow-x: hidden;
         width: 4 * $blocksize;
         position: relative;

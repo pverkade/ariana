@@ -79,7 +79,7 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
             }
         }
 
-        $scope.cancelFilter= function() {
+        $scope.cancelFilter = function() {
             $scope.filter.filterObject = null;
             $scope.filter.currentlayerOnly = false;
 
