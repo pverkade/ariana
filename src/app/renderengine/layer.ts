@@ -93,6 +93,8 @@ class Layer {
             this.sizeMatrix,
             new Float32Array([width/2.0, height/2.0])
         );
+
+        this.commitDimensions();
 	}
 
     /*
@@ -185,6 +187,25 @@ class Layer {
         this.notifyPropertyChanged();
         this.transformed = true;
 	}
+
+    public commitDimensions() {
+        var matrix = mat3.create();
+        mat3.identity(matrix);
+
+        mat3.scale(
+            matrix,
+            matrix,
+            new Float32Array([
+                this.width / 2,
+                this.height / 2
+            ])
+        );
+
+        this.transformHistory.push(matrix);
+        mat3.identity(this.sizeMatrix);
+        this.width = 2;
+        this.height = 2;
+    }
 
 	public setPos(x : number, y : number) {
 		this.posX = x;

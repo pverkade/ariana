@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * translate.directive.js
+ * 
+ * This file contains the TranslateController and directive, 
+ * which control the translate tool in the toolbox.
+ *
+ */
+ 
 app.directive('translate', function() {
     return {
         restrict: 'E',
@@ -7,16 +16,16 @@ app.directive('translate', function() {
     };
 });
 
-app.controller('TranslateCtrl', function($scope) {
+app.controller('TranslateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', function($scope, tools, canvas, layers, mouse) {
     $scope.toolname = 'translate';
-    $scope.active = $scope.config.tools.activeTool == $scope.toolname;
+    $scope.active = tools.getTool() == $scope.toolname;
 
     /* init */
     $scope.init = function() {
-        $scope.setCursor('move');
+        canvas.setCursor('move');
         $scope.translating = false;
         
-        var currentLayer = $scope.config.layers.currentLayer;
+        var currentLayer = layers.getCurrentIndex();
         if (currentLayer == -1) return;
 
         var layer = $scope.renderEngine.layers[currentLayer];
@@ -32,23 +41,22 @@ app.controller('TranslateCtrl', function($scope) {
     /* onMouseUp */
     $scope.mouseUp = function() {
         $scope.translating = false;
-        $scope.updateThumbnail($scope.getCurrentLayerIndex());
+        $scope.updateThumbnail(layers.getCurrentIndex());
     };
 
     /* onMouseMove */
     $scope.mouseMove = function() {
         if (!$scope.translating) return;
          
-        var currentLayer = $scope.config.layers.currentLayer;
+        var currentLayer = layers.getCurrentIndex();
         if (currentLayer == -1) return;
         var layer = $scope.renderEngine.layers[currentLayer];
         
-        var dx = $scope.config.mouse.current.x - $scope.config.mouse.old.x;
-        var dy = $scope.config.mouse.current.y - $scope.config.mouse.old.y;
+        var dx = mouse.getPosGlobal().x - mouse.getPosOldGlobal().x;
+        var dy = mouse.getPosGlobal().y - mouse.getPosOldGlobal().y;
         
-        /* Update th old mouse position. */
-        $scope.config.mouse.old.x += dx;
-        $scope.config.mouse.old.y += dy;
+        /* Update the old mouse position. */
+        mouse.setPosOld(mouse.getPosOld().x + dx, mouse.getPosOld().y + dy);
         
         /* Get the layer position. */
         var x = layer.getPosX();
@@ -70,22 +78,22 @@ app.controller('TranslateCtrl', function($scope) {
      * to the "activeToolFunctions" object.
      * Always call "init" first;
      */
-    $scope.$watch('active', function(nval, oval) {
+    $scope.$watch('active', function(nval) {
         if (nval)  {
             $scope.init();
 
-            $scope.config.tools.activeToolFunctions = {
+            tools.setToolFunctions({
                 mouseDown: $scope.mouseDown,
                 mouseUp: $scope.mouseUp,
                 mouseMove: $scope.mouseMove
-            };
+            });
         }
         else {
             $scope.editEngine.removeEditLayer();
             $scope.editEngine.clear();
 
-            $scope.updateThumbnail($scope.getCurrentLayerIndex());
+            $scope.updateThumbnail(layers.getCurrentIndex());
 
         }
     }, true);
-});
+}]);

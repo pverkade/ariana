@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * pencil.directive.js
+ * 
+ * This file contains the PencilController and directive, 
+ * which control the pencil tool in the toolbox.
+ *
+ */
+ 
 app.directive('pencil', function() {
     return {
         restrict: 'E',
@@ -7,22 +16,21 @@ app.directive('pencil', function() {
     };
 });
 
-app.controller('PencilCtrl', function($scope) {
+app.controller('PencilCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colors', function($scope, tools, canvas, layers, mouse, colors) {
 	$scope.toolname = 'pencil';
-	$scope.active = ($scope.config.tools.activeTool == $scope.toolname);
+	$scope.active = (tools.getTool() == $scope.toolname);
     $scope.thickness = 2;
     $scope.opacity = 1;
     
     $scope.currentLayer = -1;
     $scope.numberOfLayers = 0;
     
-	/* init */
 	$scope.init = function() {
         $scope.drawing = false;
         $scope.hasDrawn = false;
-		$scope.setCursor('default');
+		canvas.setCursor('default');
         $scope.drawEngine.setDrawType(drawType.NORMAL);
-        $scope.setColor($scope.config.tools.colors.primary);
+        $scope.setColor(colors.getPrimary());
         $scope.updateDrawEngine();
 
         /* If the last layer is not selected, draw between other layers. */
@@ -32,8 +40,8 @@ app.controller('PencilCtrl', function($scope) {
     $scope.paintTopCanvas = function() {
         /* TODO: do stop() and init() when another layer is selected? */
 
-        $scope.currentLayer = $scope.config.layers.currentLayer;
-        $scope.numberOfLayers = $scope.config.layers.numberOfLayers;
+        $scope.currentLayer = layers.getCurrentIndex();
+        $scope.numberOfLayers = layers.getNumLayers();
         if ($scope.currentLayer == $scope.numberOfLayers - 1) {
             return;
         }
@@ -49,7 +57,7 @@ app.controller('PencilCtrl', function($scope) {
 
         /* Draw the above lying layer(s) to */
         var upperIndices = [];
-        for (var i = $scope.currentLayer + 1; i < $scope.numberOfLayers; i++) {
+        for (i = $scope.currentLayer + 1; i < $scope.numberOfLayers; i++) {
             upperIndices.push(i);
         }
         console.log(upperIndices);
@@ -65,12 +73,12 @@ app.controller('PencilCtrl', function($scope) {
             topCanvasContext.drawImage(topCanvasImage, 0, -topCanvasImage.height);
         };
         topCanvasImage.src = $scope.renderEngine.renderIndicesToImg(upperIndices);
-    }
+    };
     
     $scope.updateDrawEngine = function() {
         $scope.drawEngine.setLineWidth($scope.thickness);
         $scope.drawEngine.setOpacity($scope.opacity);
-    }
+    };
     
     $scope.setColor = function(color) {
         $scope.drawEngine.setColor(
@@ -98,35 +106,35 @@ app.controller('PencilCtrl', function($scope) {
             console.log(topCanvas);
             console.log(topCanvas.width, topCanvas.height);
         }
-    }
+    };
 
 	/* onMouseDown */
-	$scope.mouseDown = function() {
+    $scope.mouseDown = function() {
         $scope.drawing = true;
         
-        var buttons = $scope.config.mouse.button;
-        if (buttons[1] && buttons[3]) return;
-
-        if (buttons[1]) 
-            $scope.setColor($scope.config.tools.colors.primary);
-        else 
-            $scope.setColor($scope.config.tools.colors.secondary);
+        if (mouse.getPrimary() && mouse.getSecondary()) return;
         
-        $scope.drawEngine.onMousedown($scope.config.mouse.current.x, $scope.config.mouse.current.y);
-	};
+        if (mouse.getPrimary()) 
+            $scope.setColor(colors.getPrimary());
+        else 
+            $scope.setColor(colors.getSecondary());
+        
+        $scope.drawEngine.onMousedown(mouse.getPosX(), mouse.getPosY());
+    };
 
-	/* onMouseUp */
-	$scope.mouseUp = function() {
+    /* onMouseUp */
+    $scope.mouseUp = function() {
         $scope.drawing = false;
-        $scope.drawEngine.onMouseup($scope.config.mouse.current.x, $scope.config.mouse.current.y);
-	};
+        $scope.drawEngine.onMouseup(mouse.getPosX(), mouse.getPosY());
+    };
 
-	/* onMouseMove */
-	$scope.mouseMove = function() {
+    /* onMouseMove */
+    $scope.mouseMove = function() {
         if (!$scope.drawing) return;
         $scope.hasDrawn = true;
-		$scope.drawEngine.onMousemove($scope.config.mouse.current.x, $scope.config.mouse.current.y);
-	};
+        $scope.drawEngine.onMousemove(mouse.getPosX(), mouse.getPosY());
+    };
+    
 	/*
 	 * This will watch for this tools' "active" variable changes.
 	 * When "active" changes to "true", this tools functions need to
@@ -140,14 +148,14 @@ app.controller('PencilCtrl', function($scope) {
 		if (nval) {
 			$scope.init();
 
-			$scope.config.tools.activeToolFunctions = {
+			tools.setToolFunctions({
 				mouseDown: $scope.mouseDown,
 				mouseUp: $scope.mouseUp,
 				mouseMove: $scope.mouseMove
-			};
+			});
 		}
         else if (oval) {
             $scope.stop();
         }
 	}, true);
-});
+}]);

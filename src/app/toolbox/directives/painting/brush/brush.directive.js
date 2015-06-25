@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * brush.directive.js
+ * 
+ * This file contains the BrushController and directive, 
+ * which control the brush in the toolbox.
+ *
+ */
+ 
 app.directive('brush', function() {
     return {
         restrict: 'E',
@@ -7,9 +16,10 @@ app.directive('brush', function() {
     };
 });
 
-app.controller('BrushCtrl', function($scope) {
+app.controller('BrushCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colors', function($scope, tools, canvas, layers, mouse, colors) {
+
 	$scope.toolname = 'brush';
-	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
+	$scope.active = tools.getTool() == $scope.toolname;
     $scope.thickness = 2;
     $scope.opacity = 1;
     $scope.brush = "thin";
@@ -21,8 +31,8 @@ app.controller('BrushCtrl', function($scope) {
 	$scope.init = function() {
         $scope.drawing = false;
         $scope.hasDrawn = false;
-		$scope.setCursor('default');
-        $scope.setColor($scope.config.tools.colors.primary);
+		canvas.setCursor('default');
+        $scope.setColor(colors.getPrimary());
         
         $scope.updateDrawEngine();
         $scope.updateBrushStyle();
@@ -34,8 +44,8 @@ app.controller('BrushCtrl', function($scope) {
     $scope.paintTopCanvas = function() {
         /* TODO: do stop() and init() when another layer is selected? */
 
-        $scope.currentLayer = $scope.config.layers.currentLayer;
-        $scope.numberOfLayers = $scope.config.layers.numberOfLayers;
+        $scope.currentLayer = layers.getCurrentIndex();
+        $scope.numberOfLayers = layers.getNumLayers();
         if ($scope.currentLayer == $scope.numberOfLayers - 1) {
             return;
         }
@@ -50,7 +60,7 @@ app.controller('BrushCtrl', function($scope) {
 
         /* Draw the above lying layer(s) to */
         var upperIndices = [];
-        for (var i = $scope.currentLayer + 1; i < $scope.numberOfLayers; i++) {
+        for (i = $scope.currentLayer + 1; i < $scope.numberOfLayers; i++) {
             upperIndices.push(i);
         }
         
@@ -115,29 +125,29 @@ app.controller('BrushCtrl', function($scope) {
 	$scope.mouseDown = function() {
         $scope.drawing = true;
         
-        var buttons = $scope.config.mouse.button;
-        if (buttons[1] && buttons[3]) return;
+        if (mouse.getPrimary() && mouse.getSecondary()) return;
         
-        if (buttons[1]) 
-            $scope.setColor($scope.config.tools.colors.primary);
+        if (mouse.getPrimary()) 
+            $scope.setColor(colors.getPrimary());
         else 
-            $scope.setColor($scope.config.tools.colors.secondary);
+            $scope.setColor(colors.getSecondary());
         
-        $scope.drawEngine.onMousedown($scope.config.mouse.current.x, $scope.config.mouse.current.y);
+        $scope.drawEngine.onMousedown(mouse.getPosX(), mouse.getPosY());
 	};
 
 	/* onMouseUp */
 	$scope.mouseUp = function() {
         $scope.drawing = false;
-        $scope.drawEngine.onMouseup($scope.config.mouse.current.x, $scope.config.mouse.current.y);
+        $scope.drawEngine.onMouseup(mouse.getPosX(), mouse.getPosY());
 	};
 
 	/* onMouseMove */
 	$scope.mouseMove = function() {
         if (!$scope.drawing) return;
         $scope.hasDrawn = true;
-		$scope.drawEngine.onMousemove($scope.config.mouse.current.x, $scope.config.mouse.current.y);
+		$scope.drawEngine.onMousemove(mouse.getPosX(), mouse.getPosY());
 	};
+    
 	/*
 	 * This will watch for this tools' "active" variable changes.
 	 * When "active" changes to "true", this tools functions need to
@@ -151,14 +161,14 @@ app.controller('BrushCtrl', function($scope) {
 		if (nval) {
 			$scope.init();
 
-			$scope.config.tools.activeToolFunctions = {
+			tools.setToolFunctions({
 				mouseDown: $scope.mouseDown,
 				mouseUp: $scope.mouseUp,
 				mouseMove: $scope.mouseMove
-			};
+			});
 		}
         else if (oval) {
             $scope.stop();
         }
 	}, true);
-});
+}]);

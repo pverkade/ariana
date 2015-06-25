@@ -1,28 +1,28 @@
-app.directive('tool', function() {
+app.directive('tool', ['tools', function(tools) {
 	return {
 		restrict: 'A',
 		scope: true,
-		link: function(scope, element, attrs) {
+		link: function(scope, element) {
 
 			scope.expanded = true;
 
 			element.bind('click', function(event) {
 				event.stopPropagation();
-				scope.config.tools.activeTool = scope.toolname;
+				tools.setTool(scope.toolname);
 
 				if (event.target.className.indexOf('mdi') > -1) {
 					scope.expanded = !scope.expanded;
 					scope.$apply(scope.expanded);
 				}
 
-				scope.$apply(scope.config.tools.activeTool);
+				scope.$apply(tools.getTool());
 			});
 
-			scope.$watch('config.tools.activeTool', function(newValue, oldValue) {
-				scope.active = scope.config.tools.activeTool == scope.toolname;
+			scope.$watch('config.tools.activeTool', function() {
+				scope.active = (tools.getTool() == scope.toolname);
 
 				if (!scope.active) scope.expanded = false;
 			}, true);
 		}
-	}
-});
+	};
+}]);

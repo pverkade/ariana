@@ -3,44 +3,24 @@
 <div class="toolbar"
     ng-right-click
     ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}">
+    
     <div class="brand float-left">
         ARIANA
     </div>
     
     <ul class="clearfix">
         <li class="tool float-left" ng-click="openNewFileModal()">
-            <!-- new canvas -->
             <i class="mdi mdi-file"></i>
         </li>
         <li class="tool float-left" ng-click="openUploadModal()">
-            <!-- import file -->
             <i class="mdi mdi-upload"></i>
         </li>
         <li class="tool float-left" ng-click="openSaveImageModal()">
-            <!-- export file --> 
             <i class="mdi mdi-download"></i>
         </li>
-        <!-- <li class="seperator float-left"></li>
-        <li class="inactive tool float-left" ng-click="openTransformationModal()">
-            <i class="mdi mdi-rotate-right-variant"></i>
-        </li> -->
         <li class="tool float-left" ng-click="openFilterModal()">
-            <!-- filters and effects -->
             <i class="mdi mdi-star-outline"></i>
         </li>
- 
-        <!-- Float-right elements are in reverse order. -->
-        <!--
-        <li class="inactive tool float-right">
-            <i class="mdi mdi-school"></i>
-        </li>
-        <li class="seperator float-right"></li>
-        <li class="inactive tool float-right">
-            <i class="mdi mdi-redo-variant"></i>
-        </li>
-        <li class="inactive tool float-right">
-            <i class="mdi mdi-undo-variant"></i>
-        </li> -->
     </ul>
 </div>
 
@@ -50,7 +30,8 @@
     ng-right-click
     ng-show="filter.filterObject"
     ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}"> 
-    <div class="tool float-left" ng-click="cancel()"> <i class="mdi mdi-close"> </i> </div>
+    
+    <div class="tool float-left" ng-click="cancelFilter()"> <i class="mdi mdi-close"> </i> </div>
     <div class="center-box float-left">
     
         <div class="input-group">
@@ -67,5 +48,5 @@
         </div>
     
     </div>
-    <div class="tool float-right" ng-click="commitFilterOnLayers(); cancel()">  <i class="mdi mdi-check"> </i> </div>
+    <div class="tool float-right" ng-click="commitFilterOnLayers(); cancelFilter()">  <i class="mdi mdi-check"> </i> </div>
 </div>

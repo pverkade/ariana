@@ -1,4 +1,13 @@
-angular.module('ariana').directive('loose', function() {
+/* 
+ * Project Ariana
+ * loose.directive.js
+ * 
+ * This file contains the LooseController and directive, 
+ * which control the loose selection tool in the toolbox.
+ *
+ */
+ 
+app.directive('loose', function() {
     return {
         restrict: 'E',
         scope: true,
@@ -7,15 +16,16 @@ angular.module('ariana').directive('loose', function() {
     };
 });
 
-angular.module('ariana').controller('LooseCtrl', function($scope) {
+app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', function($scope, tools, canvas, layers, mouse) {
+
     $scope.toolname = 'loose';
-    $scope.active = $scope.config.tools.activeTool == $scope.toolname;
+    $scope.active = tools.getTool() == $scope.toolname;
 
     /* init */
     $scope.init = function() {
-        $scope.setCursor('default');
+        canvas.setCursor('default');
 
-        var currentLayer = $scope.config.layers.currentLayer;//$scope.config.layers.currentLayer;
+        var currentLayer = layers.getCurrentIndex();
         if (currentLayer == -1) {
             console.log("No layer selected");
             return;
@@ -54,8 +64,8 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
         $scope.stop();
         
         /* x and y coordinates in pixels relative to image. */
-        xMouse = $scope.config.mouse.current.x;
-        yMouse = $scope.config.mouse.current.y;  
+        xMouse = mouse.getPosX();
+        yMouse = mouse.getPosY();
 
         $scope.drawEngine.onMousedown(xMouse, yMouse);   
         $scope.mouseBTNDown = true; 
@@ -73,22 +83,22 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
     /* onMouseMove */
     $scope.mouseMove = function() {
         /* x and y coordinates in pixels relative to image. */
-        xMouse = $scope.config.mouse.current.x;
-        yMouse = $scope.config.mouse.current.y;    
+        xMouse = mouse.getPosX();
+        yMouse = mouse.getPosY();    
 
         /* Calculate x and y coordinates in pixels of the original image */
-        var currentLayer = $scope.config.layers.currentLayer;
+        var currentLayer = layers.getCurrentIndex();
         var layer = $scope.renderEngine.layers[currentLayer];
         if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
             return;
         }
 
-        if ($scope.mouseBTNDown == true) {
+        if ($scope.mouseBTNDown === true) {
             if ($scope.loose.addPoint(new Point(xMouse, yMouse))) {
                 var boundingPath = $scope.loose.getLastBoundingPath();
 
                 /* A new bounding path has been found. */
-                if (boundingPath.length != 0) {
+                if (boundingPath.length !== 0) {
                     var bitmask = $scope.loose.getLastMaskWand();
                     for (var i = 0; i < bitmask.length; i++) {
                         if (bitmask[i]) {
@@ -131,14 +141,14 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
         if (nval) {
             $scope.init();
 
-            $scope.config.tools.activeToolFunctions = {
+            tools.setToolFunctions({
                 mouseDown: $scope.mouseDown,
                 mouseUp: $scope.mouseUp,
                 mouseMove: $scope.mouseMove
-            };
+            });
         }
         else if (oval) {
             $scope.stop();
         }
     }, true);
-});
+}]);

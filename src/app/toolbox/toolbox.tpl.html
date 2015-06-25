@@ -3,6 +3,7 @@
 <div class="toolset" 
     ng-right-click
     ng-class="{'fade-on inactive': !checkVisible(), 'fade-off': checkVisible()}">
+    
     <div class="tool" id="basic" 
          ng-click="selectToolSet('basic')" 
          ng-class="{active: isActiveToolset('basic')}">
@@ -14,7 +15,6 @@
             <translate tool></translate>
             <scale tool></scale>
             <rotate tool></rotate>
-            <!-- <crop tool></crop> -->
         </div>
 
     </div>
@@ -29,9 +29,7 @@
             <palette tool></palette>
             <pencil tool></pencil>
             <brush tool></brush>
-            <!-- <eraser tool></eraser> -->
             <picker tool></picker>
-            <!-- <fill tool></fill> -->
         </div>
 
     </div>
@@ -44,24 +42,12 @@
 
         <div class="toolbox" ng-show="isActiveToolset('select')">
             <rectangle tool></rectangle>
-            <elipse tool></elipse>
             <magic tool></magic>
             <loose tool></loose>
         </div>
         
     </div>
 
-    <!-- 
-    <div class="tool" id="text" 
-         ng-click="selectToolSet('text')" 
-         ng-class="{active: isActiveToolset('text')}">
-
-        <i class="mdi mdi-format-size"></i>
-        
-        <div class="toolbox" ng-show="isActiveToolset('text')">
-        </div>
-    </div>
-    -->
 </div>
 
 <!-- Template for the color-preview elements. -->

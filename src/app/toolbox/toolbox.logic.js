@@ -7,69 +7,57 @@
  *
  */
 
-/* This contoller defines the behaviour of the toolbox and the color-preview. */
-app.controller('ToolboxCtrl', function($scope) {
+app.controller('ToolboxCtrl', ['$scope', 'canvas', 'colors', 'tools', 'mouse', function($scope, canvas, colors, tools, mouse) {
     
     $scope.setCursor = function(cursor) {
-        $scope.config.canvas.cursor = cursor;
+        canvas.setCursor(cursor);
     };
 
     $scope.getCursor = function() {
-        return $scope.config.canvas.cursor;
+        return canvas.getCursor();
     };
 
     /* This function swaps the primary and secondary color. */
     $scope.swapColors = function() {
-        var temp = $scope.config.tools.colors.primary;
-        $scope.config.tools.colors.primary = $scope.config.tools.colors.secondary;
-        $scope.config.tools.colors.secondary = temp;
+        colors.setPrimaryRgb(colors.getSecondary());
+        colors.setSecondaryRgb(colors.getPrimary());
         $scope.$broadcast('swapColorsBC', {});
     };
     
-    /* 
-     * This functions returns whether the toolbox should be visible. It is 
-     * hidden when the user is clicking on the canvas/background.
-     */
     $scope.checkVisible = function() {
-        return (!($scope.config.mouse.button[1] || $scope.config.mouse.button[2] || $scope.config.mouse.button[3]));
+        return !mouse.checkActive();
     };
 
-    /* 
-     * Returns whether this tool is active
-     */
     $scope.isActive = function(name) {
-        return $scope.config.tools.activeTool == name;
+        return tools.getTool() == name;
     };
 
-    /* 
-     * Returns whether this tool is active
-     */
     $scope.isActiveToolset = function(name) {
-        return $scope.config.tools.activeToolset == name;
+        return tools.getToolset == name;
     };
 
-    /* 
-     * This function selects a toolset and therefore opens a toolbox. When
-     * a toolset is already elected, it becomes unselected. The pan tool will
-     * then be used.
-     */
+    /* This function selects a toolset and therefore opens a toolbox. When
+     * a toolset is already selected, it becomes unselected. The pan tool will
+     * then be used. */
     $scope.selectToolSet = function(name) {
-        if ($scope.config.tools.activeToolset == name) {
-            $scope.config.tools.activeToolset = null;
+        if (tools.getToolset == name) {
+            tools.getToolset = null;
             return true;
         }
 
-        $scope.config.tools.activeToolset = name;
+        tools.getToolset = name;
     };
 
     $scope.selectTool = function(event, name) {
-        if (event) event.stopPropagation();
+        if (event) {
+            event.stopPropagation();
+        }
         
-        $scope.config.tools.activeTool = name;
+        tools.setTool(name);
         return true;
     };
 
     $scope.getActiveToolFunctions = function() {
-        return $scope.config.tools.activeToolFunctions;
-    }
-});
+        return tools.getToolFunctions;
+    };
+}]);

@@ -11,7 +11,7 @@ app.directive('ngMouseWheelUp', function() {
         element.bind("DOMMouseScroll mousewheel onmousewheel", function(event) {
 
             /* Getting cross-browser wheel delta. */
-            var event = window.event || event;
+            event = window.event || event;
             
             wheelDelta = event.wheelDelta;
             detail     = event.detail;

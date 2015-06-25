@@ -11,4 +11,4 @@ Array.prototype.swap = function(x, y) {
     this[x] = this[y];
     this[y] = b;
     return this;
-}
+};

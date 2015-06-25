@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * pan.directive.js
+ * 
+ * This file contains the PanController and directive, 
+ * which control the pan tool in the toolbox.
+ *
+ */
+ 
 app.directive('pan', function() {
     return {
         restrict: 'E',
@@ -7,43 +16,39 @@ app.directive('pan', function() {
     };
 });
 
-app.controller('PanCtrl', function($scope) {
-	$scope.toolname = 'pan'
-	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
+app.controller('PanCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', function($scope, tools, canvas, layers, mouse) {
+	$scope.toolname = 'pan';
+	$scope.active = tools.getTool() == $scope.toolname;
 
 	/* init */
 	$scope.init = function() {
-		$scope.setCursor('grab');
+		canvas.setCursor('grab');
 		$scope.panning = false;
 	};
 
 	/* onMouseDown */
 	$scope.mouseDown = function() {
-		$scope.setCursor('grabbing');
+		canvas.setCursor('grabbing');
 		$scope.panning = true;
 	};
 
 	/* onMouseUp */
 	$scope.mouseUp = function() {
-		$scope.setCursor('grab');
+		canvas.setCursor('grab');
 		$scope.panning = false;
 	};
 
 	/* onMouseMove */
 	$scope.mouseMove = function() {
-		if (!$scope.panning) return;
-		var z = $scope.config.canvas.zoom;
-		 
-		var dx = $scope.config.mouse.current.global.x - $scope.config.mouse.old.global.x;
-        var dy = $scope.config.mouse.current.global.y - $scope.config.mouse.old.global.y;
-
-        $scope.config.mouse.old.global.x = $scope.config.mouse.current.global.x;
-        $scope.config.mouse.old.global.y = $scope.config.mouse.current.global.y;
+        if (!$scope.panning) {return;}
+         
+        var dx = mouse.getPosGlobal().x - mouse.getPosOldGlobal().x;
+        var dy = mouse.getPosGlobal().y - mouse.getPosOldGlobal().y;
         
-        $scope.config.canvas.x += dx;
-        $scope.config.canvas.y += dy;
-	};
--
+        canvas.setX(canvas.getX() + dx);
+        canvas.setY(canvas.getY() + dy);
+    };
+
 	/*
 	 * This will watch for this tools' "active" variable changes.
 	 * When "active" changes to "true", this tools functions need to
@@ -53,15 +58,15 @@ app.controller('PanCtrl', function($scope) {
 	 * to the "activeToolFunctions" object.
 	 * Always call "init" first;
 	 */
-	$scope.$watch('active', function(nval, oval) {
+	$scope.$watch('active', function(nval) {
 		if (nval)  {
 			$scope.init();
 
-			$scope.config.tools.activeToolFunctions = {
+			tools.setToolFunctions({
 				mouseDown: $scope.mouseDown,
 				mouseUp: $scope.mouseUp,
 				mouseMove: $scope.mouseMove
-			};
+			});
 		}
 	}, true);
-});
+}]);

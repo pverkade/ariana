@@ -7,11 +7,10 @@
  *
  */
  
-app.controller('FilterModalController', ['$scope', '$modalInstance', 
-    function ($scope, $modalInstance) {
+app.controller('FilterModalController', ['$scope', '$modalInstance', 'tools',
+    function ($scope, $modalInstance, tools) {
         
         $scope.filters = {
-            
             "noise": {
                 image: "/assets/img/noisesample.jpg", 
                 constructor: NoiseFilter
@@ -45,6 +44,11 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
             "colorize": {
                 image: "/assets/img/colorizesample.jpg",
                 constructor: ColorizeFilter
+            },
+
+            "threshold" : {
+                image: "samples",
+                constructor: ThresholdFilter
             }
         };
         
@@ -52,7 +56,7 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
             var constructor = $scope.filters[name].constructor;
             
             if (constructor) {
-                var filterObject = new constructor();
+                var filterObject = new Constructor();
                 $scope.filter.filterName = name;
                 $scope.filter.filterObject = filterObject;
                 $scope.filter.filterParameters = filterObject.getAttributesObject();
@@ -60,7 +64,7 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
                 $scope.applyFilterOnLayers();
             }
             
-            $scope.config.tools.activeTool = 'pan';
+            tools.setTool('pan');
             $scope.close();
         };
 
