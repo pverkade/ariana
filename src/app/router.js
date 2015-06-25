@@ -15,6 +15,14 @@ app.config(function($stateProvider, $locationProvider) {
             url: "/",
             views: {
                 "content": {
+                    templateUrl: "app/content/landing/landing.content.tpl.html"
+                }
+            }
+        })
+        .state('ariana', {
+            url: "/ariana",
+            views: {
+                "content": {
                     templateUrl: "app/content/content.tpl.html",
                     controller: 'ContentController'
                 },
@@ -33,36 +41,6 @@ app.config(function($stateProvider, $locationProvider) {
                 "toolbox": {
                     templateUrl: "app/toolbox/toolbox.tpl.html",
                     controller: 'ToolboxCtrl'
-                }
-            }
-        })
-        .state('drawtest', {
-            url: "/drawtest",
-            views: {
-                "content": {
-                    templateUrl: "common/draw/drawtest.tpl.html",
-                    controller: 'drawtestCtrl'
-                },
-                "toolbar": {
-                    templateUrl: "app/toolbar/toolbar.tpl.html",
-                    controller: 'ToolbarController'
-                },
-                "layers": {
-                    templateUrl: "app/layers/layers.tpl.html",
-                    controller: 'layersCtrl'
-                },
-                "toolbox": {
-                    templateUrl: "app/toolbox/toolbox.tpl.html",
-                    controller: 'ToolboxCtrl'
-                }
-            }
-        })
-        .state('landing', {
-            url: "/landing",
-            views: {
-                "content": {
-                    templateUrl: "app/content/landing/landing.content.tpl.html",
-                    controller: 'LandingContentCtrl'
                 }
             }
         })
