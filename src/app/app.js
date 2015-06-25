@@ -55,6 +55,7 @@ app.controller('AppCtrl', ['$scope', 'layers', 'canvas', 'tools',
 
             var dimensions = layer.getTransformedDimensions();
             layer.setPos(0.5 * dimensions[0], 0.5 * dimensions[1]);
+            layers.setCurrentIndex(layers.getNumLayers() - 1);
         };
 
         $scope.addLayer = function (layer) {
