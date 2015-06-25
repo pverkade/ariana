@@ -72,10 +72,7 @@
     background-color: lighten($light, 2 * $active-lighten);
     
     @media screen and (max-width: $breakpoint-tablet) {
-        width: 4 * $blocksize-tablet;
-        min-height: 4 * $blocksize-tablet;
         margin-left: $blocksize-tablet;
-        padding: 0.25 * $blocksize-tablet;
     }
 }
 
@@ -91,8 +88,6 @@
     
     @media screen and (max-width: $breakpoint-tablet) {
         margin-left: $blocksize-tablet;
-        width: 5.5 * $blocksize-tablet;
-        padding: 0.25 * $blocksize-tablet;
     }
     
     #palette {
@@ -101,12 +96,6 @@
         width: 4 * $blocksize;
         height: 4 * $blocksize;
         margin-bottom: 0.25 * $blocksize;
-        
-        @media screen and (max-width: $breakpoint-tablet) {
-            width: 4 * $blocksize-tablet;
-            height: 4 * $blocksize-tablet;
-            margin-bottom: 0.25 * $blocksize-tablet;
-        }
     }
 
     #hue {
@@ -116,13 +105,6 @@
         width: 0.75 * $blocksize;
         height: 4 * $blocksize;
         margin-bottom: 0.25 * $blocksize;
-        
-        @media screen and (max-width: $breakpoint-tablet) {
-            width: 0.75 * $blocksize-tablet;
-            height: 4 * $blocksize-tablet;
-            margin-left: 0.25 * $blocksize-tablet;
-            margin-bottom: 0.25 * $blocksize-tablet;
-        }
     }
 }
 

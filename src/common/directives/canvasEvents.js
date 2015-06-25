@@ -21,8 +21,12 @@ app.directive('canvasEvents', function() {
 
             /* Watches canvas coordinate changes  */
             scope.$watchGroup(['config.canvas.x', 'config.canvas.y'], function(nval, oval) {
-                element.css('transform', "translate(" + scope.config.canvas.x + 
-                                         "px, " + scope.config.canvas.y + "px)");
+                element.css('-ms-transform', "translate(" + scope.config.canvas.x +
+                    "px, " + scope.config.canvas.y + "px)");
+                element.css('-webkit-transform', "translate(" + scope.config.canvas.x +
+                    "px, " + scope.config.canvas.y + "px)");
+                element.css('transform', "translate(" + scope.config.canvas.x +
+                    "px, " + scope.config.canvas.y + "px)");
             }, true);
 
             /* Watches canvas coordiante changes  */
