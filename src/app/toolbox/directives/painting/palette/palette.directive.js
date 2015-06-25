@@ -108,8 +108,8 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
                 locX = event.pageX;
                 locY = event.pageY;
             } else {
-                locX = event.originalEvent.touches[0].pageX;
-                locY = event.originalEvent.touches[0].pageY;
+                locX = event.touches[0].pageX;
+                locY = event.touches[0].pageY;
             }
 
             if (locX < $scope.paletteBox.left) {
@@ -155,7 +155,7 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
             if (/^mouse/i.test(event.type)) {
                 locY = event.pageY;
             } else {
-                locY = event.originalEvent.touches[0].pageY;
+                locY = event.touches[0].pageY;
             }
 
             if (locY < $scope.hueBox.top) {
