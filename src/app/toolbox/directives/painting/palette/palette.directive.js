@@ -40,6 +40,7 @@ app.controller('PaletteCtrl', function($scope) {
 
     $scope.paletteImage = new Image();
     $scope.paletteImage.src = "assets/img/bgGradient.png";
+    /* Create canvas from image */
     $scope.paletteImage.onload = function() {
         $scope.paletteOverlay = document.createElement('canvas');
         $scope.paletteOverlay.width = $scope.palette.width;
@@ -50,6 +51,7 @@ app.controller('PaletteCtrl', function($scope) {
     
     $scope.hueImage = new Image();
     $scope.hueImage.src = "assets/img/hueBar.png";
+    /* Create canvas from image */
     $scope.hueImage.onload = function() {
         $scope.hueOverlay = document.createElement('canvas');
         $scope.hueOverlay.width = $scope.hue.width;
@@ -227,6 +229,7 @@ app.controller('PaletteCtrl', function($scope) {
         var height = $scope.palette.height;
         context = $scope.paletteContext;
         context.clearRect(0, 0, width, height);
+        /* Draw canvas instead of image */
         context.drawImage($scope.paletteOverlay, 0, 0);
         context.beginPath();
         locX =  $scope.color.s * width / 100;
@@ -249,6 +252,7 @@ app.controller('PaletteCtrl', function($scope) {
         var height = $scope.hue.height;
         context = $scope.hueContext;
         context.clearRect(0, 0, width, height);
+        /* Draw canvas instead of image */
         context.drawImage($scope.hueOverlay, 0, 0);
         context.beginPath();
         loc =   (360 - $scope.color.h) * height / 360;
