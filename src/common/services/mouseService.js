@@ -16,11 +16,19 @@ app.service('mouse', function() {
         return {x: this._params.current.global.x, y: this._params.current.global.y};
     };
 
-    this.getPosOld = function() {
+    this.getOldPos = function() {
         return {x: this._params.old.x, y: this._params.old.y};
     };
+    
+    this.getOldPosX = function() {
+        return this._params.old.x;
+    };
+    
+    this.getOldPosY = function() {
+        return this._params.old.y;
+    };
 
-    this.getPosOldGlobal = function() {
+    this.getOldPosGlobal = function() {
         return {x: this._params.old.global.x, y: this._params.old.global.y};
     };
 

@@ -50,11 +50,11 @@ app.controller('ScaleCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
     /* onMouseMove */
     $scope.mouseMove = function() {
 
-        var mouseCurrentX = mouse.getPos().x;
-        var mouseCurrentY = mouse.getPos().y;
+        var mouseCurrentX = mouse.getPosX();
+        var mouseCurrentY = mouse.getPosY();
 
-        var mouseOldX = mouse.getPosOld().x;
-        var mouseOldY = mouse.getPosOld().y;
+        var mouseOldX = mouse.getOldPosX();
+        var mouseOldY = mouse.getOldPosY();
 
         var layer = $scope.getCurrentLayer();
         if (!layer) {
@@ -151,7 +151,7 @@ app.controller('ScaleCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
         }
 
         /* Update old mouse. */
-        mouse.setPosOld(mouse.getPos().x, mouse.getPos().y);
+        mouse.setOldPos(mouse.getPosX(), mouse.getPosY());
     };
 
     /*
