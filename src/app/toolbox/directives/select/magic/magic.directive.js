@@ -16,7 +16,7 @@ app.directive('magic', function() {
     };
 });
 
-app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', function($scope, tools, canvas, layers, mouse) {
+app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'layers', function($scope, tools, canvas, layers, mouse, layers) {
 
 	$scope.toolname = 'magic';
 	$scope.active = tools.getTool() == $scope.toolname;
@@ -55,13 +55,12 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
         $scope.requestEditEngineUpdate();
     };
 
-	/* onMouseDown */
 	$scope.mouseDown = function() {
         $scope.stop();
 
 		/* x and y coordinates in pixels relative to canvas left top corner. */
-		var xRelative = mouse.getPosX();
-		var yRelative = mouse.getPosY();
+		var mouseX = mouse.getPosX();
+		var mouseY = mouse.getPosY();
 
         /* Calculate x and y coordinates in pixels of the original image */
         var currentLayer = layers.getCurrentIndex();
@@ -70,11 +69,9 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
             return;
         }
         
-        var transformedPoint = $scope.magic.transform(layer, mouse.getPosX(), mouse.getPosY());
-        xRelative = transformedPoint.x;
-        yRelative = transformedPoint.y;
-
-        console.log("position on image", xRelative, yRelative);
+        var transformedPoint = $scope.magic.transform(layer, mouseX, mouseY);
+        var xRelative = transformedPoint.x;
+        var yRelative = transformedPoint.y;
         
 		/* Check wheter user has clicked inside of a selection. */
         var bitmask = null;
@@ -88,21 +85,17 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
 		/* Draw shared mask variables to image. */
 		if ($scope.maskWand) {
 			$scope.setMaskSelectedArea($scope.magic.width, $scope.magic.height);    
-            //var currentLayer = $scope.config.layers.currentLayer;
-            //var layer = $scope.renderEngine.layers[currentLayer];
+            var currentLayer = layers.getCurrentIndex();
+            var layer = $scope.renderEngine.getLayer(currentLayer);
             $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
             $scope.requestEditEngineUpdate();      
 		}
 	};
 
-	/* onMouseUp */
 	$scope.mouseUp = function() {
-
 	};
 
-	/* onMouseMove */
 	$scope.mouseMove = function() {
-		
 	};
     
 	/*

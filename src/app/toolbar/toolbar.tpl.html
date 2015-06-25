@@ -49,12 +49,12 @@
         </div>
     
     </div>
-    <div class="tool float-right" ng-click="commitFilterOnLayers(); cancelFilters()">  <i class="mdi mdi-check"> </i> </div>
+    <div class="tool float-right" ng-click="commitFilterOnLayers(); cancelFilter()">  <i class="mdi mdi-check"> </i> </div>
 </div>
 
 <div class="selection-options" 
     ng-right-click
-    ng-show="selection.maskEnabled"
+    ng-show="isSelectionEnabled()"
     ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}"> 
 
     <div class="tool float-left" ng-click="cancelSelection()"> <i class="mdi mdi-close"> </i> </div>
