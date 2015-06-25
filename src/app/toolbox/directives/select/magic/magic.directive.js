@@ -16,7 +16,7 @@ app.directive('magic', function() {
     };
 });
 
-app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', function($scope, tools, canvas, layers, mouse) {
+app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'layers', function($scope, tools, canvas, layers, mouse, layers) {
 
 	$scope.toolname = 'magic';
 	$scope.active = tools.getTool() == $scope.toolname;
@@ -60,8 +60,8 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
         $scope.stop();
 
 		/* x and y coordinates in pixels relative to canvas left top corner. */
-		var xRelative = mouse.getPosX();
-		var yRelative = mouse.getPosY();
+		var mouseX = mouse.getPosX();
+		var mouseY = mouse.getPosY();
 
         /* Calculate x and y coordinates in pixels of the original image */
         var currentLayer = layers.getCurrentIndex();
@@ -71,8 +71,8 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
         }
         
         var transformedPoint = $scope.magic.transform(layer, mouseX, mouseY);
-        xRelative = transformedPoint.x;
-        yRelative = transformedPoint.y;
+        var xRelative = transformedPoint.x;
+        var yRelative = transformedPoint.y;
 
         console.log("position on image", xRelative, yRelative);
         
@@ -88,8 +88,8 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
 		/* Draw shared mask variables to image. */
 		if ($scope.maskWand) {
 			$scope.setMaskSelectedArea($scope.magic.width, $scope.magic.height);    
-            var currentLayer = $scope.config.layers.currentLayer;
-            var layer = $scope.renderEngine.layers[currentLayer];
+            var currentLayer = layers.getCurrentIndex();
+            var layer = $scope.renderEngine.getLayer(currentLayer);
             $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
             $scope.requestEditEngineUpdate();      
 		}
