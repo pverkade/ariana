@@ -53,9 +53,20 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
         xMouse = $scope.config.mouse.current.x;
         yMouse = $scope.config.mouse.current.y;  
 
+        /* Calculate x and y coordinates in pixels of the original image */
+        var currentLayer = $scope.config.layers.currentLayer;
+        var layer = $scope.renderEngine.layers[currentLayer];
+        if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
+            return;
+        }
+
+        var transformedPoint = $scope.loose.transform(layer, xMouse, yMouse);
+        xRelative = transformedPoint.x;
+        yRelative = transformedPoint.y;
+
         /* Check wheter user has clicked inside of a selection. */
-        if ($scope.loose.isInSelection(xMouse, yMouse)) {
-            $scope.loose.removeSelection(xMouse, yMouse);
+        if ($scope.loose.isInSelection(xRelative, yRelative)) {
+            $scope.loose.removeSelection(xRelative, yRelative);
         } 
 
         $scope.drawEngine.onMousedown(xMouse, yMouse);   
@@ -83,9 +94,13 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
         if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
             return;
         }
+        
+        var transformedPoint = $scope.loose.transform(layer, xMouse, yMouse);
+        xRelative = transformedPoint.x;
+        yRelative = transformedPoint.y;
 
         if ($scope.mouseBTNDown == true) {
-            if ($scope.loose.addPoint(new Point(xMouse, yMouse))) {
+            if ($scope.loose.addPoint(new Point(xRelative, yRelative))) {
                 var boundingPath = $scope.loose.getLastBoundingPath();
 
                 /* A new bounding path has been found. */

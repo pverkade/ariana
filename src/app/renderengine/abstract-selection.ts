@@ -165,4 +165,28 @@ class AbstractSelection {
     getLastMaskWand() {
         return this.maskWandParts[this.maskWandParts.length - 1];           
     }
+
+    transform(layer : Layer, mouseX : number, mouseY : number) {
+        var transformation = layer.calculateTransformation();
+        // console.log("original", transformation);
+        
+        var transformation_y = -1 * transformation[7];
+        var transformation_x = transformation[6];
+        
+        transformation[6] = 0;
+        transformation[7] = 0;
+        mat3.invert(transformation, transformation);
+        mat3.transpose(transformation, transformation);
+                
+        var position = vec3.fromValues(mouseX - transformation_x, mouseY - transformation_y, 1);
+        vec3.transformMat3(position, position, transformation);
+        
+        // FIXME only works in original state        
+        // console.log("inverted", transformation);
+        // console.log("position", position);
+        var xRelative = Math.round(0.5 * (position[0] + 1) * this.width); 
+        var yRelative = Math.round(0.5 * (position[1] + 1) * this.height);
+
+        return new Point(xRelative, yRelative);
+    }
 }

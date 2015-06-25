@@ -25,26 +25,12 @@ class RectangleSelection extends AbstractSelection {
 		var height = bottomRight.y - topLeft.y;
 		var indexPointMask : number;
 
-		if (this.validRect(point1, point2) == false) {
-			return null;
-		}
-
+		// if (this.validRect(point1, point2) == false) {
+		// 	return null;
+		// }
+		console.log("addRect");
+		console.log(point1, point2);
 		this.rects.push(new Rectangle(point1, point2));
-
-		/* Draw borders in mask. */
-		for (var y = 0; y < height; y++) {
-			indexPointMask = (topLeft.y + y) * this.width + topLeft.x;
-			this.maskBorder[indexPointMask] = 1;
-			indexPointMask = (topLeft.y + y) * this.width + bottomRight.x;
-			this.maskBorder[indexPointMask] = 1;
-		}
-
-		for (var x = 0; x < width; x++) {
-			indexPointMask = topLeft.y * this.width + topLeft.x + x;
-			this.maskBorder[indexPointMask] = 1;
-			indexPointMask = bottomRight.y * this.width + topLeft.x + x;
-			this.maskBorder[indexPointMask] = 1;
-		}
 
 		/* Create and draw mask wand. */
 		this.maskWandParts.push(new Uint8Array(this.width * this.height));
@@ -52,7 +38,9 @@ class RectangleSelection extends AbstractSelection {
 		for (var y = 0; y < height; y++) {
 			for (var x = 0; x < width; x++) {
 				var indexPointMask = (topLeft.y + y) * this.width + topLeft.x + x;
-				this.maskWandParts[nrWands - 1][indexPointMask] = 1;
+				if (this.maskWand[indexPointMask] == 0) {
+					this.maskWandParts[nrWands - 1][indexPointMask] = 1;
+				}
 			}
 		}
 

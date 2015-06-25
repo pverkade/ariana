@@ -8,11 +8,11 @@ app.directive('rectangle', function() {
 });
 
 app.controller('RectangleCtrl', function($scope) {
-	$scope.toolname = 'rectangle';
-	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
+    $scope.toolname = 'rectangle';
+    $scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
-	$scope.init = function() {
-		$scope.setCursor('default');
+    $scope.init = function() {
+        $scope.setCursor('default');
         $scope.selection.maskEnabled = true;
 
         var currentLayer = $scope.config.layers.currentLayer;
@@ -42,15 +42,15 @@ app.controller('RectangleCtrl', function($scope) {
         $scope.drawEngine.setDrawType(drawType.RECTANGLE);
 
         $scope.setMaskSelectedArea($scope.rect.width, $scope.rect.height);
-	};
+    };
 
     $scope.stop = function() {
         $scope.editEngine.removeSelectionLayer();
         $scope.requestEditEngineUpdate();
     };
 
-	/* onMouseDown */
-	$scope.mouseDown = function() {
+    /* onMouseDown */
+    $scope.mouseDown = function() {
         /* x and y coordinates in pixels relative to image. */
         xMouse = $scope.config.mouse.current.x;
         yMouse = $scope.config.mouse.current.y;  
@@ -64,15 +64,15 @@ app.controller('RectangleCtrl', function($scope) {
 
         $scope.drawEngine.onMousedown(xMouse, yMouse);   
         $scope.mouseBTNDown = true; 
-	};
+    };
 
-	/* onMouseUp */
-	$scope.mouseUp = function() {
+    /* onMouseUp */
+    $scope.mouseUp = function() {
         /* x and y coordinates in pixels relative to image. */
         xMouse = $scope.config.mouse.current.x;
         yMouse = $scope.config.mouse.current.y; 
 
-        $scope.rect.addRect($scope.point1, $scope.point2);
+        $scope.rect.addRect($scope.point1, new Point(xMouse, yMouse)); //$scope.point2);
 
         /* Draw shared mask variables to image. */
         if ($scope.maskWand) {
@@ -86,11 +86,11 @@ app.controller('RectangleCtrl', function($scope) {
         $scope.drawEngine.onMouseup(xMouse, yMouse);
         $scope.drawEngine.clearCanvases();
         $scope.mouseBTNDown = false;
-	};
+    };
 
-	/* onMouseMove */
-	$scope.mouseMove = function() {
-		/* x and y coordinates in pixels relative to image. */
+    /* onMouseMove */
+    $scope.mouseMove = function() {
+        /* x and y coordinates in pixels relative to image. */
         xMouse = $scope.config.mouse.current.x;
         yMouse = $scope.config.mouse.current.y; 
 
@@ -101,6 +101,8 @@ app.controller('RectangleCtrl', function($scope) {
         }
 
         if ($scope.mouseBTNDown) {
+            $scope.drawEngine.onMousemove(xMouse, yMouse);
+            /*
             var point2 = new Point(xMouse, yMouse);
             if ($scope.rect.validRect($scope.point1, point2)) {
                 $scope.point2 = point2;
@@ -114,30 +116,31 @@ app.controller('RectangleCtrl', function($scope) {
                     $scope.drawEngine.onMousemove(point2.x, point2.y);
                 }
             }
+            */
         }
-	};
+    };
 
-	/*
-	 * This will watch for this tools' "active" variable changes.
-	 * When "active" changes to "true", this tools functions need to
-	 * be registered to the global config.
-	 * This functions NEEDS to be in each tools controller for
-	 * the tool to function. Please assign the correct toolfunctions
-	 * to the "activeToolFunctions" object.
-	 * Always call "init" first;
-	 */
-	$scope.$watch('active', function(nval, oval) {
-		if (nval) {
-			$scope.init();
+    /*
+     * This will watch for this tools' "active" variable changes.
+     * When "active" changes to "true", this tools functions need to
+     * be registered to the global config.
+     * This functions NEEDS to be in each tools controller for
+     * the tool to function. Please assign the correct toolfunctions
+     * to the "activeToolFunctions" object.
+     * Always call "init" first;
+     */
+    $scope.$watch('active', function(nval, oval) {
+        if (nval) {
+            $scope.init();
 
-			$scope.config.tools.activeToolFunctions = {
-				mouseDown: $scope.mouseDown,
-				mouseUp: $scope.mouseUp,
-				mouseMove: $scope.mouseMove
-			};
-		} 
+            $scope.config.tools.activeToolFunctions = {
+                mouseDown: $scope.mouseDown,
+                mouseUp: $scope.mouseUp,
+                mouseMove: $scope.mouseMove
+            };
+        } 
         else if (oval) {
             $scope.stop();
         }
-	}, true);
+    }, true);
 });
