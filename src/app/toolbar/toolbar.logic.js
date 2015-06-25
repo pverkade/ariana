@@ -176,8 +176,8 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
             /* Draw shared mask variables to image. */
             if ($scope.maskWand) {
                 $scope.setMaskSelectedArea($scope.selectionTool.width, $scope.selectionTool.height);    
-                var currentLayer = $scope.config.layers.currentLayer;
-                var layer = $scope.renderEngine.layers[currentLayer];
+                var currentLayer = layers.getCurrentIndex();
+                var layer = $scope.renderEngine.getLayer(currentLayer);
                 $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
                 $scope.requestEditEngineUpdate();       
             }

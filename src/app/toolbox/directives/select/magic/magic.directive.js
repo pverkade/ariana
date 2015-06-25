@@ -70,7 +70,7 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
             return;
         }
         
-        var transformedPoint = $scope.magic.transform(layer, mouseX, mouseY);
+        var transformedPoint = $scope.magic.transform(layer, mouse.getPosX(), mouse.getPosY());
         xRelative = transformedPoint.x;
         yRelative = transformedPoint.y;
 
