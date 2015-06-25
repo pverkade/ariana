@@ -21,11 +21,11 @@ app.service('canvas', function() {
     };
 
     this.getWidth = function() {
-        return this._params.width * this._params.zoom;
+        return this._params.width;
     };
 
     this.getHeight = function() {
-        return this._params.height * this._params.zoom;
+        return this._params.height;
     };
 
     this.getVisibility = function() {

@@ -11,9 +11,13 @@ app.directive('canvasEvents', ['canvas', function(canvas) {
     return {
         restrict: 'A',
         link: function(scope, element) {
+
+            function getZoom() {
+                return canvas.getZoom();
+            };
             
             /* Watches canvas zoom changes  */
-            scope.$watch(canvas.getZoom(), function() {
+            scope.$watch(getZoom, function() {
                 var cw = canvas.getWidth(),
                     ch = canvas.getHeight();
 
