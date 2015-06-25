@@ -32,8 +32,14 @@ app.controller('ToolboxCtrl', ['$scope', 'canvas', 'colors', 'tools', 'mouse',
 
         /* This function swaps the primary and secondary color. */
         $scope.swapColors = function() {
+            var temp = {
+                r: colors.getPrimary().r,
+                g: colors.getPrimary().g,
+                b: colors.getPrimary().b
+            }
+            
             colors.setPrimaryRgb(colors.getSecondary());
-            colors.setSecondaryRgb(colors.getPrimary());
+            colors.setSecondaryRgb(temp);
             $scope.$broadcast('swapColorsBC', {});
         };
         

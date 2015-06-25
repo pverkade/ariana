@@ -75,9 +75,9 @@ app.service('colors', function() {
     };
 
     this.setSecondaryRgb = function(rgb) {
-        this._params.primary.r = rgb.r;
-        this._params.primary.g = rgb.g;
-        this._params.primary.b = rgb.b;
+        this._params.secondary.r = rgb.r;
+        this._params.secondary.g = rgb.g;
+        this._params.secondary.b = rgb.b;
     };
 
     this._params = {
