@@ -72,7 +72,7 @@ test_package() {
     elif [[ $result == 2 ]]
     then
         errors=$((errors + 1))
-        echo "Found version $version for $name, needed atleast $atleast"
+        echo "Found version $version for $name, atleast $atleast is needed"
         return 1
     fi
 
@@ -102,7 +102,8 @@ if [[ $errors == 0 ]]
 then
     echo All dependencies found
 else
-    echo Not everey dependancy could be found. Exiting...
+    echo Not every dependancy could be found or is of the wrong version.
+    echo Exiting...
     exit 1
 fi
 
