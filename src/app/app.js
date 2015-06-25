@@ -173,7 +173,6 @@ app.controller('AppCtrl', ['$scope', 'layers', 'canvas', 'tools',
         };
 
         $scope.getCurrentLayer = function() {
-
         
             var index = layers.getCurrentIndex();
             if (index == -1) return;

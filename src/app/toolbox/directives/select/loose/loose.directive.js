@@ -26,14 +26,8 @@ app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
 
         canvas.setCursor('default');
         $scope.selection.maskEnabled = true;
-        var currentLayer = layers.getCurrentIndex();
-
-        if (currentLayer == -1) {
-            return;
-        }
-
-        var layer = $scope.renderEngine.getLayer(currentLayer);
-        if (layer.getLayerType() != LayerType.ImageLayer) {
+        var layer = $scope.getCurrentLayer();
+        if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
             return;
         }
         
@@ -66,15 +60,10 @@ app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
         yMouse = mouse.getPosY();
 
         /* Calculate x and y coordinates in pixels of the original image */
-        var currentLayer = layers.getCurrentIndex();
-		if (currentLayer == -1) {
-			return;
-		}
-
-		var layer = $scope.renderEngine.getLayer(currentLayer);
-		if (layer.getLayerType() != LayerType.ImageLayer) {
-			return;
-		}
+        var layer = $scope.getCurrentLayer();
+        if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
+            return;
+        }
 
         var transformedPoint = $scope.loose.transform(layer, xMouse, yMouse);
         xRelative = transformedPoint.x;
@@ -105,8 +94,7 @@ app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
         yMouse = mouse.getPosY();    
 
         /* Calculate x and y coordinates in pixels of the original image */
-        var currentLayer = layers.getCurrentIndex();
-        var layer = $scope.renderEngine.getLayer(currentLayer);
+        var layer = $scope.getCurrentLayer();
         if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
             return;
         }

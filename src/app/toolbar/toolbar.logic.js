@@ -174,9 +174,12 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
 
             /* Draw shared mask variables to image. */
             if ($scope.maskWand) {
-                $scope.setMaskSelectedArea($scope.selectionTool.width, $scope.selectionTool.height);    
-                var currentLayer = layers.getCurrentIndex();
-                var layer = $scope.renderEngine.getLayer(currentLayer);
+                $scope.setMaskSelectedArea($scope.selectionTool.width, $scope.selectionTool.height);
+                var layer = $scope.getCurrentLayer();
+                if (!layer || layer == null) {
+                    console.log("cant find layer");
+                    return;
+                }
                 $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
                 $scope.requestEditEngineUpdate();       
             }
