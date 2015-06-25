@@ -23,16 +23,32 @@ app.directive('canvasEvents', ['canvas', function(canvas) {
             }, true);
 
             /* Watches canvas coordinate changes  */
-            scope.$watchGroup([canvas.getX(), canvas.getY()], function() {
+            scope.$watchGroup([getX, getY], function() {
                 element.css('transform', "translate(" + canvas.getX() + 
                                          "px, " + canvas.getY() + "px)");
             }, true);
 
             /* Watches canvas coordiante changes  */
-            scope.$watchGroup([canvas.getWidth(), canvas.getHeight()], function() {
+            scope.$watchGroup([getWidth, getHeight], function() {
                 element.css('width', canvas.getWidth() * canvas.getZoom() + "px");
                 element.css('height', canvas.getHeight() * canvas.getZoom() + "px");
             }, true);
+            
+            function getX() {
+                return canvas.getX();
+            };
+            
+            function getY() {
+                return canvas.getY();
+            };
+            
+            function getWidth() {
+                return canvas.getWidth();
+            };
+            
+            function getHeight() {
+                return canvas.getHeight();
+            };
         }
     };
 }]);

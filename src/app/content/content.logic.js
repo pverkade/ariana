@@ -40,6 +40,8 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
             mouseY = event.pageY;
         }
         
+        console.log(mouseX, mouseY);
+        
         mouse.setPosX((mouseX - cx) / zoom);
         mouse.setPosY((mouseY - cy) / zoom);
         mouse.setGlobalPosX(mouseX);
@@ -47,6 +49,9 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
         
         /* Call the appropriate tool functions. */
         var toolFunctions = tools.getToolFunctions();
+        
+        console.log(toolFunctions);
+        
         if (toolFunctions) {
             toolFunctions.mouseMove();
         }
