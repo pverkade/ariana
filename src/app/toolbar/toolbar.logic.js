@@ -7,8 +7,8 @@
  */
  
 /* The ToolbarController contains the behaviour of the toolbar. */
-app.controller('ToolbarController', ['$scope', '$modal', 'tools',
-    function ($scope, $modal, tools) {
+app.controller('ToolbarController', ['$scope', '$modal',
+    function ($scope, $modal) {
       
         /* This functions returns whether the toolbox should be visible. It is 
          * hidden when the user is clicking on the canvas/background. */
@@ -80,7 +80,7 @@ app.controller('ToolbarController', ['$scope', '$modal', 'tools',
             }
         }
 
-        $scope.cancelFilters = function() {
+        $scope.cancel = function() {
             $scope.filter.filterObject = null;
             $scope.filter.currentlayerOnly = false;
 
@@ -127,7 +127,7 @@ app.controller('ToolbarController', ['$scope', '$modal', 'tools',
             var filter = $scope.filter.filterObject;
 
             if ($scope.config.layers.numberOfLayers == 0 || !filter) {
-                $scope.cancelFilters();
+                $scope.cancel();
                 return;
             }
 
@@ -169,7 +169,10 @@ app.controller('ToolbarController', ['$scope', '$modal', 'tools',
             /* Iterate over all mask wand parsts and remove. */
             var nrWands = $scope.selectionTool.getNrWands();
             for (var i = 0; i < nrWands; i++) {
-                var removed = $scope.selectionTool.clearLast();              
+                var removed = $scope.selectionTool.clearLast();
+                if (removed == false) {
+                    console.log("Selection tool clear Last returned false");
+                }                
             }
 
             /* Draw shared mask variables to image. */
@@ -178,14 +181,8 @@ app.controller('ToolbarController', ['$scope', '$modal', 'tools',
                 var currentLayer = $scope.config.layers.currentLayer;
                 var layer = $scope.renderEngine.layers[currentLayer];
                 $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
-                $scope.requestEditEngineUpdate();      
+                $scope.requestEditEngineUpdate();       
             }
         };
-        
-        // FIXME requires services: keep in merge
-        /*$scope.checkSelectionActive = function() {
-            var tool = tools.get
-            return 
-        }*/
     }
 ]);
