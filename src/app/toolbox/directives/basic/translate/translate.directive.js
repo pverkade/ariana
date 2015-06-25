@@ -24,11 +24,10 @@ app.controller('TranslateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
     $scope.init = function() {
         canvas.setCursor('move');
         $scope.translating = false;
-        
-        var currentLayer = layers.getCurrentIndex();
-        if (currentLayer == -1) return;
 
-        var layer = $scope.renderEngine.getLayer(currentLayer);
+        var layer = $scope.getCurrentLayer();
+        if (layer == null) return;
+        
         $scope.editEngine.drawTranslateTool(layer);
         window.requestAnimationFrame(function() {$scope.renderEngine.render();});  
     };
@@ -47,17 +46,18 @@ app.controller('TranslateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
     /* onMouseMove */
     $scope.mouseMove = function() {
         if (!$scope.translating) return;
-         
-        var currentLayer = layers.getCurrentIndex();
-        if (currentLayer == -1) return;
-        var layer = $scope.renderEngine.getLayer(currentLayer);
-        
-        var dx = mouse.getPosGlobal().x - mouse.getOldPosGlobal().x;
-        var dy = mouse.getPosGlobal().y - mouse.getOldPosGlobal().y;
-        
+
+        var layer = $scope.getCurrentLayer();
+        if (layer == null) return;
+
+        var dx = mouse.getPosGlobal().x - mouse.getOldGlobalPos().x;
+        var dy = mouse.getPosGlobal().y - mouse.getOldGlobalPos().y;
+
         /* Update the old mouse position. */
         mouse.setOldPos(mouse.getOldPosX() + dx, mouse.getOldPosY() + dy);
-        
+        mouse.setOldGlobalPosX(mouse.getOldGlobalPos().x + dx);
+        mouse.setOldGlobalPosY(mouse.getOldGlobalPos().y + dy);
+
         /* Get the layer position. */
         var x = layer.getPosX();
         var y = layer.getPosY();
