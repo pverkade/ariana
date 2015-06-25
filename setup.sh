@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# implementation of vercomp thanks to Dennis Williamson
+# see: http://stackoverflow.com/questions/4023830/bash-how-compare-two-strings-in-version-format
 vercomp () {
     if [[ $1 == $2 ]]
     then
@@ -34,6 +37,7 @@ vercomp () {
     return 0
 }
 
+# this functions retrieves a version string from a string
 retrieve_version_number() {
     input=$1
     pattern="[0-9]+(\.[0-9]+)+"
@@ -44,6 +48,14 @@ retrieve_version_number() {
 }
 errors=0
 
+# this function test if a package is of correct version.
+#
+# $1: name of the program, to be used in error communication
+# $2: string that contains the version number
+# $3: string of version number that the program atleast needs to have
+#
+# example usage:
+#   test_package "grep" "`grep --version`" '2.21'
 test_package() {
     name=$1
     input=$2
@@ -72,7 +84,6 @@ errors=0
 
 npm_version='1.3.6'
 bower_version='1.4.1'
-grunt_version='0.4.5'
 gruntcli_version='0.1.13'
 imagemagick_version='6.8.8'
 karma_version="0.12.36"
@@ -83,8 +94,6 @@ test_package "bower" "`bower --version`" $bower_version
 version_input="`grunt --version | grep grunt-cli`"
 test_package "grunt-cli" "$version_input" $gruntcli_version
 
-version_input="`grunt --version | grep 'grunt '`"
-test_package "grunt" "$version_input" $grunt_version
 test_package "ImageMagick" "`convert --version | grep Version:`" $imagemagick_version
 test_package "karma" "`karma --version`" $karma_version
 
@@ -99,6 +108,7 @@ fi
 
 
 echo Installing npm dependancies...
+sleep 1
 npm install
 if [[ $? -ne 0 ]]
 then
@@ -107,6 +117,7 @@ then
 fi
 
 echo Installing bower dependancies...
+sleep 1
 bower install
 if [[ $? -ne 0 ]]
 then
@@ -115,6 +126,7 @@ then
 fi
 
 echo Building application
+sleep 1
 grunt
 if [[ $? -ne 0 ]]
 then
@@ -131,4 +143,3 @@ if [[ $STARTSERVER == "y" ]]
 then
     node server.js
 fi
-
