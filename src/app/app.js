@@ -92,7 +92,7 @@ app.controller('AppCtrl', ['$scope',
         $scope.maskBorder = null;
         $scope.marchingAnts = null;
         $scope.imgData = null;
-        $scope.selectionTool = null;        
+        $scope.selectionTool = null;   
         
         $scope.selection = {maskEnabled: false};
         
