@@ -55,19 +55,14 @@ app.controller('SaveImageModalController', ['$scope', '$modalInstance', '$modal'
             qualityInput.setAttribute("value", $scope.quality);
             qualityInput.setAttribute("type", "hidden");
 
-            var myForm = document.createElement("form");
-            myForm.method = 'post';
-            myForm.action = url;
-            myForm.appendChild(dataInput);
-            myForm.appendChild(nameInput);
-            myForm.appendChild(formatInput);
-            myForm.appendChild(qualityInput);
+        document.body.appendChild(myForm);
+        myForm.submit();
+        document.body.removeChild(myForm);
+        
+        $scope.closeSaveImageModal();
+    };
 
-            document.body.appendChild(myForm);
-            myForm.submit();
-            document.body.removeChild(myForm);
-
-            $scope.closeSaveImageModal();
-        };
+    $scope.checkValid = function() {
+        return !/\w/.test($scope.filename);
     }
-]);
+}]);

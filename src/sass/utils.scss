@@ -36,32 +36,25 @@
     }
 }
 
+
+input[type=range] {
+    -webkit-appearance: none;
+}
+input[type=range]:focus {
+    outline: none;
+}
 input[type=range]::-webkit-slider-runnable-track {
     background: $brand-color;
+    height: 4px;
 }
-
+input[type=range]::-webkit-slider-thumb {
+    margin-top: -6px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+}
 input[type=range]::-moz-range-track {
+    height: 4px;
     background: $brand-color;
 }
-
 input[type=range]::-ms-track {
+    height: 4px;
     background: $brand-color;
-}
-
-input[type=range]::-webkit-slider-runnable-thumb {
-    background: $white;
-    border: none;
-    border-radius: 50%;
-}
-
-input[type=range]::-moz-range-thumb {
-    background: $white;
-    border: none;
-    border-radius: 50%;
-}
-
-input[type=range]::-ms-thumb {
-    background: $white;
-    border: none;
-    border-radius: 50%;
 }
