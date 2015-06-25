@@ -40,8 +40,14 @@ app.controller('RectangleCtrl', function($scope) {
         $scope.drawEngine.setColor(0, 0, 0, 255);
         $scope.drawEngine.setLineWidth(2);
         $scope.drawEngine.setDrawType(drawType.RECTANGLE);
+<<<<<<< HEAD
 
         $scope.setMaskSelectedArea($scope.rect.width, $scope.rect.height);
+=======
+        
+        $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
+        $scope.requestEditEngineUpdate();     
+>>>>>>> 3f0ffa2d959204bb4b66a51774e617f825786688
 	};
 
     $scope.stop = function() {

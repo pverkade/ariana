@@ -244,7 +244,6 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
             return;
         }
         var layer = <ImageLayer>this.layers[layerIndex];
-        console.log("x of to select layer: " + layer.getPosX());
 
         var width = bitmask.width;
         var height = bitmask.height;

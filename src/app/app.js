@@ -88,6 +88,7 @@ app.controller('AppCtrl', ['$scope',
         $scope.drawEngine = null;
         $scope.editEngine = null;
         $scope.maskWand = null;
+        $scope.maskWandParts = [];
         $scope.maskBorder = null;
         $scope.marchingAnts = null;
         $scope.imgData = null;
@@ -105,7 +106,6 @@ app.controller('AppCtrl', ['$scope',
 
         $scope.startSharedSelection = function(width, height) {
             if ($scope.maskWand == null) {
-                console.log("shared selection started");
                 $scope.maskWand = new Uint8Array(width * height);
                 $scope.maskBorder = new Uint8Array(width * height);
                 $scope.marchingAnts = new MarchingAnts(width, height);
@@ -141,7 +141,6 @@ app.controller('AppCtrl', ['$scope',
                 }
             }  
         };
-
 
         /* This function creates a new layer from a given Image-object. The new
          * layer is placed on top. */

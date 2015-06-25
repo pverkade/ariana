@@ -154,11 +154,18 @@ app.controller('ToolbarController', ['$scope', '$modal',
         });
         
         $scope.applySelection = function() {
+<<<<<<< HEAD
             /* Cut out selection from texture and move to new layer. */
             var newLayer = $scope.renderEngine.createSelectionImageLayer($scope.imgData, 0);
             $scope.addLayer(newLayer);
 
+            $scope.maskEnabled = false;
+=======
+            var newLayer = $scope.renderEngine.createSelectionImageLayer($scope.imgData, 0);
+            $scope.addLayer(newLayer);
+
             $scope.cancelSelection();
+>>>>>>> 3f0ffa2d959204bb4b66a51774e617f825786688
         }
         
         $scope.cancelSelection = function() {
@@ -183,12 +190,15 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 var layer = $scope.renderEngine.layers[currentLayer];
                 $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
                 $scope.requestEditEngineUpdate();      
-            
-            //$scope.maskWand = null;
-            //$scope.maskBorder = null;
-            //$scope.marchingAnts = null;
-            //$scope.imgData = null;  
             }
-        };
+<<<<<<< HEAD
+=======
+            
+            $scope.maskWand = null;
+            $scope.maskBorder = null;
+            $scope.marchingAnts = null;
+            $scope.imgData = null;    
+>>>>>>> 3f0ffa2d959204bb4b66a51774e617f825786688
+        }
     }
 ]);

@@ -39,8 +39,14 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
 
         $scope.drawEngine.setLineWidth(2);
         $scope.drawEngine.setDrawType(drawType.DASHED);
+<<<<<<< HEAD
 
         $scope.setMaskSelectedArea($scope.loose.width, $scope.loose.height);
+=======
+        
+        $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
+        $scope.requestEditEngineUpdate();     
+>>>>>>> 3f0ffa2d959204bb4b66a51774e617f825786688
     };
     
     $scope.stop = function() {

@@ -36,8 +36,14 @@ app.controller('MagicCtrl', function($scope) {
         $scope.magic.setMaskWand($scope.maskWand);
         $scope.magic.setMaskWandParts($scope.maskWandParts);
         $scope.magic.setMaskBorder($scope.maskBorder);
+<<<<<<< HEAD
 
         $scope.setMaskSelectedArea($scope.magic.width, $scope.magic.height);
+=======
+        
+        $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
+        $scope.requestEditEngineUpdate();     
+>>>>>>> 3f0ffa2d959204bb4b66a51774e617f825786688
 	};
     
     $scope.stop = function() {

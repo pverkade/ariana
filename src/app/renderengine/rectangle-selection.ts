@@ -46,9 +46,8 @@ class RectangleSelection extends AbstractSelection {
 			this.maskBorder[indexPointMask] = 1;
 		}
 
-		this.maskWandParts[this.maskWandParts.length] = new Uint8Array(this.width * this.height);
-
-		/* Draw mask wand. */
+		/* Create and draw mask wand. */
+		this.maskWandParts.push(new Uint8Array(this.width * this.height));
 		var nrWands = this.maskWandParts.length;
 		for (var y = 0; y < height; y++) {
 			for (var x = 0; x < width; x++) {
@@ -57,6 +56,7 @@ class RectangleSelection extends AbstractSelection {
 			}
 		}
 
+		/* Merge new mask wand and get borders. */
 		this.mergeMaskWand();
 		this.getMaskBorder();
 
@@ -66,11 +66,12 @@ class RectangleSelection extends AbstractSelection {
 	validRect(point1 : Point, point2 : Point) {
 		var topLeft = new Point(Math.min(point1.x, point2.x), Math.min(point1.y, point2.y));
 		var bottomRight = new Point(Math.max(point1.x, point2.x), Math.max(point1.y, point2.y));
+
 		var width = bottomRight.x - topLeft.x;
 		var height = bottomRight.y - topLeft.y;
 		var indexPointMask : number;
 
-		/* Check whether there is no intersection with previous selections. */
+		/* Check whether there is an intersection with previous selections. */
 		for (var y = 0; y < height; y++) {
 			for (var x = 0; x < width; x++) {
 				var indexPointMask = (topLeft.y + y) * this.width + topLeft.x + x;

@@ -83,16 +83,12 @@ class AbstractSelection {
 
         if (nrWandParts > 0) {
             for (var i = 0; i < this.maskWandParts[nrWandParts - 1].length; i++) {
-                // if (this.maskWand[i] && this.maskWandParts[nrWandParts - 1][i]) {
-                //   this.maskWand[i] = 0;
-                //} else {
-                    this.maskWand[i] = this.maskWand[i] || this.maskWandParts[nrWandParts - 1][i];
-                //}
+                this.maskWand[i] = this.maskWand[i] || this.maskWandParts[nrWandParts - 1][i];
             }           
         }
     }
 
-    /* Remove bitmask of magic wand that contains point. Do not remove first bitmask
+    /* Remove bitmask of wand that contains point. Do not remove first bitmask
         but adjust to the missing bitmask. */
     removeSelection(startX : number, startY : number) {
         var indexRemove = -1;
@@ -149,6 +145,10 @@ class AbstractSelection {
             this.maskWand = maskWand;
         }
     }  
+
+    setMaskWandParts(maskWandParts : Uint8Array[]) {
+        this.maskWandParts = maskWandParts;
+    } 
 
     getWidth() {
         return this.width;

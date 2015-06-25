@@ -76,40 +76,6 @@ class LooseSelection extends AbstractSelection {
 	    }
 	}
 
-	neighborBorder(point : Point, size : number) {
-		var distance = size + 1;
-		var closestPoint = null;
-
-		for (var i = -size; i <= size; i++) {
-			for(var j = -size; j <= size; j++) {
-				if (Math.max(i, j) < distance && (i != 0 || j != 0)) {
-					if (this.maskBorder[(point.y + i) * this.width + point.x + j] == 1) {
-						closestPoint = new Point(j, i);
-					}				
-				}
-
-			}
-		}
-
-		return closestPoint;
-	}	
-
-    fixHole(loosePoint : Point, deltaPoint : Point) {
-    	var dX = deltaPoint.x;
-    	var dY = deltaPoint.y;
-    	var curPoint = new Point(loosePoint.x, loosePoint.y);
-
-    	while (dX != 0 && dY != 0) {
-    		curPoint.x += super.sign(dX);
-    		curPoint.y += super.sign(dY);
-
-    		this.maskBorder[curPoint.y * this.width + curPoint.x] = 1;
-
-    		dX -= super.sign(dX);
-    		dY -= super.sign(dY);
-    	}
-    }
-
     /* Get inside point by calculating mass punt of wand. */
     getInsidePoint() {
     	var nrPoints = this.points.length;
@@ -212,13 +178,14 @@ class LooseSelection extends AbstractSelection {
         }
     }
 
+    /* Used when current attemt to create loose selection stopped. */
 	reset() {
 		var nrPoints = this.points.length;
 		var indexPointMask;
 
 		for (var i = 0; i < this.points[nrPoints - 1].length; i++) {
-			indexPointMask = this.points[nrPoints - 1][i].y * this.width + this.points[nrPoints - 1][i].x;
-			this.maskBorder[indexPointMask] = 0;
+		 	indexPointMask = this.points[nrPoints - 1][i].y * this.width + this.points[nrPoints - 1][i].x;
+		 	this.maskBorder[indexPointMask] = 0;
 		} 
 		
 		this.points[nrPoints - 1] = [];
