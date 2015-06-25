@@ -12,18 +12,6 @@
         border-radius: 0;
         height: 0.5 * $blocksize;
     }
-    
-    @media screen and (max-width: $breakpoint-tablet) {
-        
-        .input-group-addon, .form-control {
-            height: 0.5 * $blocksize-tablet;
-        }
-        
-        * {
-            font-size: 8pt;
-            
-        }
-    }
 }
 
 .form-control:focus {
@@ -34,32 +22,18 @@
 
 .input-small {
     width: $blocksize !important;
-    
-    @media screen and (max-width: $breakpoint-tablet) {
-        width: $blocksize-tablet !important;
-    }
 }
 
 .input-small-medium {
     width: 1.5 * $blocksize !important;
-    
-    @media screen and (max-width: $breakpoint-tablet) {
-        width: 1.5 * $blocksize-tablet !important;
-    }
 }
 
 .input-medium {
     width: 2 * $blocksize !important;
-    @media screen and (max-width: $breakpoint-tablet) {
-        width: 2 * $blocksize-tablet !important;
-    }
 }
 
 .input-large {
     width: 4 * $blocksize !important;
-    @media screen and (max-width: $breakpoint-tablet) {
-        width: 4 * $blocksize-tablet !important;
-    }
 }
 
 .input-group-addon {
@@ -84,6 +58,19 @@
         left: 1.5 * $blocksize-tablet;
     }
     
+    .tool {
+        width: $blocksize !important;
+        height: $blocksize !important;
+        
+        svg, i, img {
+            padding:    0.2 * $blocksize !important;
+            margin:     0 !important !important;
+            height:     0.6 * $blocksize !important;
+            width:      0.6 * $blocksize !important;
+            font-size:  0.6 * $blocksize !important;
+        }
+    }
+    
     .float-left {
         float: left;
     }
@@ -94,10 +81,6 @@
     
     .center-box {
         width: calc(100% - #{2 * $blocksize});
-        
-        @media screen and (max-width: $breakpoint-tablet) {
-            width: calc(100% - #{2 * $blocksize-tablet});
-        }
     }
         
     .input-group {  
@@ -106,56 +89,35 @@
         .filter-name {
             min-width: 2 * $blocksize;
             width: 50%;
-            @media (max-width: 10 * $blocksize-tablet) {
+            @media (max-width: 10 * $blocksize) {
                 display: none;
             }
         }
         
         .filter-checkbox {
-            min-width: 2 * $blocksize;
-            
-            @media screen and (max-width: $breakpoint-tablet) {
-                min-width: 2 * $blocksize-tablet;
-            }
-            
+            min-width: 2 * $blocksize;           
             width: 50%;
-            @media (max-width: 10 * $blocksize-tablet) {
-                width: 100%;
-            }
         }
         
         .input-group-addon, .number {
             width: 2 * $blocksize;
             
-            @media screen and (max-width: $breakpoint-tablet) {
-                width: 2 * $blocksize-tablet;
-            }
-            
-            @media (max-width: 10 * $blocksize-tablet) {
+            @media (max-width: 10 * $blocksize) {
                 width: 50%;
             }
         }
         
         .slider {
             width: calc(100% - #{2 * $blocksize});
-            
-            @media screen and (max-width: $breakpoint-tablet) {
-                width: calc(100% - #{2 * $blocksize-tablet});
-            }
-            
-            @media (max-width: 10 * $blocksize-tablet) {
+            @media (max-width: 10 * $blocksize) {
                 width: 100%;
             }
         }
         
         .number {
             width: 2 * $blocksize;
-            
-            @media screen and (max-width: $breakpoint-tablet) {
-                width: 2 * $blocksize-tablet;
-            }
            
-            @media (max-width: 10 * $blocksize-tablet) {
+            @media (max-width: 10 * $blocksize) {
                 display: none;
             }
         }

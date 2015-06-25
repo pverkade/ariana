@@ -35,8 +35,8 @@ body {
     cursor: pointer;
     
     svg, i, img {
-        padding:     0.2 * $blocksize;
-        margin:    0 !important; 
+        padding:    0.2 * $blocksize;
+        margin:     0 !important; 
         height:     0.6 * $blocksize;
         width:      0.6 * $blocksize; 
         font-size:  0.6 * $blocksize;
@@ -57,7 +57,7 @@ body {
         cursor: pointer;
 
         svg, i, img {
-            padding:     0.2 * $blocksize-tablet;
+            padding:    0.2 * $blocksize-tablet;
             height:     0.6 * $blocksize-tablet;
             width:      0.6 * $blocksize-tablet;
             font-size:  0.6 * $blocksize-tablet;
