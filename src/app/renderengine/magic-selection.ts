@@ -1,3 +1,13 @@
+/*
+ * Project ariana
+ * File: magic-selections.ts
+ * Author: Merwin van Dijk
+ * Date: June 25th, 2015
+ * Description: this file contains the implementation for the magic selection
+ * tool. The primary functions is getMaskWand which takes the coordinates of a 
+ * point in the image and a treshold value (1-100). The treshold value declares 
+ * the maximum difference in pixel value to the given point.
+ */
 
 class MagicSelection extends AbstractSelection {
     private magicWandColor : number[];

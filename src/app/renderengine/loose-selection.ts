@@ -1,3 +1,14 @@
+/*
+ * Project ariana
+ * File: loose-selections.ts
+ * Author: Merwin van Dijk
+ * Date: June 25th, 2015
+ * Description: this file contains the LooseSelection class. The class allows
+ * points to be added and provides a method to check whether a bounding path is
+ * created. If this is the case the maskBorder, maskWand and maskWandParts 
+ * bitmasks are adjusted.
+ */
+
 class LooseSelection extends AbstractSelection {
 	points : Point[][];
 

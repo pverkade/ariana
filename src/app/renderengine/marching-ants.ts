@@ -1,3 +1,14 @@
+/*
+ * Project ariana
+ * File: marching-ants.ts
+ * Author: Merwin van Dijk
+ * Date: June 25th, 2015
+ * Description: this file contains the marching ants class which is
+ * responsible for writing ants on the borders of selections. The 
+ * mask borders can be set and a the ants can be written in a given
+ * image data object according to size and offset.
+ */
+
 class MarchingAnts {
     width : number;
     height : number;

@@ -1,3 +1,13 @@
+/*
+ * Project ariana
+ * File: rectangle-selections.ts
+ * Author: Merwin van Dijk
+ * Date: June 25th, 2015
+ * Description: this file contains the RectangleSelection class. The class 
+ * allows rectangles to be added and adjusts the maskWand, maskWandParts and 
+ * maskBorder bitmasks.
+ */
+
 class Rectangle{
 	point1 : Point;
 	point2 : Point;
@@ -7,7 +17,6 @@ class Rectangle{
 		this.point2 = new Point(point2.x, point2.y);
 	}
 }
-
 
 class RectangleSelection extends AbstractSelection {
 	rects: Rectangle[];
@@ -44,26 +53,5 @@ class RectangleSelection extends AbstractSelection {
 		this.getMaskBorder();
 
 		return this.maskWandParts[this.maskWandParts.length - 1];
-	}
-
-	validRect(point1 : Point, point2 : Point) {
-		var topLeft = new Point(Math.min(point1.x, point2.x), Math.min(point1.y, point2.y));
-		var bottomRight = new Point(Math.max(point1.x, point2.x), Math.max(point1.y, point2.y));
-
-		var width = bottomRight.x - topLeft.x;
-		var height = bottomRight.y - topLeft.y;
-		var indexPointMask : number;
-
-		/* Check whether there is an intersection with previous selections. */
-		for (var y = 0; y < height; y++) {
-			for (var x = 0; x < width; x++) {
-				var indexPointMask = (topLeft.y + y) * this.width + topLeft.x + x;
-				if (this.maskWand[indexPointMask] == 1) {
-					return false;
-				}
-			}
-		}
-
-		return true;
 	}
 }
