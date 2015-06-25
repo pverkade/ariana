@@ -58,3 +58,12 @@ input[type=range]::-ms-track {
     height: 4px;
     background: $brand-color;
 }
+
+.tooltip-arrow {
+    display: none
+}
+
+.tooltip-inner {
+    background-color: $white;
+    color: $dark;
+}

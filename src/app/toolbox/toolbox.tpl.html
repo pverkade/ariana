@@ -4,46 +4,46 @@
     ng-right-click
     ng-class="{'fade-on inactive': !checkVisible(), 'fade-off': checkVisible()}">
     
-    <div class="tool" id="basic" 
+    <div class="tool" id="basic"
          ng-click="selectToolSet('basic')" 
          ng-class="{active: isActiveToolset('basic')}">
 
         <i class="mdi mdi-arrow-all"></i>
 
         <div class="toolbox" ng-show="isActiveToolset('basic')">
-            <pan tool></pan>
-            <translate tool></translate>
-            <scale tool></scale>
-            <rotate tool></rotate>
+            <pan tool tooltip="Pan" tooltip-placement="right"></pan>
+            <translate tool tooltip="Translate" tooltip-placement="right"></translate>
+            <scale tool tooltip="Scale" tooltip-placement="right"></scale>
+            <rotate tool tooltip="Rotate" tooltip-placement="right"></rotate>
         </div>
 
     </div>
 
-    <div class="tool" id="painting" 
+    <div class="tool" id="painting"
          ng-click="selectToolSet('painting')" 
          ng-class="{active: isActiveToolset('painting')}">
 
         <i class="mdi mdi-brush"></i>
 
         <div class="toolbox" ng-show="isActiveToolset('painting')">
-            <palette tool></palette>
-            <pencil tool></pencil>
-            <brush tool></brush>
-            <picker tool></picker>
+            <palette tool tooltip="Color Palette" tooltip-placement="right"></palette>
+            <pencil tool tooltip="Pencil" tooltip-placement="right"></pencil>
+            <brush tool tooltip="Brush" tooltip-placement="right"></brush>
+            <picker tool tooltip="Eyedrop" tooltip-placement="right"></picker>
         </div>
 
     </div>
 
-    <div class="tool" id="select" 
+    <div class="tool" id="select"
          ng-click="selectToolSet('select')" 
          ng-class="{active: isActiveToolset('select')}">
 
         <i class="mdi mdi-select"></i>
 
         <div class="toolbox" ng-show="isActiveToolset('select')">
-            <rectangle tool></rectangle>
-            <magic tool></magic>
-            <loose tool></loose>
+            <rectangle tool tooltip="Rectangle Select" tooltip-placement="right"></rectangle>
+            <magic tool tooltip="Magic Select" tooltip-placement="right"></magic>
+            <loose tool tooltip="Free Select" tooltip-placement="right"></loose>
         </div>
         
     </div>
