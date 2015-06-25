@@ -29,6 +29,9 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
 
     public resourceManager;
 
+    private colorPickerDrawbuffer : DrawBuffer;
+    private backgroundEnabled : boolean = true;
+
     constructor (canvas : HTMLCanvasElement) {
         this.width = canvas.width;
         this.height = canvas.height;
@@ -77,6 +80,10 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         return this.height;
     }
 
+    public enableBackground(enable : boolean) {
+        this.backgroundEnabled = enable;
+    }
+
     public getNumberOfLayers() : number {
         return this.layers.length;
     }
@@ -109,9 +116,12 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
     public render() {
         /* Draw background */
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.STENCIL_BUFFER_BIT);
-        this.backgroundShaderProgram.activate();
-        this.backgroundShaderProgram.setUniforms(this.width, this.height);
-        this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
+
+        if (this.backgroundEnabled) {
+            this.backgroundShaderProgram.activate();
+            this.backgroundShaderProgram.setUniforms(this.width, this.height);
+            this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
+        }
 
         var oldType = -1;
         var numItems = this.layers.length;
@@ -136,10 +146,35 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         }
     }
 
+    public startColorPicking() : void {
+        if (!this.colorPickerDrawbuffer) {
+            this.colorPickerDrawbuffer = new DrawBuffer(this.gl, this.width, this.height);
+        }
+
+        this.colorPickerDrawbuffer.bind();
+        {
+            this.enableBackground(false);
+            this.render();
+            this.enableBackground(true);
+        }
+        this.colorPickerDrawbuffer.unbind();
+    }
+
+    public endColorPicking() : void {
+        if (this.colorPickerDrawbuffer) {
+            this.colorPickerDrawbuffer.destroy();
+            this.colorPickerDrawbuffer = null;
+        }
+    }
+
     /* Get the color at a given coordinate */
     public getPixelColor(x : number, y : number) : Uint8Array {
         var value = new Uint8Array(4);
-        this.gl.readPixels(x, this.height-y-1, 1, 1, this.gl.RGBA, this.gl.UNSIGNED_BYTE, value);
+        this.colorPickerDrawbuffer.bind();
+        {
+            this.gl.readPixels(x, this.height - y - 1, 1, 1, this.gl.RGBA, this.gl.UNSIGNED_BYTE, value);
+        }
+        this.colorPickerDrawbuffer.unbind();
         return value;
     }
 

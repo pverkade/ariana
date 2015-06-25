@@ -181,12 +181,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 var currentLayer = $scope.config.layers.currentLayer;
                 var layer = $scope.renderEngine.layers[currentLayer];
                 $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
-                $scope.requestEditEngineUpdate();      
-            
-            //$scope.maskWand = null;
-            //$scope.maskBorder = null;
-            //$scope.marchingAnts = null;
-            //$scope.imgData = null;  
+                $scope.requestEditEngineUpdate();       
             }
         };
     }

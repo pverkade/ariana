@@ -3,12 +3,12 @@ app.directive('pan', function() {
         restrict: 'E',
         scope: true,
         templateUrl: 'app/toolbox/directives/basic/pan/pan.tpl.html',
-        controller: 'PanCtrl',
+        controller: 'PanCtrl'
     };
 });
 
 app.controller('PanCtrl', function($scope) {
-	$scope.toolname = 'pan'
+	$scope.toolname = 'pan';
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
 
 	/* init */
@@ -32,8 +32,7 @@ app.controller('PanCtrl', function($scope) {
 	/* onMouseMove */
 	$scope.mouseMove = function() {
 		if (!$scope.panning) return;
-		var z = $scope.config.canvas.zoom;
-		 
+
 		var dx = $scope.config.mouse.current.global.x - $scope.config.mouse.old.global.x;
         var dy = $scope.config.mouse.current.global.y - $scope.config.mouse.old.global.y;
 

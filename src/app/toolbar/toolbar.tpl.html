@@ -48,7 +48,7 @@
 
 <div class="filter-options" 
     ng-right-click
-    ng-show="filter.filterObject"
+    ng-show="filter.filterObject && renderEngine.getNumberOfLayers()"
     ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}"> 
     <div class="tool float-left" ng-click="cancelFilters()"> <i class="mdi mdi-close"> </i> </div>
     <div class="center-box float-left">
