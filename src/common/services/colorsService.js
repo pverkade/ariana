@@ -17,19 +17,19 @@ app.service('colors', function() {
     };
 
     this.getSecondary = function() {
-        return this._params.Secondary;
+        return this._params.secondary;
     };
 
     this.getSecondaryR = function() {
-        return this._params.Secondary.r;
+        return this._params.secondary.r;
     };
 
     this.getSecondaryG = function() {
-        return this._params.Secondary.g;
+        return this._params.secondary.g;
     };
     
     this.getSecondaryB = function() {
-        return this._params.Secondary.b;
+        return this._params.secondary.b;
     };
 
     this.setPrimary = function(r, g, b) {
@@ -57,21 +57,21 @@ app.service('colors', function() {
     };
     
     this.setSecondary = function(r, g, b) {
-        this._params.Secondary.r = r;
-        this._params.Secondary.g = g;
-        this._params.Secondary.b = b;
+        this._params.secondary.r = r;
+        this._params.secondary.g = g;
+        this._params.secondary.b = b;
     };
 
     this.setSecondaryR = function(r) {
-        this._params.Secondary.r = r;
+        this._params.secondary.r = r;
     };
 
     this.setSecondaryG = function(g) {
-        this._params.Secondary.g = g;
+        this._params.secondary.g = g;
     };
 
     this.setSecondaryB = function(b) {
-        this._params.Secondary.b = b;
+        this._params.secondary.b = b;
     };
 
     this.setSecondaryRgb = function(rgb) {

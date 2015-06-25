@@ -55,7 +55,7 @@
 <div class="color-preview" 
     ng-right-click
     ng-click="swapColors()" 
-    ng-class="{'fade-on': !checkVisible() && config.tools.activeTool != 'picker', 'scale-on': !checkVisible() && config.tools.activeTool == 'picker', 'fade-off scale-off': checkVisible()}">
-    <div class="color-primary"   ng-style="{'background-color' : 'rgb(' + config.tools.colors.primary.r + ',' + config.tools.colors.primary.g + ',' + config.tools.colors.primary.b + ')'}"> </div>
-    <div class="color-secondary" ng-style="{'background-color' : 'rgb(' + config.tools.colors.secondary.r + ',' + config.tools.colors.secondary.g + ',' + config.tools.colors.secondary.b + ')'}"> </div>
+    ng-class="{'fade-on': !checkVisible() && getTool() != 'picker', 'scale-on': !checkVisible() && getTool() == 'picker', 'fade-off scale-off': checkVisible()}">
+    <div class="color-primary" ng-style="{'background-color' : 'rgb(' + getPrimary().r + ',' + getPrimary().g + ',' + getPrimary().b + ')'}"> </div>
+    <div class="color-secondary" ng-style="{'background-color' : 'rgb(' + getSecondary().r + ',' + getSecondary().g + ',' + getSecondary().b + ')'}"> </div>
 </div> 

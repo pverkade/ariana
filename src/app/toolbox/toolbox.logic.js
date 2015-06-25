@@ -9,7 +9,19 @@
 
 app.controller('ToolboxCtrl', ['$scope', 'canvas', 'colors', 'tools', 'mouse', 
     function($scope, canvas, colors, tools, mouse) {
-    
+        
+        $scope.getTool = function() {
+            return tools.getTool();
+        }
+
+        $scope.getPrimary = function() {
+            return colors.getPrimary();
+        }
+
+        $scope.getSecondary = function() {
+            return colors.getSecondary();
+        }
+
         $scope.setCursor = function(cursor) {
             canvas.setCursor(cursor);
         };
