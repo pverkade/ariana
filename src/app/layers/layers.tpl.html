@@ -16,7 +16,7 @@
             ng-repeat="index in getLayersIndices()"
             ng-click="selectLayer(index)"
             ng-class="{'active': index === getCurrentLayerIndex()}"
-            ng-hide="hidden || isToBeRemoved(index)">
+            ng-hide="hidden">
 
             <div class="crop">
                 <img class="preview" ng-src="{{getThumbnail(index)}}">
@@ -42,8 +42,9 @@
             </div>
                 
             <div class="layer-name float-left input-group">
-                <span class="input-group-addon"> {{index + 1}} </span>
-                <input type="text" ng-model="config.layers.layerInfo[index].name" class="form-control text">
+                <span class="input-group-addon"> {{renderEngine.getNumberOfLayers() - index}} </span>
+                <span class="input-group-addon"> {{getlayername(index)}} </span>
+                <!-- <input type="text" ng-model=""  class="form-control text"> -->
             </div>              
         </div>
         

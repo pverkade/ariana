@@ -3,7 +3,7 @@
  * palette.directive.js
  * 
  * This file contains the PaletteController and directive, 
- * which controls the palette in the toolbox.
+ * which control the palette in the toolbox.
  *
  */
 
@@ -16,9 +16,10 @@ app.directive('palette', function() {
     };
 });
 
-app.controller('PaletteCtrl', function($scope) {
+app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colors', function($scope, tools, canvas, layers, mouse, colors) {
+
     $scope.toolname = 'palette';
-    $scope.active = $scope.config.tools.activeTool == $scope.toolname;
+    $scope.active = tools.getTool() == $scope.toolname;
 
     $scope.color = {
         h: 0,
@@ -62,11 +63,11 @@ app.controller('PaletteCtrl', function($scope) {
 
     /* init */
     $scope.init = function() {
-        $scope.setCursor('default');
+        canvas.setCursor('default');
 
-        $scope.color = RGBtoHSV($scope.config.tools.colors.primary);
+        $scope.color = rgbToHsv(colors.getPrimary());
 
-        $scope.hex = RGBtoHEX($scope.config.tools.colors.primary);
+        $scope.hex = rgbToHex(colors.getPrimary());
                               
         $scope.drawMarker();
         $scope.drawBar();
@@ -81,9 +82,9 @@ app.controller('PaletteCtrl', function($scope) {
     $scope.mouseMove = function() {
     };
 
-    $scope.$on('swapColorsBC', function (event, data) {
-         $scope.updateHSV();
-         $scope.updateHEX();
+    $scope.$on('swapColorsBC', function () {
+         $scope.updateHsv();
+         $scope.updateHex();
     });
 
     $scope.paletteMouseDown = function(event) {
@@ -101,6 +102,8 @@ app.controller('PaletteCtrl', function($scope) {
 
             /* Update the S and V value based on the mouse position inside the 
              * palette. */
+
+            /* Discriminate mouse inputs and touch inputs */
             if (/^mouse/i.test(event.type)) {
                 locX = event.pageX;
                 locY = event.pageY;
@@ -123,18 +126,14 @@ app.controller('PaletteCtrl', function($scope) {
             }
 
             $scope.color.s = Math.floor(
-                ((locX - $scope.paletteBox.left) * 100) /
-                ($scope.paletteBox.right - $scope.paletteBox.left)
+                ((locX - $scope.paletteBox.left) * 100) / $scope.palette.width
             );
             $scope.color.v = Math.floor(
-                100 - ((locY - $scope.paletteBox.top) * 100) /
-                ($scope.paletteBox.bottom - $scope.paletteBox.top)
+                100 - ((locY - $scope.paletteBox.top) * 100) / $scope.palette.height
             );
-            
-            $scope.drawMarker();
-            $scope.drawBar();
-            $scope.updateRGB();
-            $scope.updateHEX();
+
+            $scope.updateRgb();
+            $scope.updateHex();
         }
     };
 
@@ -142,7 +141,6 @@ app.controller('PaletteCtrl', function($scope) {
         $scope.selectingHue= true;
         $scope.hueMouseMove(event);
     };
-    
     
     $scope.hueMouseUp = function() {
         $scope.selectingHue = false;
@@ -173,10 +171,8 @@ app.controller('PaletteCtrl', function($scope) {
                 ($scope.hueBox.bottom - $scope.hueBox.top)
             );
             
-            $scope.drawMarker();
-            $scope.drawBar();
-            $scope.updateRGB();
-            $scope.updateHEX();
+            $scope.updateRgb();
+            $scope.updateHex();
         }
     };
 
@@ -189,39 +185,39 @@ app.controller('PaletteCtrl', function($scope) {
      * to the "activeToolFunctions" object.
      * Always call "init" first;
      */
-    $scope.$watch('active', function(nval, oval) {
+    $scope.$watch('active', function(nval) {
         if (nval) {
             $scope.init();
 
-            $scope.config.tools.activeToolFunctions = {
+            tools.setToolFunctions({
                 mouseDown: $scope.mouseDown,
                 mouseUp: $scope.mouseUp,
                 mouseMove: $scope.mouseMove
-            };
+            });
         }
     }, true);
     
     
-    $scope.updateRGB = function() {
-        $scope.config.tools.colors.primary = HSVtoRGB($scope.color);
+    $scope.updateRgb = function() {
+        colors.setPrimaryRgb(hsvToRgb($scope.color));
 
         $scope.drawMarker();
         $scope.drawBar();
     };
     
-    $scope.updateHSV = function() {
-        $scope.color = RGBtoHSV($scope.config.tools.colors.primary);
+    $scope.updateHsv = function() {
+        $scope.color = rgbToHsv(colors.getPrimary());
         
         $scope.drawMarker();
         $scope.drawBar();
     };
     
-    $scope.updateHEX = function() {
-        $scope.hex = RGBtoHEX($scope.config.tools.colors.primary);
+    $scope.updateHex = function() {
+        $scope.hex = rgbToHex(colors.getPrimary());
     };
     
-    $scope.updateRGBfromHEX = function() {
-        $scope.config.tools.colors.primary = HEXtoRGB($scope.hex);
+    $scope.updateRgbFromHex = function() {
+        colors.setPrimaryRgb(hexToRgb($scope.hex));
     };
 
     $scope.drawMarker = function() {
@@ -235,9 +231,9 @@ app.controller('PaletteCtrl', function($scope) {
         locX =  $scope.color.s * width / 100;
         locY =  (100 - $scope.color.v) * height / 100;
         context.arc(locX, locY, 6, 0, 2 * Math.PI, false);
-        context.fillStyle = "rgb("  + $scope.config.tools.colors.primary.r + "," 
-                                    + $scope.config.tools.colors.primary.g + "," 
-                                    + $scope.config.tools.colors.primary.b + ")";
+        context.fillStyle = "rgb(" + colors.getPrimaryR() + "," +
+                                     colors.getPrimaryG() + "," +
+                                     colors.getPrimaryB() + ")";
         context.fill();
         context.lineWidth = 3;
         context.strokeStyle = "black";
@@ -245,7 +241,7 @@ app.controller('PaletteCtrl', function($scope) {
         context.lineWidth = 2;
         context.strokeStyle = "white";
         context.stroke();
-    }
+    };
 
     $scope.drawBar = function() {
         var width = $scope.hue.width;
@@ -265,7 +261,7 @@ app.controller('PaletteCtrl', function($scope) {
         context.lineWidth = 2;
         context.strokeStyle = "white";
         context.stroke();
-    }
+    };
 
     $scope.clamp = function(num, min, max) {
         if (num === null || num === undefined) {
@@ -280,26 +276,26 @@ app.controller('PaletteCtrl', function($scope) {
     };
 
     $scope.validate = function() {
-        $scope.config.tools.colors.primary.r = $scope.clamp($scope.config.tools.colors.primary.r, 0, 255);
-        $scope.config.tools.colors.primary.g = $scope.clamp($scope.config.tools.colors.primary.g, 0, 255);
-        $scope.config.tools.colors.primary.b = $scope.clamp($scope.config.tools.colors.primary.b, 0, 255);
+        color.setPrimaryR($scope.clamp(colors.getPrimaryR(), 0, 255));
+        color.setPrimaryG($scope.clamp(colors.getPrimaryG(), 0, 255));
+        color.setPrimaryB($scope.clamp(colors.getPrimaryB(), 0, 255));
         $scope.color.h = $scope.clamp($scope.color.h, 0, 360);
         $scope.color.s = $scope.clamp($scope.color.s, 0, 100);
         $scope.color.v = $scope.clamp($scope.color.v, 0, 100);
         while (!(/^#?[0-9A-F]{0,6}$/i.test($scope.hex))) {
             $scope.hex = $scope.hex.substr(0, $scope.hex.length-1);
         }
-    }
+    };
 
     $scope.blur = function() {
-        if (!$scope.config.tools.colors.primary.r) {
-            $scope.config.tools.colors.primary.r = 0;
+        if (!colors.getPrimaryR()) {
+            color.setPrimaryR(0);
         }
-        if (!$scope.config.tools.colors.primary.g) {
-            $scope.config.tools.colors.primary.g = 0;
+        if (!colors.getPrimaryG()) {
+            color.setPrimaryG(0);
         }
-        if (!$scope.config.tools.colors.primary.b) {
-            $scope.config.tools.colors.primary.b = 0;
+        if (!colors.getPrimaryB()) {
+            color.setPrimaryB(0);
         }
         if (!$scope.color.h) {
             $scope.color.h = 0;
@@ -315,5 +311,5 @@ app.controller('PaletteCtrl', function($scope) {
         } else {
             $scope.hex = '#' + $scope.hex + "000000".substr($scope.hex.length, 6);
         }
-    }
-});
+    };
+}]);

@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * pencil.directive.js
+ * 
+ * This file contains the PencilController and directive, 
+ * which control the pencil tool in the toolbox.
+ *
+ */
+ 
 app.directive('pencil', function() {
     return {
         restrict: 'E',
@@ -7,19 +16,18 @@ app.directive('pencil', function() {
     };
 });
 
-app.controller('PencilCtrl', function($scope) {
+app.controller('PencilCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colors', function($scope, tools, canvas, layers, mouse, colors) {
 	$scope.toolname = 'pencil';
-	$scope.active = ($scope.config.tools.activeTool == $scope.toolname);
+	$scope.active = (tools.getTool() == $scope.toolname);
     $scope.thickness = 2;
     $scope.opacity = 1;
     
-	/* init */
 	$scope.init = function() {
         $scope.drawing = false;
         $scope.hasDrawn = false;
-		$scope.setCursor('default');
+		canvas.setCursor('default');
         $scope.drawEngine.setDrawType(drawType.NORMAL);
-        $scope.setColor($scope.config.tools.colors.primary);
+        $scope.setColor(colors.getPrimary());
         $scope.updateDrawEngine();
 	};
     
@@ -56,32 +64,32 @@ app.controller('PencilCtrl', function($scope) {
     }
 
 	/* onMouseDown */
-	$scope.mouseDown = function() {
+    $scope.mouseDown = function() {
         $scope.drawing = true;
         
-        var buttons = $scope.config.mouse.button;
-        if (buttons[1] && buttons[3]) return;
-
-        if (buttons[1]) 
-            $scope.setColor($scope.config.tools.colors.primary);
-        else 
-            $scope.setColor($scope.config.tools.colors.secondary);
+        if (mouse.getPrimary() && mouse.getSecondary()) return;
         
-        $scope.drawEngine.onMousedown($scope.config.mouse.current.x, $scope.config.mouse.current.y);
-	};
+        if (mouse.getPrimary()) 
+            $scope.setColor(colors.getPrimary());
+        else 
+            $scope.setColor(colors.getSecondary());
+        
+        $scope.drawEngine.onMousedown(mouse.getPosX(), mouse.getPosY());
+    };
 
-	/* onMouseUp */
-	$scope.mouseUp = function() {
+    /* onMouseUp */
+    $scope.mouseUp = function() {
         $scope.drawing = false;
-        $scope.drawEngine.onMouseup($scope.config.mouse.current.x, $scope.config.mouse.current.y);
-	};
+        $scope.drawEngine.onMouseup(mouse.getPosX(), mouse.getPosY());
+    };
 
-	/* onMouseMove */
-	$scope.mouseMove = function() {
+    /* onMouseMove */
+    $scope.mouseMove = function() {
         if (!$scope.drawing) return;
         $scope.hasDrawn = true;
-		$scope.drawEngine.onMousemove($scope.config.mouse.current.x, $scope.config.mouse.current.y);
-	};
+        $scope.drawEngine.onMousemove(mouse.getPosX(), mouse.getPosY());
+    };
+    
 	/*
 	 * This will watch for this tools' "active" variable changes.
 	 * When "active" changes to "true", this tools functions need to
@@ -95,14 +103,14 @@ app.controller('PencilCtrl', function($scope) {
 		if (nval) {
 			$scope.init();
 
-			$scope.config.tools.activeToolFunctions = {
+			tools.setToolFunctions({
 				mouseDown: $scope.mouseDown,
 				mouseUp: $scope.mouseUp,
 				mouseMove: $scope.mouseMove
-			};
+			});
 		}
         else if (oval) {
             $scope.stop();
         }
 	}, true);
-});
+}]);

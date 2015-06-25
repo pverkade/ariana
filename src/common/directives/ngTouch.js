@@ -1,9 +1,15 @@
-"use strict";
-
+/*
+ * Project Ariana
+ * ngTouch.js
+ *
+ * This file contains an Angular directive for catching touch events.
+ *
+ */
+ 
 angular.module("ngTouch", [])
     .directive("ngTouchmove", function () {
         return {
-            controller: function ($scope, $element, $attrs) {
+            controller: function ($scope, $element) {
                 $element.bind('touchstart', onTouchStart);
 
                 function onTouchStart($event) {
@@ -31,24 +37,24 @@ angular.module("ngTouch", [])
     })
     .directive("ngTouchstart", function () {
         return {
-            controller: function ($scope, $element, $attrs) {
-                $element.bind('touchstart', onTouchStart);
-
-                function onTouchStart($event) {
+            controller: function ($scope, $element) {
+                function onTouchStart() {
                     var method = '$scope.' + $element.attr('ng-touchstart');
                     $scope.$apply(function () {
                         eval(method);
                     });
                 }
+
+                $element.bind('touchstart', onTouchStart);
             }
         };
     })
     .directive("ngTouchend", function () {
         return {
-            controller: function ($scope, $element, $attrs) {
+            controller: function ($scope, $element) {
                 $element.bind('touchend', onTouchEnd);
 
-                function onTouchEnd($event) {
+                function onTouchEnd() {
                     var method = '$scope.' + $element.attr('ng-touchend');
                     $scope.$apply(function () {
                         eval(method);
@@ -59,7 +65,7 @@ angular.module("ngTouch", [])
     })
     .directive("ngPinchzoom", function() {
         return {
-            controller: function ($scope, $element, $attrs) {
+            controller: function ($scope, $element) {
                 $element.bind('touchstart', onPinchZoomStart);
 
                 function onPinchZoomStart($event) {
@@ -110,5 +116,5 @@ angular.module("ngTouch", [])
                     $element.unbind('touchend', onPinchZoomEnd);
                 }
             }
-        }
+        };
     });

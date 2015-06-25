@@ -1,28 +1,28 @@
-app.controller('HotkeyCtrl', function($scope, hotkeys) {
-    hotkeys.add({
-        combo: 'c',
-        description: 'Select the crop tool',
-        callback: function() {
-            $scope.config.tools.activeTool = 'crop';
-            $scope.config.tools.activeToolset = 'basic';
-        }
-    });
+/* 
+ * Project Ariana
+ * hotkey.js
+ * 
+ * This file descibes the hotkeys for the tools. 
+ *
+ */
+ 
+app.controller('HotkeyCtrl', function($scope, hotkeys, tools) {
 
     hotkeys.add({
         combo: 'p',
         description: 'Select the pan tool',
         callback: function() {
-            $scope.config.tools.activeTool = 'pan';
-            $scope.config.tools.activeToolset = 'basic';
+            tools.setTool('pan');
+            tools.setToolset('basic');
         }
     });
-
+    
     hotkeys.add({
-        combo: 'r',
-        description: 'Select the rotate tool',
+        combo: 't',
+        description: 'Select the translate tool',
         callback: function() {
-            $scope.config.tools.activeTool = 'rotate';
-            $scope.config.tools.activeToolset = 'basic';
+            tools.setTool('translate');
+            tools.setToolset('basic');
         }
     });
 
@@ -30,107 +30,80 @@ app.controller('HotkeyCtrl', function($scope, hotkeys) {
         combo: 's',
         description: 'Select the scale tool',
         callback: function() {
-            $scope.config.tools.activeTool = 'scale';
-            $scope.config.tools.activeToolset = 'basic';
+            tools.setTool('scale');
+            tools.setToolset('basic');
         }
     });
 
     hotkeys.add({
-        combo: 't',
-        description: 'Select the translate tool',
+        combo: 'r',
+        description: 'Select the rotate tool',
         callback: function() {
-            $scope.config.tools.activeTool = 'translate';
-            $scope.config.tools.activeToolset = 'basic';
+            tools.setTool('rotate');
+            tools.setToolset('basic');
+        }
+    });    
+    
+    hotkeys.add({
+        combo: 'c',
+        description: 'Select the color-palette tool',
+        callback: function() {
+            tools.setTool('palette');
+            tools.setToolset('painting');
         }
     });
-
+    
+    hotkeys.add({
+        combo: 'd',
+        description: 'Select the pencil tool',
+        callback: function() {
+            tools.setTool('pencil');
+            tools.setToolset('painting');
+        }
+    });
+    
     hotkeys.add({
         combo: 'b',
         description: 'Select the brush tool',
         callback: function() {
-            $scope.config.tools.activeTool = 'brush';
-            $scope.config.tools.activeToolset = 'painting';
+            tools.setTool('brush');
+            tools.setToolset('painting');
         }
     });
 
     hotkeys.add({
         combo: 'e',
-        description: 'Select the eraser tool',
+        description: 'Select the eyedrop tool',
         callback: function() {
-            $scope.config.tools.activeTool = 'eraser';
-            $scope.config.tools.activeToolset = 'painting';
-        }
-    });
-
-    hotkeys.add({
-        combo: 'f',
-        description: 'Select the fill tool',
-        callback: function() {
-            $scope.config.tools.activeTool = 'fill';
-            $scope.config.tools.activeToolset = 'painting';
-        }
-    });
-
-    hotkeys.add({
-        combo: 'ctrl+p',
-        description: 'Select the palette tool',
-        callback: function() {
-            $scope.config.tools.activeTool = 'palette';
-            $scope.config.tools.activeToolset = 'painting';
-        }
-    });
-
-    hotkeys.add({
-        combo: 'd',
-        description: 'Select the pencil tool',
-        callback: function() {
-            $scope.config.tools.activeTool = 'pencil';
-            $scope.config.tools.activeToolset = 'painting';
+            tools.setTool('picker');
+            tools.setToolset('painting');
         }
     });
 
     hotkeys.add({
         combo: 'q',
-        description: 'Select the colorpicker tool',
+        description: 'Select the rectangle selection tool',
         callback: function() {
-            $scope.config.tools.activeTool = 'picker';
-            $scope.config.tools.activeToolset = 'painting';
+            tools.setTool('rectangle');
+            tools.setToolset('select');
         }
     });
-
+    
     hotkeys.add({
-        combo: 'ctrl+c',
-        description: 'Select the curve select tool',
+        combo: 'm',
+        description: 'Select the magic selection tool',
         callback: function() {
-            $scope.config.tools.activeTool = 'curve';
-            $scope.config.tools.activeToolset = 'select';
+            tools.setTool('magic');
+            tools.setToolset('select');
         }
     });
-
+    
     hotkeys.add({
-        combo: 'ctrl+e',
-        description: 'Select the elipse select tool',
+        combo: 'l',
+        description: 'Select the loose selection tool',
         callback: function() {
-            $scope.config.tools.activeTool = 'elipse';
-            $scope.config.tools.activeToolset = 'select';
-        }
-    });
-
-    hotkeys.add({
-        combo: 'ctrl+m',
-        description: 'Select the magic select tool',
-        callback: function() {
-            $scope.config.tools.activeTool = 'magic';
-            $scope.config.tools.activeToolset = 'select';
-        }
-    });
-
-    hotkeys.add({
-        combo: 'ctrl+r',
-        description: 'Select the rectangle select tool',
-        callback: function() {
-            $scope.config.tools.activeTool = 'rectangle';
-            $scope.config.tools.activeToolset = 'select';
+            tools.setTool('loose');
+            tools.setToolset('select');
         }
     });
 });

@@ -8,15 +8,28 @@
  */
 
 /* The ContenController contains the behaviour of the main content. */
-app.controller('ContentController', function($scope, $window) {
+app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
+    function($scope, $window, canvas, mouse, tools) {
+
+    $scope.getWidth = function() {
+        return canvas.getWidth();
+    };
+
+    $scope.getHeight = function() {
+        return canvas.getHeight();
+    };
+
+    $scope.getVisibility = function() {
+        return canvas.getVisibility();
+    };
 
     /* This function is triggered when the mouse is moved. */
     $scope.mouseMove = function(event) {
         event.preventDefault();
 
-        var cx = $scope.config.canvas.x,
-            cy = $scope.config.canvas.y,
-            z  = $scope.config.canvas.zoom;
+        var cx = canvas.getX();
+        var cy = canvas.getY();
+        var zoom  = canvas.getZoom();
 
         var mouseX, mouseY;
         if (event.originalEvent) {
@@ -26,15 +39,18 @@ app.controller('ContentController', function($scope, $window) {
             mouseX = event.pageX;
             mouseY = event.pageY;
         }
-        $scope.config.mouse.current.x = (mouseX - cx) / z;
-        $scope.config.mouse.current.y = (mouseY - cy) / z;
         
-        $scope.config.mouse.current.global.x = mouseX;
-        $scope.config.mouse.current.global.y = mouseY;
+        mouse.setPosX((mouseX - cx) / zoom);
+        mouse.setPosY((mouseY - cy) / zoom);
+        mouse.setGlobalPosX(mouseX);
+        mouse.setGlobalPosY(mouseY);
         
         /* Call the appropriate tool functions. */
-        var toolFunctions = $scope.config.tools.activeToolFunctions;
-        if (toolFunctions) toolFunctions.mouseMove();
+        var toolFunctions = tools.getToolFunctions();
+        
+        if (toolFunctions) {
+            toolFunctions.mouseMove();
+        }
     };
 
     /* This function is triggered on a click. */
@@ -42,36 +58,47 @@ app.controller('ContentController', function($scope, $window) {
         event.preventDefault();
         event.stopPropagation();
 
-        var cx = $scope.config.canvas.x,
-            cy = $scope.config.canvas.y,
-            z  = $scope.config.canvas.zoom;
+        var cx = canvas.getX();
+        var cy = canvas.getY();
+        var zoom  = canvas.getZoom();
 
         var mouseX, mouseY;
         if (event.originalEvent) {
             mouseX = event.originalEvent.touches[0].pageX;
             mouseY = event.originalEvent.touches[0].pageY;
+            var mouseIndex = event.originalEvent.touches ? 1 : event.which;
         } else {
             mouseX = event.pageX;
             mouseY = event.pageY;
+            var mouseIndex = event.touches ? 1 : event.which;
+        }
+        
+        if (mouseIndex == 1) {
+            mouse.setPrimary(true);
+        }
+        else if (mouseIndex == 2) {
+            mouse.setMiddle(true);
+        }
+        else if (mouseIndex == 3) {
+            mouse.setSecondary(true);
         }
 
-        /* Store the mouse button. */
-        $scope.config.mouse.button[event.originalEvent ? 1 : event.which] = true;
-
         /* Set correct position in config. */
-        $scope.config.mouse.current.x = (mouseX - cx) / z;
-        $scope.config.mouse.current.y = (mouseY - cy) / z;
-        $scope.config.mouse.old.x     = (mouseX - cx) / z;
-        $scope.config.mouse.old.y     = (mouseY - cy) / z;
+        mouse.setPosX((mouseX - cx) / zoom);
+        mouse.setPosY((mouseY - cy) / zoom);
+        mouse.setGlobalPosX(mouseX);
+        mouse.setGlobalPosY(mouseY);
         
-        $scope.config.mouse.current.global.x = mouseX;
-        $scope.config.mouse.current.global.y = mouseY;
-        $scope.config.mouse.old.global.x = mouseX;
-        $scope.config.mouse.old.global.y = mouseY;
+        mouse.setOldPosX((mouseX - cx) / zoom);
+        mouse.setOldPosY((mouseY - cy) / zoom);
+        mouse.setOldGlobalPosX(mouseX);
+        mouse.setOldGlobalPosY(mouseY);
         
         /* Call the appropriate tool functions. */
-        var toolFunctions = $scope.config.tools.activeToolFunctions;
-        if (toolFunctions) toolFunctions.mouseDown();
+        var toolFunctions = tools.getToolFunctions();
+        if (toolFunctions) {
+            toolFunctions.mouseDown();
+        }
     };
 
     /* This function is called when a mouse button is released. */
@@ -79,54 +106,82 @@ app.controller('ContentController', function($scope, $window) {
         event.preventDefault();
 
         /* Store the mouse button. */
-        $scope.config.mouse.button[event.originalEvent ? 1 : event.which] = false;
+        if (event.originalEvent) {
+            var mouseIndex = event.originalEvent.touches ? 1 : event.which;
+        } else {
+            var mouseIndex = event.touches ? 1 : event.which;
+        }
+        
+        if (mouseIndex == 1) {
+            mouse.setPrimary(false);
+        }
+        else if (mouseIndex == 2) {
+            mouse.setMiddle(false);
+        }
+        else if (mouseIndex == 3) {
+            mouse.setSecondary(false);
+        }
 
         /* Call the appropriate tool functions. */
-        var toolFunctions = $scope.config.tools.activeToolFunctions;
-        if (toolFunctions) toolFunctions.mouseUp();
+        var toolFunctions = tools.getToolFunctions();
+        if (toolFunctions) {
+            toolFunctions.mouseUp();
+        }
     };
 
     $scope.mwheelUp = function() {
-        $scope.config.canvas.zoom += 0.05;
-        if ($scope.config.canvas.zoom >= 3.0) {
-            $scope.config.canvas.zoom = 3.0;
+        var zoom = canvas.getZoom() + 0.05;
+        if (zoom >= 3.0) {
+            zoom = 3.0;
+            canvas.setZoom(zoom);
             return;
         }
+        canvas.setZoom(zoom);
         
         /* Zoom on the current mouse location. */
-        var widthDifference  = $scope.config.mouse.current.x * 0.05;
-        var heightDifference = $scope.config.mouse.current.y * 0.05;
+        var widthDifference  = mouse.getPosX() * 0.05;
+        var heightDifference = mouse.getPosY() * 0.05;
         
-        $scope.config.canvas.x -= widthDifference;
-        $scope.config.canvas.y -= heightDifference;
+        canvas.setX(canvas.getX() - widthDifference);
+        canvas.setY(canvas.getY() - heightDifference);
+        
+        $scope.requestRenderEngineUpdate();
     };
 
     $scope.mwheelDown = function() {
-        $scope.config.canvas.zoom -= 0.05;
-        if ($scope.config.canvas.zoom <= 0.1) {
-            $scope.config.canvas.zoom = 0.1;
+        var zoom = canvas.getZoom() - 0.05;
+        if (zoom <= 0.05) {
+            zoom = 0.05;
+            canvas.setZoom(zoom);
             return;
         }
+        canvas.setZoom(zoom);
 
         /* Zoom on the current mouse location. */
-        var widthDifference  = $scope.config.mouse.current.x * 0.05;
-        var heightDifference = $scope.config.mouse.current.y * 0.05;
+        var widthDifference  = mouse.getPosX() * 0.05;
+        var heightDifference = mouse.getPosY() * 0.05;
         
-        $scope.config.canvas.x += widthDifference;
-        $scope.config.canvas.y += heightDifference;
+        canvas.setX(canvas.getX() + widthDifference);
+        canvas.setY(canvas.getY() + heightDifference);
+        
+        $scope.requestRenderEngineUpdate();
     };
 
     $scope.pinchZoom = function(event) {
-        $scope.config.canvas.zoom += event.scale;
-        if ($scope.config.canvas.zoom <= 0.1) {
-            $scope.config.canvas.zoom = 0.1;
+        var zoom = canvas.getZoom() + event.scale;
+        if (zoom <= 0.05) {
+            zoom = 0.05;
+            canvas.setZoom(zoom);
             return;
         }
 
-        if ($scope.config.canvas.zoom >= 3.0) {
-            $scope.config.canvas.zoom = 3.0;
+        if (zoom >= 3.0) {
+            zoom = 3.0;
+            canvas.setZoom(zoom);
             return;
         }
+        
+        canvas.setZoom(zoom);
     };
 
     /* Get the canvas element and start the engine. */
@@ -135,4 +190,4 @@ app.controller('ContentController', function($scope, $window) {
         document.getElementById("editing-canvas"),
         document.getElementById("top-canvas")
     );
-});
+}]);

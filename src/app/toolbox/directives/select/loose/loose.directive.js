@@ -1,4 +1,13 @@
-angular.module('ariana').directive('loose', function() {
+/* 
+ * Project Ariana
+ * loose.directive.js
+ * 
+ * This file contains the LooseController and directive, 
+ * which control the loose selection tool in the toolbox.
+ *
+ */
+ 
+app.directive('loose', function() {
     return {
         restrict: 'E',
         scope: true,
@@ -7,21 +16,24 @@ angular.module('ariana').directive('loose', function() {
     };
 });
 
-angular.module('ariana').controller('LooseCtrl', function($scope) {
+app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 
+    function($scope, tools, canvas, layers, mouse) {
+
     $scope.toolname = 'loose';
-    $scope.active = $scope.config.tools.activeTool == $scope.toolname;
+    $scope.active = tools.getTool() == $scope.toolname;
 
     $scope.init = function() {
-        $scope.setCursor('default');
-        $scope.selection.maskEnabled = true;
 
-        var currentLayer = $scope.config.layers.currentLayer;
+        canvas.setCursor('default');
+        $scope.selection.maskEnabled = true;
+        var currentLayer = layers.getCurrentIndex();
+
         if (currentLayer == -1) {
             return;
         }
 
-        var layer = $scope.renderEngine.layers[currentLayer];
-        if (layer.layerType != LayerType.ImageLayer) {
+        var layer = $scope.renderEngine.getLayer(currentLayer);
+        if (layer.getLayerType() != LayerType.ImageLayer) {
             return;
         }
         
@@ -50,8 +62,8 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
 
     $scope.mouseDown = function() {
         /* x and y coordinates in pixels relative to image. */
-        xMouse = $scope.config.mouse.current.x;
-        yMouse = $scope.config.mouse.current.y;  
+        xMouse = mouse.getPosX();
+        yMouse = mouse.getPosY();
 
         /* Calculate x and y coordinates in pixels of the original image */
         var currentLayer = $scope.config.layers.currentLayer;
@@ -85,12 +97,12 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
     /* onMouseMove */
     $scope.mouseMove = function() {
         /* x and y coordinates in pixels relative to image. */
-        xMouse = $scope.config.mouse.current.x;
-        yMouse = $scope.config.mouse.current.y;    
+        xMouse = mouse.getPosX();
+        yMouse = mouse.getPosY();    
 
         /* Calculate x and y coordinates in pixels of the original image */
-        var currentLayer = $scope.config.layers.currentLayer;
-        var layer = $scope.renderEngine.layers[currentLayer];
+        var currentLayer = layers.getCurrentIndex();
+        var layer = $scope.renderEngine.getLayer(currentLayer);
         if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
             return;
         }
@@ -99,12 +111,12 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
         xRelative = transformedPoint.x;
         yRelative = transformedPoint.y;
 
-        if ($scope.mouseBTNDown == true) {
-            if ($scope.loose.addPoint(new Point(xRelative, yRelative))) {
+        if ($scope.mouseBTNDown === true) {
+            if ($scope.loose.addPoint(new Point(xMouse, yMouse))) {
                 var boundingPath = $scope.loose.getLastBoundingPath();
 
                 /* A new bounding path has been found. */
-                if (boundingPath.length != 0) {
+                if (boundingPath.length !== 0) {
 
                     /* Draw shared mask variables to image. */
                     if ($scope.maskWand) {
@@ -140,14 +152,14 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
         if (nval) {
             $scope.init();
 
-            $scope.config.tools.activeToolFunctions = {
+            tools.setToolFunctions({
                 mouseDown: $scope.mouseDown,
                 mouseUp: $scope.mouseUp,
                 mouseMove: $scope.mouseMove
-            };
+            });
         }
         else if (oval) {
             $scope.stop();
         }
     }, true);
-});
+}]);

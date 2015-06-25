@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * rectangle.directive.js
+ * 
+ * This file contains the RectangleController and directive, 
+ * which control the rectangle selection tool in the toolbox.
+ *
+ */
+ 
 app.directive('rectangle', function() {
     return {
         restrict: 'E',
@@ -7,9 +16,9 @@ app.directive('rectangle', function() {
     };
 });
 
-app.controller('RectangleCtrl', function($scope) {
-    $scope.toolname = 'rectangle';
-    $scope.active = $scope.config.tools.activeTool == $scope.toolname;
+app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', 'mouse', function($scope, tools, canvas, mouse) {
+	$scope.toolname = 'rectangle';
+	$scope.active = tools.getTool() == $scope.toolname;
 
     $scope.init = function() {
         $scope.setCursor('default');
@@ -114,18 +123,17 @@ app.controller('RectangleCtrl', function($scope) {
      * to the "activeToolFunctions" object.
      * Always call "init" first;
      */
-    $scope.$watch('active', function(nval, oval) {
-        if (nval) {
-            $scope.init();
+    $scope.$watch('active', function(nval) {
+		if (nval) {
+			$scope.init();
 
-            $scope.config.tools.activeToolFunctions = {
-                mouseDown: $scope.mouseDown,
-                mouseUp: $scope.mouseUp,
-                mouseMove: $scope.mouseMove
-            };
-        } 
-        else if (oval) {
-            $scope.stop();
-        }
-    }, true);
-});
+			tools.setToolFunctions({
+				mouseDown: $scope.mouseDown,
+				mouseUp: $scope.mouseUp,
+				mouseMove: $scope.mouseMove
+			});
+		}
+	}, true);
+}]);
+
+

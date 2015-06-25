@@ -1,39 +1,55 @@
-app.directive('canvasEvents', function() {
+/*
+ * Project Ariana
+ * canvasEvents.js
+ *
+ * This file contains an Angular directive for catching mouse input on the 
+ * canvas. 
+ *
+ */
+ 
+app.directive('canvasEvents', ['canvas', function(canvas) {
     return {
         restrict: 'A',
-        link: function(scope, element, attrs) {
+        link: function(scope, element) {
             
             /* Watches canvas zoom changes  */
-            scope.$watch('config.canvas.zoom', function(nval, oval) {
-                var cw = scope.config.canvas.width,
-                    ch = scope.config.canvas.height;
+            scope.$watch(canvas.getZoom(), function() {
+                var cw = canvas.getWidth(),
+                    ch = canvas.getHeight();
 
-                element.css('width', cw * scope.config.canvas.zoom + "px");
-                element.css('height', ch * scope.config.canvas.zoom + "px");
+                element.css('width', cw * canvas.getZoom() + "px");
+                element.css('height', ch * canvas.getZoom() + "px");
                 
             }, true);
 
-            /* Watches canvas visibility changes  */
-            scope.$watch('config.canvas.visible', function(nval, oval) {
-                element.removeClass("ng-hide");
-                element.css('display', nval ? "block" : "none");
-            }, true);
-
             /* Watches canvas coordinate changes  */
-            scope.$watchGroup(['config.canvas.x', 'config.canvas.y'], function(nval, oval) {
-                element.css('-ms-transform', "translate(" + scope.config.canvas.x +
-                    "px, " + scope.config.canvas.y + "px)");
-                element.css('-webkit-transform', "translate(" + scope.config.canvas.x +
-                    "px, " + scope.config.canvas.y + "px)");
-                element.css('transform', "translate(" + scope.config.canvas.x +
-                    "px, " + scope.config.canvas.y + "px)");
+            scope.$watchGroup([getX, getY], function() {
+                element.css('transform', "translate(" + canvas.getX() + "px, " + canvas.getY() + "px)");
+                element.css('-ms-transform', "translate(" + canvas.getX() + "px, " + canvas.getY() + "px)");
+                element.css('-webkit-transform', "translate(" + canvas.getX() + "px, " + canvas.getY() + "px)");
             }, true);
 
             /* Watches canvas coordiante changes  */
-            scope.$watchGroup(['config.canvas.width', 'config.canvas.height'], function(nval, oval) {
-                element.css('width', scope.config.canvas.width * scope.config.canvas.zoom + "px");
-                element.css('height', scope.config.canvas.height * scope.config.canvas.zoom + "px");
+            scope.$watchGroup([getWidth, getHeight], function() {
+                element.css('width', canvas.getWidth() * canvas.getZoom() + "px");
+                element.css('height', canvas.getHeight() * canvas.getZoom() + "px");
             }, true);
+            
+            function getX() {
+                return canvas.getX();
+            };
+            
+            function getY() {
+                return canvas.getY();
+            };
+            
+            function getWidth() {
+                return canvas.getWidth();
+            };
+            
+            function getHeight() {
+                return canvas.getHeight();
+            };
         }
-    }
-});
+    };
+}]);

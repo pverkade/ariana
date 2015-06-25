@@ -31,7 +31,7 @@ class EditEngine {
         this.width = canvas.width;
         this.height = canvas.height;
         this.rotateImage = new Image();
-        this.rotateImage.src = "/assets/vectors/rotate-left.svg";
+        this.rotateImage.src = "";
     }
 
     resize (width : number, height : number) : void {

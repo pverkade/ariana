@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * magic.directive.js
+ * 
+ * This file contains the MagicController and directive, 
+ * which control the magic selection tool in the toolbox.
+ *
+ */
+ 
 app.directive('magic', function() {
     return {
         restrict: 'E',
@@ -7,23 +16,24 @@ app.directive('magic', function() {
     };
 });
 
-app.controller('MagicCtrl', function($scope) {
+app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', function($scope, tools, canvas, layers, mouse) {
+
 	$scope.toolname = 'magic';
-	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
+	$scope.active = tools.getTool() == $scope.toolname;
 
 	$scope.threshold = 35;
 
 	$scope.init = function() {
-		$scope.setCursor('crosshair');
         $scope.selection.maskEnabled = true;
+		canvas.setCursor('crosshair');
 
-		var currentLayer = $scope.config.layers.currentLayer;
+		var currentLayer = layers.getCurrentIndex();
 		if (currentLayer == -1) {
 			return;
 		}
 
-		var layer = $scope.renderEngine.layers[currentLayer];
-		if (layer.layerType != LayerType.ImageLayer) {
+		var layer = $scope.renderEngine.getLayer(currentLayer);
+		if (layer.getLayerType() != LayerType.ImageLayer) {
 			return;
 		}
         
@@ -50,12 +60,12 @@ app.controller('MagicCtrl', function($scope) {
         $scope.stop();
 
 		/* x and y coordinates in pixels relative to canvas left top corner. */
-		var mouseX = $scope.config.mouse.current.x;
-		var mouseY = $scope.config.mouse.current.y;
+		var xRelative = mouse.getPosX();
+		var yRelative = mouse.getPosY();
 
         /* Calculate x and y coordinates in pixels of the original image */
-        var currentLayer = $scope.config.layers.currentLayer;
-        var layer = $scope.renderEngine.layers[currentLayer];
+        var currentLayer = layers.getCurrentIndex();
+        var layer = $scope.renderEngine.getLayer(currentLayer);
         if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
             return;
         }
@@ -67,10 +77,12 @@ app.controller('MagicCtrl', function($scope) {
         console.log("position on image", xRelative, yRelative);
         
 		/* Check wheter user has clicked inside of a selection. */
+        var bitmask = null;
 		if ($scope.magic.isInSelection(xRelative, yRelative)) {
-			$scope.magic.removeSelection(xRelative, yRelative)
+			$scope.magic.removeSelection(xRelative, yRelative);
 		} else {
 			$scope.magic.getMaskWand(xRelative, yRelative, $scope.threshold);
+			bitmask = $scope.magic.getMaskWand(xRelative, yRelative, $scope.threshold);
 		}
 
 		/* Draw shared mask variables to image. */
@@ -106,14 +118,14 @@ app.controller('MagicCtrl', function($scope) {
 		if (nval) {
 			$scope.init();
 
-			$scope.config.tools.activeToolFunctions = {
+			tools.setToolFunctions({
 				mouseDown: $scope.mouseDown,
 				mouseUp: $scope.mouseUp,
 				mouseMove: $scope.mouseMove
-			};
+			});
 		}
         else if (oval) {
             $scope.stop();
         }
 	}, true);
-});
+}]);

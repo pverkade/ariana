@@ -294,7 +294,7 @@ class DrawEngine {
      */
     getBrushImage(brush : brushType) : string {
         if (brush == brushType.THIN) {
-            return 'assets/draw/thin.svg';
+            return 'assets/img/thin.svg';
         }
         this.setDrawType(drawType.BRUSH);
         return null;

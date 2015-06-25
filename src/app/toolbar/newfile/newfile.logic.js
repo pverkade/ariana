@@ -7,8 +7,8 @@
  *
  */
  
-app.controller('NewFileModalController', ['$scope', '$modalInstance', '$modal',  
-    function ($scope, $modalInstance, $modal) {
+app.controller('NewFileModalController', ['$scope', '$modalInstance', '$modal', 'canvas',
+    function ($scope, $modalInstance, $modal, canvas) {
 
         $scope.inputWidth = 800;
         $scope.inputHeight = 600;
@@ -17,9 +17,8 @@ app.controller('NewFileModalController', ['$scope', '$modalInstance', '$modal',
             $modalInstance.dismiss();
         };
 
-        //TODO: check if the value is accepted (if not, change to number..)
         $scope.$watch('inputWidth', function (newValue, oldValue) {
-            if (newValue.length === 0) return;
+            if (newValue.length === 0) {return;}
             if (isNaN(newValue)) {
                 $scope.inputWidth = oldValue;
                 return;
@@ -35,9 +34,8 @@ app.controller('NewFileModalController', ['$scope', '$modalInstance', '$modal',
             }
         });
 
-        //TODO: check if the value is accepted (if not, change to number..)
         $scope.$watch('inputHeight', function (newValue, oldValue) {
-            if (newValue.length === 0) return;
+            if (newValue.length === 0) {return;}
             if (isNaN(newValue)) {
                 $scope.inputHeight = oldValue;
                 return;
@@ -54,7 +52,7 @@ app.controller('NewFileModalController', ['$scope', '$modalInstance', '$modal',
         });
 
         $scope.openNoticeModal = function() {
-            var modalInstance = $modal.open({
+            $modal.open({
                 templateUrl: 'app/toolbar/newfile/notice.tpl.html',
                 controller:  'NewFileNoticeModalController',
                 scope: $scope,
@@ -63,7 +61,7 @@ app.controller('NewFileModalController', ['$scope', '$modalInstance', '$modal',
         };
  
         $scope.create = function () {
-            if ($scope.config.canvas.visible) {
+            if (canvas.getVisibility()) {
                 $scope.openNoticeModal();
             }
             else {
