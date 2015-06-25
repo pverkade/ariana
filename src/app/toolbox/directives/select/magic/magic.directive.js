@@ -16,7 +16,6 @@ app.controller('MagicCtrl', function($scope) {
 	/* init */
 	$scope.init = function() {
 		$scope.setCursor('crosshair');
-        // console.log($scope.selection.maskEnabled);
         $scope.selection.maskEnabled = true;
 
 		var currentLayer = $scope.config.layers.currentLayer;
@@ -37,7 +36,10 @@ app.controller('MagicCtrl', function($scope) {
 		$scope.startSharedSelection(image.width, image.height);
        	$scope.setSelectionTool($scope.magic);
         $scope.magic.setMaskWand($scope.maskWand);
+        $scope.magic.setMaskWandParts($scope.maskWandParts);
         $scope.magic.setMaskBorder($scope.maskBorder);
+
+        $scope.setMaskSelectedArea($scope.magic.width, $scope.magic.height);
 	};
     
     $scope.stop = function() {
@@ -86,8 +88,7 @@ app.controller('MagicCtrl', function($scope) {
 			$scope.magic.getMaskWand(xRelative, yRelative, $scope.threshold);
 		}
 
-		// $scope.magic.getMaskBorder();
-
+		/* Draw shared mask variables to image. */
 		if ($scope.maskWand) {
 			$scope.setMaskSelectedArea($scope.magic.width, $scope.magic.height);    
             var currentLayer = $scope.config.layers.currentLayer;

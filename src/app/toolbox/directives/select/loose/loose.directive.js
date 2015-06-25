@@ -36,10 +36,13 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
         $scope.startSharedSelection($scope.image.width, $scope.image.height);
         $scope.setSelectionTool($scope.loose);
         $scope.loose.setMaskWand($scope.maskWand);
+        $scope.loose.setMaskWandParts($scope.maskWandParts);
         $scope.loose.setMaskBorder($scope.maskBorder);
 
         $scope.drawEngine.setLineWidth(2);
         $scope.drawEngine.setDrawType(drawType.DASHED);
+
+        $scope.setMaskSelectedArea($scope.loose.width, $scope.loose.height);
     };
     
     $scope.stop = function() {
@@ -90,6 +93,7 @@ angular.module('ariana').controller('LooseCtrl', function($scope) {
                 /* A new bounding path has been found. */
                 if (boundingPath.length != 0) {
 
+                    /* Draw shared mask variables to image. */
                     if ($scope.maskWand) {
                         $scope.setMaskSelectedArea($scope.loose.width, $scope.loose.height);    
                         var currentLayer = $scope.config.layers.currentLayer;

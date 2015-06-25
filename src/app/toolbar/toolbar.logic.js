@@ -154,13 +154,11 @@ app.controller('ToolbarController', ['$scope', '$modal',
         });
         
         $scope.applySelection = function() {
-            // cut out selection from texture -> move to new layer
-            // throw away selection bitmask
+            /* Cut out selection from texture and move to new layer. */
             var newLayer = $scope.renderEngine.createSelectionImageLayer($scope.imgData, 0);
             $scope.addLayer(newLayer);
 
             $scope.maskEnabled = false;
-            console.log("DONE!");
         }
         
         $scope.cancelSelection = function() {
@@ -169,6 +167,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
             $scope.drawEngine.clearCanvases();
             $scope.editEngine.removeSelectionLayer();
 
+            /* Iterate over all mask wand parsts and remove. */
             var nrWands = $scope.selectionTool.getNrWands();
             for (var i = 0; i < nrWands; i++) {
                 var removed = $scope.selectionTool.clearLast();
@@ -177,6 +176,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 }                
             }
 
+            /* Draw shared mask variables to image. */
             if ($scope.maskWand) {
                 $scope.setMaskSelectedArea($scope.selectionTool.width, $scope.selectionTool.height);    
                 var currentLayer = $scope.config.layers.currentLayer;
@@ -184,9 +184,6 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
                 $scope.requestEditEngineUpdate();      
             }
-
-            // throw away selection bitmask
-            console.log("DENIED!");
         }
     }
 ]);

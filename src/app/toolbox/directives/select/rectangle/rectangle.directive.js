@@ -36,11 +36,14 @@ app.controller('RectangleCtrl', function($scope) {
         $scope.startSharedSelection($scope.image.width, $scope.image.height);
         $scope.setSelectionTool($scope.rect);
         $scope.rect.setMaskWand($scope.maskWand);
+        $scope.rect.setMaskWandParts($scope.maskWandParts);
         $scope.rect.setMaskBorder($scope.maskBorder);
 
         $scope.drawEngine.setColor(0, 0, 0, 256);
         $scope.drawEngine.setLineWidth(2);
         $scope.drawEngine.setDrawType(drawType.RECTANGLE);
+
+        $scope.setMaskSelectedArea($scope.rect.width, $scope.rect.height);
 	};
 
     $scope.stop = function() {
@@ -73,6 +76,7 @@ app.controller('RectangleCtrl', function($scope) {
 
         $scope.rect.addRect($scope.point1, $scope.point2);
 
+        /* Draw shared mask variables to image. */
         if ($scope.maskWand) {
             $scope.setMaskSelectedArea($scope.rect.width, $scope.rect.height);    
             var currentLayer = $scope.config.layers.currentLayer;
@@ -109,7 +113,7 @@ app.controller('RectangleCtrl', function($scope) {
                 point2 = new Point($scope.point2.x + dX, $scope.point2.y + dY);
                 if ($scope.rect.validRect($scope.point1, point2)) {
                     $scope.point2 = point2;
-                    $scope.drawEngine.onMousemove(xMouse, yMouse)
+                    $scope.drawEngine.onMousemove(point2.x, point2.y);
                 }
             }
         }
