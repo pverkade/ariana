@@ -15,8 +15,20 @@ app.config(function($stateProvider, $locationProvider) {
             url: "/",
             views: {
                 "content": {
+                    templateUrl: "app/content/landing/landing.content.tpl.html"
+                }
+            }
+        })
+        .state('ariana', {
+            url: "/ariana",
+            views: {
+                "content": {
                     templateUrl: "app/content/content.tpl.html",
                     controller: 'ContentCtrl'
+                },
+                "content-menu": {
+                    templateUrl: "app/content/menu/menu.content.tpl.html",
+                    controller: 'MenuContentCtrl'
                 },
                 "toolbar": {
                     templateUrl: "app/toolbar/toolbar.tpl.html",
@@ -40,5 +52,31 @@ app.config(function($stateProvider, $locationProvider) {
                     controller: 'LandingContentCtrl'
                 }
             }
-        });
+        })
+        /*
+        .state('settings', {
+            url: "/settings",
+            views: {
+                "content": {
+                    templateUrl: "app/content/settings/settings.content.tpl.html",
+                    controller: 'SettingsContentCtrl'
+                },
+                "content-menu": {
+                    templateUrl: "app/content/menu/menu.content.tpl.html",
+                    controller: 'MenuContentCtrl'
+                },
+                "toolbar": {
+                    templateUrl: "app/toolbar/toolbar.tpl.html",
+                    controller: 'toolbarCtrl'
+                },
+                "layers": {
+                    templateUrl: "app/layers/layers.tpl.html",
+                    controller: 'layersCtrl'
+                },
+                "toolbox": {
+                    templateUrl: "app/toolbox/toolbox.tpl.html",
+                    controller: 'ToolboxCtrl'
+                }
+            }
+        });*/
 });

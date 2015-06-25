@@ -47,7 +47,7 @@ app.controller('FilterModalController', ['$scope', '$modalInstance', 'tools',
             },
 
             "threshold" : {
-                image: "samples",
+                image: "/assets/img/thresholdsample.jpg",
                 constructor: ThresholdFilter
             }
         };

@@ -22,9 +22,6 @@ app.controller('PencilCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'c
     $scope.thickness = 2;
     $scope.opacity = 1;
     
-    $scope.currentLayer = -1;
-    $scope.numberOfLayers = 0;
-    
 	$scope.init = function() {
         $scope.drawing = false;
         $scope.hasDrawn = false;
@@ -32,48 +29,7 @@ app.controller('PencilCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'c
         $scope.drawEngine.setDrawType(drawType.NORMAL);
         $scope.setColor(colors.getPrimary());
         $scope.updateDrawEngine();
-
-        /* If the last layer is not selected, draw between other layers. */
-        $scope.paintTopCanvas();
 	};
-
-    $scope.paintTopCanvas = function() {
-        /* TODO: do stop() and init() when another layer is selected? */
-
-        $scope.currentLayer = layers.getCurrentIndex();
-        $scope.numberOfLayers = layers.getNumLayers();
-        if ($scope.currentLayer == $scope.numberOfLayers - 1) {
-            return;
-        }
-
-        /* Render only the underlying layer(s) to the maincanvas */
-        var lowerIndices = [];
-        for (var i = 0; i <= $scope.currentLayer; i++) {
-            lowerIndices.push(i);
-        }
-        console.log(lowerIndices);
-        
-        $scope.renderEngine.renderIndices(lowerIndices);
-
-        /* Draw the above lying layer(s) to */
-        var upperIndices = [];
-        for (i = $scope.currentLayer + 1; i < $scope.numberOfLayers; i++) {
-            upperIndices.push(i);
-        }
-        console.log(upperIndices);
-        
-        var topCanvasImage = new Image();
-
-        topCanvasImage.onload = function() {
-            console.log(topCanvasImage.src);
-            console.log(topCanvasImage);
-            var topCanvas = document.getElementById('top-canvas');
-            var topCanvasContext = topCanvas.getContext('2d');
-            topCanvasContext.scale(1, -1);
-            topCanvasContext.drawImage(topCanvasImage, 0, -topCanvasImage.height);
-        };
-        topCanvasImage.src = $scope.renderEngine.renderIndicesToImg(upperIndices);
-    };
     
     $scope.updateDrawEngine = function() {
         $scope.drawEngine.setLineWidth($scope.thickness);
@@ -92,19 +48,9 @@ app.controller('PencilCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'c
     $scope.stop = function() {
         if ($scope.hasDrawn) {
             var image = $scope.drawEngine.getCanvasImageData();
-            $scope.newLayerFromImage(image, $scope.currentLayer + 1);
+            $scope.newLayerFromImage(image);
             
             $scope.drawEngine.clearCanvases();
-        }
-
-        /* clear the top-canvas */
-        if ($scope.currentLayer < $scope.numberOfLayers - 1) {
-            var topCanvas = document.getElementById('top-canvas');
-            var topCanvasContext = topCanvas.getContext('2d');
-            topCanvasContext.clearRect(0, 0, topCanvas.width, topCanvas.height);
-            console.log("We doen clear op canvas");
-            console.log(topCanvas);
-            console.log(topCanvas.width, topCanvas.height);
         }
     };
 
