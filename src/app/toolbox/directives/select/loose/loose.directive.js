@@ -66,11 +66,15 @@ app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
         yMouse = mouse.getPosY();
 
         /* Calculate x and y coordinates in pixels of the original image */
-        var currentLayer = $scope.config.layers.currentLayer;
-        var layer = $scope.renderEngine.layers[currentLayer];
-        if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
-            return;
-        }
+        var currentLayer = layers.getCurrentIndex();
+		if (currentLayer == -1) {
+			return;
+		}
+
+		var layer = $scope.renderEngine.getLayer(currentLayer);
+		if (layer.getLayerType() != LayerType.ImageLayer) {
+			return;
+		}
 
         var transformedPoint = $scope.loose.transform(layer, xMouse, yMouse);
         xRelative = transformedPoint.x;
@@ -120,9 +124,9 @@ app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
 
                     /* Draw shared mask variables to image. */
                     if ($scope.maskWand) {
-                        $scope.setMaskSelectedArea($scope.loose.width, $scope.loose.height);    
-                        var currentLayer = $scope.config.layers.currentLayer;
-                        var layer = $scope.renderEngine.layers[currentLayer];
+                        $scope.setMaskSelectedArea($scope.loose.width, $scope.loose.height);
+                        var currentLayer = layers.getCurrentIndex();
+                        var layer = $scope.renderEngine.getLayer(currentLayer);
                         $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
                         $scope.requestEditEngineUpdate();      
                     }

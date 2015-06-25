@@ -156,7 +156,7 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
             $scope.addLayer(newLayer);
 
             $scope.cancelSelection();
-        }
+        };
         
         $scope.cancelSelection = function() {
             $scope.maskEnabled = false;
@@ -168,7 +168,7 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
             var nrWands = $scope.selectionTool.getNrWands();
             for (var i = 0; i < nrWands; i++) {
                 var removed = $scope.selectionTool.clearLast();
-                if (removed == false) {
+                if (removed === false) {
                     console.log("Selection tool clear Last returned false");
                 }                
             }
@@ -176,7 +176,7 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
             /* Draw shared mask variables to image. */
             if ($scope.maskWand) {
                 $scope.setMaskSelectedArea($scope.selectionTool.width, $scope.selectionTool.height);    
-                var currentLayer = layers.getCurrentIndex;
+                var currentLayer = layers.getCurrentIndex();
                 var layer = $scope.renderEngine.getLayer(currentLayer);
                 $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
                 $scope.requestEditEngineUpdate();       

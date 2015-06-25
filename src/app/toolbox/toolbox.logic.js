@@ -12,15 +12,15 @@ app.controller('ToolboxCtrl', ['$scope', 'canvas', 'colors', 'tools', 'mouse',
         
         $scope.getTool = function() {
             return tools.getTool();
-        }
+        };
 
         $scope.getPrimary = function() {
             return colors.getPrimary();
-        }
+        };
 
         $scope.getSecondary = function() {
             return colors.getSecondary();
-        }
+        };
 
         $scope.setCursor = function(cursor) {
             canvas.setCursor(cursor);
@@ -36,7 +36,7 @@ app.controller('ToolboxCtrl', ['$scope', 'canvas', 'colors', 'tools', 'mouse',
                 r: colors.getPrimary().r,
                 g: colors.getPrimary().g,
                 b: colors.getPrimary().b
-            }
+            };
 
             colors.setPrimaryRgb(colors.getSecondary());
             colors.setSecondaryRgb(temp);
