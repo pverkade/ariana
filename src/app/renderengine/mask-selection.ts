@@ -1,3 +1,14 @@
+/*
+ * Project ariana
+ * File: mask-selections.ts
+ * Author: Merwin van Dijk
+ * Date: June 25th, 2015
+ * Description: this file contains the MaskSelection class. The MaskSelection 
+ * class resembles the MagicSelection class except that it works on bitmasks; 
+ * it expects ones as borders and zeros for empty space. For a given point the
+ * area within borders is returned as bitmask.
+ */
+
 class MaskSelection {
     private maskWand : Uint8Array;
     private maskBorder : Uint8Array;

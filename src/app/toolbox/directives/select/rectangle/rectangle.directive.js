@@ -72,7 +72,7 @@ app.controller('RectangleCtrl', function($scope) {
         xMouse = $scope.config.mouse.current.x;
         yMouse = $scope.config.mouse.current.y; 
 
-        $scope.rect.addRect($scope.point1, new Point(xMouse, yMouse)); //$scope.point2);
+        $scope.rect.addRect($scope.point1, new Point(xMouse, yMouse));
 
         /* Draw shared mask variables to image. */
         if ($scope.maskWand) {
@@ -102,21 +102,6 @@ app.controller('RectangleCtrl', function($scope) {
 
         if ($scope.mouseBTNDown) {
             $scope.drawEngine.onMousemove(xMouse, yMouse);
-            /*
-            var point2 = new Point(xMouse, yMouse);
-            if ($scope.rect.validRect($scope.point1, point2)) {
-                $scope.point2 = point2;
-                $scope.drawEngine.onMousemove(xMouse, yMouse);
-            } else { 
-                var dX = $scope.rect.sign(point2.x - $scope.point1.x);
-                var dY = $scope.rect.sign(point2.y - $scope.point1.y);
-                point2 = new Point($scope.point2.x + dX, $scope.point2.y + dY);
-                if ($scope.rect.validRect($scope.point1, point2)) {
-                    $scope.point2 = point2;
-                    $scope.drawEngine.onMousemove(point2.x, point2.y);
-                }
-            }
-            */
         }
     };
 
