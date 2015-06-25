@@ -32,12 +32,12 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
         var zoom  = canvas.getZoom();
 
         var mouseX, mouseY;
-        
-        mouseX = event.pageX;
-        mouseY = event.pageY;
-        if (isNaN(event.pageX) || isNaN(event.pageY)) {
+        if (event.originalEvent) {
             mouseX = event.originalEvent.touches[0].pageX;
             mouseY = event.originalEvent.touches[0].pageY;
+        } else {
+            mouseX = event.pageX;
+            mouseY = event.pageY;
         }
         
         mouse.setPosX((mouseX - cx) / zoom);
@@ -62,12 +62,12 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
         var zoom  = canvas.getZoom();
 
         var mouseX, mouseY;
-
-        mouseX = event.pageX;
-        mouseY = event.pageY;
-        if (isNaN(event.pageX) || isNaN(event.pageY)) {
+        if (event.originalEvent) {
             mouseX = event.originalEvent.touches[0].pageX;
             mouseY = event.originalEvent.touches[0].pageY;
+        } else {
+            mouseX = event.pageX;
+            mouseY = event.pageY;
         }
 
         /* Store the mouse button. */
