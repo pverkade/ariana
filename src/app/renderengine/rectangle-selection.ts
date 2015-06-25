@@ -25,11 +25,6 @@ class RectangleSelection extends AbstractSelection {
 		var height = bottomRight.y - topLeft.y;
 		var indexPointMask : number;
 
-		// if (this.validRect(point1, point2) == false) {
-		// 	return null;
-		// }
-		console.log("addRect");
-		console.log(point1, point2);
 		this.rects.push(new Rectangle(point1, point2));
 
 		/* Create and draw mask wand. */

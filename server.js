@@ -17,7 +17,7 @@ var gm = require('gm').subClass({ imageMagick: true });
 var app = connect();
 var server;
 var indexPage;
-var host = '0.0.0.0';
+var host = 'localhost';
 var port = 3000;
 
 // Handle POSIX signals
@@ -38,19 +38,25 @@ process.on('SIGHUP', function() {
 // Serve static file
 app.use(serveStatic('build', {index: false}));
 
-
 function readIndex(next) {
     // Read index.html and listen
     fs.readFile('build/index.html', "utf-8", next);
 }
 
 function startServer(host, port) {
-
     server = app.listen(port, host, function() {
         process.stdout.write("Listening on " + (host ? 'http://' + host + ':' : 'port ') + port + "\n");
     });
 }
 
+/* This saves the inputbuffer into another image buffer. Format specifies the
+ * format of the output buffer, and can be either jpeg or png. Additionaly, the image
+ * will be flipped vertically.
+ *
+ * handler has as input: error, outputbuffer.
+ *
+ * quality can be optionally set for jpeg format.
+ */
 function saveImageAsBuffer(inputBuffer, format, handler, quality) {
     if (format !== "jpeg" && format !== "png") {
         handler("Bad format", null);
@@ -61,6 +67,9 @@ function saveImageAsBuffer(inputBuffer, format, handler, quality) {
 
     if (format === 'jpeg') {
         newImage = newImage
+            .out("-background")
+            .out("white")
+            .flatten()
             .compress('JPEG')
             .quality(quality)
     }
@@ -166,7 +175,7 @@ function staticServe(host, port) {
                 return;
             }
 
-            if (req.url != "/" && req.url != "/index.html" && req.url != "/landing" && req.url != "/drawtest") {
+            if (req.url != "/" && req.url != "/index.html" && req.url != "/landing") {
                 plainTextResponse(res, 404, "File not Found.");
                 return;
             }
@@ -188,7 +197,7 @@ function dynamicServe(host, port) {
             return;
         }
 
-        if (req.url != "/" && req.url != "/index.html" && req.url != "/landing" && req.url != "/drawtest") {
+        if (req.url != "/" && req.url != "/index.html" && req.url != "/ariana") {
             plainTextResponse(res, 404, "File not found.");
             return;
         }

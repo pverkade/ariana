@@ -74,22 +74,24 @@ app.controller('ToolbarController', ['$scope', '$modal',
             });
         };
 
-        $scope.cancelFilters = function() {
+        function forEachLayer(f) {
+            for (var i = 0; i < $scope.renderEngine.getNumberOfLayers(); i ++) {
+                f($scope.renderEngine.getLayer(i), i);
+            }
+        }
+
+        $scope.cancel = function() {
             $scope.filter.filterObject = null;
             $scope.filter.currentlayerOnly = false;
 
-            for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) {
-                var layer = $scope.renderEngine.getLayer(i);
+            forEachLayer(function(layer) {
                 if (layer.getLayerType() === LayerType.ImageLayer) {
                     layer.discardFilter();
                 }
-            }
-            window.requestAnimationFrame(function() {
-                $scope.renderEngine.render();
             });
+
+            $scope.requestRenderEngineUpdate();
         };
-        
-        $scope.allLayers = true;
 
         /* Set all filter parameters into the filter object. */
         $scope.applyFilterChanges = function () {
@@ -103,50 +105,47 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 filter.setAttribute(key, value);
             }
 
-            window.requestAnimationFrame(function() {
-                $scope.renderEngine.render();
+            forEachLayer(function(layer, index) {
+                $scope.updateThumbnail(index);
             });
+
+            $scope.requestRenderEngineUpdate();
         };
 
         $scope.commitFilterOnLayers = function () {
-            for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) {
-                var layer = $scope.renderEngine.getLayer(i);
+            forEachLayer(function(layer, index) {
                 if (layer.getLayerType() === LayerType.ImageLayer) {
                     layer.commitFilter();
+                    $scope.updateThumbnail(index);
                 }
-            }
-
-            window.requestAnimationFrame(function() {
-                $scope.renderEngine.render();
             });
+
+            $scope.requestRenderEngineUpdate();
         };
         
         $scope.applyFilterOnLayers = function() {
             var filter = $scope.filter.filterObject;
 
             if ($scope.config.layers.numberOfLayers == 0 || !filter) {
-                $scope.cancelFilters();
+                $scope.cancel();
                 return;
             }
 
-            for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) {
-                var layer = $scope.renderEngine.getLayer(i);
+            forEachLayer(function(layer, index) {
                 if (layer.getLayerType() !== LayerType.ImageLayer || layer.isHidden()) {
-                    continue;
+                    return;
                 }
 
-                if (i === $scope.config.layers.currentLayer || !$scope.filter.currentlayerOnly) {
+                if (index === $scope.config.layers.currentLayer || !$scope.filter.currentlayerOnly) {
                     layer.applyFilter(filter);
                 }
                 else {
                     layer.discardFilter();
                 }
-            }
-
-            window.requestAnimationFrame(function () {
-                $scope.renderEngine.render();
+                $scope.updateThumbnail(index);
             });
 
+            $scope.requestRenderEngineUpdate();
         };
 
         $scope.$on("newCurrentLayer", function() {

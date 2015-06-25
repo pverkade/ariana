@@ -1,8 +1,16 @@
+/*
+ * Base layer class from which every other type of layer is supposed to extend
+ */
 /// <reference path="gl-matrix"/>
 /// <reference path="resource-manager"/>
 
-enum LayerType {ImageLayer};
+enum LayerType {ImageLayer}
 
+/*
+ * Create an interface for letting a subscriber know that something has changed
+ * This is done from an module as a class cant contain a interface in typescript
+ * A module and a class cant have the same name
+ */
 module MLayer {
     export interface INotifyPropertyChanged {
         propertyChanged(layer : Layer);
@@ -52,7 +60,7 @@ class Layer {
 		this.translationMatrix = mat3.create();
         this.pixelConversionMatrix = mat3.create();
 
-        /* Apperently calling a function on this object from within the constructor crashes it */
+        /* Apperently calling a function on the "this" object from within the constructor causes crashes */
         this.posX = 0.0;
         this.posY = 0.0;
         this.flipX = false;
@@ -63,6 +71,7 @@ class Layer {
         this.hidden = false;
         this.transformHistory = [];
 
+        /* Set the matrix that converts pixel coordinates to -1 to +1 coordinate space */
         mat3.identity(this.sizeMatrix);
         mat3.identity(this.rotationMatrix);
         mat3.identity(this.translationMatrix);
@@ -84,8 +93,16 @@ class Layer {
             this.sizeMatrix,
             new Float32Array([width/2.0, height/2.0])
         );
+
+        this.commitDimensions();
 	}
 
+    /*
+     * Notify the subscriber that a property changed
+     * We only use this for thumbnails so we set a delay of 300ms so we dont
+     *  create a new thumbnail every frame (when a user is moving the layer for example)
+     * This is done for performance purposes
+     */
     protected notifyPropertyChanged() {
         if (this.propertyChanged != null) {
             if (this.propertyChangedTimeout) {
@@ -170,6 +187,25 @@ class Layer {
         this.notifyPropertyChanged();
         this.transformed = true;
 	}
+
+    public commitDimensions() {
+        var matrix = mat3.create();
+        mat3.identity(matrix);
+
+        mat3.scale(
+            matrix,
+            matrix,
+            new Float32Array([
+                this.width / 2,
+                this.height / 2
+            ])
+        );
+
+        this.transformHistory.push(matrix);
+        mat3.identity(this.sizeMatrix);
+        this.width = 2;
+        this.height = 2;
+    }
 
 	public setPos(x : number, y : number) {
 		this.posX = x;

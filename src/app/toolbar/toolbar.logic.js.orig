@@ -74,22 +74,28 @@ app.controller('ToolbarController', ['$scope', '$modal',
             });
         };
 
+<<<<<<< HEAD
         $scope.cancelFilters = function() {
+=======
+        function forEachLayer(f) {
+            for (var i = 0; i < $scope.renderEngine.getNumberOfLayers(); i ++) {
+                f($scope.renderEngine.getLayer(i), i);
+            }
+        }
+
+        $scope.cancel = function() {
+>>>>>>> cd1d766e07fd2d5977b5d45c80931278ec788b92
             $scope.filter.filterObject = null;
             $scope.filter.currentlayerOnly = false;
 
-            for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) {
-                var layer = $scope.renderEngine.getLayer(i);
+            forEachLayer(function(layer) {
                 if (layer.getLayerType() === LayerType.ImageLayer) {
                     layer.discardFilter();
                 }
-            }
-            window.requestAnimationFrame(function() {
-                $scope.renderEngine.render();
             });
+
+            $scope.requestRenderEngineUpdate();
         };
-        
-        $scope.allLayers = true;
 
         /* Set all filter parameters into the filter object. */
         $scope.applyFilterChanges = function () {
@@ -103,22 +109,22 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 filter.setAttribute(key, value);
             }
 
-            window.requestAnimationFrame(function() {
-                $scope.renderEngine.render();
+            forEachLayer(function(layer, index) {
+                $scope.updateThumbnail(index);
             });
+
+            $scope.requestRenderEngineUpdate();
         };
 
         $scope.commitFilterOnLayers = function () {
-            for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) {
-                var layer = $scope.renderEngine.getLayer(i);
+            forEachLayer(function(layer, index) {
                 if (layer.getLayerType() === LayerType.ImageLayer) {
                     layer.commitFilter();
+                    $scope.updateThumbnail(index);
                 }
-            }
-
-            window.requestAnimationFrame(function() {
-                $scope.renderEngine.render();
             });
+
+            $scope.requestRenderEngineUpdate();
         };
         
         $scope.applyFilterOnLayers = function() {
@@ -129,24 +135,21 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 return;
             }
 
-            for (var i = 0; i < $scope.config.layers.numberOfLayers; i++) {
-                var layer = $scope.renderEngine.getLayer(i);
+            forEachLayer(function(layer, index) {
                 if (layer.getLayerType() !== LayerType.ImageLayer || layer.isHidden()) {
-                    continue;
+                    return;
                 }
 
-                if (i === $scope.config.layers.currentLayer || !$scope.filter.currentlayerOnly) {
+                if (index === $scope.config.layers.currentLayer || !$scope.filter.currentlayerOnly) {
                     layer.applyFilter(filter);
                 }
                 else {
                     layer.discardFilter();
                 }
-            }
-
-            window.requestAnimationFrame(function () {
-                $scope.renderEngine.render();
+                $scope.updateThumbnail(index);
             });
 
+            $scope.requestRenderEngineUpdate();
         };
 
         $scope.$on("newCurrentLayer", function() {
@@ -154,18 +157,11 @@ app.controller('ToolbarController', ['$scope', '$modal',
         });
         
         $scope.applySelection = function() {
-<<<<<<< HEAD
             /* Cut out selection from texture and move to new layer. */
             var newLayer = $scope.renderEngine.createSelectionImageLayer($scope.imgData, 0);
             $scope.addLayer(newLayer);
 
-            $scope.maskEnabled = false;
-=======
-            var newLayer = $scope.renderEngine.createSelectionImageLayer($scope.imgData, 0);
-            $scope.addLayer(newLayer);
-
             $scope.cancelSelection();
->>>>>>> 3f0ffa2d959204bb4b66a51774e617f825786688
         }
         
         $scope.cancelSelection = function() {
@@ -190,15 +186,12 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 var layer = $scope.renderEngine.layers[currentLayer];
                 $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
                 $scope.requestEditEngineUpdate();      
-            }
-<<<<<<< HEAD
-=======
             
-            $scope.maskWand = null;
-            $scope.maskBorder = null;
-            $scope.marchingAnts = null;
-            $scope.imgData = null;    
->>>>>>> 3f0ffa2d959204bb4b66a51774e617f825786688
-        }
+            //$scope.maskWand = null;
+            //$scope.maskBorder = null;
+            //$scope.marchingAnts = null;
+            //$scope.imgData = null;  
+            }
+        };
     }
 ]);

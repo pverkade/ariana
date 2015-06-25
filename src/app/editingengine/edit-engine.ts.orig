@@ -1,7 +1,5 @@
 /// <reference path="../renderengine/layer"/>
 /// <reference path="../renderengine/image-layer"/>
-/// <reference path="../renderengine/abstract-selection"/>
-/// <reference path="../renderengine/magic-selection"/>
 
 enum EditMode {
     translate,
@@ -144,12 +142,30 @@ class EditEngine {
         this.currentLayer = null;
     }
 
+    public setSelection(marchingAnts : MarchingAnts) : void {
+        var imageData = this.context.createImageData(marchingAnts.width, marchingAnts.height);
+
+        var offset = 0;
+        var thisPtr = this;
+        this.selectionTmpCanvas = document.createElement("canvas");
+        this.selectionTmpCanvas.width = marchingAnts.width;
+        this.selectionTmpCanvas.height = marchingAnts.height;
+        this.selectionTmpContext = this.selectionTmpCanvas.getContext("2d");
+
+        // console.log(marchingAnts);
+        this.selectionAntsInterval = setInterval(function() {
+            var tmpContext = thisPtr.selectionTmpContext;
+            marchingAnts.writeData(imageData, 5.0, ++offset);
+            tmpContext.clearRect(0, 0, marchingAnts.width, marchingAnts.height);
+            tmpContext.putImageData(imageData, 0, 0);
+        }, 500);
+    }
+
     public setSelectionLayer(marchingAnts : MarchingAnts, selectionLayer : ImageLayer) : void {
         this.selectionLayer = selectionLayer;
 
         var imageData = this.context.createImageData(selectionLayer.getImage().width, selectionLayer.getImage().height);
-        console.log(marchingAnts);
-        console.log(selectionLayer);
+
         var offset = 0;
         var thisPtr = this;
         this.selectionTmpCanvas = document.createElement("canvas");
@@ -157,10 +173,13 @@ class EditEngine {
         this.selectionTmpCanvas.height = imageData.height;
         this.selectionTmpContext = this.selectionTmpCanvas.getContext("2d");
 
+<<<<<<< HEAD
+        // console.log(marchingAnts);
+=======
+>>>>>>> cd1d766e07fd2d5977b5d45c80931278ec788b92
         this.selectionAntsInterval = setInterval(function() {
             var tmpContext = thisPtr.selectionTmpContext;
             marchingAnts.writeData(imageData, 5.0, ++offset);
-            console.log("update marching ants");
             tmpContext.clearRect(0, 0, selectionLayer.getWidth(), selectionLayer.getHeight());
             tmpContext.putImageData(imageData, 0, 0);
         }, 500);
@@ -175,6 +194,7 @@ class EditEngine {
 
     public render() : void {
         this.clear();
+
         var currentLayer : Layer = this.currentLayer;
         if (currentLayer) {
             switch (this.currentMode) {
@@ -199,7 +219,7 @@ class EditEngine {
                 selectionLayer.getPosY()
             );
             this.context.rotate(-selectionLayer.getRotation());
-            /*this.context.scale(
+            this.context.scale(
                 selectionLayer.isFlippedX() ? -1.0 : 1.0,
                 selectionLayer.isFlippedY() ? -1.0 : 1.0
             );
@@ -213,16 +233,7 @@ class EditEngine {
                 -selectionLayer.getHeight()/2.0,
                 selectionLayer.getWidth(),
                 selectionLayer.getHeight()
-            );*/
-            var dimensions = selectionLayer.getTransformedDimensions();
-            var width = dimensions[0];
-            var height = dimensions[1];
-            this.context.drawImage(
-                this.selectionTmpCanvas,
-                width/-2.0,
-                height/-2.0,
-                width,
-                height);
+            );
             this.context.restore();
         }
     }

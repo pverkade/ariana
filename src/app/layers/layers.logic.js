@@ -7,8 +7,8 @@
  *
  */
  
-app.controller('layersCtrl', function($scope) {
-    
+app.controller('layersCtrl', ['$scope', '$animate', function($scope, $animate) {
+
     /* This functions returns whether the toolbox should be visible. It is 
      * hidden when the user is clicking on the canvas/background. */
     $scope.checkVisible = function() {
@@ -19,80 +19,90 @@ app.controller('layersCtrl', function($scope) {
     
     $scope.showLayers = function() {
         $scope.hidden = false;
-    }
+    };
     
     $scope.hideLayers = function() {
         $scope.hidden = true;
-    }
+    };
 
     $scope.hideLayer = function(event, index) {
         event.stopPropagation();
         var layer = $scope.renderEngine.getLayer(index);
         layer.setHidden(!layer.isHidden());
-        $scope.config.layers.layerInfo[index].hidden = layer.isHidden();
 
         $scope.renderEngine.render();
-    }
+    };
     
     $scope.isHidden = function(index) {
-        return $scope.config.layers.layerInfo[index].hidden;
-    }
+        return $scope.renderEngine.getLayer(index).isHidden();
+    };
 
+    $scope.setLayerName = function(index, name) {
+        $scope.renderEngine.getLayer(index).setName(name)
+    };
+
+    var allLayersIndex = 0;
     $scope.addLayer = function(event) {
         //event.stopPropagation();
-        
-        $scope.config.layers.layerInfo.push({
-            "name": 'Layer ' + $scope.config.layers.numberOfLayers,
-            "x": 0,
-            "y": 0,
-            "xScale": 1,
-            "yScale": 1,
-            "rotation": 0
-        });
-
-        $scope.config.layers.numberOfLayers = $scope.config.layers.layerInfo.length;
+        $scope.config.layers.numberOfLayers = $scope.renderEngine.getNumberOfLayers();
+        $scope.names.push('Layer ' + (allLayersIndex++ + 1));
     };
 
     $scope.removeLayer = function(event, index) {
         event.stopPropagation();
-        $scope.config.layers.layerInfo.splice(index, 1);
-        $scope.config.layers.numberOfLayers = $scope.config.layers.layerInfo.length;
-        
-        if ($scope.config.layers.currentLayer == $scope.config.layers.numberOfLayers)
-            $scope.config.layers.currentLayer -= 1;
-        
-        $scope.renderEngine.removeLayer(index);
 
-        $scope.renderEngine.render();
+        $scope.config.layers.layerInfo.splice(index, 1);
+        $scope.config.layers.numberOfLayers = $scope.renderEngine.getNumberOfLayers();
+
+        if ($scope.config.layers.currentLayer == $scope.renderEngine.getNumberOfLayers())
+            $scope.config.layers.currentLayer -= 1;
+
+        $scope.renderEngine.removeLayer(index);
+        // this might not select the expected layer.
+        $scope.setCurrentLayerIndex(Math.max(0, index - 1));
+
+        // FIXME: does not clear the edit-engine bounding box.
+        $scope.requestEditEngineUpdate();
+        $scope.editEngine.clear();
+        $scope.requestEditEngineUpdate();
+        $scope.requestRenderEngineUpdate();
+    };
+
+    $scope.isToBeRemoved = function(index) {
+        return $scope.config.layers.layerInfo[index].remove;
     };
 
     $scope.moveLayerUp = function(event, index) {
         event.stopPropagation();
-        console.log(index);
 
-        if (index > 0) {
-            $scope.config.layers.layerInfo.swap(index, index - 1);
-            $scope.renderEngine.reorder(index, index - 1);
-
+        if (index < $scope.renderEngine.getNumberOfLayers() - 1 && $scope.renderEngine.getNumberOfLayers() > 1) {
+            $scope.renderEngine.reorder(index, index + 1);
             $scope.renderEngine.render();
+
+            swap($scope.config.layers.layerInfo, index, index + 1);
         }
+
     };
+
+    function swap(array, i, j) {
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
 
     $scope.moveLayerDown = function(event, index) {
         event.stopPropagation();
-        console.log(index);
 
-        if (index < $scope.config.layers.numberOfLayers - 1 && $scope.config.layers.numberOfLayers > 1) {
-            $scope.config.layers.layerInfo.swap(index, index + 1);
-            $scope.renderEngine.reorder(index, index + 1);
-
+        if (index > 0) {
+            $scope.renderEngine.reorder(index, index - 1);
             $scope.renderEngine.render();
+            swap($scope.config.layers.layerInfo, index, index - 1);
         }
     };
 
     /* This function selects a specific layer if possible. */
     $scope.selectLayer = function(newIndex) {
-        if (0 <= newIndex && newIndex < $scope.config.layers.numberOfLayers) {
+        if (0 <= newIndex && newIndex < $scope.renderEngine.getNumberOfLayers()) {
             $scope.setCurrentLayerIndex(newIndex);
             return true;
         }
@@ -103,4 +113,12 @@ app.controller('layersCtrl', function($scope) {
         return $scope.renderEngine.getLayer(index).getThumbnail();
     };
 
-});
+    $scope.getLayersIndices = function() {
+        var indices = [];
+        for (var i = 0; i < $scope.renderEngine.getNumberOfLayers(); i++) {
+            indices.unshift(i);
+        }
+
+        return indices;
+    };
+}]);
