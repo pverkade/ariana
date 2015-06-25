@@ -47,6 +47,7 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
         
         /* Call the appropriate tool functions. */
         var toolFunctions = tools.getToolFunctions();
+        
         if (toolFunctions) {
             toolFunctions.mouseMove();
         }
