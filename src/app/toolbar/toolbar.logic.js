@@ -182,10 +182,10 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 $scope.requestEditEngineUpdate();      
             }
             
-            $scope.maskWand = null;
-            $scope.maskBorder = null;
-            $scope.marchingAnts = null;
-            $scope.imgData = null;    
+            //$scope.maskWand = null;
+            //$scope.maskBorder = null;
+            //$scope.marchingAnts = null;
+            //$scope.imgData = null;    
         }
     }
 ]);
