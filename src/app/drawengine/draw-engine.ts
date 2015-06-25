@@ -334,6 +334,11 @@ class DrawEngine {
         }
     }
 
+    clearTempCanvas = () : void => {
+        this.tmpDrawContext.globalAlpha = 1.0;
+        this.tmpDrawContext.clearRect(0, 0, this.tmpDrawCanvas.width, this.tmpDrawCanvas.height);
+    }
+
     clearCanvases() : void {
         this.memContext.clearRect(0, 0, this.memCanvas.width, this.memCanvas.height);
         this.clearCanvas();
@@ -358,6 +363,8 @@ class DrawEngine {
             console.log("Can't draw path, canvas context could not be rendered.")
             return;
         }
+
+        this.clearTempCanvas();
 
         /* Append the right brush settings */
         context.strokeStyle = this.color.getRGBA();
@@ -533,8 +540,6 @@ class DrawEngine {
      * Function to draw using a brush image.
      */
     drawBrushImage(points, path : Path, context : CanvasRenderingContext2D) {
-        var halfBrushW = this.brushImage.width/2;
-        var halfBrushH = this.brushImage.height/2;
         var i : number = path.lastDrawnItem - 2;
 
         var brushCanvas = document.createElement("canvas");
@@ -547,8 +552,8 @@ class DrawEngine {
         {
             context.drawImage(
                 brushCanvas,
-                points[0].x - halfBrushW,
-                points[0].y - halfBrushH
+                points[0].x - this.lineWidth/2,
+                points[0].y - this.lineWidth/2
             );
         }
         if (i < 1) {
@@ -573,8 +578,8 @@ class DrawEngine {
             /* Draw images between the two points */
             for ( var z=0; (z<=distance || z==0); z += zDiff)
             {
-                x = start.x + (Math.sin(angle) * z) - halfBrushW + 5;
-                y = start.y + (Math.cos(angle) * z) - halfBrushH + 5;
+                x = start.x + (Math.sin(angle) * z) - this.lineWidth/2;
+                y = start.y + (Math.cos(angle) * z) - this.lineWidth/2;
                 context.drawImage(brushCanvas, x, y);
             }
         }
