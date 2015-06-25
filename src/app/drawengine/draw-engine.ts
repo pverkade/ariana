@@ -130,6 +130,7 @@ class DrawEngine {
     drawType : drawType = drawType.NORMAL;
     color : Color = new Color(255, 255, 255, 1.0);
     opacity : number = 1.0;
+    intensity : number = 1.0;
     lineWidth : number = 5;
 
     brush : brushType;
@@ -272,6 +273,10 @@ class DrawEngine {
         }
     }
 
+    setIntensity(intensity : number) : void {
+        this.intensity = intensity;
+    }
+
     /*
      * Set the brush
      */
@@ -334,6 +339,11 @@ class DrawEngine {
         }
     }
 
+    clearTempCanvas = () : void => {
+        this.tmpDrawContext.globalAlpha = 1.0;
+        this.tmpDrawContext.clearRect(0, 0, this.tmpDrawCanvas.width, this.tmpDrawCanvas.height);
+    }
+
     clearCanvases() : void {
         this.memContext.clearRect(0, 0, this.memCanvas.width, this.memCanvas.height);
         this.clearCanvas();
@@ -358,6 +368,8 @@ class DrawEngine {
             console.log("Can't draw path, canvas context could not be rendered.")
             return;
         }
+
+        this.clearTempCanvas();
 
         /* Append the right brush settings */
         context.strokeStyle = this.color.getRGBA();
@@ -533,8 +545,6 @@ class DrawEngine {
      * Function to draw using a brush image.
      */
     drawBrushImage(points, path : Path, context : CanvasRenderingContext2D) {
-        var halfBrushW = this.brushImage.width/2;
-        var halfBrushH = this.brushImage.height/2;
         var i : number = path.lastDrawnItem - 2;
 
         var brushCanvas = document.createElement("canvas");
@@ -547,8 +557,8 @@ class DrawEngine {
         {
             context.drawImage(
                 brushCanvas,
-                points[0].x - halfBrushW,
-                points[0].y - halfBrushH
+                points[0].x - this.lineWidth/2,
+                points[0].y - this.lineWidth/2
             );
         }
         if (i < 1) {
@@ -573,8 +583,8 @@ class DrawEngine {
             /* Draw images between the two points */
             for ( var z=0; (z<=distance || z==0); z += zDiff)
             {
-                x = start.x + (Math.sin(angle) * z) - halfBrushW + 5;
-                y = start.y + (Math.cos(angle) * z) - halfBrushH + 5;
+                x = start.x + (Math.sin(angle) * z) - this.lineWidth/2;
+                y = start.y + (Math.cos(angle) * z) - this.lineWidth/2;
                 context.drawImage(brushCanvas, x, y);
             }
         }
@@ -644,16 +654,12 @@ class DrawEngine {
             context.stroke();
 
             for (var j = 0; j < i; j++) {
-
-                var dx = points[j].x - lastpoint.x;
-                var dy = points[j].y - lastpoint.y;
-
-                if (lastpoint.distanceTo(points[j]) < 32) {
+                if (lastpoint.distanceTo(points[j]) < 16*this.intensity) {
                     context.beginPath();
-                    context.strokeStyle = this.color.getRGBWithOpacity(0.3);
+                    context.strokeStyle = this.color.getRGBWithOpacity(0.5);
                     context.lineWidth = Math.ceil(this.lineWidth / 10);
-                    context.moveTo( lastpoint.x + (dx * 0.2), lastpoint.y + (dy * 0.2));
-                    context.lineTo( points[j].x - (dx * 0.2), points[j].y - (dy * 0.2));
+                    context.moveTo( lastpoint.x, lastpoint.y);
+                    context.lineTo( points[j].x, points[j].y);
                     context.stroke();
                 }
             }
@@ -690,9 +696,9 @@ class DrawEngine {
                 
                 var distance = lastpoint.distanceTo(points[j]);
 
-                if (distance < 32 && Math.random() > distance / 64) {
+                if (distance < 16*this.intensity && Math.random() > distance / (32*this.intensity)) {
                     context.beginPath();
-                    context.strokeStyle = this.color.getRGBWithOpacity(0.3);
+                    context.strokeStyle = this.color.getRGBWithOpacity(0.5);
                     context.lineWidth = Math.ceil(this.lineWidth / 10);
                     context.moveTo( lastpoint.x + (dx * 0.5), lastpoint.y + (dy * 0.5));
                     context.lineTo( lastpoint.x - (dx * 0.5), lastpoint.y - (dy * 0.5));
@@ -714,16 +720,16 @@ class DrawEngine {
         context.beginPath();
         for (i = i + 1; i < points.length; i++) {
   
-          context.moveTo(points[i-1].x - this.getRandomInt(0, 2), points[i-1].y - this.getRandomInt(0, 2));
-          context.lineTo(points[i].x - this.getRandomInt(0, 2), points[i].y - this.getRandomInt(0, 2));
+          context.moveTo(points[i-1].x - this.getRandomInt(0, this.intensity), points[i-1].y - this.getRandomInt(0, this.intensity));
+          context.lineTo(points[i].x - this.getRandomInt(0, this.intensity), points[i].y - this.getRandomInt(0, this.intensity));
           context.stroke();
-          
+          /*
           context.moveTo(points[i-1].x, points[i-1].y);
           context.lineTo(points[i].x, points[i].y);
           context.stroke();
-          
-          context.moveTo(points[i-1].x + this.getRandomInt(0, 2), points[i-1].y + this.getRandomInt(0, 2));
-          context.lineTo(points[i].x + this.getRandomInt(0, 2), points[i].y + this.getRandomInt(0, 2));
+          */
+          context.moveTo(points[i-1].x + this.getRandomInt(0, this.intensity), points[i-1].y + this.getRandomInt(0, this.intensity));
+          context.lineTo(points[i].x + this.getRandomInt(0, this.intensity), points[i].y + this.getRandomInt(0, this.intensity));
           context.stroke();
 
         }

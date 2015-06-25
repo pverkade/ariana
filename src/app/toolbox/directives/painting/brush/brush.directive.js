@@ -12,6 +12,7 @@ app.controller('BrushCtrl', function($scope) {
 	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
     $scope.thickness = 2;
     $scope.opacity = 1;
+    $scope.intensity = 1;
     $scope.brush = "thin";
         
 	/* init */
@@ -28,14 +29,12 @@ app.controller('BrushCtrl', function($scope) {
     $scope.updateDrawEngine = function() {
         $scope.drawEngine.setLineWidth($scope.thickness);
         $scope.drawEngine.setOpacity($scope.opacity);
+        $scope.drawEngine.setIntensity($scope.intensity);
     };
     
     $scope.updateBrushStyle = function() {
         if ($scope.brush == "thin") {
             $scope.brushStyle = brushType.THIN;
-        }
-        if ($scope.brush == "pen") {
-            $scope.brushStyle = brushType.PEN;
         }
         if ($scope.brush == "neighbor") {
             $scope.brushStyle = brushType.NEIGHBOR;
