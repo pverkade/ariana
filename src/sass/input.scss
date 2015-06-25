@@ -32,20 +32,6 @@
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px $brand-color;
 }
 
-.btn-primary {
-    background-color: $brand-color;
-    border: $border-thickness solid $brand-color;
-    color: $dark;
-
-    &:hover {
-        color: $light;            
-    }
-}
-
-.btn-default {
-    background-color: $white;
-}
-
 .input-small {
     width: $blocksize !important;
     
