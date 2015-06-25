@@ -114,7 +114,10 @@ module.exports = function(grunt) {
                 '<%= build_dir %>/'
             ],
             js: [
-                '<%= build_dir %>/js/*.js', '!<%= build_dir %>/js/template.js', '!<%= build_dir %>/js/renderEngine.js'
+                '<%= build_dir %>/js/*.js', 
+                '!<%= build_dir %>/js/template.js', 
+                '!<%= build_dir %>/js/renderEngine.js',
+                '!<%= build_dir %>/js/bower.js'
             ],
             ts: [
                 '<%= build_dir %>/js/renderEngine.js'
