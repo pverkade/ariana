@@ -19,7 +19,7 @@ app.controller('ContentController', function($scope, $window) {
             z  = $scope.config.canvas.zoom;
 
         var mouseX, mouseY;
-        if (event.originalEvent.touches) {
+        if (event.originalEvent) {
             mouseX = event.originalEvent.touches[0].pageX;
             mouseY = event.originalEvent.touches[0].pageY;
         } else {
@@ -47,7 +47,7 @@ app.controller('ContentController', function($scope, $window) {
             z  = $scope.config.canvas.zoom;
 
         var mouseX, mouseY;
-        if (event.originalEvent.touches) {
+        if (event.originalEvent) {
             mouseX = event.originalEvent.touches[0].pageX;
             mouseY = event.originalEvent.touches[0].pageY;
         } else {
@@ -56,7 +56,7 @@ app.controller('ContentController', function($scope, $window) {
         }
 
         /* Store the mouse button. */
-        $scope.config.mouse.button[event.originalEvent.touches ? 1 : event.which] = true;
+        $scope.config.mouse.button[event.originalEvent ? 1 : event.which] = true;
 
         /* Set correct position in config. */
         $scope.config.mouse.current.x = (mouseX - cx) / z;
@@ -79,7 +79,7 @@ app.controller('ContentController', function($scope, $window) {
         event.preventDefault();
 
         /* Store the mouse button. */
-        $scope.config.mouse.button[event.originalEvent.touches ? 1 : event.which] = false;
+        $scope.config.mouse.button[event.originalEvent ? 1 : event.which] = false;
 
         /* Call the appropriate tool functions. */
         var toolFunctions = $scope.config.tools.activeToolFunctions;
