@@ -52,11 +52,11 @@ app.controller('TranslateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
         if (currentLayer == -1) return;
         var layer = $scope.renderEngine.layers[currentLayer];
         
-        var dx = mouse.getPosGlobal().x - mouse.getPosOldGlobal().x;
-        var dy = mouse.getPosGlobal().y - mouse.getPosOldGlobal().y;
+        var dx = mouse.getPosGlobal().x - mouse.getOldPosGlobal().x;
+        var dy = mouse.getPosGlobal().y - mouse.getOldPosGlobal().y;
         
         /* Update the old mouse position. */
-        mouse.setPosOld(mouse.getPosOld().x + dx, mouse.getPosOld().y + dy);
+        mouse.setOldPos(mouse.getOldPosX() + dx, mouse.getOldPosY() + dy);
         
         /* Get the layer position. */
         var x = layer.getPosX();

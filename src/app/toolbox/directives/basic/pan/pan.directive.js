@@ -42,8 +42,8 @@ app.controller('PanCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', funct
 	$scope.mouseMove = function() {
         if (!$scope.panning) {return;}
          
-        var dx = mouse.getPosGlobal().x - mouse.getPosOldGlobal().x;
-        var dy = mouse.getPosGlobal().y - mouse.getPosOldGlobal().y;
+        var dx = mouse.getPosGlobal().x - mouse.getOldPosGlobal().x;
+        var dy = mouse.getPosGlobal().y - mouse.getOldPosGlobal().y;
         
         mouse.setOldGlobalPosX(mouse.getPosOldGlobal().x + dx);
         mouse.setOldGlobalPosY(mouse.getPosOldGlobal().y + dy);

@@ -67,6 +67,9 @@ function saveImageAsBuffer(inputBuffer, format, handler, quality) {
 
     if (format === 'jpeg') {
         newImage = newImage
+            .out("-background")
+            .out("white")
+            .flatten()
             .compress('JPEG')
             .quality(quality)
     }
@@ -172,7 +175,7 @@ function staticServe(host, port) {
                 return;
             }
 
-            if (req.url != "/" && req.url != "/index.html" && req.url != "/landing" && req.url != "/drawtest") {
+            if (req.url != "/" && req.url != "/index.html" && req.url != "/landing") {
                 plainTextResponse(res, 404, "File not Found.");
                 return;
             }
@@ -194,7 +197,7 @@ function dynamicServe(host, port) {
             return;
         }
 
-        if (req.url != "/" && req.url != "/index.html" && req.url != "/landing" && req.url != "/drawtest") {
+        if (req.url != "/" && req.url != "/index.html" && req.url != "/ariana") {
             plainTextResponse(res, 404, "File not found.");
             return;
         }

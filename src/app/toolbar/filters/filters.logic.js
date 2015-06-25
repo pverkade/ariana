@@ -47,7 +47,7 @@ app.controller('FilterModalController', ['$scope', '$modalInstance', 'tools',
             },
 
             "threshold" : {
-                image: "samples",
+                image: "/assets/img/thresholdsample.jpg",
                 constructor: ThresholdFilter
             }
         };
@@ -56,7 +56,7 @@ app.controller('FilterModalController', ['$scope', '$modalInstance', 'tools',
             var constructor = $scope.filters[name].constructor;
             
             if (constructor) {
-                var filterObject = new Constructor();
+                var filterObject = new constructor();
                 $scope.filter.filterName = name;
                 $scope.filter.filterObject = filterObject;
                 $scope.filter.filterParameters = filterObject.getAttributesObject();

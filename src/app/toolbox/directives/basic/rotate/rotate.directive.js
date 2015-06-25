@@ -61,15 +61,13 @@ app.controller('RotateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fu
         var y = layer.getPosY();
         
         /* Get the mouse current location and the one before it. */
-        var mouseCurrentX = mouse.getPos().x;
-        var mouseCurrentY = mouse.getPos().y; 
-        var mouseOldX = mouse.getPosOld().x;
-        var mouseOldY = mouse.getPosOld().y;
+        var mouseCurrentX = mouse.getPosX();
+        var mouseCurrentY = mouse.getPosY(); 
+        var mouseOldX = mouse.getOldPosX();
+        var mouseOldY = mouse.getOldPosY();
         
         /* Update the old mouse position. */
-        var dx = mouse.getPos().x - mouse.getPosOld().x;
-        var dy = mouse.getPos().y - mouse.getPosOld().y;
-        mouse.setPosOld(mouse.getPosOld().x + dx, mouse.getPosOld().y + dy);
+        mouse.setOldPos(mouse.getPosX(), mouse.getPosY());
         
         /* Calculate the angle from the center to both points and add the
          * difference to the rotation. */

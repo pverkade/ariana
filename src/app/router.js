@@ -15,6 +15,14 @@ app.config(function($stateProvider, $locationProvider) {
             url: "/",
             views: {
                 "content": {
+                    templateUrl: "app/content/landing/landing.content.tpl.html"
+                }
+            }
+        })
+        .state('ariana', {
+            url: "/ariana",
+            views: {
+                "content": {
                     templateUrl: "app/content/content.tpl.html",
                     controller: 'ContentCtrl'
                 },
@@ -32,13 +40,4 @@ app.config(function($stateProvider, $locationProvider) {
                 }
             }
         })
-        .state('landing', {
-            url: "/landing",
-            views: {
-                "content": {
-                    templateUrl: "app/content/landing/landing.content.tpl.html",
-                    controller: 'LandingContentCtrl'
-                }
-            }
-        });
 });
