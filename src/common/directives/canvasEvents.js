@@ -24,6 +24,10 @@ app.directive('canvasEvents', ['canvas', function(canvas) {
 
             /* Watches canvas coordinate changes  */
             scope.$watchGroup([getX, getY], function() {
+                element.css('-ms-transform', "translate(" + canvas.getX() +
+                    "px, " + canvas.getY() + "px)");
+                element.css('-webkit-transform', "translate(" + canvas.getX() +
+                    "px, " + canvas.getY() + "px)");
                 element.css('transform', "translate(" + canvas.getX() + 
                                          "px, " + canvas.getY() + "px)");
             }, true);
@@ -36,19 +40,19 @@ app.directive('canvasEvents', ['canvas', function(canvas) {
             
             function getX() {
                 return canvas.getX();
-            };
+            }
             
             function getY() {
                 return canvas.getY();
-            };
+            }
             
             function getWidth() {
                 return canvas.getWidth();
-            };
+            }
             
             function getHeight() {
                 return canvas.getHeight();
-            };
+            }
         }
     };
 }]);
