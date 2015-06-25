@@ -41,6 +41,11 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
 
     $scope.paletteImage = new Image();
     $scope.paletteImage.src = "assets/img/bgGradient.png";
+
+    $scope.getPrimary = function() {
+        return colors.getPrimary();
+    };
+
     /* Create canvas from image */
     $scope.paletteImage.onload = function() {
         $scope.paletteOverlay = document.createElement('canvas');
@@ -48,8 +53,8 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
         $scope.paletteOverlay.height = $scope.palette.height;
         $scope.paletteOverlayContext = $scope.paletteOverlay.getContext('2d');
         $scope.paletteOverlayContext.drawImage($scope.paletteImage, 0, 0);
-    }
-    
+    };
+
     $scope.hueImage = new Image();
     $scope.hueImage.src = "assets/img/hueBar.png";
     /* Create canvas from image */
@@ -59,7 +64,7 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
         $scope.hueOverlay.height = $scope.hue.height;
         $scope.hueOverlayContext = $scope.hueOverlay.getContext('2d');
         $scope.hueOverlayContext.drawImage($scope.hueImage, 0, 0, $scope.hue.width, $scope.hue.height);
-    }
+    };
 
     /* init */
     $scope.init = function() {
@@ -68,7 +73,7 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
         $scope.color = rgbToHsv(colors.getPrimary());
 
         $scope.hex = rgbToHex(colors.getPrimary());
-                              
+
         $scope.drawMarker();
         $scope.drawBar();
     };
@@ -88,10 +93,11 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
     });
 
     $scope.paletteMouseDown = function(event) {
+        $scope.paletteBox = $scope.palette.getBoundingClientRect();
         $scope.selectingSaturationValue = true;
         $scope.paletteMouseMove(event);
     };
-    
+
     $scope.paletteMouseUp = function() {
         $scope.selectingSaturationValue = false;
     };
@@ -100,7 +106,7 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
         if ($scope.selectingSaturationValue) {
             var locX, locY;
 
-            /* Update the S and V value based on the mouse position inside the 
+            /* Update the S and V value based on the mouse position inside the
              * palette. */
 
             /* Discriminate mouse inputs and touch inputs */
@@ -108,8 +114,8 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
                 locX = event.pageX;
                 locY = event.pageY;
             } else {
-                locX = event.originalEvent.touches[0].pageX;
-                locY = event.originalEvent.touches[0].pageY;
+                locX = event.touches[0].pageX;
+                locY = event.touches[0].pageY;
             }
 
             if (locX < $scope.paletteBox.left) {
@@ -117,7 +123,7 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
             }
             if (locY < $scope.paletteBox.top) {
                 locY = $scope.paletteBox.top;
-            }            
+            }
             if (locX > $scope.paletteBox.right) {
                 locX = $scope.paletteBox.right;
             }
@@ -126,10 +132,10 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
             }
 
             $scope.color.s = Math.floor(
-                ((locX - $scope.paletteBox.left) * 100) / $scope.palette.width
+                ((locX - $scope.paletteBox.left) * 100) / $scope.paletteBox.width
             );
             $scope.color.v = Math.floor(
-                100 - ((locY - $scope.paletteBox.top) * 100) / $scope.palette.height
+                100 - ((locY - $scope.paletteBox.top) * 100) / $scope.paletteBox.height
             );
 
             $scope.updateRgb();
@@ -138,10 +144,11 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
     };
 
     $scope.hueMouseDown = function(event) {
+        $scope.hueBox = $scope.hue.getBoundingClientRect();
         $scope.selectingHue= true;
         $scope.hueMouseMove(event);
     };
-    
+
     $scope.hueMouseUp = function() {
         $scope.selectingHue = false;
     };
@@ -150,12 +157,12 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
         if ($scope.selectingHue) {
             var locY;
 
-            /* Update the H value based on the mouse position inside the 
+            /* Update the H value based on the mouse position inside the
              * hue bar. */
             if (/^mouse/i.test(event.type)) {
                 locY = event.pageY;
             } else {
-                locY = event.originalEvent.touches[0].pageY;
+                locY = event.touches[0].pageY;
             }
 
             if (locY < $scope.hueBox.top) {
@@ -164,12 +171,9 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
             if (locY > $scope.hueBox.bottom) {
                 locY = $scope.hueBox.bottom;
             }
-            
 
-            $scope.color.h = Math.floor(
-                360 - ((locY - $scope.hueBox.top) * 360) /
-                ($scope.hueBox.bottom - $scope.hueBox.top)
-            );
+
+            $scope.color.h = Math.floor(360 - ((locY - $scope.hueBox.top) * 360) / $scope.hueBox.height);
             
             $scope.updateRgb();
             $scope.updateHex();

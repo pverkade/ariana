@@ -11,9 +11,13 @@ app.directive('backgroundEvents', ['canvas', function(canvas) {
     return {
         restrict: 'A',
         link: function(scope, element) {
-            scope.$watch('config.canvas.cursor', function() {
+            scope.$watch(getCursor, function() {
                 element.css('cursor', canvas.getCursor());
             }, true);
+
+            function getCursor() {
+            	return canvas.getCursor();
+            }
         }
     };
 }]);
