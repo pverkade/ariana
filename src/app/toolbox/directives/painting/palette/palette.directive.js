@@ -40,10 +40,26 @@ app.controller('PaletteCtrl', function($scope) {
 
     $scope.paletteImage = new Image();
     $scope.paletteImage.src = "assets/img/bgGradient.png";
+    /* Create canvas from image */
+    $scope.paletteImage.onload = function() {
+        $scope.paletteOverlay = document.createElement('canvas');
+        $scope.paletteOverlay.width = $scope.palette.width;
+        $scope.paletteOverlay.height = $scope.palette.height;
+        $scope.paletteOverlayContext = $scope.paletteOverlay.getContext('2d');
+        $scope.paletteOverlayContext.drawImage($scope.paletteImage, 0, 0);
+    }
     
     $scope.hueImage = new Image();
     $scope.hueImage.src = "assets/img/hueBar.png";
-    
+    /* Create canvas from image */
+    $scope.hueImage.onload = function() {
+        $scope.hueOverlay = document.createElement('canvas');
+        $scope.hueOverlay.width = $scope.hue.width;
+        $scope.hueOverlay.height = $scope.hue.height;
+        $scope.hueOverlayContext = $scope.hueOverlay.getContext('2d');
+        $scope.hueOverlayContext.drawImage($scope.hueImage, 0, 0, $scope.hue.width, $scope.hue.height);
+    }
+
     /* init */
     $scope.init = function() {
         $scope.setCursor('default');
@@ -213,7 +229,8 @@ app.controller('PaletteCtrl', function($scope) {
         var height = $scope.palette.height;
         context = $scope.paletteContext;
         context.clearRect(0, 0, width, height);
-        context.drawImage($scope.paletteImage, 0, 0, width, height);
+        /* Draw canvas instead of image */
+        context.drawImage($scope.paletteOverlay, 0, 0);
         context.beginPath();
         locX =  $scope.color.s * width / 100;
         locY =  (100 - $scope.color.v) * height / 100;
@@ -235,7 +252,8 @@ app.controller('PaletteCtrl', function($scope) {
         var height = $scope.hue.height;
         context = $scope.hueContext;
         context.clearRect(0, 0, width, height);
-        context.drawImage($scope.hueImage , 0, 0, width, height);
+        /* Draw canvas instead of image */
+        context.drawImage($scope.hueOverlay, 0, 0);
         context.beginPath();
         loc =   (360 - $scope.color.h) * height / 360;
         context.rect(0, loc - 4, width, 8);

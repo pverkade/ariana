@@ -67,4 +67,8 @@ app.controller('SaveImageModalController', ['$scope', '$modalInstance', '$modal'
         
         $scope.closeSaveImageModal();
     };
+
+    $scope.checkValid = function() {
+        return !/\w/.test($scope.filename);
+    }
 }]);
