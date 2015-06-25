@@ -20,7 +20,7 @@ app.config(function($stateProvider, $locationProvider) {
             }
         })
         .state('ariana', {
-            url: "",
+            url: "/ariana",
             views: {
                 "content": {
                     templateUrl: "app/content/content.tpl.html",
@@ -29,27 +29,6 @@ app.config(function($stateProvider, $locationProvider) {
                 "content-menu": {
                     templateUrl: "app/content/menu/menu.content.tpl.html",
                     controller: 'MenuContentCtrl'
-                },
-                "toolbar": {
-                    templateUrl: "app/toolbar/toolbar.tpl.html",
-                    controller: 'ToolbarController'
-                },
-                "layers": {
-                    templateUrl: "app/layers/layers.tpl.html",
-                    controller: 'layersCtrl'
-                },
-                "toolbox": {
-                    templateUrl: "app/toolbox/toolbox.tpl.html",
-                    controller: 'ToolboxCtrl'
-                }
-            }
-        })
-        .state('drawtest', {
-            url: "/drawtest",
-            views: {
-                "content": {
-                    templateUrl: "common/draw/drawtest.tpl.html",
-                    controller: 'drawtestCtrl'
                 },
                 "toolbar": {
                     templateUrl: "app/toolbar/toolbar.tpl.html",
