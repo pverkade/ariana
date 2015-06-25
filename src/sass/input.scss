@@ -130,10 +130,5 @@
     @extend .filter-options;
     width: 2 * $blocksize;
     min-width: 2 * $blocksize;
-    min-height: 1 * $blocksize;
-    @media screen and (max-width: $breakpoint-tablet) {
-        width: 2 * $blocksize-tablet;
-        min-width: 2 * $blocksize-tablet;
-        min-height: 1 * $blocksize-tablet;
-    }
+    max-height: 1 * $blocksize;
 }

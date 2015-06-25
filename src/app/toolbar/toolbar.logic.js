@@ -7,8 +7,8 @@
  */
  
 /* The ToolbarController contains the behaviour of the toolbar. */
-app.controller('ToolbarController', ['$scope', '$modal',
-    function ($scope, $modal) {
+app.controller('ToolbarController', ['$scope', '$modal', 'tools',
+    function ($scope, $modal, tools) {
       
         /* This functions returns whether the toolbox should be visible. It is 
          * hidden when the user is clicking on the canvas/background. */
@@ -80,7 +80,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
             }
         }
 
-        $scope.cancel = function() {
+        $scope.cancelFilters = function() {
             $scope.filter.filterObject = null;
             $scope.filter.currentlayerOnly = false;
 
@@ -127,7 +127,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
             var filter = $scope.filter.filterObject;
 
             if ($scope.config.layers.numberOfLayers == 0 || !filter) {
-                $scope.cancel();
+                $scope.cancelFilters();
                 return;
             }
 
@@ -169,10 +169,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
             /* Iterate over all mask wand parsts and remove. */
             var nrWands = $scope.selectionTool.getNrWands();
             for (var i = 0; i < nrWands; i++) {
-                var removed = $scope.selectionTool.clearLast();
-                if (removed == false) {
-                    console.log("Selection tool clear Last returned false");
-                }                
+                var removed = $scope.selectionTool.clearLast();              
             }
 
             /* Draw shared mask variables to image. */
@@ -182,12 +179,13 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 var layer = $scope.renderEngine.layers[currentLayer];
                 $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
                 $scope.requestEditEngineUpdate();      
-            
-            //$scope.maskWand = null;
-            //$scope.maskBorder = null;
-            //$scope.marchingAnts = null;
-            //$scope.imgData = null;  
             }
         };
+        
+        // FIXME requires services: keep in merge
+        /*$scope.checkSelectionActive = function() {
+            var tool = tools.get
+            return 
+        }*/
     }
 ]);
