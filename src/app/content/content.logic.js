@@ -62,15 +62,15 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
         var cy = canvas.getY();
         var zoom  = canvas.getZoom();
 
-        var mouseX, mouseY;
+        var mouseX, mouseY, mouseIndex;
         if (event.touches) {
             mouseX = event.touches[0].pageX;
             mouseY = event.touches[0].pageY;
-            var mouseIndex = event.touches ? 1 : event.which;
+            mouseIndex = event.touches ? 1 : event.which;
         } else {
             mouseX = event.pageX;
             mouseY = event.pageY;
-            var mouseIndex = event.touches ? 1 : event.which;
+            mouseIndex = event.touches ? 1 : event.which;
         }
         
         if (mouseIndex == 1) {
@@ -106,10 +106,11 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
         event.preventDefault();
 
         /* Store the mouse button. */
+        var mouseIndex;
         if (event.touches) {
-            var mouseIndex = event.touches ? 1 : event.which;
+            mouseIndex = event.touches ? 1 : event.which;
         } else {
-            var mouseIndex = event.touches ? 1 : event.which;
+            mouseIndex = event.touches ? 1 : event.which;
         }
         
         if (mouseIndex == 1) {
@@ -144,6 +145,8 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
         
         canvas.setX(canvas.getX() - widthDifference);
         canvas.setY(canvas.getY() - heightDifference);
+        
+        $scope.requestRenderEngineUpdate();
     };
 
     $scope.mwheelDown = function() {
@@ -161,6 +164,8 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
         
         canvas.setX(canvas.getX() + widthDifference);
         canvas.setY(canvas.getY() + heightDifference);
+        
+        $scope.requestRenderEngineUpdate();
     };
 
     $scope.pinchZoom = function(event, scale) {
@@ -183,6 +188,7 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
     /* Get the canvas element and start the engine. */
     $scope.startEngines(
         document.getElementById("main-canvas"),
-        document.getElementById("editing-canvas")
+        document.getElementById("editing-canvas"),
+        document.getElementById("top-canvas")
     );
 }]);

@@ -68,7 +68,7 @@ app.controller('layersCtrl', ['$scope', '$animate', 'mouse', 'layers',
         if (index < $scope.renderEngine.getNumberOfLayers() - 1 && $scope.renderEngine.getNumberOfLayers() > 1) {
             $scope.renderEngine.reorder(index, index + 1);
             $scope.requestRenderEngineUpdate();
-            layers.setLayerInfo(layers.getLayerInfo().swap(index, index + 1));
+            layers.overwriteLayers(layers.getLayerInfo().swap(index, index + 1));
         }
     };
 
@@ -78,7 +78,7 @@ app.controller('layersCtrl', ['$scope', '$animate', 'mouse', 'layers',
         if (index > 0) {
             $scope.renderEngine.reorder(index, index - 1);
             $scope.requestRenderEngineUpdate();
-            layers.setLayerInfo(layers.getLayerInfo().swap(index, index - 1));
+            layers.overwriteLayers(layers.getLayerInfo().swap(index, index - 1));
         }
     };
 

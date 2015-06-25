@@ -9,16 +9,16 @@
     </div>
     
     <ul class="clearfix">
-        <li class="tool float-left" ng-click="openNewFileModal()">
+        <li class="tool float-left" ng-click="openNewFileModal()" tooltip="New File">
             <i class="mdi mdi-file"></i>
         </li>
-        <li class="tool float-left" ng-click="openUploadModal()">
+        <li class="tool float-left" ng-click="openUploadModal()" tooltip="Upload Image">
             <i class="mdi mdi-upload"></i>
         </li>
-        <li class="tool float-left" ng-click="openSaveImageModal()">
+        <li class="tool float-left" ng-click="openSaveImageModal()" tooltip="Download Image">
             <i class="mdi mdi-download"></i>
         </li>
-        <li class="tool float-left" ng-click="openFilterModal()">
+        <li class="tool float-left" ng-click="openFilterModal()" tooltip="Image Filters">
             <i class="mdi mdi-star-outline"></i>
         </li>
     </ul>
@@ -28,10 +28,11 @@
 
 <div class="filter-options" 
     ng-right-click
-    ng-show="filter.filterObject"
+    ng-show="filter.filterObject && renderEngine.getNumberOfLayers()"
     ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}"> 
     
     <div class="tool float-left" ng-click="cancelFilter()"> <i class="mdi mdi-close"> </i> </div>
+    
     <div class="center-box float-left">
     
         <div class="input-group">
@@ -43,10 +44,19 @@
             <span class="input-group-addon"> {{name}} </span>
             <input type="range"  class="form-control slider" ng-model="parameter.value" ng-change="applyFilterChanges()"
                 min="{{parameter.min}}" max="{{parameter.max}}" step="{{parameter.step}}"> </input>
-            <input type="text" number class="form-control number" ng-model="parameter.value"
+            <input type="text" number class="form-control number" ng-model="parameter.value" ng-change="applyFilterChanges()"
                 min="{{parameter.min}}" max="{{parameter.max}}" step="{{parameter.step}}"> </input>
         </div>
     
     </div>
     <div class="tool float-right" ng-click="commitFilterOnLayers(); cancelFilter()">  <i class="mdi mdi-check"> </i> </div>
+</div>
+
+<div class="selection-options" 
+    ng-right-click
+    ng-show="isSelectionEnabled()"
+    ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}"> 
+
+    <div class="tool float-left" ng-click="cancelSelection()"> <i class="mdi mdi-close"> </i> </div>
+    <div class="tool float-left" ng-click="applySelection()"> <i class="mdi mdi-check"> </i> </div>
 </div>

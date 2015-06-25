@@ -14,7 +14,7 @@ app.directive('canvasEvents', ['canvas', function(canvas) {
 
             function getZoom() {
                 return canvas.getZoom();
-            };
+            }
             
             /* Watches canvas zoom changes  */
             scope.$watch(getZoom, function() {
@@ -28,12 +28,9 @@ app.directive('canvasEvents', ['canvas', function(canvas) {
 
             /* Watches canvas coordinate changes  */
             scope.$watchGroup([getX, getY], function() {
-                element.css('-ms-transform', "translate(" + canvas.getX() +
-                    "px, " + canvas.getY() + "px)");
-                element.css('-webkit-transform', "translate(" + canvas.getX() +
-                    "px, " + canvas.getY() + "px)");
-                element.css('transform', "translate(" + canvas.getX() + 
-                                         "px, " + canvas.getY() + "px)");
+                element.css('transform', "translate(" + canvas.getX() + "px, " + canvas.getY() + "px)");
+                element.css('-ms-transform', "translate(" + canvas.getX() + "px, " + canvas.getY() + "px)");
+                element.css('-webkit-transform', "translate(" + canvas.getX() + "px, " + canvas.getY() + "px)");
             }, true);
 
             /* Watches canvas coordiante changes  */

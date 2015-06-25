@@ -16,56 +16,63 @@ app.directive('loose', function() {
     };
 });
 
-app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', function($scope, tools, canvas, layers, mouse) {
+app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 
+    function($scope, tools, canvas, layers, mouse) {
 
     $scope.toolname = 'loose';
     $scope.active = tools.getTool() == $scope.toolname;
 
-    /* init */
     $scope.init = function() {
+
         canvas.setCursor('default');
-
-        var currentLayer = layers.getCurrentIndex();
-        if (currentLayer == -1) {
-            console.log("No layer selected");
+        $scope.selection.maskEnabled = true;
+        var layer = $scope.getCurrentLayer();
+        if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
             return;
         }
-
-        var layer = $scope.renderEngine.getLayer(currentLayer);
-        if (layer.getLayerType() != LayerType.ImageLayer) {
-            console.log("Layer is not of type ImageLayer");
-            return;
-        }
+        
         $scope.image = layer.getImage();
 
         $scope.loose = new LooseSelection($scope.image.width, $scope.image.height);
 
-        $scope.canvas = document.createElement("canvas");
-        $scope.context = $scope.canvas.getContext("2d");
-        $scope.imgData = $scope.context.createImageData($scope.loose.width, $scope.loose.height);
-
         $scope.mouseBTNDown = false;
 
         $scope.startSharedSelection($scope.image.width, $scope.image.height);
+        $scope.setSelectionTool($scope.loose);
         $scope.loose.setMaskWand($scope.maskWand);
+        $scope.loose.setMaskWandParts($scope.maskWandParts);
         $scope.loose.setMaskBorder($scope.maskBorder);
 
         $scope.drawEngine.setLineWidth(2);
         $scope.drawEngine.setDrawType(drawType.DASHED);
+
+        $scope.setMaskSelectedArea($scope.loose.width, $scope.loose.height);
     };
     
     $scope.stop = function() {
-        var scope = angular.element($("#main-canvas")).scope();
-        scope.editEngine.removeSelectionLayer();
+        $scope.editEngine.removeSelectionLayer();
         $scope.requestEditEngineUpdate();
     };
 
     $scope.mouseDown = function() {
-        $scope.stop();
-        
         /* x and y coordinates in pixels relative to image. */
         xMouse = mouse.getPosX();
         yMouse = mouse.getPosY();
+
+        /* Calculate x and y coordinates in pixels of the original image */
+        var layer = $scope.getCurrentLayer();
+        if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
+            return;
+        }
+
+        var transformedPoint = $scope.loose.transform(layer, xMouse, yMouse);
+        xRelative = transformedPoint.x;
+        yRelative = transformedPoint.y;
+
+        /* Check wheter user has clicked inside of a selection. */
+        if ($scope.loose.isInSelection(xRelative, yRelative)) {
+            $scope.loose.removeSelection(xRelative, yRelative);
+        } 
 
         $scope.drawEngine.onMousedown(xMouse, yMouse);   
         $scope.mouseBTNDown = true; 
@@ -87,11 +94,14 @@ app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
         yMouse = mouse.getPosY();    
 
         /* Calculate x and y coordinates in pixels of the original image */
-        var currentLayer = layers.getCurrentIndex();
-        var layer = $scope.renderEngine.getLayer(currentLayer);
+        var layer = $scope.getCurrentLayer();
         if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
             return;
         }
+        
+        var transformedPoint = $scope.loose.transform(layer, xMouse, yMouse);
+        xRelative = transformedPoint.x;
+        yRelative = transformedPoint.y;
 
         if ($scope.mouseBTNDown === true) {
             if ($scope.loose.addPoint(new Point(xMouse, yMouse))) {
@@ -99,22 +109,15 @@ app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
 
                 /* A new bounding path has been found. */
                 if (boundingPath.length !== 0) {
-                    var bitmask = $scope.loose.getLastMaskWand();
-                    for (var i = 0; i < bitmask.length; i++) {
-                        if (bitmask[i]) {
-                            $scope.imgData.data[4 * i] = 255;
-                            $scope.imgData.data[4 * i + 1] = 0;
-                            $scope.imgData.data[4 * i + 2] = 0;
-                            $scope.imgData.data[4 * i + 3] = 255;
-                        }
+
+                    /* Draw shared mask variables to image. */
+                    if ($scope.maskWand) {
+                        $scope.setMaskSelectedArea($scope.loose.width, $scope.loose.height);
+                        var currentLayer = layers.getCurrentIndex();
+                        var layer = $scope.renderEngine.getLayer(currentLayer);
+                        $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
+                        $scope.requestEditEngineUpdate();      
                     }
-
-                    /* Add new layer for bounding path and set selection. */
-                    var newLayer = $scope.renderEngine.createSelectionImageLayer($scope.imgData, 0);
-                    $scope.addLayer(newLayer);
-
-                    $scope.editEngine.setSelectionLayer($scope.marchingAnts, newLayer);
-                    $scope.requestRenderEngineUpdate();
 
                     $scope.loose.reset();
 

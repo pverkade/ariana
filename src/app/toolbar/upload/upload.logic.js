@@ -21,7 +21,6 @@ app.controller('UploadModalController', ['$scope', '$modalInstance', 'Upload', '
                 var image = new Image();
                 image.onload = function() {
                     $scope.resizeCanvases(image.width, image.height);
-                    //FIXME: canvas goes out of screen if the image is too big.
                 };
                 image.src = $scope.imageUrls[0];
             }

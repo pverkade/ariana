@@ -5,6 +5,8 @@ Project ariana - is a web-based image editing solution. We focus on a clean inte
 
 [User stories](https://docs.google.com/document/d/1qySwIDR8abtethyeTkNcCvziDz7zHKml942X5S-pPow/edit)
 
+[Presentatie draaiboek](https://docs.google.com/document/d/112ceuodK7CbVpeCI8DX4rkKBhOC-yN46Ahc9zRPuUcM/edit?usp=sharing)
+
 ## Index
 - [Project structure](https://github.com/ArnoldSwaggernegger/ariana#project-structure)
 - [Getting started](https://github.com/ArnoldSwaggernegger/ariana#getting-started)

@@ -21,16 +21,16 @@ app.controller('ScaleCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
     $scope.active = tools.getTool() == $scope.toolname;
     $scope.cursorTypes = ["e-resize", "ne-resize", "n-resize", "nw-resize", "w-resize",
         "sw-resize", "s-resize", "se-resize", "e-resize"];
-    $scope.keepAR = false;
+    $scope.keepAR = true;
 
     /* init */
     $scope.init = function() {
         $scope.scaling = false;
         
-        var currentLayer = layers.getCurrentIndex();
-        if (currentLayer == -1) return;
-
-        var layer = $scope.renderEngine.getLayer(currentLayer);
+        var layer = $scope.getCurrentLayer();
+        if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
+            return;
+        }
         $scope.editEngine.setEditLayer(layer, EditMode.scale);
         $scope.editEngine.drawScaleTool(layer);
         $scope.requestEditEngineUpdate();

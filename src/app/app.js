@@ -27,15 +27,20 @@ app.controller('AppCtrl', ['$scope', 'layers', 'canvas', 'tools',
         $scope.drawEngine = null;
         $scope.editEngine = null;
         $scope.maskWand = null;
+        $scope.maskWandParts = [];
         $scope.maskBorder = null;
         $scope.marchingAnts = null;
-
+        $scope.imgData = null;
+        $scope.selectionTool = null;   
+        
+        $scope.selection = {maskEnabled: false};
+        
         /* This function creates the RenderEngine. It requires the canvas to
          * render on. */
-        $scope.startEngines = function(renderCanvas, drawCanvas) {
+        $scope.startEngines = function(renderCanvas, drawCanvas, topCanvas) {
             $scope.renderEngine = new RenderEngine(renderCanvas);
             $scope.drawEngine = new DrawEngine(drawCanvas);
-            $scope.editEngine = new EditEngine(drawCanvas);
+            $scope.editEngine = new EditEngine(topCanvas);
         };
 
         $scope.startSharedSelection = function(width, height) {
@@ -44,7 +49,36 @@ app.controller('AppCtrl', ['$scope', 'layers', 'canvas', 'tools',
                 $scope.maskBorder = new Uint8Array(width * height);
                 $scope.marchingAnts = new MarchingAnts(width, height);
                 $scope.marchingAnts.setMaskBorder($scope.maskBorder);
+
+                var canvas = document.createElement("canvas");
+                var context = canvas.getContext("2d");
+                $scope.imgData = context.createImageData(width, height);
             }
+        };
+
+        $scope.setSelectionTool = function(selectionTool) {
+            $scope.selectionTool = selectionTool;
+        };
+
+        $scope.setMaskSelectedArea = function(width, height) {
+            var index = 0;
+
+            for (var y = 0; y < height; y++) {
+                for (var x = 0; x < width; x++) {
+                    index = (height - y) * width + x;
+                    if ($scope.maskWand[y * width + x]) {
+                        $scope.imgData.data[4 * index] = 255;
+                        $scope.imgData.data[4 * index + 1] = 0;
+                        $scope.imgData.data[4 * index + 2] = 0;
+                        $scope.imgData.data[4 * index + 3] = 255;
+                    } else {
+                        $scope.imgData.data[4 * index] = 0;
+                        $scope.imgData.data[4 * index + 1] = 0;
+                        $scope.imgData.data[4 * index + 2] = 0;
+                        $scope.imgData.data[4 * index + 3] = 255;                        
+                    }
+                }
+            }  
         };
 
         /* This function creates a new layer from a given Image-object. The new
@@ -65,7 +99,7 @@ app.controller('AppCtrl', ['$scope', 'layers', 'canvas', 'tools',
              * and is immediately selected. */
             layers.setNumCreatedLayers(layers.getNumCreatedLayers() + 1);
             layers.setNumLayers($scope.renderEngine.getNumberOfLayers());
-            layers.setCurrentIndex(layers.getNumberOfLayers - 1);
+            layers.setCurrentIndex(layers.getNumLayers() - 1);
 
             /* Store information about the layers in the config object. */
             layers.addLayer({
@@ -139,7 +173,6 @@ app.controller('AppCtrl', ['$scope', 'layers', 'canvas', 'tools',
         };
 
         $scope.getCurrentLayer = function() {
-
         
             var index = layers.getCurrentIndex();
             if (index == -1) return;

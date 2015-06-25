@@ -1,30 +1,55 @@
 <div class="tool" ng-class="{active: active}">
 	<i class="mdi mdi-brush" ></i>
 	<div class="tool-settings" ng-show="isActive('brush') && expanded">
-    
+    	
         <div class="input-group">
 			<span class="input-group-addon input-large"> Brush Settings </span>
         </div>
-    
-		<div class="input-group">
-			<span class="input-group-addon input-medium"> Thickness </span>
-			<input type="range" class="form-control input-medium" ng-model="thickness" ng-change="updateDrawEngine()" min="1" max="16" step="0.5"></input>
-		</div>
-        
-        <div class="input-group">
-			<span class="input-group-addon input-medium"> Opacity </span>
-			<input type="range" class="form-control input-medium" ng-model="opacity" ng-change="updateDrawEngine()" min="0" max="1" step="0.01"></input>
-		</div>
-        
-        <div class="input-group">
+
+    	<div class="input-group">
 			<span class="input-group-addon input-medium"> Style </span>
 			<select class="form-control input-medium" ng-model="brush" ng-change="updateBrushStyle()">
 				<option value="thin" selected> Marker </option>
-				<!-- <option value="pen"> Pen </option> -->
 				<option value="neighbor"> Neighbor </option>
 				<option value="fur"> Fur </option>
 				<option value="multistroke"> Multistroke </option>
 			</select>
+		</div>
+
+		<div class="input-group">
+			<span class="input-group-addon input-medium"> Thickness </span>
+			<input type="range" 
+				class="form-control input-medium" 
+				ng-model="thickness" 
+				ng-change="updateDrawEngine()" 
+				min="1" 
+				max="16" 
+				step="0.5">
+			</input>
+		</div>
+        
+        <div class="input-group">
+			<span class="input-group-addon input-medium"> Opacity </span>
+			<input type="range" 
+				class="form-control input-medium" 
+				ng-model="opacity" 
+				ng-change="updateDrawEngine()" 
+				min="0.15" 
+				max="1" 
+				step="0.01">
+			</input>
+		</div>
+
+		<div class="input-group" ng-hide="brush == 'thin'">
+			<span class="input-group-addon input-medium"> Intensity </span>
+			<input type="range" 
+				class="form-control input-medium" 
+				ng-model="intensity" 
+				ng-change="updateDrawEngine()" 
+				min="1" 
+				max="5" 
+				step="0.1">
+			</input>
 		</div>
 	<div>
 </div>

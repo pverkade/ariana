@@ -79,7 +79,7 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
             }
         }
 
-        $scope.cancelFilter= function() {
+        $scope.cancelFilter = function() {
             $scope.filter.filterObject = null;
             $scope.filter.currentlayerOnly = false;
 
@@ -149,5 +149,47 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
         $scope.$on("newCurrentLayer", function() {
             $scope.applyFilterOnLayers();
         });
+        
+        $scope.applySelection = function() {
+            /* Cut out selection from texture and move to new layer. */
+            var newLayer = $scope.renderEngine.createSelectionImageLayer($scope.imgData, 0);
+            $scope.addLayer(newLayer);
+            $scope.selection.maskEnabled = false;
+            $scope.drawEngine.clearCanvases();
+            $scope.editEngine.removeSelectionLayer();
+        };
+        
+        $scope.cancelSelection = function() {
+            $scope.selection.maskEnabled = false;
+
+            $scope.drawEngine.clearCanvases();
+            $scope.editEngine.removeSelectionLayer();
+
+            /* Iterate over all mask wand parsts and remove. */
+            var nrWands = $scope.selectionTool.getNrWands();
+            for (var i = 0; i < nrWands; i++) {
+                var removed = $scope.selectionTool.clearLast();
+                if (removed === false) {
+                    console.log("Selection tool clear Last returned false");
+                }                
+            }
+
+            /* Draw shared mask variables to image. */
+            if ($scope.maskWand) {
+                $scope.setMaskSelectedArea($scope.selectionTool.width, $scope.selectionTool.height);
+                var layer = $scope.getCurrentLayer();
+                if (!layer || layer == null) {
+                    console.log("cant find layer");
+                    return;
+                }
+                $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
+                $scope.requestEditEngineUpdate();       
+            }
+        };
+        
+        $scope.isSelectionEnabled = function() {
+            var tool = tools.getTool();
+            return (tool == "magic" || tool == "loose" || tool == "rectangle");
+        };
     }
 ]);

@@ -38,12 +38,14 @@ angular.module("ngTouch", [])
     .directive("ngTouchstart", function () {
         return {
             controller: function ($scope, $element) {
+                /* jshint ignore:start */
                 function onTouchStart($event) {
                     var method = '$scope.' + $element.attr('ng-touchstart');
                     $scope.$apply(function () {
                         eval(method);
                     });
                 }
+                /* jshint ignore:end */
 
                 $element.bind('touchstart', onTouchStart);
             }
@@ -54,12 +56,14 @@ angular.module("ngTouch", [])
             controller: function ($scope, $element) {
                 $element.bind('touchend', onTouchEnd);
 
+                /* jshint ignore:start */
                 function onTouchEnd($event) {
                     var method = '$scope.' + $element.attr('ng-touchend');
                     $scope.$apply(function () {
                         eval(method);
                     });
                 }
+                /* jshint ignore:end */
             }
         };
     })
@@ -69,7 +73,6 @@ angular.module("ngTouch", [])
                 $element.bind('touchstart', onPinchZoomStart);
 
                 function onPinchZoomStart($event) {
-                    console.log($event);
                     if ($event.touches.length == 2) {
                         var point1 = $event.touches[0];
                         var point2 = $event.touches[1];
