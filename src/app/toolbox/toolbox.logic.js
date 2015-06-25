@@ -19,14 +19,13 @@ app.controller('ToolboxCtrl', ['$scope', 'canvas', 'colors', 'tools', 'mouse', f
 
     /* This function swaps the primary and secondary color. */
     $scope.swapColors = function() {
-        var temp = colors.getPrimary();
-        colors.setPrimaryRGB(colors.getSecondary());
-        colors.setSecondaryRGB(colors.getPrimary());
+        colors.setPrimaryRgb(colors.getSecondary());
+        colors.setSecondaryRgb(colors.getPrimary());
         $scope.$broadcast('swapColorsBC', {});
     };
     
     $scope.checkVisible = function() {
-        return !mouse.checkActive()
+        return !mouse.checkActive();
     };
 
     $scope.isActive = function(name) {
@@ -54,11 +53,11 @@ app.controller('ToolboxCtrl', ['$scope', 'canvas', 'colors', 'tools', 'mouse', f
             event.stopPropagation();
         }
         
-        tools.getTool() = name;
+        tools.setTool(name);
         return true;
     };
 
     $scope.getActiveToolFunctions = function() {
         return tools.getToolFunctions;
-    }
+    };
 }]);

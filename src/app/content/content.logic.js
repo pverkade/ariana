@@ -13,15 +13,15 @@ app.controller('ContentCtrl', ['$scope', '$window', 'canvas', 'mouse', 'tools',
 
     $scope.getWidth = function() {
         return canvas.getWidth();
-    }
+    };
 
     $scope.getHeight = function() {
         return canvas.getHeight();
-    }
+    };
 
     $scope.getVisibility = function() {
         return canvas.getVisibility();
-    }
+    };
 
     /* This function is triggered when the mouse is moved. */
     $scope.mouseMove = function(event) {

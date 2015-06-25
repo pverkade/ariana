@@ -49,9 +49,9 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
     $scope.init = function() {
         canvas.setCursor('default');
 
-        $scope.color = RGBtoHSV(colors.getPrimary());
+        $scope.color = rgbToHsv(colors.getPrimary());
 
-        $scope.hex = RGBtoHEX(colors.getPrimary());
+        $scope.hex = rgbToHex(colors.getPrimary());
                               
         $scope.drawMarker();
         $scope.drawBar();
@@ -66,9 +66,9 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
     $scope.mouseMove = function() {
     };
 
-    $scope.$on('swapColorsBC', function (event, data) {
-         $scope.updateHSV();
-         $scope.updateHEX();
+    $scope.$on('swapColorsBC', function () {
+         $scope.updateHsv();
+         $scope.updateHex();
     });
 
     $scope.paletteMouseDown = function(event) {
@@ -116,8 +116,8 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
                 100 - ((locY - $scope.paletteBox.top) * 100) / $scope.palette.height
             );
 
-            $scope.updateRGB();
-            $scope.updateHEX();
+            $scope.updateRgb();
+            $scope.updateHex();
         }
     };
 
@@ -155,8 +155,8 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
                 ($scope.hueBox.bottom - $scope.hueBox.top)
             );
             
-            $scope.updateRGB();
-            $scope.updateHEX();
+            $scope.updateRgb();
+            $scope.updateHex();
         }
     };
 
@@ -169,7 +169,7 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
      * to the "activeToolFunctions" object.
      * Always call "init" first;
      */
-    $scope.$watch('active', function(nval, oval) {
+    $scope.$watch('active', function(nval) {
         if (nval) {
             $scope.init();
 
@@ -182,26 +182,26 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
     }, true);
     
     
-    $scope.updateRGB = function() {
-        colors.setPrimaryRGB(HSVtoRGB($scope.color));
+    $scope.updateRgb = function() {
+        colors.setPrimaryRgb(hsvToRgb($scope.color));
 
         $scope.drawMarker();
         $scope.drawBar();
     };
     
-    $scope.updateHSV = function() {
-        $scope.color = RGBtoHSV(colors.getPrimary());
+    $scope.updateHsv = function() {
+        $scope.color = rgbToHsv(colors.getPrimary());
         
         $scope.drawMarker();
         $scope.drawBar();
     };
     
-    $scope.updateHEX = function() {
-        $scope.hex = RGBtoHEX(colors.getPrimary());
+    $scope.updateHex = function() {
+        $scope.hex = rgbToHex(colors.getPrimary());
     };
     
-    $scope.updateRGBfromHEX = function() {
-        colors.setPrimaryRGB(HEXtoRGB($scope.hex));
+    $scope.updateRgbFromHex = function() {
+        colors.setPrimaryRgb(hexToRgb($scope.hex));
     };
 
     $scope.drawMarker = function() {
@@ -214,9 +214,9 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
         locX =  $scope.color.s * width / 100;
         locY =  (100 - $scope.color.v) * height / 100;
         context.arc(locX, locY, 6, 0, 2 * Math.PI, false);
-        context.fillStyle = "rgb("  + colors.getPrimaryR() + "," 
-                                    + colors.getPrimaryG() + "," 
-                                    + colors.getPrimaryB() + ")";
+        context.fillStyle = "rgb(" + colors.getPrimaryR() + "," +
+                                     colors.getPrimaryG() + "," +
+                                     colors.getPrimaryB() + ")";
         context.fill();
         context.lineWidth = 3;
         context.strokeStyle = "black";
@@ -224,7 +224,7 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
         context.lineWidth = 2;
         context.strokeStyle = "white";
         context.stroke();
-    }
+    };
 
     $scope.drawBar = function() {
         var width = $scope.hue.width;
@@ -243,7 +243,7 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
         context.lineWidth = 2;
         context.strokeStyle = "white";
         context.stroke();
-    }
+    };
 
     $scope.clamp = function(num, min, max) {
         if (num === null || num === undefined) {
@@ -267,7 +267,7 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
         while (!(/^#?[0-9A-F]{0,6}$/i.test($scope.hex))) {
             $scope.hex = $scope.hex.substr(0, $scope.hex.length-1);
         }
-    }
+    };
 
     $scope.blur = function() {
         if (!colors.getPrimaryR()) {
@@ -293,5 +293,5 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
         } else {
             $scope.hex = '#' + $scope.hex + "000000".substr($scope.hex.length, 6);
         }
-    }
+    };
 }]);

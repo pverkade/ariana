@@ -16,7 +16,7 @@ app.directive('scale', function() {
     };
 });
 
-app.controller('ScaleCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colors', function($scope, tools, canvas, layers, mouse, colors) {
+app.controller('ScaleCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', function($scope, tools, canvas, layers, mouse) {
     $scope.toolname = 'scale';
     $scope.active = tools.getTool() == $scope.toolname;
     $scope.cursorTypes = ["e-resize", "ne-resize", "n-resize", "nw-resize", "w-resize",
@@ -96,7 +96,7 @@ app.controller('ScaleCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'co
                 }
             }
 
-            if ($scope.scaleToolIndex != 0 && $scope.scaleToolIndex != 4) {
+            if ($scope.scaleToolIndex !== 0 && $scope.scaleToolIndex != 4) {
                 yScaleFactor = (mouseCurrentY - mouseOldY ) / (mouseOldY - y) + 1;
 
                 if (yScaleFactor && isFinite(yScaleFactor)) {
@@ -111,7 +111,7 @@ app.controller('ScaleCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'co
             }
 
             if ($scope.keepAR) {
-                if ($scope.scaleToolIndex == 0 || $scope.scaleToolIndex == 4) {
+                if ($scope.scaleToolIndex === 0 || $scope.scaleToolIndex == 4) {
                     ratio = newWidth / originalWidth;
                     newHeight = height * ratio;
                 }
@@ -137,7 +137,7 @@ app.controller('ScaleCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'co
             /* Update the index and the cursor. */
             if (!(mouse.getMiddle() || mouse.getSecondary())) {
 
-                var ratio = Math.abs(differenceY) / Math.abs(differenceX);
+                ratio = Math.abs(differenceY) / Math.abs(differenceX);
 
                 $scope.scaleToolIndex = Math.round(8 * (angle / (2 * Math.PI)));
                 canvas.setCursor($scope.cursorTypes[$scope.scaleToolIndex]);

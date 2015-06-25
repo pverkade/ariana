@@ -57,7 +57,7 @@ app.controller('PencilCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'c
 
         /* Draw the above lying layer(s) to */
         var upperIndices = [];
-        for (var i = $scope.currentLayer + 1; i < $scope.numberOfLayers; i++) {
+        for (i = $scope.currentLayer + 1; i < $scope.numberOfLayers; i++) {
             upperIndices.push(i);
         }
         console.log(upperIndices);
@@ -73,7 +73,7 @@ app.controller('PencilCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'c
             topCanvasContext.drawImage(topCanvasImage, 0, -topCanvasImage.height);
         };
         topCanvasImage.src = $scope.renderEngine.renderIndicesToImg(upperIndices);
-    }
+    };
     
     $scope.updateDrawEngine = function() {
         $scope.drawEngine.setLineWidth($scope.thickness);

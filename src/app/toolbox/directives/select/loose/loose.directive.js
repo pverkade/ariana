@@ -16,7 +16,7 @@ app.directive('loose', function() {
     };
 });
 
-app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colors', function($scope, tools, canvas, layers, mouse, colors) {
+app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', function($scope, tools, canvas, layers, mouse) {
 
     $scope.toolname = 'loose';
     $scope.active = tools.getTool() == $scope.toolname;
@@ -93,12 +93,12 @@ app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'co
             return;
         }
 
-        if ($scope.mouseBTNDown == true) {
+        if ($scope.mouseBTNDown === true) {
             if ($scope.loose.addPoint(new Point(xMouse, yMouse))) {
                 var boundingPath = $scope.loose.getLastBoundingPath();
 
                 /* A new bounding path has been found. */
-                if (boundingPath.length != 0) {
+                if (boundingPath.length !== 0) {
                     var bitmask = $scope.loose.getLastMaskWand();
                     for (var i = 0; i < bitmask.length; i++) {
                         if (bitmask[i]) {

@@ -10,10 +10,10 @@
 app.directive('backgroundEvents', ['canvas', function(canvas) {
     return {
         restrict: 'A',
-        link: function(scope, element, attrs) {
-            scope.$watch('config.canvas.cursor', function(nval, oval) {
+        link: function(scope, element) {
+            scope.$watch('config.canvas.cursor', function() {
                 element.css('cursor', canvas.getCursor());
             }, true);
         }
-    }
+    };
 }]);

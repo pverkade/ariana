@@ -58,9 +58,6 @@ app.controller('AppCtrl', ['$scope', 'layers', 'canvas', 'tools',
         };
 
         $scope.addLayer = function (layer) {
-            var height = layer.getHeight();
-            var width = layer.getWidth();
-
             $scope.renderEngine.addLayer(layer);
 
             /* set the correct layer info in config. The new layer comes on top
@@ -71,7 +68,7 @@ app.controller('AppCtrl', ['$scope', 'layers', 'canvas', 'tools',
 
             /* Store information about the layers in the config object. */
             layers.addLayer({
-                "name": 'Layer ' + layers.getNumCreatedLayers()
+                "name": "Layer " + layers.getNumCreatedLayers()
             });
 
             $scope.requestRenderEngineUpdate();

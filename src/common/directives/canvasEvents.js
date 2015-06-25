@@ -10,10 +10,10 @@
 app.directive('canvasEvents', ['canvas', function(canvas) {
     return {
         restrict: 'A',
-        link: function(scope, element, attrs) {
+        link: function(scope, element) {
             
             /* Watches canvas zoom changes  */
-            scope.$watch(canvas.getZoom(), function(nval, oval) {
+            scope.$watch(canvas.getZoom(), function() {
                 var cw = canvas.getWidth(),
                     ch = canvas.getHeight();
 
@@ -23,16 +23,16 @@ app.directive('canvasEvents', ['canvas', function(canvas) {
             }, true);
 
             /* Watches canvas coordinate changes  */
-            scope.$watchGroup([canvas.getX(), canvas.getY()], function(nval, oval) {
+            scope.$watchGroup([canvas.getX(), canvas.getY()], function() {
                 element.css('transform', "translate(" + canvas.getX() + 
                                          "px, " + canvas.getY() + "px)");
             }, true);
 
             /* Watches canvas coordiante changes  */
-            scope.$watchGroup([canvas.getWidth(), canvas.getHeight()], function(nval, oval) {
+            scope.$watchGroup([canvas.getWidth(), canvas.getHeight()], function() {
                 element.css('width', canvas.getWidth() * canvas.getZoom() + "px");
                 element.css('height', canvas.getHeight() * canvas.getZoom() + "px");
             }, true);
         }
-    }
+    };
 }]);

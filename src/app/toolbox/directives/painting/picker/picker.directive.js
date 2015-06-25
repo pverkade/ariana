@@ -60,7 +60,7 @@ app.controller('PickerCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'c
             colors.setSecondaryB(value[2]);
         }
     };
--
+
     /*
      * This will watch for this tools' "active" variable changes.
      * When "active" changes to "true", this tools functions need to
@@ -70,7 +70,7 @@ app.controller('PickerCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'c
      * to the "activeToolFunctions" object.
      * Always call "init" first;
      */
-    $scope.$watch('active', function(nval, oval) {
+    $scope.$watch('active', function(nval) {
         if (nval)  {
             $scope.init();
 
@@ -81,4 +81,5 @@ app.controller('PickerCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'c
             });
         }
     }, true);
+    
 }]);

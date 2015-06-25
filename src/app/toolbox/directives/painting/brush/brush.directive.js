@@ -60,7 +60,7 @@ app.controller('BrushCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'co
 
         /* Draw the above lying layer(s) to */
         var upperIndices = [];
-        for (var i = $scope.currentLayer + 1; i < $scope.numberOfLayers; i++) {
+        for (i = $scope.currentLayer + 1; i < $scope.numberOfLayers; i++) {
             upperIndices.push(i);
         }
         
@@ -147,6 +147,7 @@ app.controller('BrushCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'co
         $scope.hasDrawn = true;
 		$scope.drawEngine.onMousemove(mouse.getPosX(), mouse.getPosY());
 	};
+    
 	/*
 	 * This will watch for this tools' "active" variable changes.
 	 * When "active" changes to "true", this tools functions need to
