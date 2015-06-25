@@ -126,7 +126,6 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
             var filter = $scope.filter.filterObject;
 
             if (layers.getNumLayers() === 0 || !filter) {
-                $scope.cancel();
                 return;
             }
 

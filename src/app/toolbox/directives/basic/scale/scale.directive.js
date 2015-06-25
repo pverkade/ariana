@@ -30,7 +30,7 @@ app.controller('ScaleCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
         var currentLayer = layers.getCurrentIndex();
         if (currentLayer == -1) return;
 
-        var layer = $scope.renderEngine.layers[currentLayer];
+        var layer = $scope.renderEngine.getLayer(currentLayer);
         $scope.editEngine.setEditLayer(layer, EditMode.scale);
         $scope.editEngine.drawScaleTool(layer);
         $scope.requestEditEngineUpdate();
@@ -44,7 +44,7 @@ app.controller('ScaleCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
     /* onMouseUp */
     $scope.mouseUp = function() {
         $scope.scaling = false;
-        $scope.updateThumbnail($scope.getCurrentLayerIndex());
+        $scope.updateThumbnail(layers.getCurrentIndex());
     };
 
     /* onMouseMove */
@@ -182,7 +182,7 @@ app.controller('ScaleCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
             var layer = $scope.getCurrentLayer();
             layer.commitDimensions();
             $scope.editEngine.clear();
-            $scope.updateThumbnail($scope.getCurrentLayerIndex());
+            $scope.updateThumbnail(layers.getCurrentIndex());
         }
     }, true);
 }]);

@@ -24,11 +24,10 @@ app.controller('RotateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fu
 	$scope.init = function() {
 		canvas.setCursor('grab');
 		$scope.rotating = false;
-        
-        var currentLayer = layers.getCurrentIndex();
-        if (currentLayer == -1) return;
 
-        var layer = $scope.renderEngine.layers[currentLayer];
+        var layer = $scope.getCurrentLayer();
+        if (layer == null) return;
+        
 		$scope.requestRenderEngineUpdate();
 		$scope.editEngine.setEditLayer(layer, EditMode.rotate);
 		$scope.requestEditEngineUpdate();
@@ -44,17 +43,15 @@ app.controller('RotateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fu
 	$scope.mouseUp = function() {
 		canvas.setCursor('grab');
 		$scope.rotating = false;
-        $scope.updateThumbnail($scope.getCurrentLayerIndex());
+        $scope.updateThumbnail(layers.getCurrentIndex());
     };
 
 	/* onMouseMove */
 	$scope.mouseMove = function() {
 		if (!$scope.rotating) return;
-		 
-		var currentLayer = layers.getCurrentLayerIndex();
-        if (currentLayer == -1) return;
 
         var layer = $scope.getCurrentLayer();
+        if (layer == null) return;
         
         /* Get the location of the layer. */
         var x = layer.getPosX();
@@ -110,7 +107,7 @@ app.controller('RotateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fu
             $scope.editEngine.removeEditLayer();
 			var layer = $scope.getCurrentLayer();
             layer.commitRotation();
-            $scope.updateThumbnail($scope.getCurrentLayerIndex());
+            $scope.updateThumbnail(layers.getCurrentIndex());
 		}
 	}, true); // jshint ignore:line
 }]);

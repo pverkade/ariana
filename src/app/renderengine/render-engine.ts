@@ -15,7 +15,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
     private backgroundShaderProgram : BackgroundShaderProgram;
 
     /* Array of layers in the order that the user sees them */
-    public layers : Array<Layer>;
+    private layers : Array<Layer>;
     private drawbuffer1 : DrawBuffer;
     private drawbuffer2 : DrawBuffer;
     private thumbnailDrawbuffer : DrawBuffer;

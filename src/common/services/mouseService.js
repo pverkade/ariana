@@ -28,7 +28,7 @@ app.service('mouse', function() {
         return this._params.old.y;
     };
 
-    this.getOldPosGlobal = function() {
+    this.getOldGlobalPos = function() {
         return {x: this._params.old.global.x, y: this._params.old.global.y};
     };
     
