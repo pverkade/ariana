@@ -37,7 +37,7 @@ app.controller('ToolboxCtrl', ['$scope', 'canvas', 'colors', 'tools', 'mouse',
                 g: colors.getPrimary().g,
                 b: colors.getPrimary().b
             }
-            
+
             colors.setPrimaryRgb(colors.getSecondary());
             colors.setSecondaryRgb(temp);
             $scope.$broadcast('swapColorsBC', {});
@@ -60,7 +60,7 @@ app.controller('ToolboxCtrl', ['$scope', 'canvas', 'colors', 'tools', 'mouse',
          * then be used. */
         $scope.selectToolSet = function(name) {
             if (tools.getToolset() == name) {
-                tools.getToolset() = null;
+                tools.setToolset(null);
                 return true;
             }
 

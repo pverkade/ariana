@@ -50,7 +50,7 @@ app.controller('layersCtrl', ['$scope', '$animate', 'mouse', 'layers',
     $scope.removeLayer = function(event, index) {
         event.stopPropagation();
 
-        layers.setLayerInfo(layers.getLayerInfo().splice(index, 1));
+        layers.overwriteLayers(layers.getLayerInfo().splice(index, 1));
         layers.setNumberOfLayers = $scope.renderEngine.getNumberOfLayers();
 
         $scope.renderEngine.removeLayer(index);
