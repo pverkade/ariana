@@ -20,7 +20,7 @@ app.config(function($stateProvider, $locationProvider) {
             }
         })
         .state('ariana', {
-            url: "",
+            url: "/ariana",
             views: {
                 "content": {
                     templateUrl: "app/content/content.tpl.html",
