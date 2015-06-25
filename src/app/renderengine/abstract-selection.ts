@@ -1,3 +1,14 @@
+/*
+ * Project ariana
+ * File: abstract-selection.ts
+ * Author: Merwin van Dijk
+ * Date: June 25th, 2015
+ * Description: this file contains an abstract class for managing selections
+ * with bitmask. All masks are 1-dimensional arrays. There are setters  for
+ * maskWand, maskWandParts and maskBorder. The maskWand variable is an union
+ * of differt mask wand parts.
+ */
+
 class AbstractSelection {
 	maskBorder : Uint8Array;
 	maskWand : Uint8Array;
@@ -17,7 +28,7 @@ class AbstractSelection {
 
     sign(x : number) { return x > 0 ? 1 : x < 0 ? -1 : 0; }
 
-    /* Removes last added mask wand from maskWandParts and maskWand. After that 
+    /* Removes last added mask wand from maskWandParts and maskWand. After that
         calculate borders from new mask wand. */
     clearLast() : boolean {
         var nrWands = this.maskWandParts.length;
@@ -38,7 +49,7 @@ class AbstractSelection {
         return true;
     }
 
-    /* Function assumes maskWand so borders can be determined from area in maskwand. */
+    /* Function assumes maskWand is set so borders can be determined from area in maskwand. */
     getMaskBorder() {        
         for (var i = 0; i < this.maskWand.length; i++) {
             if (this.maskWand[i] == 1) {
