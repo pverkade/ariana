@@ -13,12 +13,13 @@ app.directive('ngMouseWheelUp', function() {
             /* Getting cross-browser wheel delta. */
             event = window.event || event;
             
-            wheelDelta = event.wheelDelta;
-            detail     = event.detail;
-
-            if (isNaN(wheelDelta) || isNaN(detail)) {
+            if (event.originalEvent) {
                 wheelDelta = event.originalEvent.wheelDelta;
                 detail     = event.originalEvent.detail;
+            }
+            else {
+                wheelDelta = event.wheelDelta;
+                detail     = event.detail;
             }
 
             var delta = Math.max(-1, Math.min(1, (wheelDelta || -detail)));
