@@ -4,14 +4,14 @@
      ng-mousemove="mouseMove($event)"
      ng-mouseup="mouseUp($event)"
      ng-mousedown="mouseDown($event)"
-     ng-touchstart="mouseDown($event)"
-     ng-touchend="mouseUp($event)"
-     ng-touchmove="mouseMove($event)"
-     ng-pinchzoom="pinchZoom($event)"
     ng-right-click="rightClick($event)"
     ng-mouse-wheel-up="mwheelUp($event)"
     ng-mouse-wheel-down="mwheelDown($event)"
-    background-events>
+    background-events
+     ng-touchstart="mouseDown($event)"
+     ng-touchend="mouseUp($event)"
+     ng-touchmove="mouseMove($event)"
+     ng-pinchzoom="pinchZoom($event, scale)">
     
     <canvas rendertarget="rendertarget" 
         id="main-canvas"

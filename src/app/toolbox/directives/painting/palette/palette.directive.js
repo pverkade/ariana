@@ -89,8 +89,8 @@ app.controller('PaletteCtrl', function($scope) {
                 locX = event.pageX;
                 locY = event.pageY;
             } else {
-                locX = event.originalEvent.touches[0].pageX;
-                locY = event.originalEvent.touches[0].pageY;
+                locX = event.targetTouches[0].pageX;
+                locY = event.targetTouches[0].pageY;
             }
 
             if (locX < $scope.paletteBox.left) {
@@ -98,7 +98,7 @@ app.controller('PaletteCtrl', function($scope) {
             }
             if (locY < $scope.paletteBox.top) {
                 locY = $scope.paletteBox.top;
-            }            
+            }
             if (locX > $scope.paletteBox.right) {
                 locX = $scope.paletteBox.right;
             }
@@ -114,7 +114,7 @@ app.controller('PaletteCtrl', function($scope) {
                 100 - ((locY - $scope.paletteBox.top) * 100) /
                 ($scope.paletteBox.bottom - $scope.paletteBox.top)
             );
-            
+
             $scope.drawMarker();
             $scope.drawBar();
             $scope.updateRGB();
@@ -126,8 +126,8 @@ app.controller('PaletteCtrl', function($scope) {
         $scope.selectingHue= true;
         $scope.hueMouseMove(event);
     };
-    
-    
+
+
     $scope.hueMouseUp = function() {
         $scope.selectingHue = false;
     };
@@ -136,12 +136,12 @@ app.controller('PaletteCtrl', function($scope) {
         if ($scope.selectingHue) {
             var locY;
 
-            /* Update the H value based on the mouse position inside the 
+            /* Update the H value based on the mouse position inside the
              * hue bar. */
             if (/^mouse/i.test(event.type)) {
                 locY = event.pageY;
             } else {
-                locY = event.originalEvent.touches[0].pageY;
+                locY = event.targetTouches[0].pageY;
             }
 
             if (locY < $scope.hueBox.top) {
@@ -228,7 +228,7 @@ app.controller('PaletteCtrl', function($scope) {
         context.lineWidth = 2;
         context.strokeStyle = "white";
         context.stroke();
-    }
+    };
 
     $scope.drawBar = function() {
         var width = $scope.hue.width;
@@ -247,7 +247,7 @@ app.controller('PaletteCtrl', function($scope) {
         context.lineWidth = 2;
         context.strokeStyle = "white";
         context.stroke();
-    }
+    };
 
     $scope.clamp = function(num, min, max) {
         if (num === null || num === undefined) {
