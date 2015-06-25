@@ -69,7 +69,6 @@ angular.module("ngTouch", [])
                 $element.bind('touchstart', onPinchZoomStart);
 
                 function onPinchZoomStart($event) {
-                    console.log($event);
                     if ($event.touches.length == 2) {
                         var point1 = $event.touches[0];
                         var point2 = $event.touches[1];
