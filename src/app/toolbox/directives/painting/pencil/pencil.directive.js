@@ -85,7 +85,6 @@ app.controller('PencilCtrl', function($scope) {
         if ($scope.hasDrawn) {
             var image = $scope.drawEngine.getCanvasImageData();
             $scope.newLayerFromImage(image, $scope.currentLayer + 1);
-            
             $scope.drawEngine.clearCanvases();
         }
 
@@ -94,10 +93,9 @@ app.controller('PencilCtrl', function($scope) {
             var topCanvas = document.getElementById('top-canvas');
             var topCanvasContext = topCanvas.getContext('2d');
             topCanvasContext.clearRect(0, 0, topCanvas.width, topCanvas.height);
-            console.log("We doen clear op canvas");
-            console.log(topCanvas);
-            console.log(topCanvas.width, topCanvas.height);
         }
+        
+        $scope.hasDrawn = false;
     }
 
 	/* onMouseDown */
