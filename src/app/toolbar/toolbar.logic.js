@@ -158,7 +158,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
             var newLayer = $scope.renderEngine.createSelectionImageLayer($scope.imgData, 0);
             $scope.addLayer(newLayer);
 
-            $scope.maskEnabled = false;
+            $scope.cancelSelection();
         }
         
         $scope.cancelSelection = function() {
@@ -184,6 +184,11 @@ app.controller('ToolbarController', ['$scope', '$modal',
                 $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
                 $scope.requestEditEngineUpdate();      
             }
+            
+            $scope.maskWand = null;
+            $scope.maskBorder = null;
+            $scope.marchingAnts = null;
+            $scope.imgData = null;    
         }
     }
 ]);
