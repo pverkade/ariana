@@ -99,7 +99,7 @@ app.controller('AppCtrl', ['$scope', 'layers', 'canvas', 'tools',
              * and is immediately selected. */
             layers.setNumCreatedLayers(layers.getNumCreatedLayers() + 1);
             layers.setNumLayers($scope.renderEngine.getNumberOfLayers());
-            layers.setCurrentIndex(layers.getNumberOfLayers - 1);
+            layers.setCurrentIndex(layers.getNumLayers() - 1);
 
             /* Store information about the layers in the config object. */
             layers.addLayer({

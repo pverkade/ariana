@@ -154,7 +154,6 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
             /* Cut out selection from texture and move to new layer. */
             var newLayer = $scope.renderEngine.createSelectionImageLayer($scope.imgData, 0);
             $scope.addLayer(newLayer);
-
             $scope.cancelSelection();
         };
         
@@ -186,6 +185,6 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
         $scope.isSelectionEnabled = function() {
             var tool = tools.getTool();
             return (tool == "magic" || tool == "loose" || tool == "rectangle");
-        }
+        };
     }
 ]);
