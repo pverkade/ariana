@@ -151,11 +151,23 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
         });
         
         $scope.applySelection = function() {
-            /* Cut out selection from texture and move to new layer. */
-            var newLayer = $scope.renderEngine.createSelectionImageLayer($scope.imgData, 0);
-            $scope.addLayer(newLayer);
-            
-            $scope.cancelSelection();
+            var empty = true;
+            if ($scope.maskWand) {
+                for (var i = 0; i < $scope.maskWand.length; i++) {
+                    if ($scope.maskWand[i]) {
+                        empty = false;
+                        break;
+                    }
+                }                
+            }
+
+            if (empty == false) {
+                /* Cut out selection from texture and move to new layer. */
+                var newLayer = $scope.renderEngine.createSelectionImageLayer($scope.imgData, 0);
+                $scope.addLayer(newLayer);
+                
+                $scope.cancelSelection();
+            }
         };
         
         $scope.cancelSelection = function() {
