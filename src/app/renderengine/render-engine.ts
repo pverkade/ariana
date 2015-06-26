@@ -53,13 +53,15 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
             }
 
             this.gl.enable(this.gl.BLEND);
-            this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+            this.gl.blendFuncSeparate(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA, this.gl.ONE, this.gl.ONE_MINUS_SRC_ALPHA);
             this.gl.blendEquation(this.gl.FUNC_ADD);
         }
+
         catch(e) {
             alert("Your device/browser doesnt support WebGL!\ncheck console for stacktrace.");
             console.log(e.stack);
         }
+
         this.gl.viewport(0, 0, this.width, this.height);
         this.drawbuffer1 = new DrawBuffer(this.gl, this.width, this.height);
         this.drawbuffer2 = new DrawBuffer(this.gl, this.width, this.height);
