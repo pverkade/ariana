@@ -173,10 +173,11 @@ app.controller('AppCtrl', ['$scope', 'layers', 'canvas', 'tools',
         };
 
         $scope.getCurrentLayer = function() {
-        
             var index = layers.getCurrentIndex();
-            if (index == -1) return;
-
+            if (index == -1) {
+                return;
+            }
+                
             return $scope.renderEngine.getLayer(index);
         };
 
@@ -184,7 +185,8 @@ app.controller('AppCtrl', ['$scope', 'layers', 'canvas', 'tools',
             layers.setCurrentIndex(layerIndex);
             $scope.$broadcast('newCurrentLayer', layerIndex);
 
-            $scope.editEngine.setEditLayer($scope.renderEngine.getLayer(layerIndex), $scope.editEngine.getEditMode());
+            
+            $scope.editEngine.setEditLayer($scope.getCurrentLayer(), $scope.editEngine.getEditMode());
             $scope.requestEditEngineUpdate();
         };
 

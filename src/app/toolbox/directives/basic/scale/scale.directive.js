@@ -28,12 +28,10 @@ app.controller('ScaleCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
         $scope.scaling = false;
         
         var layer = $scope.getCurrentLayer();
-        if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
-            return;
+        if (layer) {
+            $scope.editEngine.setEditLayer(layer, EditMode.scale);
+            $scope.requestEditEngineUpdate();
         }
-        $scope.editEngine.setEditLayer(layer, EditMode.scale);
-        $scope.editEngine.drawScaleTool(layer);
-        $scope.requestEditEngineUpdate();
     };
 
     /* onMouseDown */
@@ -124,10 +122,8 @@ app.controller('ScaleCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
             layer.setWidth(newWidth );
             layer.setHeight(newHeight);
 
-            $scope.editEngine.setEditLayer(layer, EditMode.scale);
-            $scope.editEngine.drawScaleTool(layer);
-            $scope.requestEditEngineUpdate();
             $scope.requestRenderEngineUpdate();
+            $scope.requestEditEngineUpdate();
 
         }
         else {
@@ -180,7 +176,9 @@ app.controller('ScaleCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
         if (oval) {
             $scope.editEngine.removeEditLayer();
             var layer = $scope.getCurrentLayer();
-            layer.commitDimensions();
+            if (layer) {
+                layer.commitDimensions();
+            }
             $scope.editEngine.clear();
             $scope.updateThumbnail(layers.getCurrentIndex());
         }

@@ -26,11 +26,11 @@ app.controller('RotateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fu
 		$scope.rotating = false;
 
         var layer = $scope.getCurrentLayer();
-        if (layer == null) return;
+        if (layer) {
+            $scope.editEngine.setEditLayer(layer, EditMode.rotate);
+            $scope.requestEditEngineUpdate();
+		}
         
-		$scope.requestRenderEngineUpdate();
-		$scope.editEngine.setEditLayer(layer, EditMode.rotate);
-		$scope.requestEditEngineUpdate();
 	};
 
 	/* onMouseDown */
@@ -77,7 +77,6 @@ app.controller('RotateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fu
         layer.setRotation(rotation + difference);
         $scope.requestRenderEngineUpdate();
 
-		$scope.editEngine.setEditLayer(layer, EditMode.rotate);
         $scope.requestEditEngineUpdate();
 	};
 -
@@ -106,7 +105,9 @@ app.controller('RotateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fu
 		if (oval) {
             $scope.editEngine.removeEditLayer();
 			var layer = $scope.getCurrentLayer();
-            layer.commitRotation();
+            if (layer) {
+                layer.commitRotation();
+            }
             $scope.updateThumbnail(layers.getCurrentIndex());
 		}
 	}, true); // jshint ignore:line

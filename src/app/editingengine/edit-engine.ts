@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * edit-engine.ts
+ *
+ * This file contains the EditEngine, which draws overlays on the canvas to
+ * make editing easier.
+ *
+ */
+ 
 /// <reference path="../renderengine/layer"/>
 /// <reference path="../renderengine/image-layer"/>
 /// <reference path="../renderengine/abstract-selection"/>
@@ -57,12 +66,10 @@ class EditEngine {
         var dimensions = layer.getTransformedDimensions();
         var width = dimensions[0];
         var height = dimensions[1];
-        var rotation = layer.getRotation();
 
         context.save();
         this.setColors(context);
         context.translate(x, y);
-        //context.rotate(-rotation);
         context.strokeRect(-width * 0.5, -height * 0.5, width, height);
         context.fillRect(
             -this.littleSquareDiameter * 0.5,
@@ -77,9 +84,6 @@ class EditEngine {
         var context = this.context;
         var x = layer.getPosX();
         var y = layer.getPosY();
-        var rotation = layer.getRotation();
-        
-        this.clear();
 
         context.save();
         this.setColors(context);
@@ -100,12 +104,10 @@ class EditEngine {
         var dimensions = layer.getTransformedDimensions();
         var width = dimensions[0];
         var height = dimensions[1];
-        var rotation = layer.getRotation();
 
         context.save();
         this.setColors(context);
         context.translate(x, y);
-        //context.rotate(-rotation);
         context.strokeRect(-width * 0.5, -height * 0.5, width, height);
         for (var i = -1; i < 2; i++) {
             for (var j = -1; j < 2; j++) {
@@ -168,16 +170,14 @@ class EditEngine {
         this.clear();
         var currentLayer : Layer = this.currentLayer;
         if (currentLayer) {
-            switch (this.currentMode) {
-                case EditMode.rotate:
+            if (this.currentMode == EditMode.rotate) {
                     this.drawRotateTool(currentLayer);
-                    break;
-                case EditMode.translate:
-                    this.drawTranslateTool(currentLayer);
-                    break;
-                case EditMode.scale:
-                    this.drawScaleTool(currentLayer);
-                    break;
+            }
+            if (this.currentMode == EditMode.translate) {
+                this.drawTranslateTool(currentLayer);
+            }
+            if (this.currentMode == EditMode.scale) {
+                this.drawScaleTool(currentLayer);
             }
         }
 
@@ -201,6 +201,6 @@ class EditEngine {
     }
 
     needsAnimating() : boolean {
-        return (this.selectionLayer!=null);
+        return (this.selectionLayer != null);
     }
 }
