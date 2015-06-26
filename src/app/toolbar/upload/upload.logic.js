@@ -7,8 +7,8 @@
  *
  */
  
-app.controller('UploadModalController', ['$scope', '$modalInstance', 'Upload', 
-    function ($scope, $modalInstance, Upload) {
+app.controller('UploadModalController', ['$scope', '$modalInstance', 'Upload', 'canvas',
+    function ($scope, $modalInstance, Upload, canvas) {
         $scope.imageUrls = [];
 
         $scope.close = function () {
@@ -17,11 +17,10 @@ app.controller('UploadModalController', ['$scope', '$modalInstance', 'Upload',
  
         $scope.upload = function () {
 
-            if (!$scope.config.canvas.visible) {
+            if (!canvas.getVisibility()) {
                 var image = new Image();
                 image.onload = function() {
                     $scope.resizeCanvases(image.width, image.height);
-                    //FIXME: canvas goes out of screen if the image is too big.
                 };
                 image.src = $scope.imageUrls[0];
             }
@@ -40,12 +39,11 @@ app.controller('UploadModalController', ['$scope', '$modalInstance', 'Upload',
         };
 
         $scope.$watch('files', function () {
-            if (!$scope.files)
-            return;
+            if (!$scope.files) {return;}
 
             $scope.files.forEach(function (file) {
                 $scope.imageUrls.push(URL.createObjectURL(file));
-            })
-        })
+            });
+        });
     }
 ]);

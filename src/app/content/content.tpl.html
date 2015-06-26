@@ -7,30 +7,31 @@
      ng-touchstart="mouseDown($event)"
      ng-touchend="mouseUp($event)"
      ng-touchmove="mouseMove($event)"
-     ng-pinchzoom="pinchZoom($event)"
-    ng-right-click="rightClick($event)"
-    ng-mouse-wheel-up="mwheelUp($event)"
-    ng-mouse-wheel-down="mwheelDown($event)"
-    background-events>
+     ng-pinchzoom="pinchZoom($event, scale)"
+     ng-right-click="rightClick($event)"
+     ng-mouse-wheel-up="mwheelUp($event)"
+     ng-mouse-wheel-down="mwheelDown($event)"
+     background-events>
     
-    <canvas rendertarget="rendertarget" 
-        id="main-canvas"
-        width="{{config.canvas.width}}"
-        height="{{config.canvas.height}}"
+    <canvas id="main-canvas"
+        width="{{getWidth()}}"
+        height="{{getHeight()}}"
         canvas-events
-        ng-show="{{config.canvas.visible}}">
+        ng-show="getVisibility()">
     </canvas>
+    
     <canvas id="editing-canvas"
-        width="{{config.canvas.width}}"
-        height="{{config.canvas.height}}"
+        width="{{getWidth()}}"
+        height="{{getHeight()}}"
         canvas-events
-        ng-show="{{config.canvas.visible}}">
+        ng-show="getVisibility()">
     </canvas>
+    
     <canvas id="top-canvas"
-        width="{{config.canvas.width}}"
-        height="{{config.canvas.height}}"
+        width="{{getWidth()}}"
+        height="{{getHeight()}}"
         canvas-events
-        ng-show="{{config.canvas.visible}}">
+        ng-show="getVisibility()">
     </canvas>
 </div>
 

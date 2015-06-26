@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * picker.directive.js
+ * 
+ * This file contains the PickerController and directive, 
+ * which control the eyedrop tool in the toolbox.
+ *
+ */
+ 
 app.directive('picker', function() {
     return {
         restrict: 'E',
@@ -7,13 +16,14 @@ app.directive('picker', function() {
     };
 });
 
-app.controller('PickerCtrl', function($scope) {
+app.controller('PickerCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'colors', function($scope, tools, canvas, layers, mouse, colors) {
+        
     $scope.toolname = 'picker';
-    $scope.active = $scope.config.tools.activeTool == $scope.toolname;
+    $scope.active = tools.getTool() == $scope.toolname;
 
     /* init */
     $scope.init = function() {
-        $scope.setCursor('crosshair');
+        canvas.setCursor('crosshair');
         $scope.picking = false;
     };
 
@@ -33,25 +43,25 @@ app.controller('PickerCtrl', function($scope) {
     $scope.mouseMove = function() {
         if (!$scope.picking) return;
          
-        var x = Math.round($scope.config.mouse.current.x);
-        var y = Math.round($scope.config.mouse.current.y);
+        var x = Math.round(mouse.getPosX());
+        var y = Math.round(mouse.getPosY());
         
         var value = $scope.renderEngine.getPixelColor(x, y);
         
         /* Write color to config. */
-        if ($scope.config.mouse.button[1]) {
-            $scope.config.tools.colors.primary.r = value[0];
-            $scope.config.tools.colors.primary.g = value[1];
-            $scope.config.tools.colors.primary.b = value[2];
+        if (mouse.getPrimary()) {
+            colors.setPrimaryR(value[0]);
+            colors.setPrimaryG(value[1]);
+            colors.setPrimaryB(value[2]);
         }
         
-        if ($scope.config.mouse.button[3]) {
-            $scope.config.tools.colors.secondary.r = value[0];
-            $scope.config.tools.colors.secondary.g = value[1];
-            $scope.config.tools.colors.secondary.b = value[2];
+        if (mouse.getSecondary()) {
+            colors.setSecondaryR(value[0]);
+            colors.setSecondaryG(value[1]);
+            colors.setSecondaryB(value[2]);
         }
     };
--
+
     /*
      * This will watch for this tools' "active" variable changes.
      * When "active" changes to "true", this tools functions need to
@@ -61,18 +71,19 @@ app.controller('PickerCtrl', function($scope) {
      * to the "activeToolFunctions" object.
      * Always call "init" first;
      */
-    $scope.$watch('active', function(nval, oval) {
+    $scope.$watch('active', function(nval) {
         if (nval)  {
             $scope.init();
 
-            $scope.config.tools.activeToolFunctions = {
+            tools.setToolFunctions({
                 mouseDown: $scope.mouseDown,
                 mouseUp: $scope.mouseUp,
                 mouseMove: $scope.mouseMove
-            };
+            });
         }
         else {
             $scope.renderEngine.endColorPicking();
         }
     }, true);
-});
+    
+}]);

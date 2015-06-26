@@ -96,13 +96,12 @@ class Color {
  * Draw Types
  *
  * NORMAL : normal line (or a dot)
- * QUADRATIC_BEZIER : line using quadratic Bezier curves
  * BRUSH : Draw lines using a brush image
  * LINE : draw lines
  * RECTANGLE : draw rectangles
  * 
  */
-enum drawType { NORMAL, DASHED, QUADRATIC_BEZIER, BRUSH, LINE, RECTANGLE };
+enum drawType { NORMAL, DASHED, BRUSH, LINE, RECTANGLE }
 
 /*
  * Brushes
@@ -112,7 +111,7 @@ enum drawType { NORMAL, DASHED, QUADRATIC_BEZIER, BRUSH, LINE, RECTANGLE };
  * NEIGHBOR : stroke nearby lines
  * FUR : fur effect with nearby points
  */
-enum brushType { THIN, PEN, NEIGHBOR, FUR, MULTISTROKE };
+enum brushType { THIN, PEN, NEIGHBOR, FUR, MULTISTROKE }
 
 /*
  * Drawing class
@@ -173,6 +172,8 @@ class DrawEngine {
         this.memCanvas.height = height;
         this.tmpDrawCanvas.width = width;
         this.tmpDrawCanvas.height = height;
+        this.width = width;
+        this.height = height;
         this.clearCanvases();
     }
     
@@ -208,7 +209,7 @@ class DrawEngine {
             }
             this.draw(this.currentPath);
         }
-    }
+    };
 
     /*
      * Function being called when the mouse is no longer being pressed
@@ -228,7 +229,7 @@ class DrawEngine {
 
         this.draw(this.currentPath);
         this.currentPath = null;
-    }
+    };
 
     /*
      * Set the size of the brush/line
@@ -238,7 +239,7 @@ class DrawEngine {
     }
 
     /*
-     * Set the draw type (normal, quadratic_bezier, brush, line)..
+     * Set the draw type
      */
     setDrawType(drawType : drawType) : void {
         this.drawType = drawType;
@@ -299,7 +300,7 @@ class DrawEngine {
      */
     getBrushImage(brush : brushType) : string {
         if (brush == brushType.THIN) {
-            return 'assets/draw/thin.svg';
+            return 'assets/img/thin.svg';
         }
         this.setDrawType(drawType.BRUSH);
         return null;
@@ -318,7 +319,7 @@ class DrawEngine {
     saveCanvas = () : void => {
         this.memContext.clearRect(0, 0, this.width, this.height);
         this.memContext.drawImage(this.drawCanvas, 0, 0);
-    }
+    };
 
     /*
      * Reset the canvas to its original state (the saved state)
@@ -337,15 +338,16 @@ class DrawEngine {
         if (this.currentPath) {
             this.currentPath.lastDrawnItem = 0;
         }
-    }
+    };
 
     clearTempCanvas = () : void => {
         this.tmpDrawContext.globalAlpha = 1.0;
         this.tmpDrawContext.clearRect(0, 0, this.tmpDrawCanvas.width, this.tmpDrawCanvas.height);
-    }
+    };
 
     clearCanvases() : void {
         this.memContext.clearRect(0, 0, this.memCanvas.width, this.memCanvas.height);
+        this.tmpDrawContext.clearRect(0, 0, this.tmpDrawCanvas.width, this.tmpDrawCanvas.height);
         this.clearCanvas();
     }
 
@@ -359,13 +361,25 @@ class DrawEngine {
         return null;
     }
 
+    getCanvasHTMLImageElement() : HTMLImageElement {
+        if (this.drawCanvas) {
+            var image = new Image();
+            image.width = this.drawCanvas.width;
+            image.height = this.drawCanvas.height;
+            image.src = this.drawCanvas.toDataURL();
+            return image;
+        } else {
+            return null;
+        }
+    }
+
     /*
      * Draw the given path to the canvas using the selected drawType
      */
     draw(path : Path) : void {
         var context = this.tmpDrawContext;
         if (context == null) {
-            console.log("Can't draw path, canvas context could not be rendered.")
+            console.log("Can't draw path, canvas context could not be rendered.");
             return;
         }
 
@@ -387,11 +401,6 @@ class DrawEngine {
         /* Draw dashed line */
         if (this.drawType == drawType.DASHED) {
             this.drawDashedLine(points, path, context);
-        }
-
-        /* Smoother draw by using quadratic Bézier curves */
-        if (this.drawType == drawType.QUADRATIC_BEZIER) {
-            this.drawQuadraticBezierCurves(points, context);
         }
 
         /*
@@ -479,36 +488,6 @@ class DrawEngine {
     }
 
     /*
-     * Smoother draw by using quadratic Bézier curves
-     */
-    drawQuadraticBezierCurves(points : Array<Position2D>, context : CanvasRenderingContext2D) {
-        if (!this.isCleared) {
-            this.clearCanvas();
-        }
-
-        if (points.length < 2) {
-            var b = points[0];
-            context.beginPath();
-            context.arc(b.x, b.y, context.lineWidth / 2, 0, Math.PI * 2, !0);
-            context.closePath();
-            context.fill();
-            return;
-        }
-        context.beginPath();
-        context.moveTo(points[0].x, points[0].y);
-        
-        /* Draw quadratic curves between each point */
-        for (var i : number = 1; i < points.length - 2; i++) {
-            var c = (points[i].x + points[i + 1].x) / 2,
-                d = (points[i].y + points[i + 1].y) / 2;
-            context.quadraticCurveTo(points[i].x, points[i].y, c, d);
-        }
-        context.quadraticCurveTo(points[points.length-2].x, points[points.length-2].y,
-                                 points[points.length-1].x, points[points.length-1].y);
-        context.stroke();
-    }
-
-    /*
      * Function to draw lines by given points to a given canvas-context
      */
     drawLines(points : Array<Position2D>, context : CanvasRenderingContext2D) {
@@ -529,16 +508,55 @@ class DrawEngine {
      */
     drawRectangle(points : Array<Position2D>, context : CanvasRenderingContext2D) {
         if (!this.isCleared) {
-            this.clearCanvas();
+            this.clearCanvases();
         }
+        this.dashedDistance = 0.0;
 
-        context.beginPath();
-        context.moveTo(points[0].x, points[0].y);
-        context.lineTo(points[0].x, points[1].y);
-        context.lineTo(points[1].x, points[1].y);
-        context.lineTo(points[1].x, points[0].y);
-        context.lineTo(points[0].x, points[0].y);
-        context.stroke();
+        var corners: Array<Position2D> = [];
+        corners.push(new Position2D(points[0].x, points[0].y));
+        corners.push(new Position2D(points[0].x, points[1].y));
+        corners.push(new Position2D(points[1].x, points[1].y));
+        corners.push(new Position2D(points[1].x, points[0].y));
+
+        this.drawDashedLineParticle(corners[0], corners[1], context);
+        this.dashedDistance = 0.0;
+        this.drawDashedLineParticle(corners[1], corners[2], context);
+        this.dashedDistance = 0.0;
+        this.drawDashedLineParticle(corners[3], corners[2], context);
+        this.dashedDistance = 0.0;
+        this.drawDashedLineParticle(corners[0], corners[3], context);
+    }
+
+    drawDashedLineParticle(start : Position2D, end : Position2D, context : CanvasRenderingContext2D) {
+        var lastPoint : Position2D = start;
+        var nextPoint : Position2D;
+
+        while (lastPoint.distanceTo(end) > 0) {
+            if (lastPoint.distanceTo(end) > 5 - this.dashedDistance % 5) {
+                nextPoint = lastPoint.pointInDirection(end, 5 - this.dashedDistance % 5);
+            }
+            else {
+                nextPoint = end;
+            }
+
+            context.beginPath();
+            context.moveTo(lastPoint.x, lastPoint.y);
+            if (this.dashedDistance % 10 >= 5.0) {
+                context.strokeStyle = 'rgba(0,0,0,255)';
+            }
+            else {
+                context.strokeStyle = 'rgba(255,255,255,255)';
+            }
+            context.lineTo(nextPoint.x, nextPoint.y);
+            context.stroke();
+
+            if (nextPoint == end) {
+                this.dashedDistance += lastPoint.distanceTo(end);
+                break;
+            }
+            this.dashedDistance += 5 - this.dashedDistance % 5;
+            lastPoint = nextPoint;
+        }
     }
 
     /*

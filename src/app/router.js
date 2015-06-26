@@ -24,15 +24,11 @@ app.config(function($stateProvider, $locationProvider) {
             views: {
                 "content": {
                     templateUrl: "app/content/content.tpl.html",
-                    controller: 'ContentController'
-                },
-                "content-menu": {
-                    templateUrl: "app/content/menu/menu.content.tpl.html",
-                    controller: 'MenuContentCtrl'
+                    controller: 'ContentCtrl'
                 },
                 "toolbar": {
                     templateUrl: "app/toolbar/toolbar.tpl.html",
-                    controller: 'ToolbarController'
+                    controller: 'ToolbarCtrl'
                 },
                 "layers": {
                     templateUrl: "app/layers/layers.tpl.html",
@@ -43,31 +39,5 @@ app.config(function($stateProvider, $locationProvider) {
                     controller: 'ToolboxCtrl'
                 }
             }
-        })
-        /*
-        .state('settings', {
-            url: "/settings",
-            views: {
-                "content": {
-                    templateUrl: "app/content/settings/settings.content.tpl.html",
-                    controller: 'SettingsContentCtrl'
-                },
-                "content-menu": {
-                    templateUrl: "app/content/menu/menu.content.tpl.html",
-                    controller: 'MenuContentCtrl'
-                },
-                "toolbar": {
-                    templateUrl: "app/toolbar/toolbar.tpl.html",
-                    controller: 'toolbarCtrl'
-                },
-                "layers": {
-                    templateUrl: "app/layers/layers.tpl.html",
-                    controller: 'layersCtrl'
-                },
-                "toolbox": {
-                    templateUrl: "app/toolbox/toolbox.tpl.html",
-                    controller: 'ToolboxCtrl'
-                }
-            }
-        });*/
+        });
 });

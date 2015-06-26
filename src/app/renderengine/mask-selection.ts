@@ -1,4 +1,13 @@
-
+/*
+ * Project ariana
+ * File: mask-selections.ts
+ * Author: Merwin van Dijk
+ * Date: June 25th, 2015
+ * Description: this file contains the MaskSelection class. The MaskSelection 
+ * class resembles the MagicSelection class except that it works on bitmasks; 
+ * it expects ones as borders and zeros for empty space. For a given point the
+ * area within borders is returned as bitmask.
+ */
 
 class MaskSelection {
     private maskWand : Uint8Array;
@@ -13,11 +22,7 @@ class MaskSelection {
         this.bmON =1;
 
         this.maskBorder = maskBorder;
-        this.maskWand = new Uint8Array(width * height); // [];
-        // for (var i = 0; i < width * height; i++) {
-        // 	this.maskWand.push(0);
-        // }
-        // this.maskWand[0] = new Uint8Array(width * height);
+        this.maskWand = new Uint8Array(width * height);
     }
 
     getMaskWand(x : number, y : number) {
@@ -25,10 +30,7 @@ class MaskSelection {
         var curLine = [];
         var newLine = [];
 
-        /* Create new empty maskWand for selection. */
-        // this.maskWand.push(new Uint8Array(this.maskWand[0].length));
-
-        /* Use searchLine to get a horizontal line of points with colors next to given point
+        /* Use searchLine to get a horizontal line of points with zeros
             and push to stack. */
         curLine = this.searchLine(x, y);
         stack.push(curLine);
@@ -55,11 +57,7 @@ class MaskSelection {
             }
         }
         
-        /* Merge maskWand[0] with current maskWand. */
-        // this.mergeMaskWand();
-
-        /* Return current maskWand. */
-        return this.maskWand; // [this.maskWand.length - 1];
+        return this.maskWand; 
     }
 
     /* Return array of points on same line as given point. */
@@ -114,13 +112,8 @@ class MaskSelection {
         return line;
     }
 
-    /* Return RGB values of point. */
-    getColorPoint(x : number, y : number) {
-        return this.maskBorder[y * this.width + x];
-    }   
-
     matchPoint(x : number, y : number) {
-        var value = this.getColorPoint(x, y);
+        var value = this.maskBorder[y * this.width + x];
         return value == 0;
     }
 }

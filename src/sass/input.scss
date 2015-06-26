@@ -46,16 +46,18 @@
     width: calc(100% - #{2 * $blocksize});
     max-width: 12 * $blocksize;
     min-width: 5.5 * $blocksize;
+    min-height: $blocksize;
     bottom: 0;
 
     @extend .gui-element;
-    min-height: $blocksize;
+    
     
     @media screen and (max-width: $breakpoint-tablet) {
         width: calc(100% - #{2 * $blocksize-tablet});
         max-width: 12 * $blocksize-tablet;
         min-width: 5.5 * $blocksize-tablet;
         left: 1.5 * $blocksize-tablet;
+        min-height: $blocksize-tablet;
     }
     
     .tool {
@@ -122,4 +124,11 @@
             }
         }
     }
+}
+
+.selection-options {
+    @extend .filter-options;
+    width: 2 * $blocksize;
+    min-width: 2 * $blocksize;
+    max-height: 1 * $blocksize;
 }

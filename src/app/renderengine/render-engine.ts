@@ -15,7 +15,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
     private backgroundShaderProgram : BackgroundShaderProgram;
 
     /* Array of layers in the order that the user sees them */
-    public layers : Array<Layer>;
+    private layers : Array<Layer>;
     private drawbuffer1 : DrawBuffer;
     private drawbuffer2 : DrawBuffer;
     private thumbnailDrawbuffer : DrawBuffer;
@@ -260,10 +260,10 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
     public createSelectionImageLayer(bitmask: HTMLImageElement, layerIndex: number) : ImageLayer {
         var gl = this.gl;
 
-        if (this.layers[layerIndex].getLayerType() != LayerType.ImageLayer) {
+        var layer = <ImageLayer>this.layers[layerIndex];
+        if (layer.getLayerType() != LayerType.ImageLayer) {
             return;
         }
-        var layer = <ImageLayer>this.layers[layerIndex];
 
         var width = bitmask.width;
         var height = bitmask.height;
@@ -323,6 +323,7 @@ class RenderEngine implements MLayer.INotifyPropertyChanged {
         selectedLayer.setPos(layer.getPosX(), layer.getPosY());
         selectedLayer.setRotation(layer.getRotation());
         selectedLayer.setDimensions(layer.getWidth(), layer.getHeight());
+        selectedLayer.setTransformHistory(layer.getTransformHistory());
         return selectedLayer;
     }
 

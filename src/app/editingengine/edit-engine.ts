@@ -1,5 +1,6 @@
 /// <reference path="../renderengine/layer"/>
 /// <reference path="../renderengine/image-layer"/>
+/// <reference path="../renderengine/abstract-selection"/>
 /// <reference path="../renderengine/magic-selection"/>
 
 enum EditMode {
@@ -30,7 +31,7 @@ class EditEngine {
         this.width = canvas.width;
         this.height = canvas.height;
         this.rotateImage = new Image();
-        this.rotateImage.src = "/assets/vectors/rotate-left.svg";
+        this.rotateImage.src = "";
     }
 
     resize (width : number, height : number) : void {
@@ -76,30 +77,19 @@ class EditEngine {
         var context = this.context;
         var x = layer.getPosX();
         var y = layer.getPosY();
-        var dimensions = layer.getTransformedDimensions();
         var rotation = layer.getRotation();
-
-        var width  = dimensions[0];
-            //(1 / (Math.cos(rotation) * Math.cos(rotation) - Math.sin(rotation) * Math.sin(rotation))) *
-            //(dimensions[0] * Math.abs(Math.cos(rotation)) - dimensions[1] * Math.abs(Math.sin(rotation)));
-        var height = dimensions[1];
-            //(1 / (Math.cos(rotation) * Math.cos(rotation) - Math.sin(rotation) * Math.sin(rotation))) *
-            //(- dimensions[0] * Math.abs(Math.sin(rotation)) + dimensions[1] * Math.abs(Math.cos(rotation)));
         
         this.clear();
 
         context.save();
         this.setColors(context);
         context.translate(x, y);
-        //context.rotate(-rotation);
-        //context.strokeRect(-width * 0.5, -height * 0.5, width, height);
         context.fillRect(
             -this.littleSquareDiameter * 0.5,
             -this.littleSquareDiameter * 0.5,
             this.littleSquareDiameter,
             this.littleSquareDiameter
         );
-        //context.drawImage(this.rotateImage, this.rotateImage.width / -2.0, height/-2.0 - 30);
         context.restore();
     }
 
@@ -146,8 +136,12 @@ class EditEngine {
     public setSelectionLayer(marchingAnts : MarchingAnts, selectionLayer : ImageLayer) : void {
         this.selectionLayer = selectionLayer;
 
-        var imageData = this.context.createImageData(selectionLayer.getImage().width, selectionLayer.getImage().height);
+        if (!selectionLayer) {
+            console.log("selection layer undefined");
+            return;
+        }
 
+        var imageData = this.context.createImageData(selectionLayer.getImage().width, selectionLayer.getImage().height);
         var offset = 0;
         var thisPtr = this;
         this.selectionTmpCanvas = document.createElement("canvas");
@@ -191,26 +185,17 @@ class EditEngine {
         var selectionLayer : ImageLayer = this.selectionLayer;
         if (selectionLayer) {
             this.context.save();
-            this.context.translate(
-                selectionLayer.getPosX(),
-                selectionLayer.getPosY()
-            );
-            this.context.rotate(-selectionLayer.getRotation());
-            this.context.scale(
-                selectionLayer.isFlippedX() ? -1.0 : 1.0,
-                selectionLayer.isFlippedY() ? -1.0 : 1.0
-            );
+            
+            var transformation = this.selectionLayer.calculateTransformation();
+            
+            this.context.transform(transformation[0], transformation[3], transformation[1], transformation[4], transformation[6], -transformation[7]);
+            
             this.context.drawImage(
                 this.selectionTmpCanvas,
-                0,
-                0,
-                this.selectionTmpCanvas.width,
-                this.selectionTmpCanvas.height,
-                -selectionLayer.getWidth()/2.0,
-                -selectionLayer.getHeight()/2.0,
-                selectionLayer.getWidth(),
-                selectionLayer.getHeight()
-            );
+                -1,
+                -1,
+                2,
+                2);
             this.context.restore();
         }
     }

@@ -1,3 +1,12 @@
+/* 
+ * Project Ariana
+ * rotate.directive.js
+ * 
+ * This file contains the RotateController and directive, 
+ * which control the rotate tool in the toolbox.
+ *
+ */
+ 
 app.directive('rotate', function() {
     return {
         restrict: 'E',
@@ -7,19 +16,18 @@ app.directive('rotate', function() {
     };
 });
 
-app.controller('RotateCtrl', function($scope) {
+app.controller('RotateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', function($scope, tools, canvas, layers, mouse) {
 	$scope.toolname = 'rotate';
-	$scope.active = $scope.config.tools.activeTool == $scope.toolname;
+	$scope.active = tools.getTool() == $scope.toolname;
 
 	/* init */
 	$scope.init = function() {
-		$scope.setCursor('grab');
+		canvas.setCursor('grab');
 		$scope.rotating = false;
-        
-        var currentLayer = $scope.config.layers.currentLayer;
-        if (currentLayer == -1) return;
 
-        var layer = $scope.renderEngine.layers[currentLayer];
+        var layer = $scope.getCurrentLayer();
+        if (layer == null) return;
+        
 		$scope.requestRenderEngineUpdate();
 		$scope.editEngine.setEditLayer(layer, EditMode.rotate);
 		$scope.requestEditEngineUpdate();
@@ -27,41 +35,36 @@ app.controller('RotateCtrl', function($scope) {
 
 	/* onMouseDown */
 	$scope.mouseDown = function() {
-		$scope.setCursor('grabbing');
+		canvas.setCursor('grabbing');
 		$scope.rotating = true;
 	};
 
 	/* onMouseUp */
 	$scope.mouseUp = function() {
-		$scope.setCursor('grab');
+		canvas.setCursor('grab');
 		$scope.rotating = false;
-        $scope.updateThumbnail($scope.getCurrentLayerIndex());
+        $scope.updateThumbnail(layers.getCurrentIndex());
     };
 
 	/* onMouseMove */
 	$scope.mouseMove = function() {
 		if (!$scope.rotating) return;
-		 
-		var currentLayer = $scope.config.layers.currentLayer;
-        if (currentLayer == -1) return;
 
         var layer = $scope.getCurrentLayer();
+        if (layer == null) return;
         
         /* Get the location of the layer. */
         var x = layer.getPosX();
         var y = layer.getPosY();
         
         /* Get the mouse current location and the one before it. */
-        var mouseCurrentX = $scope.config.mouse.current.x;
-        var mouseCurrentY = $scope.config.mouse.current.y; 
-        var mouseOldX = $scope.config.mouse.old.x;
-        var mouseOldY = $scope.config.mouse.old.y;
+        var mouseCurrentX = mouse.getPosX();
+        var mouseCurrentY = mouse.getPosY(); 
+        var mouseOldX = mouse.getOldPosX();
+        var mouseOldY = mouse.getOldPosY();
         
         /* Update the old mouse position. */
-        var dx = $scope.config.mouse.current.x - $scope.config.mouse.old.x;
-        var dy = $scope.config.mouse.current.y - $scope.config.mouse.old.y;
-        $scope.config.mouse.old.x += dx;
-        $scope.config.mouse.old.y += dy;
+        mouse.setOldPos(mouse.getPosX(), mouse.getPosY());
         
         /* Calculate the angle from the center to both points and add the
          * difference to the rotation. */
@@ -91,11 +94,11 @@ app.controller('RotateCtrl', function($scope) {
 		if (nval)  {
 			$scope.init();
 
-			$scope.config.tools.activeToolFunctions = {
+			tools.setToolFunctions({
 				mouseDown: $scope.mouseDown,
 				mouseUp: $scope.mouseUp,
 				mouseMove: $scope.mouseMove
-			};
+			});
 		} else {
 			$scope.editEngine.clear();
 		}
@@ -104,7 +107,7 @@ app.controller('RotateCtrl', function($scope) {
             $scope.editEngine.removeEditLayer();
 			var layer = $scope.getCurrentLayer();
             layer.commitRotation();
-            $scope.updateThumbnail($scope.getCurrentLayerIndex());
+            $scope.updateThumbnail(layers.getCurrentIndex());
 		}
-	}, true);
-});
+	}, true); // jshint ignore:line
+}]);

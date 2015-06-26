@@ -2,6 +2,7 @@
 <html lang="en" ng-app="ariana" ng-controller="AppCtrl">
 <head>
     <base href="/">
+    <link rel="icon" href="assets/img/favicon.ico" type="image/x-icon"/>
     <meta charset="UTF-8">
     <meta description="Project Ariana">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
@@ -23,8 +24,8 @@
 </head>
 
 <body ng-controller="HotkeyCtrl">
-    <!-- Note: the order of the ui-elements makes sure thigns slide over each 
-     !-- other in the right order. --> 
+    
+    <noscript>Your browser does not support JavaScript!</noscript>
     <div ui-view="layers"></div>
     <div ui-view="toolbar"></div>
     <div ui-view="toolbox"></div>

@@ -6,26 +6,23 @@
  *
  */
  
-/* The ToolbarController contains the behaviour of the toolbar. */
-app.controller('ToolbarController', ['$scope', '$modal',
-    function ($scope, $modal) {
+app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
+    function ($scope, $modal, mouse, tools, layers) {
       
-        /* This functions returns whether the toolbox should be visible. It is 
-         * hidden when the user is clicking on the canvas/background. */
         $scope.checkVisible = function() {
-            return (!($scope.config.mouse.button[1] || $scope.config.mouse.button[2] || $scope.config.mouse.button[3]));
+            return !mouse.checkActive();
         };
         
         $scope.stopTool = function() {
-            $scope.config.tools.activeTool = "pan";
-            $scope.config.tools.activeToolset = null;
-        }
+            tools.setTool("pan");
+            tools.setToolset(null);
+        };
         
         /* This function opens the newfile modal. */
         $scope.openNewFileModal = function() {
             $scope.stopTool();
             
-            var modalInstance = $modal.open({
+            $modal.open({
                 templateUrl: 'app/toolbar/newfile/newfile.tpl.html',
                 controller:  'NewFileModalController',
                 scope: $scope,
@@ -37,7 +34,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
         $scope.openUploadModal = function() {
             $scope.stopTool();
             
-            var modalInstance = $modal.open({
+            $modal.open({
                 templateUrl: 'app/toolbar/upload/upload.tpl.html',
                 controller:  'UploadModalController',
                 scope: $scope,
@@ -45,16 +42,18 @@ app.controller('ToolbarController', ['$scope', '$modal',
             });
         };
 
+        /* This function opens the save image modal. */
         $scope.openSaveImageModal = function() {
             $scope.stopTool();
             
-            var modalInstance = $modal.open({
+            $modal.open({
                 templateUrl: 'app/toolbar/save-image/save-image.tpl.html',
                 controller: 'SaveImageModalController',
                 scope: $scope
-            })
+            });
         };
         
+        /* This object contains the currently selected filter. */
         $scope.filter = {
             filterName: "",
             filterObject: null,
@@ -66,7 +65,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
         $scope.openFilterModal = function() {
             $scope.stopTool();
             
-            var modalInstance = $modal.open({
+            $modal.open({
                 templateUrl: 'app/toolbar/filters/filters.tpl.html',
                 controller:  'FilterModalController',
                 scope: $scope,
@@ -80,7 +79,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
             }
         }
 
-        $scope.cancel = function() {
+        $scope.cancelFilter = function() {
             $scope.filter.filterObject = null;
             $scope.filter.currentlayerOnly = false;
 
@@ -126,8 +125,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
         $scope.applyFilterOnLayers = function() {
             var filter = $scope.filter.filterObject;
 
-            if ($scope.config.layers.numberOfLayers == 0 || !filter) {
-                $scope.cancel();
+            if (layers.getNumLayers() === 0 || !filter) {
                 return;
             }
 
@@ -136,7 +134,7 @@ app.controller('ToolbarController', ['$scope', '$modal',
                     return;
                 }
 
-                if (index === $scope.config.layers.currentLayer || !$scope.filter.currentlayerOnly) {
+                if (index === layers.getCurrentIndex() || !$scope.filter.currentlayerOnly) {
                     layer.applyFilter(filter);
                 }
                 else {
@@ -151,5 +149,60 @@ app.controller('ToolbarController', ['$scope', '$modal',
         $scope.$on("newCurrentLayer", function() {
             $scope.applyFilterOnLayers();
         });
+        
+        $scope.applySelection = function() {
+            /* Cut out selection from texture and move to new layer. */
+            var newLayer = $scope.renderEngine.createSelectionImageLayer($scope.imgData, 0);
+            $scope.addLayer(newLayer);
+            
+            $scope.cancelSelection();
+        };
+        
+        $scope.cancelSelection = function() {
+            $scope.selection.maskEnabled = false;
+
+            $scope.drawEngine.clearCanvases();
+            $scope.editEngine.removeSelectionLayer();
+
+            /* Iterate over all mask wand parsts and remove. */
+            var nrWands = $scope.selectionTool.getNrWands();
+            for (var i = 0; i < nrWands; i++) {
+                var removed = $scope.selectionTool.clearLast();
+                if (removed === false) {
+                    console.log("Selection tool clear Last returned false");
+                }                
+            }
+
+            /* Draw shared mask variables to image. */
+            if ($scope.maskWand) {
+                $scope.setMaskSelectedArea($scope.selectionTool.width, $scope.selectionTool.height);
+                var layer = $scope.getCurrentLayer();
+                if (!layer || layer == null) {
+                    console.log("cant find layer");
+                    return;
+                }
+                $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
+                $scope.requestEditEngineUpdate();       
+            }
+        };
+        
+        $scope.isSelectionEnabled = function() {
+            var tool = tools.getTool();
+            var enabled = (tool == "magic" || tool == "loose" || tool == "rectangle");
+            var layer = $scope.getCurrentLayer();
+            
+            if (enabled && layer) {
+                // enabled selection
+                $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
+                $scope.requestEditEngineUpdate();
+            }
+            else {
+                $scope.editEngine.removeSelectionLayer();
+                $scope.requestEditEngineUpdate();   
+            }
+            
+            return enabled;
+        
+        };
     }
 ]);

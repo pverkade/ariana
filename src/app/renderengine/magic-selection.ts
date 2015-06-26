@@ -1,86 +1,36 @@
-class Point {
-    x : number;
-    y : number;
+/*
+ * Project ariana
+ * File: magic-selections.ts
+ * Author: Merwin van Dijk
+ * Date: June 25th, 2015
+ * Description: this file contains the implementation for the magic selection
+ * tool. The primary functions is getMaskWand which takes the coordinates of a 
+ * point in the image and a treshold value (1-100). The treshold value declares 
+ * the maximum difference in pixel value to the given point.
+ */
 
-    constructor(x : number, y : number) {
-        this.x = x;
-        this.y = y;
-    }
-}
-
-class MagicSelection {
+class MagicSelection extends AbstractSelection {
     private magicWandColor : number[];
     private imageData : ImageData;
-    private bmON : number;
-    private maskWand : Uint8Array;
-    private maskWandParts : Uint8Array[];
-    private maskBorder : Uint8Array;
-    private width : number;
-    private height : number;
 
     constructor(image : HTMLImageElement) {
-        this.maskBorder = new Uint8Array(image.width * image.height);
-        this.bmON = 1;
+        super(image.width, image.height);
+
         this.magicWandColor = null;
 
         var canvas = document.createElement("canvas");
         canvas.width = image.width;
         canvas.height = image.height;
-        
-        this.width = image.width;
-        this.height = image.height;
-
+        console.log(canvas.width, canvas.height);
         var context = canvas.getContext("2d");
         context.drawImage(image, 0, 0);
-        this.imageData = context.getImageData(0, 0, image.width, image.height);
-
-        this.maskWand = null;
-        this.maskWandParts = [];
-    }
-
-    /* Return borders (bitmask) of magic wand mask. */
-    getMaskBorder() {
-        /* Check whether a maskwand has been created. */
-        // if (this.maskWand == undefined) {
-        //     this.maskBorder = new Uint8Array(this.imageData.width * this.imageData.height);
-        //    return undefined;
-        //}
-
-        // this.maskBorder = new Uint8Array(this.imageData.width * this.imageData.height);
-        
-        for (var i = 0; i < this.maskWand.length; i++) {
-            if (this.maskWand[i] == this.bmON) {
-                /* Check for borders of image (pixel on border of image is edge). */
-                if (i % this.imageData.width == 0 ||
-                  i % this.imageData.width == this.imageData.width - 1 ||
-                  Math.floor( i / this.imageData.width) == 0 || 
-                  Math.floor( i / this.imageData.width) >= this.imageData.height - 1) { /// aanpassing <--
-                    this.maskBorder[i] = this.bmON;
-                /* Check if one 8 neighbor pixels is off then it is an "inside" pixel. */
-                } else if ( this.maskWand[i - this.imageData.width - 1] == 0 ||
-                    this.maskWand[i - this.imageData.width ] == 0 ||
-                    this.maskWand[i - this.imageData.width + 1] == 0 ||
-                    this.maskWand[i - 1] == 0 ||
-                    this.maskWand[i + 1] == 0 ||
-                    this.maskWand[i + this.imageData.width - 1] == 0 ||
-                    this.maskWand[i + this.imageData.width] == 0 ||
-                    this.maskWand[i + this.imageData.width + 1] == 0 ) {
-                    this.maskBorder[i] = this.bmON;
-                } else {
-                    this.maskBorder[i] = 0;
-                }
-            }
-        }
-
-        return this.maskBorder;
+        this.imageData = context.getImageData(0, 0, canvas.width, canvas.height);
     }
 
     /* Given pixel and treshold value (1-100) a bitmask for the borders of the magic wand is returned. 
         Algorithm checks for lines horizontally and adds line elements above and below to the 
         stack when they match the color of the given point. */
-    getMaskWand(x : number, y : number, treshold : number) {
-        console.log("magic " + x + " " + y);
-    
+    getMaskWand(x : number, y : number, treshold : number) {    
         var stack = [];
         var curLine = [];
         var newLine = [];
@@ -118,48 +68,14 @@ class MagicSelection {
             }
         }
         
-        /* Merge maskWand[0] with current maskWand. */
+        /* Merge current mask wand part with mask wand */
         this.mergeMaskWand();
+
+        /* Get new borders. */
+        this.getMaskBorder();
 
         /* Return current maskWand. */
         return this.maskWandParts[this.maskWandParts.length - 1];
-    }
-
-    /* Return true when point is within selection. */
-    isInSelection(x : number, y : number) {
-        if (this.maskWandParts.length > 0 && this.maskWandParts[0][y * this.imageData.width + x] != 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /* Remove bitmask of magic wand that contains point. Do not remove first bitmask
-        but adjust to the missing bitmask. */
-    removeSelection(startX : number, startY : number) {
-        var indexRemove = -1;
-
-        for (var i = 1; i < this.maskWandParts.length; i++) {
-            if (this.maskWandParts[i][startY * this.imageData.width + startX] != 0) {
-                indexRemove = i;
-            }
-        }
-
-        if (indexRemove != -1){
-            for (var i = 0; i < this.maskWandParts[indexRemove].length; i++) {
-                if (this.maskWand[indexRemove][i] == this.bmON) {
-                    this.maskWand[0][i] = 0;
-                }
-            }
-
-            this.maskWandParts.splice(indexRemove, 1);// = [];
-        }
-
-        /* Merge because removed selection could also be part of another selection. Make
-            sure that maskWand[0] contains complete selection. */
-        this.mergeMaskWand();
-
-        return indexRemove;
     }
 
     /* Return array of points on same line as given point. */
@@ -213,7 +129,7 @@ class MagicSelection {
         /* Make line by adding all points that are found and adjust bitmask */
         for (var x = left; x <= right; x++) {
             line.push(new Point(x, startY));
-            this.maskWandParts[this.maskWandParts.length - 1][x + startY * this.imageData.width] = this.bmON;
+            this.maskWandParts[this.maskWandParts.length - 1][x + startY * this.imageData.width] = 1;
         }
 
         return line;
@@ -240,44 +156,5 @@ class MagicSelection {
         value /= 3.0 * 255.0 * 255.0; 
 
         return (value <= treshold);
-    }
-
-    mergeMaskWand() {
-        for (var i = 0; i < this.maskWandParts.length; i++) {
-            for (var j = 0; j < this.maskWandParts[i].length; j++) {
-                this.maskWand[j] = this.maskWand[j] || this.maskWandParts[i][j];
-            }   
-        }
-    }
-    
-    getWidth() {
-        return this.width;
-    }
-    
-    getHeight() {
-        return this.height;
-    }
-
-    setMaskBorder(maskBorder : Uint8Array) {
-        if (this.width * this.height != maskBorder.length) {
-            console.log("setMaskWand: wrong mask sizes");
-        } else {
-            console.log("Magic Maskborder set");
-            this.maskBorder = maskBorder;
-        }
-
-        // this.mergeMaskWand();
-    }
-
-    setMaskWand(maskWand : Uint8Array) {
-        console.log(maskWand);
-        if (this.width * this.height != maskWand.length) {
-            console.log("setMaskWand: wrong mask sizes");
-        } else {
-            console.log("Magic: Maskwand set");
-            this.maskWand = maskWand;
-        }
-
-        this.mergeMaskWand();
     }
 }

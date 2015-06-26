@@ -7,8 +7,8 @@
  *
  */
  
-app.controller('FilterModalController', ['$scope', '$modalInstance', 
-    function ($scope, $modalInstance) {
+app.controller('FilterModalController', ['$scope', '$modalInstance', 'tools',
+    function ($scope, $modalInstance, tools) {
         
         $scope.filters = {
             "noise": {
@@ -53,10 +53,10 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
         };
         
         $scope.selectFilter = function(name) {
-            var constructor = $scope.filters[name].constructor;
+            var Constructor = $scope.filters[name].constructor;
             
-            if (constructor) {
-                var filterObject = new constructor();
+            if (Constructor) {
+                var filterObject = new Constructor();
                 $scope.filter.filterName = name;
                 $scope.filter.filterObject = filterObject;
                 $scope.filter.filterParameters = filterObject.getAttributesObject();
@@ -64,7 +64,7 @@ app.controller('FilterModalController', ['$scope', '$modalInstance',
                 $scope.applyFilterOnLayers();
             }
             
-            $scope.config.tools.activeTool = 'pan';
+            tools.setTool('pan');
             $scope.close();
         };
 
