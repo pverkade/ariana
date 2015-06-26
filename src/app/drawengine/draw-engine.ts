@@ -172,6 +172,8 @@ class DrawEngine {
         this.memCanvas.height = height;
         this.tmpDrawCanvas.width = width;
         this.tmpDrawCanvas.height = height;
+        this.width = width;
+        this.height = height;
         this.clearCanvases();
     }
     
@@ -207,7 +209,7 @@ class DrawEngine {
             }
             this.draw(this.currentPath);
         }
-    }
+    };
 
     /*
      * Function being called when the mouse is no longer being pressed
@@ -227,7 +229,7 @@ class DrawEngine {
 
         this.draw(this.currentPath);
         this.currentPath = null;
-    }
+    };
 
     /*
      * Set the size of the brush/line
@@ -317,7 +319,7 @@ class DrawEngine {
     saveCanvas = () : void => {
         this.memContext.clearRect(0, 0, this.width, this.height);
         this.memContext.drawImage(this.drawCanvas, 0, 0);
-    }
+    };
 
     /*
      * Reset the canvas to its original state (the saved state)
@@ -336,12 +338,12 @@ class DrawEngine {
         if (this.currentPath) {
             this.currentPath.lastDrawnItem = 0;
         }
-    }
+    };
 
     clearTempCanvas = () : void => {
         this.tmpDrawContext.globalAlpha = 1.0;
         this.tmpDrawContext.clearRect(0, 0, this.tmpDrawCanvas.width, this.tmpDrawCanvas.height);
-    }
+    };
 
     clearCanvases() : void {
         this.memContext.clearRect(0, 0, this.memCanvas.width, this.memCanvas.height);
@@ -357,6 +359,18 @@ class DrawEngine {
             return this.drawContext.getImageData(0, 0, this.drawCanvas.width, this.drawCanvas.height);
         
         return null;
+    }
+
+    getCanvasHTMLImageElement() : HTMLImageElement {
+        if (this.drawCanvas) {
+            var image = new Image();
+            image.width = this.drawCanvas.width;
+            image.height = this.drawCanvas.height;
+            image.src = this.drawCanvas.toDataURL();
+            return image;
+        } else {
+            return null;
+        }
     }
 
     /*

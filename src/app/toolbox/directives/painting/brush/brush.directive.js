@@ -69,9 +69,11 @@ app.controller('BrushCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'co
     
     $scope.stop = function() {
         if ($scope.hasDrawn) {
-            var image = $scope.drawEngine.getCanvasImageData();
-            $scope.newLayerFromImage(image);
-            $scope.drawEngine.clearCanvases();
+            var image = $scope.drawEngine.getCanvasHTMLImageElement();
+            image.onload = function() {
+                $scope.newLayerFromImage(image);
+                $scope.drawEngine.clearCanvases();
+            };
         }
     };
 
