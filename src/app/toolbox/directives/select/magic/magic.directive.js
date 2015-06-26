@@ -16,12 +16,13 @@ app.directive('magic', function() {
     };
 });
 
-app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'layers', function($scope, tools, canvas, layers, mouse, layers) {
+app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', function($scope, tools, canvas, layers, mouse) {
 
 	$scope.toolname = 'magic';
 	$scope.active = tools.getTool() == $scope.toolname;
 
 	$scope.threshold = 35;
+	$scope.magic = null;
 
 	$scope.init = function() {
         $scope.selection.maskEnabled = true;
@@ -35,7 +36,6 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'la
 		}
         
 		var image = layer.getImage();
-        console.log(image);
         
 		$scope.magic = new MagicSelection(image);
 
@@ -46,13 +46,14 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'la
         $scope.magic.setMaskBorder($scope.maskBorder);
 
         $scope.setMaskSelectedArea($scope.magic.width, $scope.magic.height);
+        
+        $scope.editEngine.removeEditLayer();
 	};
     
     $scope.stop = function() {
     };
 
 	$scope.mouseDown = function() {
-        $scope.stop();
 		console.log("Mouse down magic");
 		/* x and y coordinates in pixels relative to canvas left top corner. */
 		var mouseX = mouse.getPosX();
@@ -69,22 +70,14 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'la
         var xRelative = transformedPoint.x;
         var yRelative = transformedPoint.y;
         
-		/* Check wheter user has clicked inside of a selection. */
-        var bitmask = null;
-		if ($scope.magic.isInSelection(xRelative, yRelative)) {
-			$scope.magic.removeSelection(xRelative, yRelative);
-		} else {
-			$scope.magic.getMaskWand(xRelative, yRelative, $scope.threshold);
-			bitmask = $scope.magic.getMaskWand(xRelative, yRelative, $scope.threshold);
-		}
+		$scope.magic.getMaskWand(xRelative, yRelative, $scope.threshold);
 
 		/* Draw shared mask variables to image. */
 		if ($scope.maskWand) {
 			$scope.setMaskSelectedArea($scope.magic.width, $scope.magic.height);    
 
-			var layer = $scope.getCurrentLayer();
 			if (layer == null) {
-				console.log ("layer is null");
+				console.log ("layer is null, dunno how we got here.");
 				return;
 			}
 

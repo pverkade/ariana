@@ -151,11 +151,23 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
         });
         
         $scope.applySelection = function() {
-            /* Cut out selection from texture and move to new layer. */
-            var newLayer = $scope.renderEngine.createSelectionImageLayer($scope.imgData, 0);
-            $scope.addLayer(newLayer);
-            
-            $scope.cancelSelection();
+            var empty = true;
+            if ($scope.maskWand) {
+                for (var i = 0; i < $scope.maskWand.length; i++) {
+                    if ($scope.maskWand[i]) {
+                        empty = false;
+                        break;
+                    }
+                }                
+            }
+
+            if (empty == false) {
+                /* Cut out selection from texture and move to new layer. */
+                var newLayer = $scope.renderEngine.createSelectionImageLayer($scope.imgData, 0);
+                $scope.addLayer(newLayer);
+                
+                $scope.cancelSelection();
+            }
         };
         
         $scope.cancelSelection = function() {
@@ -168,7 +180,7 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
             var nrWands = $scope.selectionTool.getNrWands();
             for (var i = 0; i < nrWands; i++) {
                 var removed = $scope.selectionTool.clearLast();
-                if (removed === false) {
+                if (removed) {
                     console.log("Selection tool clear Last returned false");
                 }                
             }
@@ -177,7 +189,7 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
             if ($scope.maskWand) {
                 $scope.setMaskSelectedArea($scope.selectionTool.width, $scope.selectionTool.height);
                 var layer = $scope.getCurrentLayer();
-                if (!layer || layer == null) {
+                if (!layer) {
                     console.log("cant find layer");
                     return;
                 }
@@ -186,19 +198,23 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
             }
         };
         
+        $scope.selectionEnabled = false;
+        
         $scope.isSelectionEnabled = function() {
             var tool = tools.getTool();
             var enabled = (tool == "magic" || tool == "loose" || tool == "rectangle");
             var layer = $scope.getCurrentLayer();
             
-            if (enabled && layer) {
-                // enabled selection
+            if (enabled && layer && !$scope.selectionEnabled) {
+                $scope.editEngine.removeEditLayer();
                 $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
                 $scope.requestEditEngineUpdate();
+                $scope.selectionEnabled = true;
             }
-            else {
+            else if ((!enabled || !layer) && $scope.selectionEnabled) {
                 $scope.editEngine.removeSelectionLayer();
                 $scope.requestEditEngineUpdate();   
+                $scope.selectionEnabled = false;
             }
             
             return enabled;

@@ -158,6 +158,7 @@ class AbstractSelection {
     }  
 
     setMaskWandParts(maskWandParts : Uint8Array[]) {
+        console.log(maskWandParts);
         this.maskWandParts = maskWandParts;
     } 
 
@@ -179,7 +180,6 @@ class AbstractSelection {
 
     transform(layer : Layer, mouseX : number, mouseY : number) {
         var transformation = layer.calculateTransformation();
-        // console.log("original", transformation);
         
         var transformation_y = -1 * transformation[7];
         var transformation_x = transformation[6];
@@ -192,9 +192,6 @@ class AbstractSelection {
         var position = vec3.fromValues(mouseX - transformation_x, mouseY - transformation_y, 1);
         vec3.transformMat3(position, position, transformation);
         
-        // FIXME only works in original state        
-        // console.log("inverted", transformation);
-        // console.log("position", position);
         var xRelative = Math.round(0.5 * (position[0] + 1) * this.width); 
         var yRelative = Math.round(0.5 * (position[1] + 1) * this.height);
 

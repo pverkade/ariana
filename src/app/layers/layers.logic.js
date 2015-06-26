@@ -55,10 +55,7 @@ app.controller('layersCtrl', ['$scope', '$animate', 'mouse', 'layers',
 
         $scope.renderEngine.removeLayer(index);
         $scope.setCurrentLayerIndex(Math.max(0, index - 1));
-
-        $scope.requestEditEngineUpdate();
-        $scope.editEngine.clear();
-        $scope.requestEditEngineUpdate();
+        
         $scope.requestRenderEngineUpdate();
     };
 
@@ -86,6 +83,7 @@ app.controller('layersCtrl', ['$scope', '$animate', 'mouse', 'layers',
     $scope.selectLayer = function(newIndex) {
         if (0 <= newIndex && newIndex < $scope.renderEngine.getNumberOfLayers()) {
             layers.setCurrentIndex(newIndex);
+            $scope.setCurrentLayerIndex(newIndex);
         }
     };
 

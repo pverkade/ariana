@@ -26,10 +26,11 @@ app.controller('TranslateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
         $scope.translating = false;
 
         var layer = $scope.getCurrentLayer();
-        if (layer == null) return;
         
-        $scope.editEngine.drawTranslateTool(layer);
-        window.requestAnimationFrame(function() {$scope.renderEngine.render();});  
+        if (layer) {
+            $scope.editEngine.setEditLayer(layer, EditMode.translate);
+            $scope.requestEditEngineUpdate();
+        }
     };
 
     /* onMouseDown */
@@ -64,8 +65,6 @@ app.controller('TranslateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
 
         layer.setPos(x + dx, y + dy);
         $scope.requestRenderEngineUpdate();
-
-        $scope.editEngine.setEditLayer(layer, EditMode.translate);
         $scope.requestEditEngineUpdate();
     };
 
@@ -89,11 +88,8 @@ app.controller('TranslateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
             });
         }
         else {
-            $scope.editEngine.removeEditLayer();
             $scope.editEngine.clear();
-
             $scope.updateThumbnail(layers.getCurrentIndex());
-
         }
     }, true);
 }]);

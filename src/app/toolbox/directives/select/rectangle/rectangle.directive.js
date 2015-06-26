@@ -16,7 +16,7 @@ app.directive('rectangle', function() {
     };
 });
 
-app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', 'mouse', 'layers', function($scope, tools, canvas, mouse, layers) {
+app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', 'mouse', function($scope, tools, canvas, mouse) {
 	$scope.toolname = 'rectangle';
 	$scope.active = tools.getTool() == $scope.toolname;
     $scope.rect = null;
@@ -26,9 +26,7 @@ app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', 'mouse', 'layers',
         $scope.selection.maskEnabled = true;
 
         var layer = $scope.getCurrentLayer();
-        if (layer == null) return;
-
-        if (layer.getLayerType() != LayerType.ImageLayer) {
+        if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
             return;
         }
         
@@ -49,6 +47,8 @@ app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', 'mouse', 'layers',
         $scope.drawEngine.setDrawType(drawType.RECTANGLE);
 
         $scope.setMaskSelectedArea($scope.rect.width, $scope.rect.height);
+        
+        $scope.editEngine.removeEditLayer();
     };
 
     $scope.stop = function() {
@@ -56,16 +56,12 @@ app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', 'mouse', 'layers',
 
     /* onMouseDown */
     $scope.mouseDown = function() {
+        if (!$scope.rect) return;
         /* x and y coordinates in pixels relative to image. */
         xMouse = mouse.getPosX();
         yMouse = mouse.getPosY();  
 
         $scope.point1 = new Point(xMouse, yMouse);
-
-        /* Check wheter user has clicked inside of a selection. */
-        if ($scope.rect.isInSelection(xMouse, yMouse)) {
-            $scope.rect.removeSelection(xMouse, yMouse);
-        }
 
         $scope.drawEngine.onMousedown(xMouse, yMouse);   
         $scope.mouseBTNDown = true; 
@@ -73,6 +69,7 @@ app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', 'mouse', 'layers',
 
     /* onMouseUp */
     $scope.mouseUp = function() {
+        if (!$scope.rect) return;
         /* x and y coordinates in pixels relative to image. */
         xMouse = mouse.getPosX();
         yMouse = mouse.getPosY();  
@@ -97,6 +94,7 @@ app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', 'mouse', 'layers',
 
     /* onMouseMove */
     $scope.mouseMove = function() {
+        if (!$scope.rect) return;
         /* x and y coordinates in pixels relative to image. */
         xMouse = mouse.getPosX();
         yMouse = mouse.getPosY(); 

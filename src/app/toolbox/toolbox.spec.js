@@ -42,39 +42,6 @@ describe("The toolbox controller", function() {
         });
     });
 
-    describe("swapColors", function() {
-        it("should swap primary and secondary colors", function() {
-            var p = $scope.config.tools.colors.primary;
-            var s = $scope.config.tools.colors.secondary;
-
-            $scope.swapColors();
-            expect($scope.config.tools.colors.primary).toEqual(s);
-            expect($scope.config.tools.colors.secondary).toEqual(p);
-        });
-    });
-
-    describe("selectTool", function() {
-        it("should select a different tool", function() {
-            $scope.selectTool(null, 'test');
-            expect(tools.getTool()).toEqual('test');
-            
-            it("should return true for 'test'", function() {
-                expect($scope.isActive('test')).toBe('true');
-            });
-        });
-    });
-
-    describe("selectToolSet", function() {
-        it("should select a different toolset", function() {
-            $scope.selectToolSet('test');
-            expect(tools.getTool()).toEqual('test');
-
-            it("should return true for 'test'", function() {
-                expect($scope.isActiveToolset('test')).toBe('true');
-            });
-        });
-    });
-
     describe("getActiveToolFunctions", function() {
         it("should not be undefined", function() {
             expect($scope.getActiveToolFunctions()).not.toBeUndefined();
