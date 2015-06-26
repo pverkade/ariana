@@ -22,6 +22,7 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
 	$scope.active = tools.getTool() == $scope.toolname;
 
 	$scope.threshold = 35;
+	$scope.magic = null;
 
 	$scope.init = function() {
         $scope.selection.maskEnabled = true;
@@ -52,7 +53,6 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
     };
 
 	$scope.mouseDown = function() {
-        $scope.stop();
 		console.log("Mouse down magic");
 		/* x and y coordinates in pixels relative to canvas left top corner. */
 		var mouseX = mouse.getPosX();

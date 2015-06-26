@@ -158,6 +158,7 @@ class AbstractSelection {
     }  
 
     setMaskWandParts(maskWandParts : Uint8Array[]) {
+        console.log(maskWandParts);
         this.maskWandParts = maskWandParts;
     } 
 

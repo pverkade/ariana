@@ -153,12 +153,13 @@ class EditEngine {
     }
 
     public setSelectionLayer(marchingAnts : MarchingAnts, selectionLayer : ImageLayer) : void {
-        this.selectionLayer = selectionLayer;
+        console.log(marchingAnts);
 
-        if (!selectionLayer) {
+        if (!marchingAnts || !selectionLayer) {
             console.log("selection layer undefined");
             return;
         }
+        this.selectionLayer = selectionLayer;
 
         var imageData = this.context.createImageData(selectionLayer.getImage().width, selectionLayer.getImage().height);
         var offset = 0;
