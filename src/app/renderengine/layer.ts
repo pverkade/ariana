@@ -41,7 +41,7 @@ class Layer {
     private propertyChanged : MLayer.INotifyPropertyChanged;
     private propertyChangedTimeout;
 
-    private transformHistory : Float32Array[];
+    private transformMatrix : Float32Array;
     private transformed = true;
     private transformedDimensions : number[];
 
@@ -69,7 +69,8 @@ class Layer {
         this.height = height;
         this.angle = 0.0;
         this.hidden = false;
-        this.transformHistory = [];
+        this.transformMatrix = mat3.create();
+        mat3.identity(this.transformMatrix);
 
         /* Set the matrix that converts pixel coordinates to -1 to +1 coordinate space */
         mat3.identity(this.sizeMatrix);
@@ -122,17 +123,6 @@ class Layer {
         this.propertyChanged = propertyChanged;
     }
 
-    public commitRotation() {
-        var matrix = mat3.create();
-        mat3.identity(matrix);
-        mat3.rotate(matrix, matrix, this.angle);
-        this.transformHistory.push(matrix);
-
-        this.angle = 0;
-
-        mat3.identity(this.rotationMatrix);
-    }
-
 	public setRotation(angle : number) {
 		this.angle = angle;
 		mat3.identity(this.rotationMatrix);
@@ -141,17 +131,6 @@ class Layer {
         this.notifyPropertyChanged();
         this.transformed = true;
 	}
-
-    public commitTransformations() {
-        var matrix : Float32Array = mat3.create();
-        mat3.identity(matrix);
-
-        for (var i = 0; i < this.transformHistory.length; i ++) {
-            mat3.multiply(matrix, this.transformHistory[i], matrix);
-        }
-
-        this.transformHistory = [matrix];
-    }
 
 	public getRotation() : number {
 		return this.angle;
@@ -201,13 +180,26 @@ class Layer {
             ])
         );
 
-        this.transformHistory.push(matrix);
+        mat3.multiply(this.transformMatrix, matrix, this.transformMatrix);
+
         mat3.identity(this.sizeMatrix);
         this.width = 2;
         this.height = 2;
     }
 
-	public setPos(x : number, y : number) {
+    public commitRotation() {
+        var matrix = mat3.create();
+        mat3.identity(matrix);
+        mat3.rotate(matrix, matrix, this.angle);
+
+        mat3.multiply(this.transformMatrix, matrix, this.transformMatrix);
+
+        this.angle = 0;
+
+        mat3.identity(this.rotationMatrix);
+    }
+
+    public setPos(x : number, y : number) {
 		this.posX = x;
 		this.posY = y;
 
@@ -244,18 +236,11 @@ class Layer {
         var matrix : Float32Array = mat3.create();
         mat3.identity(matrix);
 
-        var historyMatrix : Float32Array = mat3.create();
-        mat3.identity(historyMatrix);
-
-        for (var i = 0; i < this.transformHistory.length; i ++) {
-            mat3.multiply(historyMatrix, this.transformHistory[i], historyMatrix);
-        }
-
         //mat3.multiply(matrix, matrix, this.pixelConversionMatrix);
         mat3.multiply(matrix, matrix, this.translationMatrix);
         mat3.multiply(matrix, matrix, this.rotationMatrix);
         mat3.multiply(matrix, matrix, this.sizeMatrix);
-        mat3.multiply(matrix, matrix, historyMatrix);
+        mat3.multiply(matrix, matrix, this.transformMatrix);
 
         return matrix;
     }
@@ -324,12 +309,12 @@ class Layer {
         return this.hidden;
     }
     
-    public getTransformHistory() : Float32Array[] {
-        return this.transformHistory;
+    public getTransformMatrix() : Float32Array {
+        return this.transformMatrix;
     }
     
-    public setTransformHistory(history : Float32Array[]) {
-        this.transformHistory = history;
+    public setTransformMatrix(transformMatrix : Float32Array) {
+        this.transformMatrix = transformMatrix;
     }
 
 	public setupRender() { }
@@ -340,5 +325,6 @@ class Layer {
         delete this.sizeMatrix;
         delete this.translationMatrix;
         delete this.pixelConversionMatrix;
+        delete this.transformMatrix;
     }
 }
