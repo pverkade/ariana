@@ -154,9 +154,8 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
             /* Cut out selection from texture and move to new layer. */
             var newLayer = $scope.renderEngine.createSelectionImageLayer($scope.imgData, 0);
             $scope.addLayer(newLayer);
-            $scope.selection.maskEnabled = false;
-            $scope.drawEngine.clearCanvases();
-            $scope.editEngine.removeSelectionLayer();
+            
+            $scope.cancelSelection();
         };
         
         $scope.cancelSelection = function() {
