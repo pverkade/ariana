@@ -1,5 +1,5 @@
 # Project Ariana
-Project ariana - is a web-based image editing solution. We focus on a clean interface usable for both mouse and touchscreens. Our official website is fazeclan.xxx.
+Project ariana - is a web-based image editing solution. We focus on a clean interface usable for both mouse and touchscreens. Our official website is [ariana.pictures](http://ariana.pictures).
 
 [Project progress](https://docs.google.com/document/d/12oiV5l1bo-w7UL8XrIKF9Y2DEm7g-BXc2GsCOzvmjbw/edit?usp=sharing)
 
@@ -30,6 +30,8 @@ ariana/
   | |- app/
   | | |- <app logic>
   | | |- renderengine/
+  | | |- editengine/
+  | | |- drawengine/
   | | |- content/
   | | |- header/
   | | |- layers/
@@ -46,17 +48,22 @@ ariana/
   | | |- main.scss
   | | |- variables.scss
   | | |- other_sass.scss etc.
+  | |- third-party
+  | | |- <files used from third parties> 
   |- bower.json
   |- build.config.js
   |- Gruntfile.js
   |- package.json
   |- server.js
+  |- setup.sh
 ```
 
 A brief description of each entry
 - `src/` - ariana sources
   - `app/` - is used for application specific code, e.g. templates and controllers
     - `renderengine/` - the renderengine  
+    - `editengine/` - the editengine draws overlays on the canvas for easy editing
+    - `drawengine/` - the drawengine
   - `assets/` - images etc.
   - `common/` - all code that is likely to be used by different modules
   - `sass/` - all style files
@@ -68,7 +75,7 @@ A brief description of each entry
 - `Gruntfile.js` - grunt build script
 - `package.json` - metadata about ariana, used by NPM
 - `server.js` - a simple node.js server
-
+- `setup.sh` - an installation script
 
 ## Getting started
 ariana runs on a [Node.js](https://nodejs.org/) server. Installing ariana takes about 3 minutes.
@@ -102,6 +109,8 @@ $ grunt watch
 - `grunt watch` tells grunt (build system) to build ariana. The `watch` parameter lets grunt watch for changes to your files. Grunt will automatically rebuild and recompile when these changes are detected.
   - Grunt serves as a [LiveReload](http://livereload.com/) server. You can install the `LiveReload` browser plugin to automatically refresh your browser when grunt rebuilds ariana (this is not necessary, only a comodity).
   - Grunt also minifies and combines javascript, css, etc.
+  
+You can also use our installations script, `setup.sh`, to execute these commands. The script will also check if all dependencies are installed.
 
 #### Usage
 To run ariana enter the following
