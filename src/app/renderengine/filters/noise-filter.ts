@@ -31,6 +31,8 @@ class NoiseFilter extends Filter {
     protected filterType = FilterType.Noise;
     protected program : NoiseProgram;
 
+    private seeds : Array<number>;
+
     constructor () {
         super();
         this.attributes = {
@@ -43,6 +45,11 @@ class NoiseFilter extends Filter {
                 "step": 0.05,
             }
         };
+
+        this.seeds = new Array<number>(3);
+        this.seeds[0] = Math.random();
+        this.seeds[1] = Math.random();
+        this.seeds[2] = Math.random();
     }
 
     render (resourceManager : ResourceManager, texture : WebGLTexture) {
@@ -53,8 +60,15 @@ class NoiseFilter extends Filter {
 
         this.program.activate();
         this.program.bindTexture(texture);
-        this.program.setUniforms(this.getAttributeValue("intensity"), Math.random(), Math.random(), Math.random());
+        this.program.setUniforms(this.getAttributeValue("intensity"), this.seeds[0], this.seeds[1], this.seeds[2]);
 
         this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4);
+    }
+
+    setAttribute(name:string, value:any) :void {
+        this.seeds[0] = Math.random();
+        this.seeds[1] = Math.random();
+        this.seeds[2] = Math.random();
+        super.setAttribute(name, value);
     }
 }
