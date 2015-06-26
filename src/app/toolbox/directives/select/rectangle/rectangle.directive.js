@@ -16,7 +16,7 @@ app.directive('rectangle', function() {
     };
 });
 
-app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', 'mouse', 'layers', function($scope, tools, canvas, mouse, layers) {
+app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', 'mouse', function($scope, tools, canvas, mouse) {
 	$scope.toolname = 'rectangle';
 	$scope.active = tools.getTool() == $scope.toolname;
     $scope.rect = null;
@@ -26,9 +26,7 @@ app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', 'mouse', 'layers',
         $scope.selection.maskEnabled = true;
 
         var layer = $scope.getCurrentLayer();
-        if (layer == null) return;
-
-        if (layer.getLayerType() != LayerType.ImageLayer) {
+        if (!layer || layer.getLayerType() != LayerType.ImageLayer) {
             return;
         }
         

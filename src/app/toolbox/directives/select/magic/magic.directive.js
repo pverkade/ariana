@@ -16,7 +16,7 @@ app.directive('magic', function() {
     };
 });
 
-app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'layers', function($scope, tools, canvas, layers, mouse, layers) {
+app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', function($scope, tools, canvas, layers, mouse) {
 
 	$scope.toolname = 'magic';
 	$scope.active = tools.getTool() == $scope.toolname;
@@ -82,9 +82,8 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'la
 		if ($scope.maskWand) {
 			$scope.setMaskSelectedArea($scope.magic.width, $scope.magic.height);    
 
-			var layer = $scope.getCurrentLayer();
 			if (layer == null) {
-				console.log ("layer is null");
+				console.log ("layer is null, dunno how we got here.");
 				return;
 			}
 
