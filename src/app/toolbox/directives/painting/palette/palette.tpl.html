@@ -29,17 +29,17 @@
             <div class="input-group">
                 <span class="input-group-addon input-small"> R </span> 
                 <input type="number" class="form-control number input-small-medium" 
-                    ng-model="getPrimary().r" ng-change="validate(event); updateHSV(); updateHEX();" ng-blur="blur()"></input>
+                    ng-model="getPrimary().r" ng-change="validate(); updateHsv(); updateHex();" ng-blur="blur()"></input>
             </div>
             <div class="input-group">
                 <span class="input-group-addon input-small"> G </span> 
                 <input type="number" class="form-control number input-small-medium" 
-                    ng-model="getPrimary().g" ng-change="validate(event); updateHSV(); updateHEX();" ng-blur="blur()"></input>
+                    ng-model="getPrimary().g" ng-change="validate(); updateHsv(); updateHex();" ng-blur="blur()"></input>
             </div>
             <div class="input-group">
                 <span class="input-group-addon input-small"> B </span> 
                 <input type="number" class="form-control number input-small-medium"
-                    ng-model="getPrimary().b" ng-change="validate(event); updateHSV(); updateHEX();" ng-blur="blur()"></input>
+                    ng-model="getPrimary().b" ng-change="validate(); updateHsv(); updateHex();" ng-blur="blur()"></input>
             </div>
         </div>
         
@@ -47,24 +47,24 @@
             <div class="input-group">
                 <span class="input-group-addon input-small"> H </span>
                 <input type="number" class="form-control number input-small-medium" 
-                    ng-model="color.h" ng-change="validate(event); updateRGB(); updateHEX();" ng-blur="blur()"></input>
+                    ng-model="color.h" ng-change="validate(); updateRgb(); updateHex();" ng-blur="blur()"></input>
             </div>
             <div class="input-group">
                 <span class="input-group-addon input-small"> S </span>
                 <input type="number" class="form-control number input-small-medium" 
-                    ng-model="color.s" ng-change="validate(event); updateRGB(); updateHEX();" ng-blur="blur()"></input>
+                    ng-model="color.s" ng-change="validate(); updateRgb(); updateHex();" ng-blur="blur()"></input>
             </div>
             <div class="input-group">
                 <span class="input-group-addon input-small"> V </span>
                 <input type="number" class="form-control number input-small-medium" 
-                    ng-model="color.v" ng-change="validate(event); updateRGB(); updateHEX();" ng-blur="blur()"></input>
+                    ng-model="color.v" ng-change="validate(); updateRgb(); updateHex();" ng-blur="blur()"></input>
             </div>
         </div>
         
         <div class="input-group">
             <span class="input-group-addon input-small"> Hex </span> 
             <input type="text" class="form-control text input-large" 
-                ng-model="hex" ng-change="validate(); updateRGBfromHEX(); updateHSV();" ng-blur="blur()"></input>
+                ng-model="hex" ng-change="validate(); updateRgbFromHex(); updateHsv();" ng-blur="blur()"></input>
         </div>
         
 	<div>

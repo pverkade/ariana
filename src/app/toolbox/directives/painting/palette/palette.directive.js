@@ -280,9 +280,9 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
     };
 
     $scope.validate = function() {
-        color.setPrimaryR($scope.clamp(colors.getPrimaryR(), 0, 255));
-        color.setPrimaryG($scope.clamp(colors.getPrimaryG(), 0, 255));
-        color.setPrimaryB($scope.clamp(colors.getPrimaryB(), 0, 255));
+        colors.setPrimaryR($scope.clamp(colors.getPrimaryR(), 0, 255));
+        colors.setPrimaryG($scope.clamp(colors.getPrimaryG(), 0, 255));
+        colors.setPrimaryB($scope.clamp(colors.getPrimaryB(), 0, 255));
         $scope.color.h = $scope.clamp($scope.color.h, 0, 360);
         $scope.color.s = $scope.clamp($scope.color.s, 0, 100);
         $scope.color.v = $scope.clamp($scope.color.v, 0, 100);
@@ -293,13 +293,13 @@ app.controller('PaletteCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', '
 
     $scope.blur = function() {
         if (!colors.getPrimaryR()) {
-            color.setPrimaryR(0);
+            colors.setPrimaryR(0);
         }
         if (!colors.getPrimaryG()) {
-            color.setPrimaryG(0);
+            colors.setPrimaryG(0);
         }
         if (!colors.getPrimaryB()) {
-            color.setPrimaryB(0);
+            colors.setPrimaryB(0);
         }
         if (!$scope.color.h) {
             $scope.color.h = 0;
