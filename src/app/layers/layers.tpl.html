@@ -3,7 +3,6 @@
     ng-class="{'fade-on': !checkVisible(), 'fade-off': checkVisible()}">
 
     <div class="layer-header" ng-show="checkVisible()">
-        <!-- <div class="tool float-left" ng-click="addLayer()" ng-hide="hidden"> <i class="mdi mdi-plus"> </i> </div> -->
         <div class="tool float-left" ng-click="hideLayers()" ng-hide="hidden"> <i class="mdi mdi-chevron-right"> </i> </div>
         <div class="tool float-left" ng-click="showLayers()" ng-show="hidden"> <i class="mdi mdi-chevron-left"> </i> </div>
         <h2 ng-hide="hidden"> Layers </h2>
