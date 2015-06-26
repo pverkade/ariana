@@ -153,8 +153,6 @@ class EditEngine {
     }
 
     public setSelectionLayer(marchingAnts : MarchingAnts, selectionLayer : ImageLayer) : void {
-        console.log(marchingAnts);
-
         if (!marchingAnts || !selectionLayer) {
             console.log("selection layer undefined");
             return;

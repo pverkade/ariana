@@ -30,7 +30,6 @@ function start() {
         var topLayers : String = renderEngine.renderIndicesToImg(upperIndices);
         var topLayersImage = new Image();
         topLayersImage.src = topLayers.toString();
-        //console.log(topLayers);
 
         topLayersImage.onload = function() {
             topContext.save();

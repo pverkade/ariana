@@ -129,7 +129,6 @@ class LooseSelection extends AbstractSelection {
 		if (this.maskBorder[(startPoint.y + dYAdj) * this.width + startPoint.x + dXAdj] == 0) {
 			return new Point(startPoint.x + dXAdj, startPoint.y + dYAdj);
 		} else {
-			console.log("hopelijk gaat dit goed");
 			return new Point(startPoint.x + 2 * dXAdj, startPoint.y + 2 * dYAdj);
 		}
     }

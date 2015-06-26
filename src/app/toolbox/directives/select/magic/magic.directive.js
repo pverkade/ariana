@@ -36,7 +36,6 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
 		}
         
 		var image = layer.getImage();
-        console.log(image);
         
 		$scope.magic = new MagicSelection(image);
 
