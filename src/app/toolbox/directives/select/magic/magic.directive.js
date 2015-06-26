@@ -69,14 +69,7 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
         var xRelative = transformedPoint.x;
         var yRelative = transformedPoint.y;
         
-		/* Check wheter user has clicked inside of a selection. */
-        var bitmask = null;
-		if ($scope.magic.isInSelection(xRelative, yRelative)) {
-			$scope.magic.removeSelection(xRelative, yRelative);
-		} else {
-			$scope.magic.getMaskWand(xRelative, yRelative, $scope.threshold);
-			bitmask = $scope.magic.getMaskWand(xRelative, yRelative, $scope.threshold);
-		}
+		$scope.magic.getMaskWand(xRelative, yRelative, $scope.threshold);
 
 		/* Draw shared mask variables to image. */
 		if ($scope.maskWand) {
