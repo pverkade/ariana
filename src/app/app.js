@@ -184,9 +184,14 @@ app.controller('AppCtrl', ['$scope', 'layers', 'canvas', 'tools',
         $scope.setCurrentLayerIndex = function(layerIndex) {
             layers.setCurrentIndex(layerIndex);
             $scope.$broadcast('newCurrentLayer', layerIndex);
-
             
-            $scope.editEngine.setEditLayer($scope.getCurrentLayer(), $scope.editEngine.getEditMode());
+            var tool = tools.getTool();
+            if (tool == "translate" || tool == "rotate" || tool == "scale") {
+                $scope.editEngine.setEditLayer($scope.getCurrentLayer(), $scope.editEngine.getEditMode());
+            }
+            else {
+                $scope.editEngine.setEditLayer($scope.getCurrentLayer(), -1);
+            }
             $scope.requestEditEngineUpdate();
         };
 

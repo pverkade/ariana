@@ -83,8 +83,8 @@
     }
     
     .preview {
-        width: inherit;
-        height: inherit;
+        width: auto;
+        height: auto;
         max-width: 3 * $blocksize;
         max-height: 2 * $blocksize;
         margin: 0;
