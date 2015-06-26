@@ -186,19 +186,22 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
             }
         };
         
+        $scope.selectionEnabled = false;
+        
         $scope.isSelectionEnabled = function() {
             var tool = tools.getTool();
             var enabled = (tool == "magic" || tool == "loose" || tool == "rectangle");
             var layer = $scope.getCurrentLayer();
             
-            if (enabled && layer) {
-                // enabled selection
+            if (enabled && layer && !$scope.selectionEnabled) {
                 $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
                 $scope.requestEditEngineUpdate();
+                $scope.selectionEnabled = true;
             }
-            else {
+            else if ((!enabled || !layer) && $scope.selectionEnabled) {
                 $scope.editEngine.removeSelectionLayer();
                 $scope.requestEditEngineUpdate();   
+                $scope.selectionEnabled = false;
             }
             
             return enabled;
