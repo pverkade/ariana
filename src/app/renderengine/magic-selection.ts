@@ -21,9 +21,10 @@ class MagicSelection extends AbstractSelection {
         var canvas = document.createElement("canvas");
         canvas.width = image.width;
         canvas.height = image.height;
+        console.log(canvas.width, canvas.height);
         var context = canvas.getContext("2d");
         context.drawImage(image, 0, 0);
-        this.imageData = context.getImageData(0, 0, image.width, image.height);
+        this.imageData = context.getImageData(0, 0, canvas.width, canvas.height);
     }
 
     /* Given pixel and treshold value (1-100) a bitmask for the borders of the magic wand is returned. 

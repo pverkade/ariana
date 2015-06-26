@@ -55,7 +55,7 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'la
 
 	$scope.mouseDown = function() {
         $scope.stop();
-
+		console.log("Mouse down magic");
 		/* x and y coordinates in pixels relative to canvas left top corner. */
 		var mouseX = mouse.getPosX();
 		var mouseY = mouse.getPosY();

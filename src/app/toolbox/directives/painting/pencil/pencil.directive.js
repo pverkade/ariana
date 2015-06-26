@@ -47,10 +47,12 @@ app.controller('PencilCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'c
     
     $scope.stop = function() {
         if ($scope.hasDrawn) {
-            var image = $scope.drawEngine.getCanvasImageData();
+            var image = $scope.drawEngine.getCanvasHTMLImageElement();
 
-            $scope.newLayerFromImage(image, $scope.currentLayer + 1);
-            $scope.drawEngine.clearCanvases();
+            image.onload = function() {
+                $scope.newLayerFromImage(image, $scope.currentLayer + 1);
+                $scope.drawEngine.clearCanvases();
+            };
         }
         
         $scope.hasDrawn = false;
