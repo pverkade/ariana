@@ -180,7 +180,7 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
             var nrWands = $scope.selectionTool.getNrWands();
             for (var i = 0; i < nrWands; i++) {
                 var removed = $scope.selectionTool.clearLast();
-                if (removed === false) {
+                if (removed) {
                     console.log("Selection tool clear Last returned false");
                 }                
             }
@@ -189,7 +189,7 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
             if ($scope.maskWand) {
                 $scope.setMaskSelectedArea($scope.selectionTool.width, $scope.selectionTool.height);
                 var layer = $scope.getCurrentLayer();
-                if (!layer || layer == null) {
+                if (!layer) {
                     console.log("cant find layer");
                     return;
                 }
@@ -206,6 +206,7 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
             var layer = $scope.getCurrentLayer();
             
             if (enabled && layer && !$scope.selectionEnabled) {
+                $scope.editEngine.removeEditLayer();
                 $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
                 $scope.requestEditEngineUpdate();
                 $scope.selectionEnabled = true;

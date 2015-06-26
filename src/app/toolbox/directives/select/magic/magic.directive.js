@@ -22,6 +22,7 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
 	$scope.active = tools.getTool() == $scope.toolname;
 
 	$scope.threshold = 35;
+	$scope.magic = null;
 
 	$scope.init = function() {
         $scope.selection.maskEnabled = true;
@@ -35,7 +36,6 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
 		}
         
 		var image = layer.getImage();
-        console.log(image);
         
 		$scope.magic = new MagicSelection(image);
 
@@ -46,13 +46,14 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
         $scope.magic.setMaskBorder($scope.maskBorder);
 
         $scope.setMaskSelectedArea($scope.magic.width, $scope.magic.height);
+        
+        $scope.editEngine.removeEditLayer();
 	};
     
     $scope.stop = function() {
     };
 
 	$scope.mouseDown = function() {
-        $scope.stop();
 		console.log("Mouse down magic");
 		/* x and y coordinates in pixels relative to canvas left top corner. */
 		var mouseX = mouse.getPosX();

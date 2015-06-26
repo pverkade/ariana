@@ -174,12 +174,10 @@ app.controller('ScaleCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fun
         }
 
         if (oval) {
-            $scope.editEngine.removeEditLayer();
             var layer = $scope.getCurrentLayer();
             if (layer) {
                 layer.commitDimensions();
             }
-            $scope.editEngine.clear();
             $scope.updateThumbnail(layers.getCurrentIndex());
         }
     }, true);

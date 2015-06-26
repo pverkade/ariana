@@ -21,6 +21,7 @@ app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
 
     $scope.toolname = 'loose';
     $scope.active = tools.getTool() == $scope.toolname;
+    $scope.loose = null;
 
     $scope.init = function() {
         canvas.setCursor('default');
@@ -46,12 +47,15 @@ app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
         $scope.drawEngine.setDrawType(drawType.DASHED);
 
         $scope.setMaskSelectedArea($scope.loose.width, $scope.loose.height);
+        
+        $scope.editEngine.removeEditLayer();
     };
     
     $scope.stop = function() {
     };
 
     $scope.mouseDown = function() {
+        if (!$scope.loose) return;
         /* x and y coordinates in pixels relative to image. */
         xMouse = mouse.getPosX();
         yMouse = mouse.getPosY();
@@ -72,6 +76,7 @@ app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
 
     /* onMouseUp */
     $scope.mouseUp = function() {
+        if (!$scope.loose) return;
         $scope.loose.reset();
         $scope.mouseBTNDown = false;
 
@@ -81,6 +86,7 @@ app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
 
     /* onMouseMove */
     $scope.mouseMove = function() {
+        if (!$scope.loose) return;
         /* x and y coordinates in pixels relative to image. */
         xMouse = mouse.getPosX();
         yMouse = mouse.getPosY();    

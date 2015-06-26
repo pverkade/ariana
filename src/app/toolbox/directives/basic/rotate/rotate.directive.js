@@ -103,7 +103,6 @@ app.controller('RotateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', fu
 		}
 
 		if (oval) {
-            $scope.editEngine.removeEditLayer();
 			var layer = $scope.getCurrentLayer();
             if (layer) {
                 layer.commitRotation();

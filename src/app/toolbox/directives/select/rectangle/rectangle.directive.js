@@ -47,6 +47,8 @@ app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', 'mouse', function(
         $scope.drawEngine.setDrawType(drawType.RECTANGLE);
 
         $scope.setMaskSelectedArea($scope.rect.width, $scope.rect.height);
+        
+        $scope.editEngine.removeEditLayer();
     };
 
     $scope.stop = function() {
@@ -54,6 +56,7 @@ app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', 'mouse', function(
 
     /* onMouseDown */
     $scope.mouseDown = function() {
+        if (!$scope.rect) return;
         /* x and y coordinates in pixels relative to image. */
         xMouse = mouse.getPosX();
         yMouse = mouse.getPosY();  
@@ -66,6 +69,7 @@ app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', 'mouse', function(
 
     /* onMouseUp */
     $scope.mouseUp = function() {
+        if (!$scope.rect) return;
         /* x and y coordinates in pixels relative to image. */
         xMouse = mouse.getPosX();
         yMouse = mouse.getPosY();  
@@ -90,6 +94,7 @@ app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', 'mouse', function(
 
     /* onMouseMove */
     $scope.mouseMove = function() {
+        if (!$scope.rect) return;
         /* x and y coordinates in pixels relative to image. */
         xMouse = mouse.getPosX();
         yMouse = mouse.getPosY(); 

@@ -18,6 +18,15 @@ enum EditMode {
     scale
 }
 
+function transformPoint(x, y, transformation) {
+    var point = vec3.create();
+    vec3.set(point, x, y, 1);
+    vec3.transformMat3(point, point, transformation);
+    point[1] *= -1;
+
+    return point;
+}
+
 class EditEngine {
     littleSquareDiameter = 4;
     rotateImage : HTMLImageElement;
@@ -82,18 +91,30 @@ class EditEngine {
 
     private drawRotateTool(layer : Layer) {
         var context = this.context;
-        var x = layer.getPosX();
-        var y = layer.getPosY();
+        var transformation = layer.calculateTransformation();
 
         context.save();
+        context.beginPath();
         this.setColors(context);
-        context.translate(x, y);
-        context.fillRect(
-            -this.littleSquareDiameter * 0.5,
-            -this.littleSquareDiameter * 0.5,
-            this.littleSquareDiameter,
-            this.littleSquareDiameter
-        );
+        {
+            var point = transformPoint(-1, -1, transformation);
+
+            context.moveTo(point[0], point[1]);
+
+            point = transformPoint(-1, 1, transformation);
+            context.lineTo(point[0], point[1]);
+
+            point = transformPoint(1, 1, transformation);
+            context.lineTo(point[0], point[1]);
+
+            point = transformPoint(1, -1, transformation);
+            context.lineTo(point[0], point[1]);
+
+            point = transformPoint(-1, -1, transformation);
+            context.lineTo(point[0], point[1]);
+        }
+
+        context.stroke();
         context.restore();
     }
 
@@ -136,12 +157,11 @@ class EditEngine {
     }
 
     public setSelectionLayer(marchingAnts : MarchingAnts, selectionLayer : ImageLayer) : void {
-        this.selectionLayer = selectionLayer;
-
-        if (!selectionLayer) {
+        if (!marchingAnts || !selectionLayer) {
             console.log("selection layer undefined");
             return;
         }
+        this.selectionLayer = selectionLayer;
 
         var imageData = this.context.createImageData(selectionLayer.getImage().width, selectionLayer.getImage().height);
         var offset = 0;
@@ -169,14 +189,15 @@ class EditEngine {
     public render() : void {
         this.clear();
         var currentLayer : Layer = this.currentLayer;
+        
         if (currentLayer) {
             if (this.currentMode == EditMode.rotate) {
-                    this.drawRotateTool(currentLayer);
+                this.drawRotateTool(currentLayer);
             }
-            if (this.currentMode == EditMode.translate) {
+            else if (this.currentMode == EditMode.translate) {
                 this.drawTranslateTool(currentLayer);
             }
-            if (this.currentMode == EditMode.scale) {
+            else if (this.currentMode == EditMode.scale) {
                 this.drawScaleTool(currentLayer);
             }
         }

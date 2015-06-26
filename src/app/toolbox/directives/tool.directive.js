@@ -11,7 +11,7 @@ app.directive('tool', ['tools', function(tools) {
                 event.stopPropagation();
                 tools.setTool(scope.toolname);
 
-                if (event.target.className.indexOf('mdi') > -1) {
+                if ((event.target.className.indexOf('tool') > -1) | (event.target.className.indexOf('mdi') > -1)) {
                     scope.expanded = !scope.expanded;
                     scope.$apply(scope.expanded);
                 }

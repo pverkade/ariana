@@ -88,9 +88,7 @@ app.controller('TranslateCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
             });
         }
         else {
-            $scope.editEngine.removeEditLayer();
             $scope.editEngine.clear();
-
             $scope.updateThumbnail(layers.getCurrentIndex());
         }
     }, true);
