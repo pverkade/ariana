@@ -66,11 +66,6 @@ app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
         xRelative = transformedPoint.x;
         yRelative = transformedPoint.y;
 
-        /* Check wheter user has clicked inside of a selection. */
-        if ($scope.loose.isInSelection(xRelative, yRelative)) {
-            $scope.loose.removeSelection(xRelative, yRelative);
-        } 
-
         $scope.drawEngine.onMousedown(xMouse, yMouse);   
         $scope.mouseBTNDown = true; 
     };

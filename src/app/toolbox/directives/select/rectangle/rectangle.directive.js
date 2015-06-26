@@ -60,11 +60,6 @@ app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', 'mouse', function(
 
         $scope.point1 = new Point(xMouse, yMouse);
 
-        /* Check wheter user has clicked inside of a selection. */
-        if ($scope.rect.isInSelection(xMouse, yMouse)) {
-            $scope.rect.removeSelection(xMouse, yMouse);
-        }
-
         $scope.drawEngine.onMousedown(xMouse, yMouse);   
         $scope.mouseBTNDown = true; 
     };
