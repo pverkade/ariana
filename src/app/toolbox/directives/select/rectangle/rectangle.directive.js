@@ -52,8 +52,6 @@ app.controller('RectangleCtrl', ['$scope', 'tools', 'canvas', 'mouse', 'layers',
     };
 
     $scope.stop = function() {
-        $scope.editEngine.removeSelectionLayer();
-        $scope.requestEditEngineUpdate();
     };
 
     /* onMouseDown */

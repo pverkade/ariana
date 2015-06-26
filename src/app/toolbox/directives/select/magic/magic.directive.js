@@ -49,8 +49,6 @@ app.controller('MagicCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse', 'la
 	};
     
     $scope.stop = function() {
-        $scope.editEngine.removeSelectionLayer();
-        $scope.requestEditEngineUpdate();
     };
 
 	$scope.mouseDown = function() {

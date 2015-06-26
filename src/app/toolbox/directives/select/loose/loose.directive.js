@@ -50,8 +50,6 @@ app.controller('LooseCtrl', ['$scope', 'tools', 'canvas', 'layers', 'mouse',
     };
     
     $scope.stop = function() {
-        $scope.editEngine.removeSelectionLayer();
-        $scope.requestEditEngineUpdate();
     };
 
     $scope.mouseDown = function() {

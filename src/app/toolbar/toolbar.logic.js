@@ -189,7 +189,21 @@ app.controller('ToolbarCtrl', ['$scope', '$modal', 'mouse', 'tools', 'layers',
         
         $scope.isSelectionEnabled = function() {
             var tool = tools.getTool();
-            return (tool == "magic" || tool == "loose" || tool == "rectangle");
+            var enabled = (tool == "magic" || tool == "loose" || tool == "rectangle");
+            var layer = $scope.getCurrentLayer();
+            
+            if (enabled && layer) {
+                // enabled selection
+                $scope.editEngine.setSelectionLayer($scope.marchingAnts, layer);
+                $scope.requestEditEngineUpdate();
+            }
+            else {
+                $scope.editEngine.removeSelectionLayer();
+                $scope.requestEditEngineUpdate();   
+            }
+            
+            return enabled;
+        
         };
     }
 ]);
